@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinperUpdateServer", "WinperUpdateServer\WinperUpdateServer.csproj", "{6D52CA24-F5A6-4369-8CBA-6BC73ACC898F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessMsg", "ProcessMsg\ProcessMsg.csproj", "{3B5F2675-EA22-4C4F-83F4-CED29434AFB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinperUpdateClient", "WinperUpdateClient\WinperUpdateClient.csproj", "{E36039D5-9B05-41EA-8270-7FD8E75F8D44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D52CA24-F5A6-4369-8CBA-6BC73ACC898F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D52CA24-F5A6-4369-8CBA-6BC73ACC898F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D52CA24-F5A6-4369-8CBA-6BC73ACC898F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D52CA24-F5A6-4369-8CBA-6BC73ACC898F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B5F2675-EA22-4C4F-83F4-CED29434AFB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B5F2675-EA22-4C4F-83F4-CED29434AFB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B5F2675-EA22-4C4F-83F4-CED29434AFB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B5F2675-EA22-4C4F-83F4-CED29434AFB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E36039D5-9B05-41EA-8270-7FD8E75F8D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E36039D5-9B05-41EA-8270-7FD8E75F8D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E36039D5-9B05-41EA-8270-7FD8E75F8D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E36039D5-9B05-41EA-8270-7FD8E75F8D44}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

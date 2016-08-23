@@ -1,0 +1,14 @@
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\WinperUpdateServer.exe.config
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\WinperUpdateServer.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\WinperUpdateServer.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Json.NET.Web.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\ProcessMsg.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\ProcessMsg.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.csprojResolveAssemblyReference.cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.ProjectInstaller.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.StateObject.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.csproj.GenerateResource.Cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.pdb

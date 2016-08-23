@@ -1,0 +1,5 @@
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\ProcessMsg.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\ProcessMsg.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Debug\ProcessMsg.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Debug\ProcessMsg.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Debug\ProcessMsg.csprojResolveAssemblyReference.cache
