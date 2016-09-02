@@ -1,0 +1,63 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.error_ingreso {
+    color: #ed1717;
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 12px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display: none;
+}
+.ok_ingreso {
+    color: darkgreen;
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 12px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+@media (min-width: 768px) {
+  .navbar > .container .navbar-brand,
+  .navbar > .container-fluid .navbar-brand {
+   margin-left: 0px;
+  }
+}
+
+.image-preview-input {
+    position: relative;
+	overflow: hidden;
+	margin: 0px;    
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;    
+}
+.image-preview-input input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+
+.image-foto {
+    width: 140px;
+    height: 140px;
+}
+

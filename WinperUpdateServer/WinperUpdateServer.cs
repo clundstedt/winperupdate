@@ -147,25 +147,36 @@ namespace WinperUpdateServer
 
                         switch (token[0])
                         {
-                            case "getversion":
+                            case "getversiones":
                                 //eventLog1.WriteEntry(String.Format("Call ListarVersiones('{0}','{1}')", token[1], dirVersiones), EventLogEntryType.Information, ++eventId);
 
-                                var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
+                                //var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
+                                var lista = ProcessMsg.Version.GetVersiones(eventLog1);
 
                                 string json = JsonConvert.SerializeObject(lista);
                                 Send(handler, json);
                                 break;
 
-                            case "getdirectorio":
-                                var listaArchivos = ProcessMsg.Version.ListarDirectorio(token[1], dirVersiones, eventLog1);
+                            case "getmodulos":
+                                //eventLog1.WriteEntry(String.Format("Call ListarVersiones('{0}','{1}')", token[1], dirVersiones), EventLogEntryType.Information, ++eventId);
 
-                                string json2 = JsonConvert.SerializeObject(listaArchivos);
-                                Send(handler, json2);
+                                //var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
+                                var listaModulos = ProcessMsg.Version.GetModulosVersiones(int.Parse(token[1]), eventLog1);
+
+                                string jsonM = JsonConvert.SerializeObject(listaModulos);
+                                Send(handler, jsonM);
+                                break;
+
+                            case "getcomponentes":
+                                //var listaArchivos = ProcessMsg.Version.ListarDirectorio(token[1], dirVersiones, eventLog1);
+                                var listaArchivos = ProcessMsg.Componente.GetComponentes(int.Parse(token[1]), token[2], eventLog1);
+
+                                string jsonA = JsonConvert.SerializeObject(listaArchivos);
+                                Send(handler, jsonA);
                                 break;
 
                             case "getfile":
                                 var buffer = ProcessMsg.Version.DownloadFile(token[1], int.Parse(token[2]), int.Parse(token[3]), dirVersiones, eventLog1);
-                                // Echo the data back to the client.
                                 Send(handler, buffer);
                                 break;
 

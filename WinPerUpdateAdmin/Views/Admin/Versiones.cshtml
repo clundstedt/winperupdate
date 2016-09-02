@@ -1,0 +1,73 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Versiones</h1>
+        <ol class="breadcrumb autoscroll">
+            <li class="active">Versiones Existentes</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar" role="toolbar">
+                <form method="POST" style="display:inline-block;" action="/Admin#/CrearVersion">
+                    <div class="btn-toolbar" role="toolbar">
+                        <button type="submit" class="btn btn-labeled btn-success" name="action" value="createchild">
+                            <span class="btn-label"><span class="fa fa-tablet"></span></span> Crear Versi&oacute;n
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="tab-content" ng-controller="admin">
+    <ul class="nav nav-tabs" role="tablist" ng-init="panel=1">
+        <li role="presentation" class="active">
+            <a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Versiones Existentes</a>
+        </li>
+        <li role="presentation">
+            <a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Templates</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="misversiones" ng-class="{active:panel==1}">
+            <br />
+            <div class="alert alert-info" ng-show="versiones.length==0">
+                <span class="fa fa-tablet"></span> No existen versiones registradas 
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones">
+                    <div class="item panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{version.Release}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li class="text-success"><span class="fa fa-fw"></span> Publicado</li>
+                                    <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
+                                    <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <a href="Admin#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="templateprojects" ng-class="{active:panel==2}">
+            <br />
+        </div>
+    </div>
+</div>
+
+

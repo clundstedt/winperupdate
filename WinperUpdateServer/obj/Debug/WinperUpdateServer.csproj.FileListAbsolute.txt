@@ -12,3 +12,11 @@ C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperU
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.csproj.GenerateResource.Cache
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.exe
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\obj\Debug\WinperUpdateServer.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Antlr3.Runtime.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\WebGrease.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\WinperUpdateDAO.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Connector.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Antlr3.Runtime.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\WinperUpdateDAO.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateServer\bin\Debug\Connector.pdb

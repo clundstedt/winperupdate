@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Detalles de la Componente</h1>
+        <ol class="breadcrumb autoscroll">
+            <li><a href="/Admin#/">Versiones</a></li>
+            <li><a href="/Admin#/EditVersion/{{idVersion}}">Version {{version.Release}}</a></li>
+            <li class="active">Editar Componentes</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar hidden-xs">
+                <div class="btn-group" role="toolbar">
+                    <a href="#published-modal" data-toggle="modal" class="btn btn-default">
+                        <span class="fa fa-fw fa-square-o"></span> Publicado
+                    </a>
+
+                    <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger">
+                        <span class="fa fa-fw fa-trash-o"></span> Eliminar Componente
+                    </a>
+                </div>
+            </div>
+
+            <div class="btn-toolbar visible-xs-block">
+                <div class="btn-group" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>
+                                <a href="#published-modal" data-toggle="modal">
+
+                                    <span class="fa fa-square-o"></span> Publicado
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a ng-click="ShowConfirm()" data-toggle="modal">
+                                    <span class="text-danger"><span class="fa fa-fw fa-trash-o"></span> Eliminar Componente</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+</div>

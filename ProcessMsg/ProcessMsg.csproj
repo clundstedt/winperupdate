@@ -42,10 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Componente.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
     <Compile Include="Model\VersionBo.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WinperUpdateDAO\WinperUpdateDAO.csproj">
+      <Project>{26b7cd4c-0664-475c-a006-908f85dab038}</Project>
+      <Name>WinperUpdateDAO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

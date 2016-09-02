@@ -1,0 +1,255 @@
+﻿
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Detalles de la Versi&oacute;n</h1>
+        <ol class="breadcrumb autoscroll">
+            <li><a href="/Admin#/">Versiones</a></li>
+            <li class="active">Una Versi&oacute;n</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar hidden-xs">
+                <div class="btn-group" role="toolbar">
+                    <a href="#published-modal" data-toggle="modal" class="btn btn-default">
+                        <span class="fa fa-fw fa-square-o"></span> Publicado
+                    </a>
+
+                    <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idversion==0">
+                        <span class="fa fa-fw fa-trash-o"></span> Eliminar Versi&oacute;n
+                    </a>
+                </div>
+            </div>
+
+            <div class="btn-toolbar visible-xs-block">
+                <div class="btn-group" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>
+                                <a href="#published-modal" data-toggle="modal">
+
+                                    <span class="fa fa-square-o"></span> Publicado
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#delete-modal" data-toggle="modal">
+                                    <span class="text-danger"><span class="fa fa-fw fa-trash-o"></span> Eliminar Versi&oacute;n</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{titulo}}</h3>
+                </div>
+
+                <div class="panel-body" ng-controller="version">
+                    <form name="frmMain" method="post" action="#" novalidate>
+                        <div class="form-group">
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-tablet fa-fw"></i></span>
+                                <input class="form-control" type="text" name="name" placeholder="Release" ng-model="formData.release" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                            </div>
+                            <span class="error_ingreso" ng-show="frmMain.name.$error.maxlength">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group date" id='datepicker'>
+                                <span class="input-group-addon"><i class="fa fa-calendar-o fa-fw"></i></span>
+                                <input class="form-control" id="fecha" value="{{formData.fecha}}" type="text" name="fecha" placeholder="fecha" ng-model="formData.fecha" required="required" ng-maxlength="10" ng-model-options="{ updateOn: 'blur' }">
+                            </div>
+
+                        </div>
+
+                        <hr />
+
+                        <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && SaveVersion(formData)" ng-disabled="!increate">
+                            <span class="fa fa-check" ng-show="increate"></span>
+                            <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Componentes</h1>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-toolbar" role="toolbar">
+                                <a href="/Admin#/CrearComponente/{{idversion}}" class="btn btn-labeled btn-success">
+                                    <span class="btn-label"><span class="fa fa-cubes"></span></span> Asignar Componente
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div role="tabpanel" ng-init="panel=1">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Ejecutables</a></li>
+                    <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Reportes</a></li>
+                    <li role="presentation"><a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">Otros</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" ng-class="{active:panel==1}">
+                        <br />
+                        <div class="alert alert-info" ng-show="totales[0]==0">
+                            <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroEjecutables">
+                                <div class="item panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title single-line">{{ejecutable.Name}}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img src="~/Content/Images/Run.png" alt="" class="avatar img-thumbnail image-foto" />
+                                        <div class="pull-right" style="width: 50%">
+                                            <ul class="list-unstyled">
+                                                <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.Modulo}}</li>
+                                                <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.DateCreateFmt}}</li>
+                                                <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.Version}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer text-right" ng-init="inficha=true">
+                                        <a href="Admin#/EditComponente/{{idversion}}/{{ejecutable.Name}}" class="btn btn-labeled btn-primary">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
+                        <br />
+                        <div class="alert alert-info" ng-show="totales[1]==0">
+                            <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="reporte in componentes | filtroReportes">
+                                <div class="item panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title single-line">{{reporte.Name}}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img src="~/Content/Images/Printer.png" alt="" class="avatar img-thumbnail image-foto" />
+                                        <div class="pull-right" style="width: 50%">
+                                            <ul class="list-unstyled">
+                                                <li><span class="fa fa-fw fa-cube"></span> {{reporte.Modulo}}</li>
+                                                <li><span class="fa fa-fw fa-calendar"></span> {{reporte.DateCreateFmt}}</li>
+                                                <li><span class="fa fa-fw fa-bug"></span> {{reporte.Version}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer text-right" ng-init="inficha=true">
+                                        <a href="Admin#/EditComponente/{{idversion}}/{{reporte.Name}}" class="btn btn-labeled btn-primary">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==3}">
+                        <br />
+                        <div class="alert alert-info" ng-show="totales[2]==0">
+                            <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in componentes | filtroOtros">
+                                <div class="item panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title single-line">{{otro.Name}}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img src="~/Content/Images/SD Card.png" alt="" class="avatar img-thumbnail image-foto" />
+                                        <div class="pull-right" style="width: 50%">
+                                            <ul class="list-unstyled">
+                                                <li><span class="fa fa-fw fa-cube"></span> {{otro.Modulo}}</li>
+                                                <li><span class="fa fa-fw fa-calendar"></span> {{otro.DateCreateFmt}}</li>
+                                                <li><span class="fa fa-fw fa-bug"></span> {{otro.Version}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer text-right" ng-init="inficha=true">
+                                        <a href="Admin#/EditComponente/{{idversion}}/{{otro.Name}}" class="btn btn-labeled btn-primary">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmar Eliminación</h4>
+                </div>
+                <div class="modal-body">
+                    Confirma que desea eliminar la Componente ?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
+                    <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<input type="hidden" id="Version" value="{{idversion}}" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.input-group.date').datepicker({
+            language: "es",
+            autoclose: true,
+            todayHighlight: true,
+        });
+
+
+        setTimeout(function () {
+            $('.input-group.date').datepicker('setDate', $("#fecha").val());
+            $('.input-group.date').datepicker('update');
+        }, 1500);
+    });
+
+
+</script>

@@ -1,0 +1,10 @@
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\bin\Debug\WinperUpdateClient.exe.config
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\bin\Debug\WinperUpdateClient.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\bin\Debug\WinperUpdateClient.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\bin\Debug\System.configuration.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\bin\Debug\es\System.configuration.resources.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\obj\Debug\WinperUpdateClient.ProjectInstaller.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\obj\Debug\WinperUpdateClient.VersionBo.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\obj\Debug\WinperUpdateClient.csproj.GenerateResource.Cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\obj\Debug\WinperUpdateClient.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateClient\obj\Debug\WinperUpdateClient.pdb

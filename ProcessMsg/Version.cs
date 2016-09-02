@@ -6,11 +6,117 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using WinperUpdateDAO;
 
 namespace ProcessMsg
 {
     public class Version
     {
+        public static List<Model.VersionBo> GetVersiones(EventLog log)
+        {
+            var lista = new List<Model.VersionBo>();
+            var consulta = new CnaVersiones();
+            try
+            {
+                var dr = consulta.Execute();
+                while (dr.Read())
+                {
+                    var obj = new Model.VersionBo
+                    {
+                        IdVersion = int.Parse(dr["idVersion"].ToString()),
+                        Release = dr["NumVersion"].ToString(),
+                        Fecha = DateTime.Parse(dr["FecVersion"].ToString()),
+                        Estado = dr["Estado"].ToString()[0],
+                        Componentes = new List<Model.AtributosArchivoBo>()
+                    };
+
+                    foreach (var modulo in GetModulosVersiones(obj.IdVersion, null))
+                    {
+                        foreach (var componente in Componente.GetComponentes(obj.IdVersion, modulo, null))
+                        {
+                            obj.Componentes.Add(new Model.AtributosArchivoBo {
+                                Name = componente.Name,
+                                DateCreate = componente.DateCreate,
+                                Version = componente.Version,
+                                Modulo = componente.Modulo
+                            });
+                        }
+                    };
+
+                    lista.Add(obj);
+                }
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
+
+            return lista;
+        }
+
+        public static List<string> GetModulosVersiones(int idVersion, EventLog log)
+        {
+            var lista = new List<string>();
+            var consulta = new CnaModuloVersiones();
+            try
+            {
+                var dr = consulta.Execute(idVersion);
+                while (dr.Read())
+                {
+                    string obj = dr["Modulo"].ToString().Trim();
+
+                    lista.Add(obj);
+                }
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
+
+            return lista;
+        }
+
+        public static Model.VersionBo AddVersion(Model.VersionBo version)
+        {
+            var query = new AddVersion();
+            try
+            {
+
+                if (query.Execute(version.Release, version.Fecha, version.Estado) > 0)
+                {
+                    return GetVersiones(null).Last();
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int AddModuloVersion(int idVersion, string modulo)
+        {
+            var query = new AddModuloVersion();
+            try
+            {
+                return query.Execute(idVersion, modulo);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        #region Modelo Antiguo
         public static List<Model.VersionBo> ListarVersiones(string miVersion, string dirVersiones, EventLog log)
         {
             var lista = new List<Model.VersionBo>();
@@ -42,7 +148,9 @@ namespace ProcessMsg
             }
             catch (Exception ex)
             {
-                log.WriteEntry("Excepcion Controlada: " + ex.Message, EventLogEntryType.Error);
+                var msg = "Excepcion Controlada: " + ex.Message;
+                log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
             }
 
             return lista;
@@ -78,6 +186,7 @@ namespace ProcessMsg
 
             return lista;
         }
+        #endregion
 
         public static Byte[] DownloadFile(string namefile, int posIni, int sizeMax, string dirVersiones, EventLog log)
         {

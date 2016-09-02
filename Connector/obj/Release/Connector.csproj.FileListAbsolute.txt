@@ -1,0 +1,10 @@
+C:\Users\mlabrin\documents\visual studio 2012\Projects\Restaurant\Connector\bin\Release\Connector.dll
+C:\Users\mlabrin\documents\visual studio 2012\Projects\Restaurant\Connector\bin\Release\Connector.pdb
+C:\Users\mlabrin\documents\visual studio 2012\Projects\Restaurant\Connector\obj\Release\Connector.csprojResolveAssemblyReference.cache
+C:\Users\mlabrin\documents\visual studio 2012\Projects\Restaurant\Connector\obj\Release\Connector.dll
+C:\Users\mlabrin\documents\visual studio 2012\Projects\Restaurant\Connector\obj\Release\Connector.pdb
+C:\Users\jpbenavides\Documents\Visual Studio 2015\Projects\Restaurant\Connector\bin\Release\Connector.dll
+C:\Users\jpbenavides\Documents\Visual Studio 2015\Projects\Restaurant\Connector\bin\Release\Connector.pdb
+C:\Users\jpbenavides\Documents\Visual Studio 2015\Projects\Restaurant\Connector\obj\Release\Connector.csprojResolveAssemblyReference.cache
+C:\Users\jpbenavides\Documents\Visual Studio 2015\Projects\Restaurant\Connector\obj\Release\Connector.dll
+C:\Users\jpbenavides\Documents\Visual Studio 2015\Projects\Restaurant\Connector\obj\Release\Connector.pdb
