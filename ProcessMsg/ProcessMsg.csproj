@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Componente.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
+    <Compile Include="Model\ModuloBo.cs" />
     <Compile Include="Model\VersionBo.cs" />
+    <Compile Include="Modulo.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

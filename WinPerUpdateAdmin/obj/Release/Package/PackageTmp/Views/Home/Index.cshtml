@@ -1,0 +1,109 @@
+﻿@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Index";
+}
+@Scripts.Render("~/bundles/login")
+
+<div class="container">
+    <div class="row">
+        <div class="row hidden-xs hidden-sm">
+            <div class="col-md-12 text-center">
+                <h1 style="margin:40px 0px; color:#3399CC; font-weight:100; font-size:46px;">login</h1>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ingreso al Control de Versiones</h3>
+                </div>
+                <div class="panel-body" ng-controller="login">
+                    <form name="frmMain" method="post" action="@Url.Action("Login","Home")" novalidate>
+                        <div class="form-group ">
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                <input class="form-control" type="text" name="username" placeholder="Email" ng-model="formData.username" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                            </div>
+                            <span class="error_ingreso" ng-show="frmMain.username.$error.maxlength">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                            </span>
+                        </div>
+
+                        <div class="form-group ">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                <input class="form-control" type="password" name="password" placeholder="Clave" ng-model="formData.password" required="required" ng-minlength="6" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                            </div>
+                            <span class="error_ingreso" ng-show="frmMain.password.$error.minlength">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo de la clave debe tener 6 caracteres como mínimo
+                            </span>
+                            <span class="error_ingreso" ng-show="frmMain.password.$error.maxlength">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                            </span>
+                        </div>
+
+                        <hr />
+
+                        <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && CheckAccess(formData)" ng-disabled="!inlogin">
+                            <span class="glyphicon glyphicon-log-in" ng-show="inlogin"></span>
+                            <span class="fa fa-circle-o-notch fa-spin" ng-hide="inlogin"></span> {{labellogin}}
+                        </button>
+                        <span class="error_ingreso" ng-show="errorlogin">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgerror}}
+                        </span>
+                    </form>
+
+                    <br />
+
+                    <div class="text-center">
+                        <a href="#myModal" class="btn btn-link btn-sm" data-toggle="modal">
+                            <span class="fa fa-question"></span> Olvid&eacute; mi Clave
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog" ng-controller="login">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="mailForm" novalidate>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Olvid&eacute; mi Clave</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Ingresa el correo que tienes registrado en nuesto portal para poder enviarte las instrucciones que te ayudar&aacute;n a reestablecer tu contrase&ntilde;a.
+                        </p>
+                        <div class="form-group ">
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                <input class="form-control" type="email" name="username" placeholder="Email" ng-model="usernameforgot" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                            </div>
+                            <span class="error_ingreso" ng-show="mailForm.username.$error.email">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Email no tiene el formato correcto
+                            </span>
+                            <span class="error_ingreso" ng-show="mailForm.username.$error.maxlength">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                            </span>
+                            <span class="error_ingreso ok_ingreso" ng-show="okenvio">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mail enviado exitosamente ...
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default btn-warning" data-dismiss="modal">Cerrar</button>
+                        <button class="btn btn-primary" ng-click="mailForm.$valid && EnviarMail()" ng-disabled="!inenvioclave">
+                            <span class="glyphicon glyphicon-log-in" ng-show="inenvioclave"></span>
+                            <span class="fa fa-circle-o-notch fa-spin" ng-hide="inenvioclave"></span> {{labelloginsendclave}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+

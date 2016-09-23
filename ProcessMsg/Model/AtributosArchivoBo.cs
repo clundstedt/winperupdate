@@ -13,6 +13,7 @@ namespace ProcessMsg.Model
         public long Length { get; set; }
         public string Version { get; set; }
         public string Modulo { get; set; }
+        public string Comentario { get; set; }
 
         public string Tipo
         {

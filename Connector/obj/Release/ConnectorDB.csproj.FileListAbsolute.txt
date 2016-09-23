@@ -1,0 +1,5 @@
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\bin\Release\Connector.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\bin\Release\Connector.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Release\ConnectorDB.csprojResolveAssemblyReference.cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Release\Connector.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Release\Connector.pdb

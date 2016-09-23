@@ -7,6 +7,7 @@ using ProcessMsg;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace WinPerUpdateAdmin.Controllers.Admin
 {
@@ -77,6 +78,52 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             catch (Exception ex)
             {
                 return Json(new { CodErr = 3, MsgErr = ex.Message, sVersion = "" });
+            }
+        }
+
+        [HttpPost]
+        public Object GenerarVersion (FormCollection form)
+        {
+            try
+            {
+                int idVersion = int.Parse(form["idVersion"]);
+                var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", Output = "" });
+
+                string sRuta = Server.MapPath("~/Uploads/") + version.Release;
+                if (!sRuta.EndsWith("\\")) sRuta += @"\";
+                string sFile = "WP" + version.Release.Replace(".", "") + string.Format("{0:yyyyMMddhhhhmmss}", DateTime.Now);
+
+                if (ProcessMsg.Version.GenerarInstalador(idVersion, sFile, sRuta) > 0)
+                {
+                    string Command = ConfigurationManager.AppSettings["pathGenSetup"];
+                    string argument = "\"" + sRuta + sFile + ".iss\"";
+
+                    System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo(Command, argument);
+
+                    // Indicamos que la salida del proceso se redireccione en un Stream
+                    procStartInfo.RedirectStandardOutput = true;
+                    procStartInfo.UseShellExecute = false;
+
+                    //Indica que el proceso no despliegue una pantalla negra (El proceso se ejecuta en background)
+                    procStartInfo.CreateNoWindow = false;
+
+                    //Inicializa el proceso
+                    System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                    proc.StartInfo = procStartInfo;
+                    proc.Start();
+
+                    //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
+                    string result = proc.StandardOutput.ReadToEnd();
+
+                    return Json(new { CodErr = 0, MsgErr = result, Output = sFile + ".exe" });
+                }
+                return Json(new { CodErr = 1, MsgErr = "No pudo generar archivo de setup", Output = "" });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { CodErr = 3, MsgErr = ex.Message, Output = "" });
             }
         }
     }

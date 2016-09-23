@@ -152,6 +152,15 @@ namespace WinperUpdateServer
 
                                 //var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
                                 var lista = ProcessMsg.Version.GetVersiones(eventLog1);
+                                foreach (var item in lista)
+                                {
+                                    if (!String.IsNullOrEmpty(item.Instalador))
+                                    {
+                                        string fileName = dirVersiones + item.Release + "\\Output\\" + item.Instalador;
+                                        System.IO.FileInfo info = new System.IO.FileInfo(fileName);
+                                        item.Length = info.Length;
+                                    }
+                                }
 
                                 string json = JsonConvert.SerializeObject(lista);
                                 Send(handler, json);
@@ -169,7 +178,16 @@ namespace WinperUpdateServer
 
                             case "getcomponentes":
                                 //var listaArchivos = ProcessMsg.Version.ListarDirectorio(token[1], dirVersiones, eventLog1);
+                                var version = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == int.Parse(token[1]));
+
                                 var listaArchivos = ProcessMsg.Componente.GetComponentes(int.Parse(token[1]), token[2], eventLog1);
+
+                                foreach (var archivo in listaArchivos)
+                                {
+                                    string fileName = dirVersiones + version.Release + "\\" + archivo.Name;
+                                    System.IO.FileInfo info = new System.IO.FileInfo(fileName);
+                                    archivo.Length = info.Length;
+                                }
 
                                 string jsonA = JsonConvert.SerializeObject(listaArchivos);
                                 Send(handler, jsonA);

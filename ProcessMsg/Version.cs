@@ -27,6 +27,9 @@ namespace ProcessMsg
                         Release = dr["NumVersion"].ToString(),
                         Fecha = DateTime.Parse(dr["FecVersion"].ToString()),
                         Estado = dr["Estado"].ToString()[0],
+                        Comentario = dr["Comentario"].ToString(),
+                        Usuario = dr["Usuario"].ToString(),
+                        Instalador = dr["Instalador"].ToString(),
                         Componentes = new List<Model.AtributosArchivoBo>()
                     };
 
@@ -88,12 +91,66 @@ namespace ProcessMsg
             try
             {
 
-                if (query.Execute(version.Release, version.Fecha, version.Estado) > 0)
+                if (query.Execute(version.Release, version.Fecha, version.Estado, version.Comentario, version.Usuario) > 0)
                 {
                     return GetVersiones(null).Last();
                 }
 
                 return null;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static Model.VersionBo UpdVersion(int idVersion, Model.VersionBo version)
+        {
+            var query = new UpdVersion();
+            try
+            {
+
+                if (query.Execute(idVersion, version.Release, version.Fecha, version.Estado, version.Comentario, version.Usuario, version.Instalador) > 0)
+                {
+                    return GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static Model.VersionBo UpdEstadoVersion(int idVersion, Model.VersionBo version)
+        {
+            var query = new PubVersion();
+            try
+            {
+
+                if (query.Execute(idVersion, version.Estado) > 0)
+                {
+                    return GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int DelVersion(int idVersion)
+        {
+            var query = new DelVersion();
+            try
+            {
+                return query.Execute(idVersion);
             }
             catch (Exception ex)
             {
@@ -111,6 +168,52 @@ namespace ProcessMsg
             }
             catch (Exception ex)
             {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int GenerarInstalador(int idVersion, string fileVersion, string dirSource)
+        {
+            try
+            {
+                var version = GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(dirSource + fileVersion + ".iss"))
+                {
+                    file.WriteLine(@"; ");
+                    file.WriteLine(@"; Instalador winper version " + version.Release);
+                    file.WriteLine(@"; ");
+                    file.WriteLine(@"");
+                    file.WriteLine(@"[Setup]");
+                    file.WriteLine(@"AppName=WinPer");
+                    file.WriteLine(@"AppVersion=" + version.Release);
+                    file.WriteLine(@"DefaultDirName={pf}\WinPer");
+                    file.WriteLine(@"DefaultGroupName=WinPer");
+                    file.WriteLine(@"Compression=lzma2");
+                    file.WriteLine(@"SolidCompression=yes");
+                    file.WriteLine(@"OutputBaseFilename=" + fileVersion);
+                    file.WriteLine(@"");
+                    file.WriteLine(@"[Files]");
+                    foreach (var componente in version.Componentes)
+                    {
+                        file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
+                    }
+                    //file.WriteLine(@"");
+                    //file.WriteLine(@"[Icons]");
+                    //file.WriteLine(@"Name: ""{group}\WinPer""; Filename: ""{app}\reconect.exe""");
+
+                    file.WriteLine(@"");
+                    file.WriteLine(@"[Icons]");
+                    file.WriteLine(@"Name: ""{group}\WinPer""; Filename: ""{app}\reconect.exe""");
+
+                    file.Close();
+                }
+
+                return 1;
+            }
+            catch (Exception ex)
+            {                
                 var msg = "Excepcion Controlada: " + ex.Message;
                 throw new Exception(msg, ex);
             }

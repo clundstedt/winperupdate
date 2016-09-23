@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using ProcessMsg;
+
 
 namespace WinPerUpdateAdmin.Controllers.api
 {
@@ -52,6 +51,45 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
+        [Route("api/Version/{idVersion:int}/Componentes")]
+        [HttpGet]
+        public Object GetComponentes(int idVersion)
+        {
+            try
+            {
+                var obj = ProcessMsg.Componente.GetComponentes(idVersion, null);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/{idVersion:int}/Componentes")]
+        [HttpGet]
+        public Object GetComponentes(int idVersion, string nameFile)
+        {
+            try
+            {
+                var obj = ProcessMsg.Componente.GetComponentes(idVersion, null).SingleOrDefault(x => x.Name.Equals(nameFile));
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
         #endregion
 
         #region post
@@ -112,6 +150,125 @@ namespace WinPerUpdateAdmin.Controllers.api
                     else
                     {
                         return Content(HttpStatusCode.Created, obj);
+                    }
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        #endregion
+
+        #region put
+        [Route("api/Version/{idVersion:int}")]
+        [HttpPut]
+        public Object Put(int idVersion, [FromBody]ProcessMsg.Model.VersionBo version)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (version.Release == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else if (version.Fecha == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else
+                {
+                    var obj = ProcessMsg.Version.UpdVersion(idVersion, version);
+                    if (obj == null)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.Created, obj);
+                    }
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.VersionBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/{idVersion:int}/Componentes")]
+        [HttpPut]
+        public Object PutComponentes(int idVersion, [FromBody]ProcessMsg.Model.AtributosArchivoBo archivo)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (archivo == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else if (archivo.Name == null || archivo.Modulo == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else
+                {
+                    var obj = ProcessMsg.Componente.UpdComponente(idVersion, archivo);
+                    if (obj == null)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.Created, obj);
+                    }
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        #endregion
+
+        #region delete
+        [Route("api/Version/{idVersion:int}")]
+        [HttpDelete]
+        public Object DeleteVersion(int idVersion)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (ProcessMsg.Version.DelVersion(idVersion) <= 0)
+                {
+                    response.StatusCode = HttpStatusCode.Accepted;
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/{idVersion:int}/Componentes")]
+        [HttpDelete]
+        public Object DeleteComponentes(int idVersion, [FromBody]ProcessMsg.Model.AtributosArchivoBo archivo)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (archivo == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else if (archivo.Name == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else
+                {
+                    if (ProcessMsg.Componente.DelComponente(idVersion, archivo) <= 0)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
                     }
                 }
 

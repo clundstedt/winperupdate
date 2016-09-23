@@ -31,23 +31,25 @@ namespace WinPerUpdateAdmin
                       "~/Content/Site.css").Include("~/css/font-awesome.min.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                      "~/Scripts/angular.js",
-                      "~/Scripts/angular-route.js",
-                      "~/Scripts/angular-file-upload.min.js"
+                       "~/Scripts/angular.min.js"
+                      ,"~/Scripts/angular-route.min.js"
+                      ,"~/Scripts/angular-file-upload.min.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
                       "~/js/Login/app.js",
                       "~/js/Login/login.js",
-                      "~/js/Login/serviceLogin.js"));
+                      "~/js/Login/serviceLogin.js"
+                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
-                      "~/js/Version/app.js",
-                      "~/js/Version/admin.js",
-                      "~/js/Version/version.js",
-                      "~/js/Version/componente.js",
-                      "~/js/Version/editcomponente.js",
-                      "~/js/Version/serviceAdmin.js"));
+                      "~/js/Version/app.js"
+                      ,"~/js/Version/admin.js"
+                      ,"~/js/Version/version.js"
+                      ,"~/js/Version/componente.js"
+                      ,"~/js/Version/editcomponente.js"
+                      ,"~/js/Version/serviceAdmin.js"
+                      ));
         }
     }
 }
