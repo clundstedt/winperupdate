@@ -83,10 +83,6 @@ namespace ProcessMsg
                 {
                     if (lista[i].Trim().ToLower().Equals(componente.Modulo.Trim().ToLower())) existe = true;
                 }
-                //if (!lista.Contains(componente.Modulo))
-                //{
-                //    if (Version.AddModuloVersion(idVersion, componente.Modulo) <= 0) return null;
-                //}
                 if (!existe)
                 {
                     if (Version.AddModuloVersion(idVersion, componente.Modulo) <= 0) return null;

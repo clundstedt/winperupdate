@@ -160,6 +160,40 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
+        [Route("api/Version/{idVersion:int}/Cliente/{idCliente:int}")]
+        [HttpPost]
+        public Object PostVersionCliente(int idVersion, int idCliente)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (idVersion <= 0)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else if (idCliente <= 0)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else
+                {
+                    var retorno = ProcessMsg.Version.AddVersionCliente(idVersion, idCliente);
+                    if (retorno == 0)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.Created, (ProcessMsg.Model.VersionBo)null);
+                    }
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.VersionBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         #endregion
 
         #region put

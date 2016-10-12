@@ -31,9 +31,9 @@ namespace WinPerUpdateAdmin
                       "~/Content/Site.css").Include("~/css/font-awesome.min.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                       "~/Scripts/angular.min.js"
-                      ,"~/Scripts/angular-route.min.js"
-                      ,"~/Scripts/angular-file-upload.min.js"
+                           "~/Scripts/angular.min.js"
+                          ,"~/Scripts/angular-route.min.js"
+                          ,"~/Scripts/angular-file-upload.min.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
@@ -43,13 +43,32 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
-                      "~/js/Version/app.js"
-                      ,"~/js/Version/admin.js"
-                      ,"~/js/Version/version.js"
-                      ,"~/js/Version/componente.js"
-                      ,"~/js/Version/editcomponente.js"
-                      ,"~/js/Version/serviceAdmin.js"
+                        "~/js/Version/app.js"
+                      , "~/js/Version/admin.js"
+                      , "~/js/Version/version.js"
+                      , "~/js/Version/componente.js"
+                      , "~/js/Version/editcomponente.js"
+                      , "~/js/Version/publicar.js"
+                      , "~/js/Version/serviceAdmin.js"
+                      , "~/js/Clientes/serviceClientes.js"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/clientes").Include(
+                       "~/Scripts/smart-table.min.js"
+                      , "~/js/Clientes/app.js"
+                      , "~/js/Clientes/inicio.js"
+                      , "~/js/Clientes/clientes.js"
+                      , "~/js/Clientes/serviceClientes.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/seguridad").Include(
+                      "~/js/Seguridad/app.js",
+                      "~/js/Seguridad/mantenedor.js",
+                      "~/js/Seguridad/seguridad.js",
+                      "~/js/Seguridad/serviceSeguridad.js"
+                      ));
+
+
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-<div class="row">
+﻿<div class="row">
     <div class="col-md-12">
         <h1>Detalles de la Versi&oacute;n</h1>
         <ol class="breadcrumb autoscroll">
@@ -16,11 +14,15 @@
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
                     <a ng-click="ShowConfirmPublish()" ng-disabled="formData.estado=='C'" data-toggle="modal" class="btn btn-default" ng-hide="idversion==0">
-                        <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicado
+                        <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicar
                     </a>
 
                     <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idversion==0">
-                        <span class="fa fa-fw fa-trash-o"></span> Eliminar Versi&oacute;n
+                        <span class="fa fa-fw fa-trash-o"></span> Eliminar
+                    </a>
+
+                    <a href="Admin#/PublicarParcial/{{idversion}}" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
+                        <span class="fa fa-fw fa-bullhorn"></span> Publicar Parcialmente
                     </a>
                 </div>
             </div>
@@ -32,12 +34,9 @@
                             <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-
                             <li>
                                 <a ng-click="ShowConfirmPublish()" ng-disabled="formData.estado=='C'" data-toggle="modal" ng-hide="idversion==0">
-
                                     <span class="fa fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicado
-
                                 </a>
                             </li>
 
@@ -47,6 +46,11 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="Admin#/PublicarParcial/{{idversion}}" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
+                                    <span class="fa fa-fw fa-bullhorn"></span> Publicar Parcialmente
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

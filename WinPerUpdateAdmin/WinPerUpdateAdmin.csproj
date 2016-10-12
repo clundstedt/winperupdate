@@ -131,6 +131,7 @@
     <Content Include="Content\Images\Program.png" />
     <Content Include="Content\Images\Run.png" />
     <Content Include="Content\Images\SD Card.png" />
+    <Content Include="Content\Images\user.png" />
     <Content Include="Content\jasny-bootstrap.css" />
     <Content Include="Content\jasny-bootstrap.min.css" />
     <Content Include="Content\Site.css" />
@@ -145,12 +146,21 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Content\jasny-bootstrap.css.map" />
+    <Content Include="js\Clientes\app.js" />
+    <Content Include="js\Clientes\clientes.js" />
+    <Content Include="js\Clientes\inicio.js" />
+    <Content Include="js\Clientes\serviceClientes.js" />
+    <Content Include="js\Seguridad\app.js" />
+    <Content Include="js\Seguridad\mantenedor.js" />
+    <Content Include="js\Seguridad\seguridad.js" />
+    <Content Include="js\Seguridad\serviceSeguridad.js" />
     <Content Include="js\Version\app.js" />
     <Content Include="js\Login\app.js" />
     <Content Include="js\Login\login.js" />
     <Content Include="js\Login\serviceLogin.js" />
     <Content Include="js\Version\componente.js" />
     <Content Include="js\Version\editcomponente.js" />
+    <Content Include="js\Version\publicar.js" />
     <Content Include="js\Version\serviceAdmin.js" />
     <Content Include="js\Version\admin.js" />
     <Content Include="js\Version\version.js" />
@@ -159,6 +169,8 @@
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-rut.js" />
+    <Content Include="Scripts\angular-rut.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
@@ -337,6 +349,9 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\ngrut.js" />
+    <Content Include="Scripts\smart-table.js" />
+    <Content Include="Scripts\smart-table.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +359,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
+    <Compile Include="Controllers\api\ClientesController.cs" />
     <Compile Include="Controllers\api\ModuloController.cs" />
+    <Compile Include="Controllers\api\SeguridadController.cs" />
     <Compile Include="Controllers\api\VersionController.cs" />
+    <Compile Include="Controllers\Clientes\ClientesController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
+    <Compile Include="Controllers\Seguridad\SeguridadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -365,6 +384,14 @@
     <Content Include="Views\Admin\CrearComponente.cshtml" />
     <Content Include="Views\Admin\UploadFile.cshtml" />
     <Content Include="Views\Admin\EditComponente.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Clientes\Inicio.cshtml" />
+    <Content Include="Views\Clientes\Crear.cshtml" />
+    <Content Include="Scripts\smart-table.min.js.map" />
+    <Content Include="Views\Admin\PubParcial.cshtml" />
+    <Content Include="Views\Seguridad\Index.cshtml" />
+    <Content Include="Views\Seguridad\Inicio.cshtml" />
+    <Content Include="Views\Seguridad\CrearUsuario.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

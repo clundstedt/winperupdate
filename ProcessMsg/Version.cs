@@ -219,6 +219,20 @@ namespace ProcessMsg
             }
         }
 
+        public static int AddVersionCliente(int idVersion, int idClientes)
+        {
+            var query = new AddVersionCliente();
+            try
+            {
+                return query.Execute(idVersion, idClientes);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         #region Modelo Antiguo
         public static List<Model.VersionBo> ListarVersiones(string miVersion, string dirVersiones, EventLog log)
         {

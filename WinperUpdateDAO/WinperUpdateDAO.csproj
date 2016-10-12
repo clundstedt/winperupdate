@@ -40,20 +40,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddCliente.cs" />
     <Compile Include="AddComponente.cs" />
     <Compile Include="AddModuloVersion.cs" />
+    <Compile Include="AddPersona.cs" />
+    <Compile Include="AddUsuario.cs" />
     <Compile Include="AddVersion.cs" />
+    <Compile Include="AddVersionCliente.cs" />
+    <Compile Include="CnaClientes.cs" />
     <Compile Include="CnaComponenteByName.cs" />
     <Compile Include="CnaComponentes.cs" />
+    <Compile Include="CnaComuna.cs" />
     <Compile Include="CnaModulo.cs" />
     <Compile Include="CnaModuloVersiones.cs" />
+    <Compile Include="CnaPersona.cs" />
+    <Compile Include="CnaRegiones.cs" />
+    <Compile Include="CnaUsuario.cs" />
     <Compile Include="CnaVersiones.cs" />
+    <Compile Include="DelCliente.cs" />
     <Compile Include="DelComponente.cs" />
     <Compile Include="DelVersion.cs" />
     <Compile Include="PubVersion.cs" />
     <Compile Include="SpDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdCliente.cs" />
     <Compile Include="UpdComponente.cs" />
+    <Compile Include="UpdPersona.cs" />
+    <Compile Include="UpdUsuario.cs" />
     <Compile Include="UpdVersion.cs" />
   </ItemGroup>
   <ItemGroup>

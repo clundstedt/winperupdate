@@ -1,0 +1,66 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Clientes</h1>
+        <ol class="breadcrumb autoscroll">
+            <li class="active">Clientes Existentes</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/Clientes#/CrearCliente" class="btn btn-labeled btn-success">
+                <span class="btn-label"><span class="fa fa-user"></span></span> Crear Cliente
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-show="clientes.length==0">
+                        <span class="fa fa-signal"></span> Clientes Existentes
+                    </div>
+                    <div class="table-responsive" ng-hide="clientes.length==0">
+                        <table st-table="clientes" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Rut</th>
+                                    <th>Razon Social</th>
+                                    <th>Dirección</th>
+                                    <th>Comuna</th>
+                                    <th>Acci&oacute;n</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="cliente in clientes" class="row-tabla" style="height: 20px;">
+                                    <td style="vertical-align: middle;">{{cliente.RutFmt}}</td>
+                                    <td style="vertical-align: middle;">{{cliente.Nombre}}</td>
+                                    <td style="vertical-align: middle;">{{cliente.Direccion}}</td>
+                                    <td style="vertical-align: middle;">{{cliente.Comuna.NomCmn}}</td>
+                                    <td>
+                                        <a href="/Clientes#/EditCliente/{{cliente.Id}}" class="btn btn-labeled btn-info">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Modificar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<br />
+

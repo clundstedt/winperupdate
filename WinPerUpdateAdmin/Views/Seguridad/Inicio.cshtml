@@ -1,0 +1,140 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Seguridad</h1>
+        <ol class="breadcrumb autoscroll">
+          <li class="active">Usuarios Existentes</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar" role="toolbar">
+                <form method="POST" style="display:inline-block;" action="/Seguridad#/CrearUsuario">
+                    <div class="btn-toolbar" role="toolbar">
+                        <button type="submit" class="btn btn-labeled btn-success" name="action" value="createchild">
+                            <span class="btn-label"><span class="fa fa-user"></span></span> Crear Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="tab-content">
+    <ul class="nav nav-tabs" role="tablist" ng-init="panel=1">
+        <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Administrador</a></li>
+        <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Desarrollador</a></li>
+        <li role="presentation"><a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">Soporte</a></li>
+        <li role="presentation"><a ng-click="panel = 4" style="cursor: pointer" role="tab" data-toggle="tab">Gesti&oacute;n</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" ng-class="{active:panel==1}">
+            <br />
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:1">
+                    <div class="item panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                    <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right" ng-init="inficha=true">
+                            <a href="Seguridad#/EditUsuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
+            <br />
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:2">
+                    <div class="item panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                    <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right" ng-init="inficha=true">
+                            <a href="Seguridad#/EditUsuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" ng-class="{active:panel==3}">
+            <br />
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:3">
+                    <div class="item panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                    <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right" ng-init="inficha=true">
+                            <a href="Seguridad#/EditUsuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" ng-class="{active:panel==4}">
+            <br />
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:4">
+                    <div class="item panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                    <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right" ng-init="inficha=true">
+                            <a href="Seguridad#/EditUsuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

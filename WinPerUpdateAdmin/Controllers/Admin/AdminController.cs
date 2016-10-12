@@ -16,11 +16,21 @@ namespace WinPerUpdateAdmin.Controllers.Admin
         // GET: Admin
         public ActionResult Index()
         {
-            ViewBag.Login = "Admin";
+            if (Session["token"] == null)
+            {
+                return RedirectToAction("Logout", "Home");
+            }
+
+            ViewBag.Menu = "Admin";
             return View();
         }
 
         public PartialViewResult Versiones()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult Clientes()
         {
             return PartialView();
         }
@@ -41,6 +51,11 @@ namespace WinPerUpdateAdmin.Controllers.Admin
         }
 
         public PartialViewResult UploadFile()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PubParcial()
         {
             return PartialView();
         }
@@ -126,5 +141,6 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 return Json(new { CodErr = 3, MsgErr = ex.Message, Output = "" });
             }
         }
+
     }
 }

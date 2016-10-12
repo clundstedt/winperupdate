@@ -25,7 +25,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/08/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/ProcessMsg.dll">
-      <publishTime>09/14/2016 11:26:22</publishTime>
+      <publishTime>10/03/2016 14:50:28</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/18/2015 21:19:46</publishTime>
@@ -97,10 +97,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/WinPerUpdateAdmin.dll">
-      <publishTime>09/14/2016 11:26:26</publishTime>
+      <publishTime>10/03/2016 14:50:35</publishTime>
     </File>
     <File Include="bin/WinperUpdateDAO.dll">
-      <publishTime>09/14/2016 11:26:22</publishTime>
+      <publishTime>10/03/2016 14:50:27</publishTime>
     </File>
     <File Include="Content/bootstrap-datepicker.css">
       <publishTime>08/26/2016 17:35:02</publishTime>
@@ -424,7 +424,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/24/2016 18:33:50</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>08/26/2016 12:29:11</publishTime>
+      <publishTime>10/03/2016 11:15:40</publishTime>
     </File>
     <File Include="css/font-awesome.css">
       <publishTime>08/24/2016 18:33:19</publishTime>
@@ -468,6 +468,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Global.asax">
       <publishTime>08/24/2016 18:28:37</publishTime>
     </File>
+    <File Include="js/Clientes/app.js">
+      <publishTime>10/03/2016 10:18:33</publishTime>
+    </File>
+    <File Include="js/Clientes/clientes.js">
+      <publishTime>10/03/2016 12:06:59</publishTime>
+    </File>
+    <File Include="js/Clientes/inicio.js">
+      <publishTime>10/03/2016 12:17:12</publishTime>
+    </File>
+    <File Include="js/Clientes/serviceClientes.js">
+      <publishTime>10/03/2016 12:08:52</publishTime>
+    </File>
     <File Include="js/Login/app.js">
       <publishTime>08/26/2016 10:17:59</publishTime>
     </File>
@@ -496,7 +508,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2016 10:53:01</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>08/31/2016 11:41:04</publishTime>
+      <publishTime>10/03/2016 09:30:04</publishTime>
     </File>
     <File Include="Scripts/angular-file-upload.js">
       <publishTime>08/31/2016 11:41:04</publishTime>
@@ -521,6 +533,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/angular-route.min.js.map">
       <publishTime>08/24/2016 18:35:24</publishTime>
+    </File>
+    <File Include="Scripts/angular-rut.js">
+      <publishTime>09/28/2016 17:19:43</publishTime>
+    </File>
+    <File Include="Scripts/angular-rut.min.js">
+      <publishTime>09/28/2016 17:19:43</publishTime>
     </File>
     <File Include="Scripts/angular.js">
       <publishTime>08/24/2016 18:35:12</publishTime>
@@ -771,29 +789,50 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/moment.min.js">
       <publishTime>08/26/2016 17:23:38</publishTime>
     </File>
+    <File Include="Scripts/ngrut.js">
+      <publishTime>09/30/2016 09:16:54</publishTime>
+    </File>
+    <File Include="Scripts/smart-table.js">
+      <publishTime>10/03/2016 09:30:03</publishTime>
+    </File>
+    <File Include="Scripts/smart-table.min.js">
+      <publishTime>10/03/2016 09:30:03</publishTime>
+    </File>
+    <File Include="Scripts/smart-table.min.js.map">
+      <publishTime>10/03/2016 09:30:03</publishTime>
+    </File>
     <File Include="Views/Admin/CrearComponente.cshtml">
       <publishTime>08/31/2016 16:28:28</publishTime>
     </File>
     <File Include="Views/Admin/CrearVersion.cshtml">
-      <publishTime>09/14/2016 10:46:26</publishTime>
+      <publishTime>09/26/2016 16:40:15</publishTime>
     </File>
     <File Include="Views/Admin/EditComponente.cshtml">
       <publishTime>07/09/2016 15:20:49</publishTime>
     </File>
     <File Include="Views/Admin/Index.cshtml">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/26/2016 10:08:47</publishTime>
     </File>
     <File Include="Views/Admin/UploadFile.cshtml">
       <publishTime>08/31/2016 12:13:38</publishTime>
     </File>
     <File Include="Views/Admin/Versiones.cshtml">
-      <publishTime>09/14/2016 10:56:51</publishTime>
+      <publishTime>10/03/2016 12:22:29</publishTime>
+    </File>
+    <File Include="Views/Clientes/Crear.cshtml">
+      <publishTime>09/30/2016 17:58:27</publishTime>
+    </File>
+    <File Include="Views/Clientes/Index.cshtml">
+      <publishTime>09/26/2016 10:16:34</publishTime>
+    </File>
+    <File Include="Views/Clientes/Inicio.cshtml">
+      <publishTime>10/03/2016 12:17:58</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>08/26/2016 10:37:25</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/26/2016 11:36:04</publishTime>
+      <publishTime>10/03/2016 12:20:29</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>08/24/2016 18:28:36</publishTime>
@@ -802,7 +841,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/24/2016 18:29:49</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/14/2016 11:26:29</publishTime>
+      <publishTime>10/03/2016 14:50:40</publishTime>
     </File>
   </ItemGroup>
 </Project>
