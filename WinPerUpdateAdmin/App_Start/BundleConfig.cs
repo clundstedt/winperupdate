@@ -9,7 +9,7 @@ namespace WinPerUpdateAdmin
     public class BundleConfig
     {
         public static void RegisterBundles(BundleCollection bundles)
-        {
+        {            
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -33,7 +33,6 @@ namespace WinPerUpdateAdmin
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                            "~/Scripts/angular.min.js"
                           ,"~/Scripts/angular-route.min.js"
-                          ,"~/Scripts/angular-file-upload.min.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
@@ -43,7 +42,8 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
-                        "~/js/Version/app.js"
+                        "~/Scripts/angular-file-upload.min.js"
+                      , "~/js/Version/app.js"
                       , "~/js/Version/admin.js"
                       , "~/js/Version/version.js"
                       , "~/js/Version/componente.js"
