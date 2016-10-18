@@ -67,6 +67,11 @@ namespace ProcessMsg
                             Mail = dr["Mail"].ToString()
                         }
                     };
+
+                    if (dr["idClientes"] != DBNull.Value)
+                    {
+                        obj.Cliente = Cliente.GetClientes().SingleOrDefault(x => x.Id == int.Parse(dr["idClientes"].ToString()));
+                    }
                 }
                 dr.Close();
 
