@@ -57,10 +57,10 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                var obj = ProcessMsg.Seguridad.GetUsuarios().SingleOrDefault(x => x.Id == idUsuario);
+                var obj = ProcessMsg.Seguridad.GetUsuario(idUsuario);
                 if (obj == null)
                 {
-                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.RegionBo)null);
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.UsuarioBo)null);
                 }
 
                 return obj;
@@ -70,6 +70,27 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("api/Usuarios/{idUsuario:int}/Cliente")]
+        public Object GetCliente(int idUsuario)
+        {
+            try
+            {
+                var obj = ProcessMsg.Cliente.GetClienteUsuario(idUsuario);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.ClienteBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         #endregion
 
         #region post
@@ -141,12 +162,13 @@ namespace WinPerUpdateAdmin.Controllers.api
                     else
                     {
                         usuario.Persona.Id = persona.Id;
+                        usuario.Id = id;
                         var obj = ProcessMsg.Seguridad.UpdUsuario(usuario);
                         if (obj == null)
                         {
                             response.StatusCode = HttpStatusCode.Accepted;
                         }
-                        return Content(HttpStatusCode.Created, obj);
+                        return Content(response.StatusCode, obj);
                     }
                 }
 

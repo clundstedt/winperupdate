@@ -22,6 +22,8 @@
             $scope.rutok = true;
             $scope.formData = {};
             $scope.mensaje = '';
+            $scope.totales = [0, 0];
+            $scope.usuarios = [];
 
 
             serviceClientes.getRegiones().success(function (regiones) {
@@ -46,9 +48,22 @@
                         $scope.formData.comuna = data.Comuna.idCmn;
                     });
 
+                    serviceClientes.getUsuarios($scope.idCliente).success(function (data) {
+                        $scope.usuarios = data;
+
+                        angular.forEach($scope.usuarios, function (item) {
+                            $scope.totales[item.CodPrf - 11]++;
+                        });
+
+                    }).error(function (data) {
+                        console.error(data);
+                    });
+
                 }).error(function (data) {
                     console.error(data);
                 });
+
+
             }
 
             $scope.Comunas = function (formData) {

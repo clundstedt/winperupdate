@@ -47,66 +47,168 @@
                 </div>
                 <div class="panel-body">
                     <form name="frmMain" method="post" action="#" novalidate>
-                        <div class="form-group">
-                            <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                <input class="form-control" type="text" ng-change="ValidarRut(formData)" name="rut" placeholder="Rut (sin puntos ni guiones)" ng-model="formData.rut" required="required" ng-maxlength="10" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="input-group margin-bottom-sm">
+                                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                    <input class="form-control" type="text" ng-change="ValidarRut(formData)" name="rut" placeholder="Rut (sin puntos ni guiones)" ng-model="formData.rut" required="required" ng-maxlength="10" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                </div>
+                                <span class="error_ingreso" ng-show="frmMain.rut.$error.minlength">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                </span>
+                                <span class="error_ingreso" ng-show="!rutok">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> rut incorrecto
+                                </span>
                             </div>
-                            <span class="error_ingreso" ng-show="frmMain.rut.$error.minlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
-                            </span>
-                            <span class="error_ingreso" ng-show="!rutok">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> rut incorrecto
-                            </span>
                         </div>
-
-                        <div class="form-group">
-                            <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon"><i class="fa fa-building-o fa-fw"></i></span>
-                                <input class="form-control" type="text" name="nombre" placeholder="Razón Social" ng-model="formData.nombre" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                            </div>
-                            <span class="error_ingreso" ng-show="frmMain.nombre.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
-                            </span>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon"><i class="fa fa-building-o fa-fw"></i></span>
-                                <input class="form-control" type="text" name="direccion" placeholder="Dirección" ng-model="formData.direccion" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                            </div>
-                            <span class="error_ingreso" ng-show="frmMain.direccion.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
-                            </span>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
-                                <select class="form-control" ng-model="formData.region" ng-change="Comunas(formData)" ng-options="region.idRgn as region.NomRgn for region in regiones">
-                                    <option value="">Regi&oacute;n</option> <!-- not selected / blank option -->
-                                </select>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="input-group margin-bottom-sm">
+                                    <span class="input-group-addon"><i class="fa fa-building-o fa-fw"></i></span>
+                                    <input class="form-control" type="text" name="nombre" placeholder="Razón Social" ng-model="formData.nombre" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                </div>
+                                <span class="error_ingreso" ng-show="frmMain.nombre.$error.maxlength">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
-                                <select class="form-control" ng-model="formData.comuna" ng-options="comuna.idCmn as comuna.NomCmn for comuna in comunas | orderBy:NomCmn">
-                                    <option value="">Comuna</option> <!-- not selected / blank option -->
-                                </select>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group margin-bottom-sm">
+                                    <span class="input-group-addon"><i class="fa fa-map-marker fa-fw"></i></span>
+                                    <input class="form-control" type="text" name="direccion" placeholder="Dirección" ng-model="formData.direccion" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                </div>
+                                <span class="error_ingreso" ng-show="frmMain.direccion.$error.maxlength">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
+                                    <select class="form-control" ng-model="formData.region" ng-change="Comunas(formData)" ng-options="region.idRgn as region.NomRgn for region in regiones">
+                                        <option value="">Regi&oacute;n</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
+                                    <select class="form-control" ng-model="formData.comuna" ng-options="comuna.idCmn as comuna.NomCmn for comuna in comunas | orderBy:NomCmn">
+                                        <option value="">Comuna</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                         <hr />
 
-                        <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && rutok && SaveCliente(formData)" ng-disabled="!increate">
-                            <span class="fa fa-check" ng-show="increate"></span>
-                            <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
-                        </button>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && rutok && SaveCliente(formData)" ng-disabled="!increate">
+                                <span class="fa fa-check" ng-show="increate"></span>
+                                <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row" ng-hide="idCliente==0">
+        <div class="col-md-12">
+            <h1>Usuarios</h1>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-toolbar" role="toolbar">
+                            <a href="/Clientes#/EditCliente/{{idCliente}}/Usuario" class="btn btn-labeled btn-success">
+                                <span class="btn-label"><span class="fa fa-user"></span></span> Crear Usuario
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <br/>
+
+    <div role="tabpanel" ng-init="panel=1">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Administrador</a></li>
+            <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">DBA</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" ng-class="{active:panel==1}">
+                <br />
+                <div class="alert alert-info" ng-show="totales[0]==0">
+                    <span class="fa fa-user"></span> Sin Usuarios Administrador
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:11">
+                        <div class="item panel" ng-class="{'panel-success':usuario.EstUsr=='V', 'panel-danger':usuario.EstUsr=='C'}">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                        <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-right" ng-init="inficha=true">
+                                <a href="/Clientes#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                    <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
+                <br />
+                <div class="alert alert-info" ng-show="totales[1]==0">
+                    <span class="fa fa-user"></span> Sin Usuarios DBA
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:12">
+                        <div class="item panel" ng-class="{'panel-success':usuario.EstUsr=='V', 'panel-danger':usuario.EstUsr=='C'}">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                        <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-right" ng-init="inficha=true">
+                                <a href="/Clientes#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                    <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

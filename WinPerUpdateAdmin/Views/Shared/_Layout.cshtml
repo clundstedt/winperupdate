@@ -64,6 +64,26 @@
                         <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
                 }
+                else if (ViewBag.Menu == "AdminClt")
+                {
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
+                        <li><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                }
+                else if (ViewBag.Menu == "SeguridadClt")
+                {
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
+                        <li class="active"><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                }
                 else
                 {
                     <ul class="nav navbar-nav"></ul>

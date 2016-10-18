@@ -19,7 +19,7 @@
                 $scope.versiones = data;
             }).
             error(function (data) {
-
+                console.error(data);
             });
         }
     }

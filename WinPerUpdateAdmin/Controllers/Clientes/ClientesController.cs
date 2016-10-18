@@ -28,5 +28,10 @@ namespace WinPerUpdateAdmin.Controllers.Clientes
         {
             return PartialView();
         }
+
+        public PartialViewResult Usuario()
+        {
+            return PartialView();
+        }
     }
 }

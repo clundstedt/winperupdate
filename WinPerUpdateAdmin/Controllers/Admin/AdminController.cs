@@ -21,7 +21,14 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 return RedirectToAction("Logout", "Home");
             }
 
+            var usuario = ProcessMsg.Seguridad.GetUsuario(int.Parse(Session["token"].ToString()));
+            if (usuario == null)
+            {
+                return RedirectToAction("Logout", "Home");
+            }
+
             ViewBag.Menu = "Admin";
+
             return View();
         }
 

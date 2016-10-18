@@ -21,13 +21,34 @@
             templateUrl: '/Clientes/Crear',
             controller: 'clientes'
         }).
+        when('/EditCliente/:idCliente/Usuario', {
+            templateUrl: '/Clientes/Usuario',
+            controller: 'usuarios'
+        }).
         when('/EditCliente/:idCliente', {
             templateUrl: '/Clientes/Crear',
             controller: 'clientes'
+        }).
+        when('/EditCliente/:idCliente/Usuario/:idUsuario', {
+            templateUrl: '/Clientes/Usuario',
+            controller: 'usuarios'
         }).
         otherwise({
             redirectTo: '/'
         });
 
-    });
+    })
+
+    .filter('filtroPerfil', function () {
+        return function (input, idPrf) {
+            var salida = [];
+            angular.forEach(input, function (item) {
+                if (item.CodPrf == idPrf) {
+                    salida.push(item)
+                }
+            });
+            return salida;
+        }
+    })
+    ;
 })();

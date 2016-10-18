@@ -45,5 +45,23 @@ namespace WinperUpdateDAO
             }
         }
 
+        public SqlDataReader Execute(int codPrf)
+        {
+            SpName = @"select a1.idUsuarios, a1.idPersonas, a1.CodPrf, a1.EstUsr, a2.Apellidos, a2.Nombres, a2.Mail 
+                       from   Usuarios a1, Personas a2 
+                       Where  a1.CodPrf > @codPrf
+                       And    a2.idPersonas = a1.idPersonas";
+            try
+            {
+                ParmsDictionary.Add("@codPrf", codPrf);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

@@ -50,6 +50,66 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
+        [Route("api/Clientes/{idCliente:int}/Versiones")]
+        [HttpGet]
+        public Object GetVersionesCliente(int idCliente)
+        {
+            try
+            {
+                var obj = ProcessMsg.Cliente.GetVersiones(idCliente, null);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Clientes/{idCliente:int}/Usuarios")]
+        [HttpGet]
+        public Object GetUsuariosCliente(int idCliente)
+        {
+            try
+            {
+                var obj = ProcessMsg.Cliente.GetUsuarios(idCliente);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.UsuarioBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Clientes/{idCliente:int}/Usuarios/{idUsuario:int}")]
+        [HttpGet]
+        public Object GetUsuariosCliente(int idCliente, int idUsuario)
+        {
+            try
+            {
+                var obj = ProcessMsg.Cliente.GetUsuarios(idCliente).SingleOrDefault(x => x.Id == idUsuario);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.UsuarioBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Region")]
         [HttpGet]
         public Object GetRegiones()
@@ -128,6 +188,56 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
+        [Route("api/Clientes/{idCliente:int}/Usuarios")]
+        [HttpPost]
+        public Object PostUsuario(int idCliente, [FromBody]ProcessMsg.Model.UsuarioBo usuario)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (usuario.Persona.Nombres == null || usuario.Persona.Apellidos == null || usuario.Persona.Mail == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else if (usuario.CodPrf == 0)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else
+                {
+                    if (usuario.Clave == null)
+                    {
+                        usuario.Clave = ProcessMsg.Utils.Encriptar(ProcessMsg.Utils.RandomString(10));
+                    }
+                    var persona = ProcessMsg.Seguridad.AddPersona(usuario.Persona);
+                    if (persona == null)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
+                    }
+                    else
+                    {
+                        usuario.Persona.Id = persona.Id;
+                        var obj = ProcessMsg.Seguridad.AddUsuarioCliente(usuario);
+                        if (obj == null)
+                        {
+                            response.StatusCode = HttpStatusCode.Accepted;
+                        }
+
+                        if (ProcessMsg.Cliente.AddUsuario(idCliente, obj.Id) == 0)
+                        {
+                            response.StatusCode = HttpStatusCode.Accepted;
+                        }
+
+                        return Content(HttpStatusCode.Created, obj);
+                    }
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.VersionBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         #endregion
 
         #region put
@@ -169,6 +279,49 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
+        [HttpPut]
+        [Route("api/Clientes/{id:int}/Usuarios/{idUsuario:int}")]
+        public Object Put(int id, int idUsuario, [FromBody]ProcessMsg.Model.UsuarioBo usuario)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                if (usuario.Persona.Nombres == null || usuario.Persona.Apellidos == null || usuario.Persona.Mail == null)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else if (usuario.CodPrf == 0)
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                else
+                {
+                    var persona = ProcessMsg.Seguridad.UpdPersona(usuario.Persona);
+                    if (persona == null)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
+                    }
+                    else
+                    {
+                        usuario.Persona.Id = persona.Id;
+                        usuario.Id = idUsuario;
+                        ProcessMsg.Seguridad.UpdUsuario(usuario);
+
+                        var obj = ProcessMsg.Cliente.GetUsuarios(id).SingleOrDefault(x => x.Id == idUsuario);
+                        if (obj == null)
+                        {
+                            response.StatusCode = HttpStatusCode.Accepted;
+                        }
+                        return Content(response.StatusCode, obj);
+                    }
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.VersionBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         #endregion
 
         #region delete

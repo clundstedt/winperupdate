@@ -1,0 +1,107 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Publicar Parcialmente</h1>
+        <ol class="breadcrumb autoscroll">
+            <li><a href="/Admin#/">Versiones</a></li>
+            <li><a href="/Admin#/EditVersion/{{idVersion}}">Version {{version.Release}}</a></li>
+            <li class="active">Publicar</li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Clientes Disponibles</h3>
+                </div>
+                <div class="panel-body">
+                    <table st-table="clientes" class="table table-striped">
+                        <tbody>
+                            <tr ng-repeat="item in clientes | filtroClientesNoSel" class="row-tabla" style="height: 20px;">
+                                <td style="vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="" ng-model="item.Check"></label>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;">{{item.Cliente.Nombre}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="panel-footer text-right">
+                    <a ng-click="Agregar()" class="btn btn-labeled btn-primary">
+                        <span class="btn-label"><span class="fa fa-plus-square"></span></span> Agregar
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Clientes en que se Publicar&aacute;</h3>
+                </div>
+                <div class="panel-body">
+                    <table st-table="clientes" class="table table-striped">
+                        <tbody>
+                            <tr ng-repeat="item in clientes | filtroClientesSel" class="row-tabla" style="height: 20px;">
+                                <td style="vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="" ng-model="item.Check"></label>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;">{{item.Cliente.Nombre}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="panel-footer text-left">
+                    <a ng-click="Eliminar()" class="btn btn-labeled btn-primary">
+                        <span class="btn-label"><span class="fa fa-minus-square"></span></span> Eliminar
+                    </a>
+                    <a ng-click="ShowConfirm()" ng-hide="totclientes==0" data-toggle="modal" class="btn btn-labeled btn-success">
+                        <span class="btn-label"><span class="fa fa-bullhorn"></span></span> Publicar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="publish-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmar Publicaci&oacute;n</h4>
+            </div>
+            <div class="modal-body">
+                Esta opci&oacute;n permite publicar parcialmente la versión a todos los clientes que se encuentran
+                en esta secci&oacute;n. Una vez confimada la publicaci&oacute;n, WinPer Update tomar&aacute; esta acci&oacute;n
+                como una orden para empezar a informar a los clientes que se ha liberado una versi&oacute;n beta de Winper
+                y que pueden (si lo desean), instalarla en sus estaciones de trabajo.<br /><br />
+                Confirma que desea publicar la Versi&oacute;n ?
+            </div>
+            <div class="modal-footer">
+                <span style="color: red">{{mensaje}}</span>
+                <button class="btn btn-danger" ng-click="Publicar()">Confirmar</button>
+                <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

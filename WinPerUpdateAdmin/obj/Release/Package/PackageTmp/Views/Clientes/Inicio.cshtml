@@ -10,9 +10,31 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <a href="/Clientes#/CrearCliente" class="btn btn-labeled btn-success">
-                <span class="btn-label"><span class="fa fa-user"></span></span> Crear Cliente
-            </a>
+            <div class="btn-toolbar hidden-xs">
+                <div class="btn-group" role="toolbar">
+                    <a href="/Clientes#/CrearCliente" class="btn btn-labeled btn-success">
+                        <span class="btn-label"><span class="fa fa-user"></span></span> Crear Cliente
+                    </a>
+                </div>
+            </div>
+
+            <div class="btn-toolbar visible-xs-block">
+                <div class="btn-group" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="/Clientes#/CrearCliente" class="btn btn-labeled btn-success">
+                                    <span class="btn-label"><span class="fa fa-user"></span></span> Crear Cliente
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <br />

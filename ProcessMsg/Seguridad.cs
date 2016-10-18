@@ -45,6 +45,41 @@ namespace ProcessMsg
 
         }
 
+        public static Model.UsuarioBo GetUsuario(int id)
+        {
+            var obj = new Model.UsuarioBo();
+            var consulta = new CnaUsuarioById();
+            try
+            {
+                var dr = consulta.Execute(id);
+                while (dr.Read())
+                {
+                    obj = new Model.UsuarioBo
+                    {
+                        Id = int.Parse(dr["IdUsuarios"].ToString()),
+                        CodPrf = int.Parse(dr["CodPrf"].ToString()),
+                        EstUsr = dr["EstUsr"].ToString()[0],
+                        Persona = new Model.PersonaBo
+                        {
+                            Id = int.Parse(dr["idPersonas"].ToString()),
+                            Apellidos = dr["Apellidos"].ToString(),
+                            Nombres = dr["Nombres"].ToString(),
+                            Mail = dr["Mail"].ToString()
+                        }
+                    };
+                }
+                dr.Close();
+
+                return obj.Id == 0 ? null : obj;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+
+        }
+
         public static List<Model.UsuarioBo> GetUsuarios()
         {
             var lista = new List<Model.UsuarioBo>();
@@ -52,6 +87,42 @@ namespace ProcessMsg
             try
             {
                 var dr = consulta.Execute();
+                while (dr.Read())
+                {
+                    var obj = new Model.UsuarioBo
+                    {
+                        Id = int.Parse(dr["IdUsuarios"].ToString()),
+                        CodPrf = int.Parse(dr["CodPrf"].ToString()),
+                        EstUsr = dr["EstUsr"].ToString()[0],
+                        Persona = new Model.PersonaBo
+                        {
+                            Id = int.Parse(dr["idPersonas"].ToString()),
+                            Apellidos = dr["Apellidos"].ToString(),
+                            Nombres = dr["Nombres"].ToString(),
+                            Mail = dr["Mail"].ToString()
+                        }
+                    };
+
+                    lista.Add(obj);
+                }
+                dr.Close();
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static List<Model.UsuarioBo> GetUsuariosCliente()
+        {
+            var lista = new List<Model.UsuarioBo>();
+            var consulta = new CnaUsuario();
+            try
+            {
+                var dr = consulta.Execute(10);
                 while (dr.Read())
                 {
                     var obj = new Model.UsuarioBo
@@ -137,7 +208,7 @@ namespace ProcessMsg
             var query = new UpdPersona();
             try
             {
-                if (query.Execute(persona.Id, persona.Nombres, persona.Apellidos, persona.Mail) > 0)
+                if (query.Execute(persona.Id, persona.Apellidos, persona.Nombres, persona.Mail) > 0)
                 {
                     return GetPersonas().SingleOrDefault(x => x.Id == persona.Id);
                 }
@@ -160,7 +231,30 @@ namespace ProcessMsg
             {
                 if (query.Execute(usuario.Persona.Id, usuario.CodPrf, usuario.Clave, usuario.EstUsr) > 0)
                 {
-                    return GetUsuarios().OrderByDescending(x => x.Id).FirstOrDefault(); 
+                    var list = GetUsuarios().OrderBy(x => x.Id).ToList();
+                    return list.ElementAt(list.Count - 1); 
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+
+            return null;
+
+        }
+
+        public static Model.UsuarioBo AddUsuarioCliente(Model.UsuarioBo usuario)
+        {
+            var query = new AddUsuario();
+            try
+            {
+                if (query.Execute(usuario.Persona.Id, usuario.CodPrf, usuario.Clave, usuario.EstUsr) > 0)
+                {
+                    var list = GetUsuariosCliente().OrderBy(x => x.Id).ToList();
+                    return list.ElementAt(list.Count - 1);
                 }
 
             }

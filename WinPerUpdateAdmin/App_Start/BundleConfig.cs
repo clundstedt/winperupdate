@@ -51,6 +51,19 @@ namespace WinPerUpdateAdmin
                       , "~/js/Version/publicar.js"
                       , "~/js/Version/serviceAdmin.js"
                       , "~/js/Clientes/serviceClientes.js"
+                      , "~/js/Seguridad/serviceSeguridad.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminclt").Include(
+                        "~/js/AdminClt/app.js"
+                      , "~/js/AdminClt/admin.js"
+                      , "~/js/AdminClt/serviceAdmin.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/seguridaclt").Include(
+                        "~/js/SeguridadClt/app.js"
+                      , "~/js/SeguridadClt/seguridad.js"
+                      , "~/js/SeguridadClt/serviceSeguridad.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/clientes").Include(
@@ -58,7 +71,9 @@ namespace WinPerUpdateAdmin
                       , "~/js/Clientes/app.js"
                       , "~/js/Clientes/inicio.js"
                       , "~/js/Clientes/clientes.js"
+                      , "~/js/Clientes/usuarios.js"
                       , "~/js/Clientes/serviceClientes.js"
+                      , "~/js/Seguridad/serviceSeguridad.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/seguridad").Include(

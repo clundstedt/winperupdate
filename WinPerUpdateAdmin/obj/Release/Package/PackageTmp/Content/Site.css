@@ -73,3 +73,9 @@
     vertical-align: middle;
     padding: 2px 0px;
 }
+
+.nowrap {
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}

@@ -95,7 +95,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default btn-warning" data-dismiss="modal">Cerrar</button>
-                        <button class="btn btn-primary" ng-click="mailForm.$valid && EnviarMail()" ng-disabled="!inenvioclave">
+                        <button class="btn btn-primary" ng-click="EnviarMail()" ng-disabled="!inenvioclave">
                             <span class="glyphicon glyphicon-log-in" ng-show="inenvioclave"></span>
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="inenvioclave"></span> {{labelloginsendclave}}
                         </button>

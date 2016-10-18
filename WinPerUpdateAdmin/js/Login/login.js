@@ -43,6 +43,35 @@
                     $scope.labellogin = "Ingresar";
                 });
             }
+
+            $scope.EnviarMail = function () {
+                $scope.showerror = false;
+                $scope.showsuccess = false;
+                $scope.showenviando = false;
+                $scope.msgerr = "";
+                $scope.inenvioclave = false;
+                $scope.okenvio = false;
+                $scope.labelloginsendclave = "Enviando";
+
+                console.log("mail informado: " + $scope.usernameforgot);
+
+                $scope.showenviando = true;
+                serviceLogin.sendMail($scope.usernameforgot).success(function (data) {
+                    console.log(JSON.stringify(data));
+                    $scope.okenvio = true;
+                    $scope.inenvioclave = true;
+                    $scope.labelloginsendclave = "Enviar";
+
+                    setTimeout(function () {
+                        $("#myModal .close").click()
+                    }, 3000);
+                }).error(function (data) {
+                    $scope.msgerr = data;
+                    $scope.showerror = true;
+                    $scope.showenviando = false;
+                });
+            }
+
         }
 
     }

@@ -3,7 +3,7 @@
 
     angular
         .module('app')
-        .service('serviceAdmin', serviceAdmin);
+        .factory('serviceAdmin', serviceAdmin);
 
     serviceAdmin.$inject = ['$http', '$q'];
 
@@ -22,7 +22,9 @@
             getComponente: getComponente,
             addComponente: addComponente,
             updComponente: updComponente,
-            delComponente: delComponente
+            delComponente: delComponente,
+
+            addCliente: addCliente
         };
 
         return service;
@@ -311,6 +313,42 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
                     deferred.reject('No se pudo agregar la componente');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addCliente(id, idCliente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/' + id + '/Cliente/' + idCliente,
+                type: "POST",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 201) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la version al cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo agregar la version al cliente');
                 }
             });
 

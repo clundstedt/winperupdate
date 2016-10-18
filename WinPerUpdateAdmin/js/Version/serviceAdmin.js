@@ -3,7 +3,7 @@
 
     angular
         .module('app')
-        .service('serviceAdmin', serviceAdmin);
+        .factory('serviceAdmin', serviceAdmin);
 
     serviceAdmin.$inject = ['$http', '$q'];
 
