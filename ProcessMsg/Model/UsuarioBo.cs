@@ -16,6 +16,8 @@ namespace ProcessMsg.Model
 
         public PersonaBo Persona { get; set; }
 
+        public ClienteBo Cliente { get; set; }
+
         public char EstUsr { get; set; }
 
         public string EstadoDisplay

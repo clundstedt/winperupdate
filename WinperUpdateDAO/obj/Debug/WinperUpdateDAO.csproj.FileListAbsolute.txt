@@ -5,3 +5,10 @@ C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperU
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\obj\Debug\WinperUpdateDAO.csprojResolveAssemblyReference.cache
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\obj\Debug\WinperUpdateDAO.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\obj\Debug\WinperUpdateDAO.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\bin\Debug\WinperUpdateDAO.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\bin\Debug\WinperUpdateDAO.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\bin\Debug\Connector.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\bin\Debug\Connector.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\obj\Debug\WinperUpdateDAO.csprojResolveAssemblyReference.cache
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\obj\Debug\WinperUpdateDAO.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinperUpdateDAO\obj\Debug\WinperUpdateDAO.pdb

@@ -22,7 +22,7 @@ namespace WinPerUpdateAdmin.Controllers.Home
             if (usuario != null)
             {
                 Session["token"] = usuario.Id.ToString();
-
+                ViewBag.NomUser = usuario.Persona.NomFmt;
                 if (usuario.CodPrf == 1)
                 {
                     return RedirectToAction("Index", "Admin");

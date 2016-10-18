@@ -39,7 +39,18 @@
                         <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li>
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <img src="images/img.jpg" alt="">@ViewBag.NomUser
+                                <span class="fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li><a href="javascript:;"> Perfil</a></li>
+                                <li><a href="javascript:;">Cambio Clave</a></li>
+                                <li class="divider"></li>
+                                <li><a href="javascript:;">Logout</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 }
                 else if (ViewBag.Menu == "Clientes")
