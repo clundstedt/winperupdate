@@ -7,3 +7,102 @@
     </div>
 </div>
 <br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-toolbar" role="toolbar">
+                    <a href="/Clientes#/EditCliente/{{idCliente}}/Usuario" class="btn btn-labeled btn-success">
+                        <span class="btn-label"><span class="fa fa-user"></span></span> Crear Usuario
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div role="tabpanel" ng-init="panel=1">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Administrador</a></li>
+        <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">DBA</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" ng-class="{active:panel==1}">
+            <br />
+            <div class="alert alert-info" ng-show="totales[0]==0">
+                <span class="fa fa-user"></span> Sin Usuarios Administrador
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:11">
+                    <div class="item panel" ng-class="{'panel-success':usuario.EstUsr=='V', 'panel-danger':usuario.EstUsr=='C'}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                    <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right" ng-init="inficha=true">
+                            <a href="/Clientes#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
+            <br />
+            <div class="alert alert-info" ng-show="totales[1]==0">
+                <span class="fa fa-user"></span> Sin Usuarios DBA
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="usuario in usuarios | filtroPerfil:12">
+                    <div class="item panel" ng-class="{'panel-success':usuario.EstUsr=='V', 'panel-danger':usuario.EstUsr=='C'}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title single-line">{{usuario.Persona.NomFmt}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Content/Images/user.png" alt="" class="avatar img-thumbnail image-foto" />
+                            <div class="pull-right" style="width: 50%">
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-fw fa-cube"></span> {{usuario.EstadoDisplay}}</li>
+                                    <li class="nowrap" title="{{usuario.Persona.Mail}}"><span class="fa fa-fw fa-envelope-o"></span> {{usuario.Persona.Mail}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right" ng-init="inficha=true">
+                            <a href="/Clientes#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="delete-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmar Eliminación</h4>
+            </div>
+            <div class="modal-body">
+                Confirma que desea eliminar al Cliente ?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
+                <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

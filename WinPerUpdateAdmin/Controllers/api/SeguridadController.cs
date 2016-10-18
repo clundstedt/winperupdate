@@ -110,7 +110,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 {
                     if (usuario.Clave == null)
                     {
-                        usuario.Clave = ProcessMsg.Utils.Encriptar("12345678");
+                        usuario.Clave = ProcessMsg.Utils.Encriptar(Utils.RandomString(8));
                     }
                     var persona = ProcessMsg.Seguridad.AddPersona(usuario.Persona);
                     if (persona == null)

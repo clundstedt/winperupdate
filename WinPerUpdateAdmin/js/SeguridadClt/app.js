@@ -23,5 +23,17 @@
 
     })
 
+    .filter('filtroPerfil', function () {
+        return function (input, idPrf) {
+            var salida = [];
+            angular.forEach(input, function (item) {
+                if (item.CodPrf == idPrf) {
+                    salida.push(item)
+                }
+            });
+            return salida;
+        }
+    })
+
     ;
 })();
