@@ -28,7 +28,6 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             }
 
             ViewBag.Menu = "Admin";
-
             return View();
         }
 

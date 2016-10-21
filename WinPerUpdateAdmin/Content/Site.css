@@ -83,6 +83,9 @@
 .nav>li>a>img {
     max-width: none;
 }
+.user-profile{
+    height: 50px;
+}
 .user-profile img {
     width: 29px;
     height: 29px;

@@ -58,6 +58,7 @@
     <Compile Include="CnaComuna.cs" />
     <Compile Include="CnaModulo.cs" />
     <Compile Include="CnaModuloVersiones.cs" />
+    <Compile Include="CnaPerfiles.cs" />
     <Compile Include="CnaPersona.cs" />
     <Compile Include="CnaRegiones.cs" />
     <Compile Include="CnaUsuario.cs" />

@@ -31,93 +31,13 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse">
-                @if (ViewBag.Menu == "Admin")
-                {
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
-                        <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
+                <ul class="nav navbar-nav">
+                    @{Html.RenderAction("Menus", "Home");}
+                </ul>
 
-                    <ul class="nav navbar-nav navbar-right"  ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-
-                    }
-                    else if (ViewBag.Menu == "Clientes")
-                    {
-                    <ul class="nav navbar-nav">
-                        <li><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li class="active"><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
-                        <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-
-                }
-                else if (ViewBag.Menu == "Seguridad")
-                {
-                    <ul class="nav navbar-nav">
-                        <li><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
-                        <li class="active"><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-                }
-                else if (ViewBag.Menu == "AdminClt")
-                {
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li><a class="navbar-brand" href="/AmbientesClt"><span class="fa fa-cubes"></span>Ambientes</a></li>
-                        <li><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-                }
-                else if (ViewBag.Menu == "AmbientesClt")
-                {
-                    <ul class="nav navbar-nav">
-                        <li><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li class="active"><a class="navbar-brand" href="/AmbientesClt"><span class="fa fa-cubes"></span>Ambientes</a></li>
-                        <li><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-                }
-                else if (ViewBag.Menu == "SeguridadClt")
-                {
-                    <ul class="nav navbar-nav">
-                        <li><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li><a class="navbar-brand" href="/AmbientesClt"><span class="fa fa-cubes"></span>Ambientes</a></li>
-                        <li class="active"><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-                }
-                else if (ViewBag.Menu == "Perfil")
-                {
-                    <ul class="nav navbar-nav">
-                        <li><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
-                        <li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
-                        <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-                        @{Html.RenderAction("Cuenta", "Home");}
-                    </ul>
-                }
-                else
-                {
-                    <ul class="nav navbar-nav"></ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    </ul>
-                }
+                <ul class="nav navbar-nav navbar-right"  ng-controller="controllerHome">
+                    @{Html.RenderAction("Cuenta", "Home");}
+                </ul>
             </div>
         </div>
     </div>

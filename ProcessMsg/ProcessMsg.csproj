@@ -48,6 +48,8 @@
     <Compile Include="Model\AmbienteBo.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
     <Compile Include="Model\ClienteBo.cs" />
+    <Compile Include="Model\MenusBo.cs" />
+    <Compile Include="Model\PerfilesBo.cs" />
     <Compile Include="Model\UsuarioBo.cs" />
     <Compile Include="Model\ComunaBo.cs" />
     <Compile Include="Model\ModuloBo.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="Model\RegionBo.cs" />
     <Compile Include="Model\VersionBo.cs" />
     <Compile Include="Modulo.cs" />
+    <Compile Include="Perfiles.cs" />
     <Compile Include="Seguridad.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Version.cs" />

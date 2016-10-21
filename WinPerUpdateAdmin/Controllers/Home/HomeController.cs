@@ -49,12 +49,23 @@ namespace WinPerUpdateAdmin.Controllers.Home
             return View();
         }
 
+        public PartialViewResult Menus()
+        {
+
+            int id = 0;
+            var lista = ProcessMsg.Perfiles.GetMenus(
+                (
+                Session["token"] != null 
+                && int.TryParse(Session["token"].ToString(), out id) ?
+                id : 0)
+                );
+            return PartialView(lista);
+        }
+
         public PartialViewResult Cuenta()
         {
-            int id = int.Parse(Session["token"].ToString());
-
-            var usuario = ProcessMsg.Seguridad.GetUsuario(id);
-            return PartialView(usuario) ;
+            bool LoggIn = (Session["token"] != null);
+            return PartialView(LoggIn);
         }
 
         [HttpPost]

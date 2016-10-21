@@ -78,6 +78,8 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/ambientesclt").Include(
                         "~/js/AmbientesClt/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
                       , "~/js/AmbientesClt/ambientes.js"
                       , "~/js/AmbientesClt/mantenedor.js"
                       , "~/js/SeguridadClt/serviceSeguridad.js"
