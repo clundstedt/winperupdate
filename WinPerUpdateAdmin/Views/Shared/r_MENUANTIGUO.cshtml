@@ -74,21 +74,3 @@ else if (ViewBag.Menu == "SeguridadClt")
 @{Html.RenderAction("Cuenta", "Home");}
 </ul>
 }
-else if (ViewBag.Menu == "Perfil")
-{
-<ul class="nav navbar-nav">
-<li><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
-<li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
-<li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
-</ul>
-<ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
-@{Html.RenderAction("Cuenta", "Home");}
-</ul>
-}
-else
-{
-    <ul class="nav navbar-nav"></ul>
-    <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
-}

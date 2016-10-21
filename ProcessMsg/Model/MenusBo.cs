@@ -12,6 +12,7 @@ namespace ProcessMsg.Model
         public string Descripcion { get; set; }
         public string Link { get; set; }
         public int CodPrf { get; set; }
+        public string Icon { get; set; }
 
     }
 }
