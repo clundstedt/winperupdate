@@ -25,7 +25,6 @@
                 $scope.labellogin = "Validando Ingreso";
                 $scope.errorlogin = false;
                 $scope.msgerror = '';
-
                 serviceLogin.getLogin(formData.username, formData.password).success(function (data) {
                     if (data == null) {
                         $scope.errorlogin = true;

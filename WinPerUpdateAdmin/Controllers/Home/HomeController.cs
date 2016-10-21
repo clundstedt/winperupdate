@@ -8,6 +8,7 @@ namespace WinPerUpdateAdmin.Controllers.Home
 {
     public class HomeController : Controller
     {
+
         // GET: Home
         public ActionResult Index()
         {
@@ -22,7 +23,6 @@ namespace WinPerUpdateAdmin.Controllers.Home
             if (usuario != null)
             {
                 Session["token"] = usuario.Id.ToString();
-                ViewBag.NomUser = usuario.Persona.NomFmt;
                 if (usuario.CodPrf == 1)
                 {
                     return RedirectToAction("Index", "Admin");
@@ -41,6 +41,20 @@ namespace WinPerUpdateAdmin.Controllers.Home
             Session.RemoveAll();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Perfil()
+        {
+            ViewBag.Menu = "Perfil";
+            return View();
+        }
+
+        public PartialViewResult Cuenta()
+        {
+            int id = int.Parse(Session["token"].ToString());
+
+            var usuario = ProcessMsg.Seguridad.GetUsuario(id);
+            return PartialView(usuario) ;
         }
 
         [HttpPost]

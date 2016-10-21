@@ -1,0 +1,112 @@
+﻿@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Perfil";
+}
+@Scripts.Render("~/bundles/perfil")
+
+<h2>Perfil</h2>
+<div class="row" >
+    <div class="col-md-12">
+        <form name="formPrf">
+            <div class="panel panel-info" ng-controller="perfil">
+
+                <div class="panel-heading">
+                    <h4>Información de Perfil</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <div ng-show="showAlerta" class="alert {{tipoAlerta}}">
+                                        {{msgAlerta}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label>Nombre(s)</label>
+                                    <input type="text" class="form-control" name="nombres" value="" required ng-model="user.Persona.Nombres" />
+                                    <span class="error_ingreso" ng-show="formPrf.nombres.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo Requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label>Apellido(s)</label>
+                                    <input type="text" class="form-control" name="apellidos" value="" required ng-model="user.Persona.Apellidos" />
+                                    <span class="error_ingreso" ng-show="formPrf.apellidos.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo Requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label>Tipo Usuario</label>
+                                    <input type="text" class="form-control" value="" ng-model="user.TipoUsuario" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label>Empresa</label>
+                                    <input type="text" class="form-control" value="" ng-model="user.Empresa" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label>E-Mail</label>
+                                    <input type="text" class="form-control" name="mail" value="" required ng-model="user.Persona.Mail" />
+                                    <span class="error_ingreso" ng-show="formPrf.mail.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo Requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label>Perfil</label>
+                                    <input type="text" class="form-control" value="" ng-model="user.NombrePerfil" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <button type="button" class="btn btn-primary btn-block" ng-click="ModificarPrf(formPrf.$valid)" ng-disabled="!inMdf">
+                                        <span class="fa fa-circle-o-notch fa-spin" ng-hide="inMdf"></span> {{lblperfil}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<input type="hidden" id="idToken" value="@Session["token"]" />

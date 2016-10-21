@@ -38,31 +38,23 @@
                         <li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
                         <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="images/img.jpg" alt="">@ViewBag.NomUser
-                                <span class="fa fa-angle-down"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="javascript:;"> Perfil</a></li>
-                                <li><a href="javascript:;">Cambio Clave</a></li>
-                                <li class="divider"></li>
-                                <li><a href="javascript:;">Logout</a></li>
-                            </ul>
-                        </li>
+
+                    <ul class="nav navbar-nav navbar-right"  ng-controller="controllerHome">
+                        @{Html.RenderAction("Cuenta", "Home");}
                     </ul>
-                }
-                else if (ViewBag.Menu == "Clientes")
-                {
+
+                    }
+                    else if (ViewBag.Menu == "Clientes")
+                    {
                     <ul class="nav navbar-nav">
                         <li><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
                         <li class="active"><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
                         <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
+                        @{Html.RenderAction("Cuenta", "Home");}
                     </ul>
+
                 }
                 else if (ViewBag.Menu == "Seguridad")
                 {
@@ -71,8 +63,8 @@
                         <li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
                         <li class="active"><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
+                        @{Html.RenderAction("Cuenta", "Home");}
                     </ul>
                 }
                 else if (ViewBag.Menu == "AdminClt")
@@ -81,8 +73,8 @@
                         <li class="active"><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
                         <li><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
+                        @{Html.RenderAction("Cuenta", "Home");}
                     </ul>
                 }
                 else if (ViewBag.Menu == "SeguridadClt")
@@ -91,8 +83,19 @@
                         <li><a class="navbar-brand" href="/AdminClt/"><span class="fa fa-home"></span>Versiones</a></li>
                         <li class="active"><a class="navbar-brand" href="/SeguridadClt"><span class="fa fa-unlock"></span>Seguridad</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/Home/Logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
+                        @{Html.RenderAction("Cuenta", "Home");}
+                    </ul>
+                }
+                else if (ViewBag.Menu == "Perfil")
+                {
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/Admin/"><span class="fa fa-home"></span>Versiones</a></li>
+                        <li><a class="navbar-brand" href="/Clientes"><span class="fa fa-users"></span>Clientes</a></li>
+                        <li><a class="navbar-brand" href="/Seguridad"><span class="fa fa-unlock"></span>Seguridad</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" ng-controller="controllerHome">
+                        @{Html.RenderAction("Cuenta", "Home");}
                     </ul>
                 }
                 else
@@ -112,6 +115,94 @@
         <footer>
             <p>&copy; @DateTime.Now.Year - Sistema para el Control de Versiones Winper</p>
         </footer>
+    </div>
+
+    <div id="modalCambioPwd" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <form name="formPwd">
+                <!-- Modal content-->
+                <div class="modal-content" ng-controller="controllerHome">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Cambio de Clave</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <div ng-show="showAlerta" class="alert {{tipoAlerta}}">
+                                            {{msgAlerta}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Escriba Clave Actual</label>
+                                        <input type="password" class="form-control" name="pwdactual" required ng-model="formData.pwdActual" />
+                                        <span class="error_ingreso" ng-show="formPwd.pwdactual.$error.required">
+                                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-sm">
+                                    <label>Escriba Nueva Clave</label>
+                                    <input type="password" class="form-control" name="pwdnueva" required ng-model="formData.pwdNueva" />
+                                    <span class="error_ingreso" ng-show="formPwd.pwdnueva.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group-sm">
+                                    <label>Re-escriba Nueva Clave</label>
+                                    <input type="password" class="form-control" name="pwdnuevar" required ng-model="formData.pwdNuevaR" />
+                                    <span class="error_ingreso" ng-show="formPwd.pwdnuevar.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                    <span class="error_ingreso" ng-show="VerificarPwdIguales(formData)">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Las claves nuevas no coinciden.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" ng-disabled="blockBoton" ng-click="updPwd(formData)"><span class="glyphicon glyphicon-ok"></span> Aceptar</button>
+                        <button type="button" class="btn btn-danger" ng-disabled="blockBoton" ng-click="cancelarCambioPwd(formData)" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalLogout" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirme Salida</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que desea cerrar la sesión?.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="/Home/Logout/" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Aceptar</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </body>

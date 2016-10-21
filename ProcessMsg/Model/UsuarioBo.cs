@@ -29,5 +29,43 @@ namespace ProcessMsg.Model
                 return "";
             }
         }
+        
+        public string NombrePerfil
+        {
+            get
+            {
+                object[,] mz =
+                {
+                    { 1, "Administrador" },
+                    { 2, "Desarrollador" },
+                    { 3, "Soporte" },
+                    { 4, "Gestión" },
+                    { 11, "Administrador" },
+                    { 12, "DBA" }
+                };
+                #pragma warning disable
+                for (int x = 0; x < mz.Length; x++)
+                {
+                    return (int.Parse(mz[x, 0].ToString()) == CodPrf) ? mz[x, 1].ToString() : null;
+                }
+                return null;
+            }
+        }
+
+        public string TipoUsuario
+        {
+            get
+            {
+                return (Cliente == null) ? "WinPer" : "EMPRESA";
+            }
+        }
+
+        public string Empresa
+        {
+            get
+            {
+                return (Cliente == null) ? "INNOVASOFT" : Cliente.Nombre;
+            }
+        }
     }
 }

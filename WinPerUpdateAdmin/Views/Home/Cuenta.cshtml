@@ -1,0 +1,18 @@
+﻿
+@{
+ViewBag.Title = "Index";
+}
+<li>
+    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <img src="~/Content/Images/user.png" alt="">{{userSession.Persona.NomFmt}}
+        <span class="fa fa-angle-down"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-usermenu pull-right">
+        <li><a href="/Home/Perfil/">Perfil</a></li>
+        <li>
+        <a href="#modalCambioPwd" data-toggle="modal">Cambio Clave</a>
+        </li>
+        <li class="divider"></li>
+        <li><a href="#modalLogout" data-toggle="modal" >Logout</a></li>
+    </ul>
+</li>

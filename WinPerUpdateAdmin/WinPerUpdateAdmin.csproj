@@ -155,6 +155,10 @@
     <Content Include="js\Clientes\inicio.js" />
     <Content Include="js\Clientes\serviceClientes.js" />
     <Content Include="js\Clientes\usuarios.js" />
+    <Content Include="js\Home\controllerHome.js" />
+    <Content Include="js\Home\factoryHome.js" />
+    <Content Include="js\Perfil\app.js" />
+    <Content Include="js\Perfil\perfil.js" />
     <Content Include="js\SeguridadClt\app.js" />
     <Content Include="js\SeguridadClt\seguridad.js" />
     <Content Include="js\SeguridadClt\serviceSeguridad.js" />
@@ -409,6 +413,8 @@
     <Content Include="Views\AdminClt\Versiones.cshtml" />
     <Content Include="Views\SeguridadClt\Index.cshtml" />
     <Content Include="Views\SeguridadClt\Usuarios.cshtml" />
+    <Content Include="Views\Home\Cuenta.cshtml" />
+    <Content Include="Views\Home\Perfil.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
