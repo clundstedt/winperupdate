@@ -3,27 +3,28 @@
 
     angular
         .module('app')
-        .factory('serviceSeguridad', serviceSeguridad);
+        .service('serviceAmbientes', serviceAmbientes);
 
-    serviceSeguridad.$inject = ['$http', '$q'];
+    serviceAmbientes.$inject = ['$http','$q'];
 
-    function serviceSeguridad($http, $q) {
+    function serviceAmbientes($http, $q) {
         var service = {
-            getUsuario: getUsuario,
-            addUsuario: addUsuario,
-            updUsuario: updUsuario,
+            getAmbientes: getAmbientes,
+            getAmbiente: getAmbiente,
 
-            getUsuarios: getUsuarios
+            addAmbiente: addAmbiente,
+            updAmbiente: updAmbiente,
+            delAmbiente: delAmbiente
         };
 
         return service;
 
-        function getUsuario(id) {
+        function getAmbiente(idCliente, idAmbiente) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Usuarios/' + id,
+                url: '/api/Cliente/' + idCliente + '/Ambiente/'+idAmbiente,
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
@@ -32,12 +33,12 @@
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject('No existe usuario');
+                        deferred.reject('No existen ambientes');
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
-                    deferred.reject('No existe usuario');
+                    deferred.reject('No existen ambientes');
                 }
 
             });
@@ -53,14 +54,15 @@
             }
 
             return promise;
+
         }
 
-        function getUsuarios() {
+        function getAmbientes(idCliente) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Usuarios',
+                url: '/api/Cliente/'+idCliente+'/Ambiente',
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
@@ -69,12 +71,12 @@
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject('No existes usuarios');
+                        deferred.reject('No existen ambientes');
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
-                    deferred.reject('No existen usuarios');
+                    deferred.reject('No existen ambientes');
                 }
 
             });
@@ -90,40 +92,40 @@
             }
 
             return promise;
+
         }
 
-        function addUsuario(codprf, apellidos, nombres, mail, estado) {
+        function addAmbiente(idCliente, Nombre, Tipo, ServerBd, Instancia, NomBd, UserDbo, PwdDbo) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
-            var usuario = {
-                "CodPrf": codprf,
-                "Persona": {
-                    "Apellidos": apellidos,
-                    "Nombres": nombres,
-                    "Mail": mail
-                },
-                "EstUsr": estado
+            var ambiente = {
+                "Nombre": Nombre,
+                "Tipo": Tipo,
+                "ServerBd": ServerBd,
+                "Instancia": Instancia,
+                "NomBd": NomBd,
+                "UserDbo": UserDbo,
+                "PwdDbo": PwdDbo
             };
-            console.debug(JSON.stringify(usuario));
-
+            console.log(JSON.stringify(ambiente));
             $.ajax({
-                url: '/api/Usuarios',
+                url: "api/Cliente/"+idCliente+"/Ambiente",
                 type: "POST",
                 dataType: 'Json',
-                data: usuario,
+                data: ambiente,
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject('No se pudo agregar el usuario');
+                        deferred.reject('No se pudo agregar el cliente');
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
-                    deferred.reject('No se pudo agregar el usuario');
+                    deferred.reject('No se pudo agregar el cliente');
                 }
             });
 
@@ -140,39 +142,37 @@
             return promise;
         }
 
-        function updUsuario(id, codprf, idPer, apellidos, nombres, mail, estado) {
+        function updAmbiente(idCliente, idAmbiente, Nombre, Tipo, ServerBd, Instancia, NomBd, UserDbo, PwdDbo) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
-            var usuario = {
-                "CodPrf": codprf,
-                "Persona": {
-                    "Id": idPer,
-                    "Apellidos": apellidos,
-                    "Nombres": nombres,
-                    "Mail": mail
-                },
-                "EstUsr": estado
+            var ambiente = {
+                "Nombre": Nombre,
+                "Tipo": Tipo,
+                "ServerBd": ServerBd,
+                "Instancia": Instancia,
+                "NomBd": NomBd,
+                "UserDbo": UserDbo,
+                "PwdDbo": PwdDbo
             };
-            //console.debug(JSON.stringify(usuario));
-
+            console.log(JSON.stringify(ambiente));
             $.ajax({
-                url: '/api/Usuarios/' + id,
+                url: "api/Cliente/" + idCliente + "/Ambiente/" + idAmbiente,
                 type: "PUT",
                 dataType: 'Json',
-                data: usuario,
+                data: ambiente,
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject('No se pudo actualizar el usuario');
+                        deferred.reject('No se pudo agregar el cliente');
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
-                    deferred.reject('No se pudo actualizar el usuario');
+                    deferred.reject('No se pudo agregar el cliente');
                 }
             });
 
@@ -189,5 +189,40 @@
             return promise;
         }
 
+        function delAmbiente(idCliente, idAmbiente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: "api/Cliente/" + idCliente + "/Ambiente/" + idAmbiente,
+                type: "DELETE",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 201) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo eliminar el cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo eliminar el cliente');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
     }
 })();

@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace WinPerUpdateAdmin.Controllers.Clientes
 {
-    public class AdminCltController : Controller
+    public class AmbientesCltController : Controller
     {
-        // GET: AdminClt
+        // GET: AmbientesClt
         public ActionResult Index()
         {
             if (Session["token"] == null)
@@ -22,17 +22,17 @@ namespace WinPerUpdateAdmin.Controllers.Clientes
                 return RedirectToAction("Logout", "Home");
             }
 
-            ViewBag.Menu = "AdminClt";
+            ViewBag.Menu = "AmbientesClt";
 
             return View();
         }
 
-        public PartialViewResult Versiones()
+        public PartialViewResult Ambientes()
         {
             return PartialView();
         }
 
-        public PartialViewResult Componentes()
+        public PartialViewResult Crear()
         {
             return PartialView();
         }

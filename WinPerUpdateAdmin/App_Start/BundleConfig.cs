@@ -58,12 +58,22 @@ namespace WinPerUpdateAdmin
                         "~/js/AdminClt/app.js"
                       , "~/js/AdminClt/admin.js"
                       , "~/js/AdminClt/serviceAdmin.js"
+                      , "~/js/AmbientesClt/serviceAmbientes.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/seguridaclt").Include(
                         "~/js/SeguridadClt/app.js"
                       , "~/js/SeguridadClt/seguridad.js"
                       , "~/js/SeguridadClt/serviceSeguridad.js"
+                      , "~/js/Clientes/serviceClientes.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/ambientesclt").Include(
+                        "~/js/AmbientesClt/app.js"
+                      , "~/js/AmbientesClt/ambientes.js"
+                      , "~/js/AmbientesClt/mantenedor.js"
+                      , "~/js/SeguridadClt/serviceSeguridad.js"
+                      , "~/js/AmbientesClt/serviceAmbientes.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/clientes").Include(

@@ -1,0 +1,174 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Detalles de la Versi&oacute;n</h1>
+        <ol class="breadcrumb autoscroll">
+            <li><a href="/AdminClt#/">Versiones</a></li>
+            <li class="active">Detalle Versi&oacute;n {{version.Release}}</li>
+        </ol>
+    </div>
+</div>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar hidden-xs">
+                <div class="btn-group" role="toolbar">
+                    <a ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.Nombre)" ng-disabled="ambiente.Estado=='P'" data-toggle="modal" class="btn btn-default">
+                        <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='P'"></span> Publicar en {{ambiente.Nombre}}
+                    </a>
+                </div>
+            </div>
+
+            <div class="btn-toolbar visible-xs-block">
+                <div class="btn-group" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a ng-click="ShowConfirmPublish()" ng-disabled="version.Estado=='C'" data-toggle="modal" ng-hide="version.IdVersion==0">
+                                    <span class="fa fa-square-o" ng-show="version.Estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="version.Estado=='P'"></span> Publicado
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <p>
+        {{version.Comentario}}
+    </p>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Componentes</h1>
+            <br />
+            <div role="tabpanel" ng-init="panel=1">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Ejecutables</a></li>
+                    <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Reportes</a></li>
+                    <li role="presentation"><a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">Otros</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" ng-class="{active:panel==1}">
+                        <br />
+                        <div class="alert alert-info" ng-show="totales[0]==0">
+                            <span class="fa fa-file-o"></span> Sin Componentes
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in version.Componentes | filtroEjecutables">
+                                <div class="item panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title single-line">{{ejecutable.Name}}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img src="~/Content/Images/Run.png" alt="" class="avatar img-thumbnail image-foto" />
+                                        <div class="pull-right" style="width: 50%">
+                                            <ul class="list-unstyled">
+                                                <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.Modulo}}</li>
+                                                <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.DateCreateFmt}}</li>
+                                                <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.Version}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer text-right" ng-init="inficha=true">
+                                        <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
+                        <br />
+                        <div class="alert alert-info" ng-show="totales[1]==0">
+                            <span class="fa fa-file-o"></span> Sin Componentes
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="reporte in version.Componentes | filtroReportes">
+                                <div class="item panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title single-line">{{reporte.Name}}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img src="~/Content/Images/Printer.png" alt="" class="avatar img-thumbnail image-foto" />
+                                        <div class="pull-right" style="width: 50%">
+                                            <ul class="list-unstyled">
+                                                <li><span class="fa fa-fw fa-cube"></span> {{reporte.Modulo}}</li>
+                                                <li><span class="fa fa-fw fa-calendar"></span> {{reporte.DateCreateFmt}}</li>
+                                                <li><span class="fa fa-fw fa-bug"></span> {{reporte.Version}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer text-right" ng-init="inficha=true">
+                                        <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==3}">
+                        <br />
+                        <div class="alert alert-info" ng-show="totales[2]==0">
+                            <span class="fa fa-file-o"></span> Sin Componentes
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in version.Componentes | filtroOtros">
+                                <div class="item panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title single-line">{{otro.Name}}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img src="~/Content/Images/SD Card.png" alt="" class="avatar img-thumbnail image-foto" />
+                                        <div class="pull-right" style="width: 50%">
+                                            <ul class="list-unstyled">
+                                                <li><span class="fa fa-fw fa-cube"></span> {{otro.Modulo}}</li>
+                                                <li><span class="fa fa-fw fa-calendar"></span> {{otro.DateCreateFmt}}</li>
+                                                <li><span class="fa fa-fw fa-bug"></span> {{otro.Version}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer text-right" ng-init="inficha=true">
+                                        <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="publish-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmar Publicaci&oacute;n</h4>
+                </div>
+                <div class="modal-body">
+                    A continuación se proceder&aacute; a publicar en el ambiente <b>{{nombreambiente}}</b>. Una vez publicado
+                    Winper Update comenzar&aacute; a instalar la versi&oacute;n <b>{{version.Release}}</b> en cada una de las estaciones
+                    de trabajo en que se encuentre activado Winper Update.<br /><br />
+                    Confirma que desea publicar la Versi&oacute;n ?
+                </div>
+                <div class="modal-footer">
+                    <span style="color: red">{{mensaje}}</span>
+                    <button class="btn btn-danger" ng-click="Publicar()">Confirmar</button>
+                    <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

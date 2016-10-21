@@ -2,8 +2,7 @@
     <div class="col-md-12">
         <h1>Detalles Usuario Cliente</h1>
         <ol class="breadcrumb autoscroll">
-            <li><a href="/Clientes#/">Clientes</a></li>
-            <li><a href="/Clientes#/EditCliente/{{idCliente}}">{{cliente.Nombre}}</a></li>
+            <li><a href="/SeguridadClt#/">Usuarios</a></li>
             <li class="active">Un Usuario</li>
         </ol>
     </div>
@@ -118,7 +117,7 @@
                 </div>
                 <div class="modal-body">
                     <span ng-show="formData.estado=='V'">Confirma que desea caducar al Usuario ?</span>
-                    <span ng-show="formData.estado=='C'">Confirma que desea dejar Vigente al Usuario ?</span>
+                    <span ng-show="formData.estado=='C'">Confirma que desea dejar Vigente al Usuario ?</span>                    
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('C')" ng-show="formData.estado=='V'">Confirmar</button>
@@ -130,6 +129,7 @@
     </div>
 
 </div>
+
 
 
 
