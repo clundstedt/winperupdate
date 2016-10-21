@@ -36,14 +36,18 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
-                      "~/js/Login/app.js",
-                      "~/js/Login/login.js",
+                      "~/js/Login/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
+                      ,"~/js/Login/login.js",
                       "~/js/Login/serviceLogin.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
                         "~/Scripts/angular-file-upload.min.js"
                       , "~/js/Version/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
                       , "~/js/Version/admin.js"
                       , "~/js/Version/version.js"
                       , "~/js/Version/componente.js"
@@ -56,6 +60,8 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/adminclt").Include(
                         "~/js/AdminClt/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
                       , "~/js/AdminClt/admin.js"
                       , "~/js/AdminClt/serviceAdmin.js"
                       , "~/js/AmbientesClt/serviceAmbientes.js"
@@ -63,6 +69,8 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/seguridaclt").Include(
                         "~/js/SeguridadClt/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
                       , "~/js/SeguridadClt/seguridad.js"
                       , "~/js/SeguridadClt/serviceSeguridad.js"
                       , "~/js/Clientes/serviceClientes.js"
@@ -79,6 +87,8 @@ namespace WinPerUpdateAdmin
             bundles.Add(new ScriptBundle("~/bundles/clientes").Include(
                        "~/Scripts/smart-table.min.js"
                       , "~/js/Clientes/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
                       , "~/js/Clientes/inicio.js"
                       , "~/js/Clientes/clientes.js"
                       , "~/js/Clientes/usuarios.js"
@@ -87,13 +97,21 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/seguridad").Include(
-                      "~/js/Seguridad/app.js",
-                      "~/js/Seguridad/mantenedor.js",
-                      "~/js/Seguridad/seguridad.js",
-                      "~/js/Seguridad/serviceSeguridad.js"
+                      "~/js/Seguridad/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
+                      , "~/js/Seguridad/mantenedor.js"
+                      , "~/js/Seguridad/seguridad.js"
+                      , "~/js/Seguridad/serviceSeguridad.js"
                       ));
 
-
+            bundles.Add(new ScriptBundle("~/bundles/perfil").Include(
+                      "~/js/Perfil/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
+                      , "~/js/Perfil/perfil.js"
+                      , "~/js/Seguridad/serviceSeguridad.js"
+                      ));
         }
     }
 }

@@ -1,3 +1,12 @@
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\ProcessMsg.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\ProcessMsg.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\WinperUpdateDAO.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\Connector.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\WinperUpdateDAO.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\Connector.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Debug\ProcessMsg.csprojResolveAssemblyReference.cache
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Debug\ProcessMsg.dll
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Debug\ProcessMsg.pdb
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\ProcessMsg.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\ProcessMsg.pdb
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Debug\WinperUpdateDAO.dll

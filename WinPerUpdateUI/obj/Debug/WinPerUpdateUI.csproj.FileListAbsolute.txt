@@ -1,13 +1,6 @@
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\WinPerUpdateUI.exe.config
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\WinPerUpdateUI.exe
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\WinPerUpdateUI.pdb
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.FormPrincipal.resources
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.Properties.Resources.resources
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.csproj.GenerateResource.Cache
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.exe
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.pdb
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.AboutWinperUpdate.resources
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.csprojResolveAssemblyReference.cache
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\Newtonsoft.Json.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\ProcessMsg.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\WinperUpdateDAO.dll
@@ -16,3 +9,10 @@ C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerU
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\Newtonsoft.Json.xml
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\WinperUpdateDAO.pdb
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\bin\Debug\Connector.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.csprojResolveAssemblyReference.cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.AboutWinperUpdate.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.FormPrincipal.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.Properties.Resources.resources
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.csproj.GenerateResource.Cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateUI\obj\Debug\WinPerUpdateUI.pdb

@@ -67,7 +67,6 @@ namespace ProcessMsg
                             Mail = dr["Mail"].ToString()
                         }
                     };
-
                     if (dr["idClientes"] != DBNull.Value)
                     {
                         obj.Cliente = Cliente.GetClientes().SingleOrDefault(x => x.Id == int.Parse(dr["idClientes"].ToString()));
@@ -281,6 +280,27 @@ namespace ProcessMsg
                 if (query.Execute(usuario.Id, usuario.Persona.Id, usuario.CodPrf, usuario.EstUsr) > 0)
                 {
                     return GetUsuarios().SingleOrDefault(x => x.Id == usuario.Id);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+
+            return null;
+
+        }
+
+        public static Model.UsuarioBo UpdUsuario(int id, string pwdNueva)
+        {
+            var query = new UpdUsuario();
+            try
+            {
+                if (query.Execute(id, pwdNueva) > 0)
+                {
+                    return GetUsuario(id);
                 }
 
             }

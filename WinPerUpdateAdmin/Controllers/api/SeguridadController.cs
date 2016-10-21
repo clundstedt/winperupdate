@@ -140,6 +140,41 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region put
+        // PUT: api/Seguridad
+        [HttpPut]
+        public Object Put(string mail, string password, string nPassword)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+            try
+            {
+                var obj = ProcessMsg.Seguridad.GetUsuario(mail);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.RegionBo)null);
+                }
+                string claveEnc = ProcessMsg.Utils.Encriptar(password);
+                if (obj.Clave.Equals(claveEnc))
+                {
+                    var objUpd = ProcessMsg.Seguridad.UpdUsuario(obj.Id, Utils.Encriptar(nPassword));
+                    if (objUpd == null)
+                    {
+                        response.StatusCode = HttpStatusCode.Accepted;
+                    }
+                    else
+                    {
+                        response.StatusCode = HttpStatusCode.OK;
+                    }
+                    return Content(response.StatusCode, objUpd);
+                }
+                return Content(response.StatusCode, (ProcessMsg.Model.UsuarioBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [HttpPut]
         [Route("api/Usuarios/{id:int}")]
         public Object Put(int id, [FromBody]ProcessMsg.Model.UsuarioBo usuario)

@@ -30,5 +30,23 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public int Execute(int id, string pwdNueva)
+        {
+            SpName = @"UPDATE usuarios SET clave = @pwdNueva
+                                       WHERE idusuarios = @id";
+            try
+            {
+                ParmsDictionary.Add("@pwdNueva", pwdNueva);
+                ParmsDictionary.Add("@id", id);
+
+                return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }
