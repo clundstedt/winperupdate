@@ -11,7 +11,9 @@
         var service = {
             getCliente: getCliente,
             getVersion: getVersion,
-            getVersiones: getVersiones
+            getVersiones: getVersiones,
+
+            addVersion: addVersion
         };
 
         return service;
@@ -110,6 +112,48 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
                     deferred.reject('No existe la version');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addVersion(id, idCliente, idAmbiente, estado) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var ambiente = {
+                "idAmbientes": idAmbiente,
+                "Estado": estado
+            };
+            console.log(JSON.stringify(ambiente));
+            $.ajax({
+                url: "api/Version/"+ id +"/Cliente/"+ idCliente +"/Ambiente",
+                type: "POST",
+                dataType: 'Json',
+                data: ambiente,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 201) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la versión al cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo agregar la versión al cliente');
                 }
             });
 

@@ -49,6 +49,7 @@
     <Compile Include="AddUsuarioCliente.cs" />
     <Compile Include="AddVersion.cs" />
     <Compile Include="AddVersionCliente.cs" />
+    <Compile Include="AddVersionToAmbiente.cs" />
     <Compile Include="CnaAmbientes.cs" />
     <Compile Include="CnaClientes.cs" />
     <Compile Include="CnaClienteUsuario.cs" />

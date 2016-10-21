@@ -173,6 +173,20 @@ namespace ProcessMsg
             }
         }
 
+        public static int AddVersionAmbiente(int idVersion, int idAmbiente, int idCliente, char estado)
+        {
+            var query = new AddVersionToAmbiente();
+            try
+            {
+                return query.Execute(idCliente, idVersion, idAmbiente, estado);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         public static int GenerarInstalador(int idVersion, string fileVersion, string dirSource)
         {
             try

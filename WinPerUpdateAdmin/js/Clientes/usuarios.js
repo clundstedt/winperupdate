@@ -56,6 +56,7 @@
                 if ($scope.idUsuario == 0) {
                     serviceClientes.addUsuario($scope.idCliente, formData.perfil, formData.apellido, formData.nombre, formData.mail, 'V').success(function (data) {
                         $scope.idUsuario = data.Id;
+                        $scope.formData.estado = "V",
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
                     }).error(function (err) {

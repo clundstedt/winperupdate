@@ -13,8 +13,8 @@
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <a ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.Nombre)" ng-disabled="ambiente.Estado=='P'" data-toggle="modal" class="btn btn-default">
-                        <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='P'"></span> Publicar en {{ambiente.Nombre}}
+                    <a ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
+                        <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V'"></span> Publicar en {{ambiente.Nombre}}
                     </a>
                 </div>
             </div>
@@ -163,7 +163,7 @@
                 </div>
                 <div class="modal-footer">
                     <span style="color: red">{{mensaje}}</span>
-                    <button class="btn btn-danger" ng-click="Publicar()">Confirmar</button>
+                    <button class="btn btn-danger" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
                     <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

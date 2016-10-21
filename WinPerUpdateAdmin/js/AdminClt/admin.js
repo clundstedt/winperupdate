@@ -18,6 +18,7 @@
             $scope.ambientes = [];
             $scope.totales = [0, 0, 0];
             $scope.idUsuario = $("#idToken").val();
+            $scope.idAmbiente = 0;
             $scope.mensaje = "";
 
             if (!jQuery.isEmptyObject($routeParams)) {
@@ -71,11 +72,33 @@
                 });
             }
 
-            $scope.ShowConfirmPublish = function (nombre) {
+            $scope.ShowConfirmPublish = function (id, nombre) {
                 $scope.nombreambiente = nombre;
+                $scope.idAmbiente = id;
+                $scope.estaVigente = false;
                 $("#publish-modal").modal('show');
             }
 
+            $scope.Publicar = function () {
+                serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
+                    //console.log(JSON.stringify(cliente));
+                    serviceAdmin.addVersion($scope.idversion, cliente.Id, $scope.idAmbiente, 'V').success(function () {
+                        $scope.mensaje = "Versión agregada exitosamente";
+                        angular.forEach($scope.ambientes, function (item) {
+                            if (item.idAmbientes == $scope.idAmbiente) {
+                                item.Estado = 'V';
+                                $scope.estaVigente = true;
+                            }
+                        });
+                    }).
+                    error(function (err) {
+                        console.error(err);
+                    });
+                })
+                .error(function (err) {
+                    console.error(err);
+                });
+            }
         }
     }
 })();
