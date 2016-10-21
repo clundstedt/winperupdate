@@ -152,8 +152,8 @@ namespace WinPerUpdateAdmin.Controllers.api
                 {
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.RegionBo)null);
                 }
-
-                if (obj.Clave.Equals(ProcessMsg.Utils.Encriptar(password)))
+                string claveEnc = ProcessMsg.Utils.Encriptar(password);
+                if (obj.Clave.Equals(claveEnc))
                 {
                     var objUpd = ProcessMsg.Seguridad.UpdUsuario(obj.Id, Utils.Encriptar(nPassword));
                     if (objUpd == null)

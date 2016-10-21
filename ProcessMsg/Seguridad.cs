@@ -300,7 +300,7 @@ namespace ProcessMsg
             {
                 if (query.Execute(id, pwdNueva) > 0)
                 {
-                    return GetUsuarios().SingleOrDefault(x => x.Id == id);
+                    return GetUsuario(id);
                 }
 
             }

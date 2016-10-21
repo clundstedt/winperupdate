@@ -1,0 +1,184 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Detalles Ambiente</h1>
+        <ol class="breadcrumb autoscroll">
+            <li><a href="/AmbientesClt#/">Ambientes</a></li>
+            <li class="active">Un Ambiente</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar hidden-xs">
+                <div class="btn-group" role="toolbar">
+                    <a data-toggle="modal" data-target="#delete-modal" class="btn btn-danger" ng-hide="idAmbiente==0">
+                        <span class="fa fa-fw fa-trash-o"></span> Eliminar Ambiente
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{title}}</h3>
+                </div>
+                <div class="panel-body">
+                    <form name="frmAmbiente" method="post" action="#" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nombre del Ambiente</label>
+                                    <div class="input-group-sm">
+                                        <input class="form-control" type="text" name="nombre" placeholder="Nombre" required="required" ng-model="ambiente.Nombre" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }" />
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.nombre.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.nombre.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 100 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.nombre.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Tipo de Ambiente</label>
+                                        <select class="form-control" name="tipo" required="required" ng-model="ambiente.Tipo" ng-options="tipo.Codigo as tipo.Descripcion for tipo in tipos">
+                                        </select>
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.tipo.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Servidor de Base de Datos</label>
+                                        <input class="form-control" type="text" name="serverbd" placeholder="Servidor" required="required" ng-model="ambiente.ServerBd" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.serverbd.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.serverbd.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 100 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.serverbd.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Instancia</label>
+                                        <input class="form-control" type="text" name="instancia" placeholder="Instancia" required="required" ng-model="ambiente.Instancia" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.instancia.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.instancia.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 100 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.instancia.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Nombre de la Base de Datos</label>
+                                        <input class="form-control" type="text" name="nombd" placeholder="Nombre de la BD" required="required" ng-model="ambiente.NomBd" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.nombd.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.nombd.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 100 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.nombd.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Usuario de la Base de Datos</label>
+                                        <input class="form-control" type="text" name="userdbo" placeholder="Usuario de BD" required="required" ng-model="ambiente.UserDbo" ng-maxlength="50" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.userdbo.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.userdbo.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 50 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.userdbo.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group-sm">
+                                        <label>Password de Usuario BD</label>
+                                        <input class="form-control" type="password" name="pwddbo" placeholder="Password" required="required" ng-model="ambiente.PwdDbo" ng-maxlength="50" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.pwddbo.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.pwddbo.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 50 caractares
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmAmbiente.pwddbo.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block" ng-click="frmAmbiente.$valid && SaveAmbiente(ambiente)" ng-disabled="">
+                            <span class="fa fa-check" ng-show="increate"></span>
+                            <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmar Eliminación</h4>
+                </div>
+                <div class="modal-body">
+                    ¿Seguro que desea eliminar el ambiente?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
+                    <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

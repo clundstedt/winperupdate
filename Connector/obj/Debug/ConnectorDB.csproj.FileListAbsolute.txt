@@ -1,8 +1,10 @@
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\bin\Debug\Connector.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\bin\Debug\Connector.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Debug\ConnectorDB.csprojResolveAssemblyReference.cache
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Debug\Connector.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Debug\Connector.pdb
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\bin\Debug\Connector.dll
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\bin\Debug\Connector.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Debug\ConnectorDB.csprojResolveAssemblyReference.cache
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Debug\Connector.dll
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\Connector\obj\Debug\Connector.pdb

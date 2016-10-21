@@ -1,0 +1,86 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>{{title}}</h1>
+        <ol class="breadcrumb autoscroll">
+            <li class="active">Mis Ambientes</li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-toolbar" role="toolbar">
+                    <a href="/AmbientesClt#/Crear/{{idCliente}}" class="btn btn-labeled btn-success">
+                        <span class="btn-label"><span class="fa fa-cube"></span></span> Crear Ambiente
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-show="true">
+                        <span class="fa fa-cubes"></span> Ambientes Existentes
+                    </div>
+                    <div class="table-responsive" ng-hide="false">
+                        <table st-table="ambientes" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Servidor</th>
+                                    <th>Instancia</th>
+                                    <th>Base de Datos</th>
+                                    <th>Usuario DBO</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ambiente in ambientes" class="row-tabla" style="height: 20px;">
+                                    <td style="vertical-align: middle;">
+                                        {{ambiente.Nombre}}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ambiente.Tipo}}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ambiente.ServerBd}}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ambiente.Instancia}}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ambiente.NomBd}}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ambiente.UserDbo}}
+                                    </td>
+                                    <td>
+                                        <a href="/AmbientesClt#/EditAmbiente/{{idCliente}}/{{ambiente.idAmbientes}}" class="btn btn-labeled btn-info">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Modificar
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
