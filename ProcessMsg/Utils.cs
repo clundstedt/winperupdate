@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace ProcessMsg
 {
@@ -82,6 +83,40 @@ namespace ProcessMsg
             sr.Close();
 
             return textoHtml;
+        }
+
+        public static string GetMd5Hash(string input)
+        {
+            byte[] data = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+            return sBuilder.ToString();
+        }
+        public static bool VerificarMd5Hash(string input, string hash)
+        {
+            string hashOfInput = GetMd5Hash(input);
+            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+            return (0 == comparer.Compare(hashOfInput, hash));
+        }
+
+        public static string GenerarLicencia(int NumFolio, int estmtc, string mesini, string nrotrbc
+                                            , string nrotrbh, string nrousr)
+        {
+            string fStr = string.Format("{0}{1}{2}{3}{4}{5}", NumFolio, estmtc, mesini,nrotrbc,nrotrbh,nrousr);
+            string hash = GetMd5Hash(fStr);
+            string licencia = "";
+            for (int i = 0; i < hash.Length; i++)
+            {
+                licencia += hash[i];
+                if ((i + 1) % 8 == 0 && (i + 1) < hash.Length)
+                {
+                    licencia += "-";
+                }
+            }
+            return licencia.ToUpper();
         }
     }
 }

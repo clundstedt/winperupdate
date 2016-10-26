@@ -10,8 +10,8 @@ namespace WinperUpdateDAO
     {
         public int Execute(int idVersion, int idClientes)
         {
-            SpName = @" insert into versiones_has_clientes (idVersion, idClientes, Estado) 
-                                      values (@idVersion, @idClientes, 0)";
+            SpName = @" insert into versiones_has_clientes (idVersion, idClientes) 
+                                      values (@idVersion, @idClientes)";
             try
             {
                 ParmsDictionary.Add("@idVersion", idVersion);

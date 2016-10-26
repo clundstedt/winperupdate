@@ -22,7 +22,6 @@
 
             factoryHome.getUsuarioSession($scope.id).success(function (data) {
                 $scope.userSession = data;
-                console.log(JSON.stringify(data));
             }).error(function (data) {
                 console.error(data);
             });

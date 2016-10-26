@@ -115,6 +115,7 @@ namespace WinperUpdateServer
         {
             String content = String.Empty;
             string json = string.Empty;
+            int idCliente = 0;
 
             try
             {
@@ -149,6 +150,11 @@ namespace WinperUpdateServer
 
                         switch (token[0])
                         {
+                            case "querys":
+                                idCliente = int.Parse(token[1]);
+
+                                break;
+
                             case "checklicencia":
                                 string nroLicencia = token[1];
                                 var cliente = ProcessMsg.Cliente.GetClienteByLicencia(nroLicencia, eventLog1);
@@ -158,7 +164,7 @@ namespace WinperUpdateServer
                                 break;
 
                             case "ambientes":
-                                int idCliente = int.Parse(token[1]);
+                                idCliente = int.Parse(token[1]);
                                 var ambientes = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, eventLog1);
 
                                 json = JsonConvert.SerializeObject(ambientes);

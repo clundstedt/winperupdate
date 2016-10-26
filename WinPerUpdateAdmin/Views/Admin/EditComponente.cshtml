@@ -63,7 +63,7 @@
                     <form name="frmMain" method="post" action="#" novalidate>
                         <div class="form-group">
                             <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon"><i class="fa fa-tablet fa-fw"></i></span>
+                                <span class="input-group-addon" title="Módulo"><i class="fa fa-tablet fa-fw"></i></span>
                                 <select class="form-control" ng-model="formData.modulo" ng-options="modulo.NomModulo as modulo.NomModulo for modulo in modulos | orderBy:NomModulo">
                                     <option value="">Módulo</option> <!-- not selected / blank option -->
                                 </select>
@@ -72,7 +72,7 @@
 
                         <div class="form-group">
                             <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon"><i class="fa fa-comment-o fa-fw"></i></span>
+                                <span class="input-group-addon" title="Comentario"><i class="fa fa-comment-o fa-fw"></i></span>
                                 <textarea class="form-control" rows="5" name="comentario" placeholder="Comentario" ng-model="formData.comentario" ng-maxlength="2048" ng-model-options="{ updateOn: 'blur' }"></textarea>
                             </div>
                             <span class="error_ingreso" ng-show="frmMain.comentario.$error.maxlength">
