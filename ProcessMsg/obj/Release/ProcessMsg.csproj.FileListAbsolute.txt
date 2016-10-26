@@ -1,9 +1,0 @@
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Release\ProcessMsg.dll
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Release\ProcessMsg.pdb
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Release\WinperUpdateDAO.dll
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Release\Connector.dll
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Release\WinperUpdateDAO.pdb
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\bin\Release\Connector.pdb
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Release\ProcessMsg.csprojResolveAssemblyReference.cache
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Release\ProcessMsg.dll
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\ProcessMsg\obj\Release\ProcessMsg.pdb
