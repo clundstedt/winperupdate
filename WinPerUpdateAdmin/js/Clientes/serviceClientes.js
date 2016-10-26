@@ -15,6 +15,9 @@
             getCliente: getCliente,
             getUsuarios: getUsuarios,
             getUsuario: getUsuario,
+            getClientesVersion: getClientesVersion,
+            getKey: getKey,
+            getFolio: getFolio,
 
             addCliente: addCliente,
             addUsuario: addUsuario,
@@ -171,6 +174,42 @@
 
             return promise;
         }
+        function getClientesVersion(idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/' + idVersion + '/Clientes',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existe cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existe cliente');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getUsuarios(id) {
             var deferred = $q.defer();
@@ -246,7 +285,7 @@
             return promise;
         }
 
-        function addCliente(rut, dv, nombre, direccion, idCmn) {
+        function addCliente(rut, dv, nombre, direccion, idCmn, NroLicencia, NumFolio, estmtc, mesini, nrotrbc, nrotrbh, nrousr) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -257,7 +296,14 @@
                 "Direccion": direccion,
                 "Comuna": {
                     "idCmn": idCmn
-                }
+                },
+                "NroLicencia": NroLicencia,
+                "NumFolio": NumFolio,
+                "EstMtc": estmtc,
+                "Mesini": mesini,
+                "NroTrbc":nrotrbc,
+                "NroTrbh":nrotrbh,
+                "NroUsr":nrousr
             };
             console.debug(JSON.stringify(cliente));
 
@@ -267,7 +313,7 @@
                 dataType: 'Json',
                 data: cliente,
                 success: function (data, textStatus, jqXHR) {
-                    if (jqXHR.status == 201) {
+                    if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
                     }
@@ -277,7 +323,7 @@
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
-                    deferred.reject('No se pudo agregar el cliente');
+                    deferred.reject('ERR:No se pudo agregar el cliente');
                 }
             });
 
@@ -342,7 +388,7 @@
             return promise;
         }
 
-        function updCliente(id, rut, dv, nombre, direccion, idCmn) {
+        function updCliente(id, rut, dv, nombre, direccion, idCmn, NroLicencia, NumFolio, estmtc, mesini, nrotrbc, nrotrbh, nrousr) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -353,7 +399,14 @@
                 "Direccion": direccion,
                 "Comuna": {
                     "idCmn": idCmn
-                }
+                },
+                "NroLicencia": NroLicencia,
+                "NumFolio": NumFolio,
+                "EstMtc": estmtc,
+                "Mesini": mesini,
+                "NroTrbc": nrotrbc,
+                "NroTrbh": nrotrbh,
+                "NroUsr": nrousr
             };
             console.debug(JSON.stringify(cliente));
 
@@ -363,7 +416,7 @@
                 dataType: 'Json',
                 data: cliente,
                 success: function (data, textStatus, jqXHR) {
-                    if (jqXHR.status == 201) {
+                    if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
                     }
@@ -373,7 +426,7 @@
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
-                    deferred.reject('No se pudo modificar el cliente');
+                    deferred.reject('ERR: No se pudo modificar el cliente');
                 }
             });
 
@@ -459,6 +512,78 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
                     deferred.reject('No se pudo eliminar el cliente');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getKey(folio,estmtc,mesini,nrotrbc,nrotrbh,nrousr) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Key/'+folio+'/'+estmtc+'/'+mesini+'/'+nrotrbc+'/'+nrotrbh+'/'+nrousr,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo generar el Key para este cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen comunas asociadas a la región');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getFolio() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Clientes/Key',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen comunas asociadas a la región');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen comunas asociadas a la región');
                 }
             });
 

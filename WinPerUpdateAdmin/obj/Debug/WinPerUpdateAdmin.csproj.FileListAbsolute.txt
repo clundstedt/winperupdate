@@ -49,7 +49,6 @@ C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServe
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.dll
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
-C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll.config
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\roslyn\csc.exe
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -102,3 +101,4 @@ C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerU
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
+C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll.config

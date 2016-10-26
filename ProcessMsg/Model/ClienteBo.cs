@@ -29,5 +29,21 @@ namespace ProcessMsg.Model
                 return string.Format("{0}-{1}", Rut, Dv);
             }
         }
+
+        public int NumFolio { get; set; }
+        
+        public int EstMtc { get; set; }
+        public string Mesini { get; set; }
+        public string NroTrbc { get; set; }
+        public string NroTrbh { get; set; }
+        public string NroUsr { get; set; }
+        /*
+        public string MesIniFmt
+        {
+            get
+            {
+                return string.Format("{0}-{1}-{2}",DateTime.Now.);
+            }
+        }*/
     }
 }

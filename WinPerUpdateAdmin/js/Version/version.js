@@ -34,6 +34,7 @@
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
                     $scope.componentes = data.Componentes;
+                    $scope.formData.comentario = data.Comentario;
 
                     $scope.fechaini = data.FechaFmt;
 
@@ -71,7 +72,7 @@
 
             $scope.SaveVersion = function (formData) {
                 if ($scope.idversion == 0) {
-                    serviceAdmin.addVersion(formData.release, formData.fecha, 'N', '', '').success(function (data) {
+                    serviceAdmin.addVersion(formData.release, formData.fecha, 'N', formData.comentario, '').success(function (data) {
                         //console.log(JSON.stringify(data));
                         $window.location.href = "/Admin#/EditVersion/" + data.IdVersion;
                     }).error(function (data) {
@@ -79,7 +80,7 @@
                     });
                 }
                 else {
-                    serviceAdmin.updVersion($scope.idversion, formData.release, formData.fecha, 'N', '', '', '').success(function (data) {
+                    serviceAdmin.updVersion($scope.idversion, formData.release, formData.fecha, 'N', formData.comentario, '', '').success(function (data) {
                         console.log(JSON.stringify(data));
                         $window.location.href = "/Admin#/EditVersion/" + data.IdVersion;
                     }).error(function (data) {

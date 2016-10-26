@@ -149,6 +149,36 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
+        [Route("api/Key/{Folio:int}/{EstMtc:int}/{MesIni}/{NroTrbc}/{NroTrbh}/{NroUsr}")]
+        [HttpGet]
+        public Object GetKeyCliente(int Folio, int EstMtc, string MesIni, string NroTrbc, string NroTrbh, string NroUsr)
+        {
+            try
+            {
+                var key = ProcessMsg.Utils.GenerarLicencia(Folio, EstMtc, MesIni, NroTrbc, NroTrbh, NroUsr);
+                return Content(HttpStatusCode.OK, key); ;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Clientes/Key")]
+        [HttpGet]
+        public Object GetFolio()
+        {
+            try
+            {
+                int folio = ProcessMsg.Cliente.GetFolioLicencia();
+                return folio;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
         #endregion
 
         #region post
@@ -177,7 +207,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     }
                     else
                     {
-                        return Content(HttpStatusCode.Created, obj);
+                        return Content(HttpStatusCode.OK, obj);
                     }
                 }
 
@@ -268,7 +298,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     }
                     else
                     {
-                        return Content(HttpStatusCode.Created, obj);
+                        return Content(HttpStatusCode.OK, obj);
                     }
                 }
 

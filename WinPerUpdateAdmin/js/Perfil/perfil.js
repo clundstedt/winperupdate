@@ -24,7 +24,6 @@
             
 
             serviceSeguridad.getUsuario($scope.id).success(function (data) {
-                console.log(JSON.stringify(data));
                 $scope.user = data;
             }).error(function (err) {
                 console.log(err);

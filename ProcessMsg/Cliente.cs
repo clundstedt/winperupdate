@@ -163,7 +163,13 @@ namespace ProcessMsg
                         Nombre = dr["RazonSocial"].ToString(),
                         Direccion = dr["Direccion"].ToString(),
                         NroLicencia = dr["NroLicencia"].ToString(),
-                        Comuna = GetComunaById(int.Parse(dr["idCmn"].ToString()))
+                        Comuna = GetComunaById(int.Parse(dr["idCmn"].ToString())),
+                        NumFolio = int.Parse(dr["Folio"].ToString()),
+                        EstMtc = int.Parse(dr["EstMtc"].ToString()),
+                        Mesini = dr["MesIni"].ToString(),
+                        NroTrbc = dr["NroTrbc"].ToString(),
+                        NroTrbh = dr["NroTrbh"].ToString(),
+                        NroUsr = dr["NroUsr"].ToString()
                     };
 
                     lista.Add(obj);
@@ -215,16 +221,59 @@ namespace ProcessMsg
 
         }
 
+        public static List<Model.ClienteBo> GetClientesVersion(int idVersion)
+        {
+            List<Model.ClienteBo> lista = new List<Model.ClienteBo>();
+
+            try
+            {
+                var dr = new CnaClientes().Execute(idVersion);
+                while (dr.Read())
+                {
+                    lista.Add(new Model.ClienteBo
+                    {
+                        Id = int.Parse(dr["IdClientes"].ToString()),
+                        Rut = int.Parse(dr["Rut"].ToString()),
+                        Dv = dr["Dv"].ToString()[0],
+                        Nombre = dr["RazonSocial"].ToString(),
+                        Direccion = dr["Direccion"].ToString(),
+                        NroLicencia = dr["NroLicencia"].ToString(),
+                        Comuna = GetComunaById(int.Parse(dr["idCmn"].ToString()))
+                    });
+                }
+                dr.Close();
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         public static Model.ClienteBo Add(Model.ClienteBo cliente)
         {
+            int codError = 0;
+            string msgError = "";
             var query = new AddCliente();
             try
             {
-                if (query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn) > 0)
+                var dr = query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
+                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh,cliente.NroUsr);
+                while (dr.Read())
                 {
-                    return GetClientes().SingleOrDefault(x => x.Rut == cliente.Rut);
+                    codError = int.Parse(dr["codErr"].ToString());
+                    msgError = dr["msgErr"].ToString();
+                    if (codError == 0)
+                    {
+                        return GetClientes().SingleOrDefault(x => x.Rut == cliente.Rut);
+                    }else
+                    {
+                        var msg = "Excepcion Controlada: " + msgError;
+                        throw new Exception(msg);
+                    }
                 }
-
             }
             catch (Exception ex)
             {
@@ -240,7 +289,8 @@ namespace ProcessMsg
             var query = new UpdCliente();
             try
             {
-                if (query.Execute(id, cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn) > 0)
+                if (query.Execute(id, cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
+                                 ,cliente.NroLicencia, cliente.EstMtc, cliente.Mesini, cliente.NroTrbc, cliente.NroTrbh, cliente.NroUsr) > 0)
                 {
                     return GetClientes().SingleOrDefault(x => x.Id == id);
                 }
@@ -253,6 +303,27 @@ namespace ProcessMsg
             }
 
             return null;
+        }
+
+        public static int GetFolioLicencia()
+        {
+            try
+            {
+                int numFolio = 0;
+                var dr = new CnaClientes().GetFolio("Licencia");
+                while (dr.Read())
+                {
+                    if (int.TryParse(dr[0].ToString(),out numFolio))
+                    {
+                        return numFolio+1;
+                    }
+                }
+                return 1000;
+            }catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
         }
 
         public static int Delete(int id)

@@ -54,7 +54,7 @@
                         <tbody>
                             <tr ng-repeat="item in clientes | filtroClientesSel" class="row-tabla" style="height: 20px;">
                                 <td style="vertical-align: middle;">
-                                    <div class="checkbox">
+                                    <div class="checkbox" ng-show="item.Lectura">
                                         <label><input type="checkbox" value="" ng-model="item.Check"></label>
                                     </div>
                                 </td>
