@@ -114,6 +114,7 @@ namespace WinperUpdateServer
         public void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
+            string json = string.Empty;
 
             try
             {
@@ -124,6 +125,7 @@ namespace WinperUpdateServer
 
                 // Read data from the client socket. 
                 int bytesRead = handler.EndReceive(ar);
+                eventLog1.WriteEntry(String.Format("Read {0} bytes from socket. \n", bytesRead), EventLogEntryType.Information, ++eventId);
 
                 if (bytesRead > 0)
                 {
@@ -147,6 +149,22 @@ namespace WinperUpdateServer
 
                         switch (token[0])
                         {
+                            case "checklicencia":
+                                string nroLicencia = token[1];
+                                var cliente = ProcessMsg.Cliente.GetClienteByLicencia(nroLicencia, eventLog1);
+
+                                json = JsonConvert.SerializeObject(cliente);
+                                Send(handler, json);
+                                break;
+
+                            case "ambientes":
+                                int idCliente = int.Parse(token[1]);
+                                var ambientes = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, eventLog1);
+
+                                json = JsonConvert.SerializeObject(ambientes);
+                                Send(handler, json);
+                                break;
+
                             case "getversiones":
                                 //eventLog1.WriteEntry(String.Format("Call ListarVersiones('{0}','{1}')", token[1], dirVersiones), EventLogEntryType.Information, ++eventId);
 
@@ -162,7 +180,7 @@ namespace WinperUpdateServer
                                     }
                                 }
 
-                                string json = JsonConvert.SerializeObject(lista);
+                                json = JsonConvert.SerializeObject(lista);
                                 Send(handler, json);
                                 break;
 
@@ -172,8 +190,8 @@ namespace WinperUpdateServer
                                 //var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
                                 var listaModulos = ProcessMsg.Version.GetModulosVersiones(int.Parse(token[1]), eventLog1);
 
-                                string jsonM = JsonConvert.SerializeObject(listaModulos);
-                                Send(handler, jsonM);
+                                json = JsonConvert.SerializeObject(listaModulos);
+                                Send(handler, json);
                                 break;
 
                             case "getcomponentes":
@@ -189,8 +207,8 @@ namespace WinperUpdateServer
                                     archivo.Length = info.Length;
                                 }
 
-                                string jsonA = JsonConvert.SerializeObject(listaArchivos);
-                                Send(handler, jsonA);
+                                json = JsonConvert.SerializeObject(listaArchivos);
+                                Send(handler, json);
                                 break;
 
                             case "getfile":
@@ -226,7 +244,9 @@ namespace WinperUpdateServer
         private void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            byte[] byteData = Encoding.UTF8.GetBytes(data);
+
+            eventLog1.WriteEntry(String.Format("Send {0} bytes from socket. \n", byteData.Length), EventLogEntryType.Information, ++eventId);
 
             // Begin sending the data to the remote device.
             handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);

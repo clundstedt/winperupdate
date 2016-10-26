@@ -16,7 +16,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
-                var list = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente);
+                var list = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, null);
                 if (list.Count == 0)
                 {
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.AmbienteBo)null);

@@ -23,128 +23,6 @@ namespace WinPerUpdateUI
         private bool ServerInAccept = true;
         private bool TreePoblado = false;
 
-        static byte[] SendMsg(string ipServer, int port, string message)
-        {
-            string output = "";
-
-            try
-            {
-                // Create a TcpClient.
-                // The client requires a TcpServer that is connected
-                // to the same address specified by the server and port
-                // combination.
-                TcpClient client = new TcpClient(ipServer, port);
-                //eventLog1.WriteEntry("Servidor acepta coneccion ...");
-
-                // Get a client stream for reading and writing.
-                // Stream stream = client.GetStream();
-                NetworkStream stream = client.GetStream();
-
-                // Translate the passed message into ASCII and store it as a byte array.
-                Byte[] data = new Byte[SIZEBUFFER];
-                data = System.Text.Encoding.ASCII.GetBytes(message);
-
-                // Send the message to the connected TcpServer. 
-                stream.Write(data, 0, data.Length);
-
-                output = "Sent: " + message;
-                //eventLog1.WriteEntry(output);
-
-                // Buffer to store the response bytes.
-                data = new Byte[SIZEBUFFER];
-
-                // String to store the response ASCII representation.
-                //String responseData = String.Empty;
-
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                Byte[] responseData = new Byte[bytes];
-
-                for (int i = 0; i < bytes; i++) responseData[i] = data[i];
-
-                //output = string.Format("Received ({0}): {1} ", bytes, responseData);
-                output = string.Format("Byte Received : {0}", bytes);
-                //eventLog1.WriteEntry(output);
-
-                // Close everything.
-                stream.Close();
-                client.Close();
-
-                return responseData;
-            }
-            catch (ArgumentNullException e)
-            {
-                output = "ArgumentNullException: " + e;
-                //eventLog1.WriteEntry(output);
-            }
-            catch (SocketException e)
-            {
-                output = "SocketException: " + e.ToString();
-                //eventLog1.WriteEntry(output);
-            }
-
-            return null;
-        }
-
-        static string StrSendMsg(string ipServer, int port, string message)
-        {
-            string output = "";
-
-            try
-            {
-                // Create a TcpClient.
-                // The client requires a TcpServer that is connected
-                // to the same address specified by the server and port
-                // combination.
-                TcpClient client = new TcpClient(ipServer, port);
-                //eventLog1.WriteEntry("Servidor acepta coneccion ...");
-
-                // Get a client stream for reading and writing.
-                // Stream stream = client.GetStream();
-                NetworkStream stream = client.GetStream();
-
-                // Translate the passed message into ASCII and store it as a byte array.
-                Byte[] data = new Byte[1024];
-                data = System.Text.Encoding.ASCII.GetBytes(message);
-
-                // Send the message to the connected TcpServer. 
-                stream.Write(data, 0, data.Length);
-
-                output = "Sent: " + message;
-                //eventLog1.WriteEntry(output);
-
-                // Buffer to store the response bytes.
-                data = new Byte[SIZEBUFFER];
-
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
-
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                output = string.Format("Received ({0}): {1} ", bytes, responseData);
-                //eventLog1.WriteEntry(output);
-
-                // Close everything.
-                stream.Close();
-                client.Close();
-
-                return responseData;
-            }
-            catch (ArgumentNullException e)
-            {
-                output = "ArgumentNullException: " + e;
-                //eventLog1.WriteEntry(output);
-            }
-            catch (SocketException e)
-            {
-                output = "SocketException: " + e.ToString();
-                //eventLog1.WriteEntry(output);
-            }
-
-            return null;
-        }
-
         public FormPrincipal()
         {
             InitializeComponent();
@@ -170,8 +48,6 @@ namespace WinPerUpdateUI
 
         private void AcercaDe_Click(object sender, System.EventArgs e)
         {
-            //' Mostrar la información del autor, versión, etc.
-            //MessageBox.Show(Application.ProductName + " v" + Application.ProductVersion, "Prueba 2 de NotifyIcon en C#");
             var form = new AboutWinperUpdate();
             form.Show();
         }
@@ -193,7 +69,7 @@ namespace WinPerUpdateUI
             dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
             var versiones = new List<VersionBo>();
-            string json = StrSendMsg(server, int.Parse(port), "getversiones#");
+            string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
             versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
             if (versiones != null)
             {
@@ -247,6 +123,8 @@ namespace WinPerUpdateUI
         {
             ContextMenu1.MenuItems.Add("&Restaurar", new EventHandler(this.Restaurar_Click));
             ContextMenu1.MenuItems[0].DefaultItem = true;
+            ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
+
             //'
             //' Añadimos un separador
             ContextMenu1.MenuItems.Add("-");
@@ -261,6 +139,13 @@ namespace WinPerUpdateUI
 
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
+        }
+
+        private void Ambiente_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            var form = new Ambiente();
+            form.Show();
         }
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
@@ -280,7 +165,7 @@ namespace WinPerUpdateUI
                 dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
                 var versiones = new List<VersionBo>();
-                string json = StrSendMsg(server, int.Parse(port), "getversiones#");
+                string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
                 versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
                 if (versiones != null)
                 {
@@ -300,7 +185,7 @@ namespace WinPerUpdateUI
                                 long largoMax = release.Length - nPosIni;
                                 if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
                                 string newmsg = string.Format("getfile#{0}\\Output\\{1}#{2}#{3}#", release.Release, release.Instalador, nPosIni, largoMax);
-                                var buffer = SendMsg(server, int.Parse(port), newmsg);
+                                var buffer = Utils.SendMsg(server, int.Parse(port), newmsg);
                                 writer.Write(buffer, 0, buffer.Length);
 
                                 nPosIni += SIZEBUFFER;
@@ -369,7 +254,7 @@ namespace WinPerUpdateUI
             string port = ConfigurationManager.AppSettings["port"];
 
             var versiones = new List<VersionBo>();
-            string json = StrSendMsg(server, int.Parse(port), "getversiones#");
+            string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
             versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
 
             string modulo = e.Node.Text;
@@ -435,7 +320,7 @@ namespace WinPerUpdateUI
             string port = ConfigurationManager.AppSettings["port"];
 
             var versiones = new List<VersionBo>();
-            string json = StrSendMsg(server, int.Parse(port), "getversiones#");
+            string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
             versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
 
             for (int i = 0; i < treeModulos.Nodes.Count; i++)

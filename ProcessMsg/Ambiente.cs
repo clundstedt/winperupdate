@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace ProcessMsg
 {
     public class Ambiente
     {
-        public static List<Model.AmbienteBo> GetAmbientesByCliente(int idCliente)
+        public static List<Model.AmbienteBo> GetAmbientesByCliente(int idCliente, EventLog log)
         {
             List<Model.AmbienteBo> lista = new List<Model.AmbienteBo>();
             try
@@ -35,6 +36,7 @@ namespace ProcessMsg
             catch (Exception ex)
             {
                 var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
                 throw new Exception(msg, ex);
             }
             return lista;
@@ -44,7 +46,7 @@ namespace ProcessMsg
         {
             try
             {
-                return GetAmbientesByCliente(idCliente).SingleOrDefault(x => x.idAmbientes == idAmbiente);
+                return GetAmbientesByCliente(idCliente, null).SingleOrDefault(x => x.idAmbientes == idAmbiente);
             }
             catch (Exception ex)
             {
@@ -59,7 +61,7 @@ namespace ProcessMsg
             {
                 if (new AddAmbiente().Execute(idCliente,ambiente.Nombre,ambiente.Tipo,ambiente.ServerBd,ambiente.Instancia,ambiente.NomBd,ambiente.UserDbo,Utils.Encriptar(ambiente.PwdDbo)) > 0)
                 {
-                    var list = GetAmbientesByCliente(idCliente).OrderBy(x => x.idAmbientes).ToList();
+                    var list = GetAmbientesByCliente(idCliente, null).OrderBy(x => x.idAmbientes).ToList();
                     return list.ElementAt(list.Count - 1);
                 }
                 return null;

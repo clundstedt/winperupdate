@@ -215,6 +215,43 @@ namespace ProcessMsg
 
         }
 
+        public static Model.ClienteBo GetClienteByLicencia(string licencia, EventLog log)
+        {
+            var lista = new List<Model.ClienteBo>();
+            var consulta = new CnaClienteByNroLicencia();
+            try
+            {
+                var obj = new Model.ClienteBo();
+                bool existe = false;
+
+                var dr = consulta.Execute(licencia);
+                while (dr.Read())
+                {
+                    obj = new Model.ClienteBo
+                    {
+                        Id = int.Parse(dr["IdClientes"].ToString()),
+                        Rut = int.Parse(dr["Rut"].ToString()),
+                        Dv = dr["Dv"].ToString()[0],
+                        Nombre = dr["RazonSocial"].ToString(),
+                        Direccion = dr["Direccion"].ToString(),
+                        NroLicencia = dr["NroLicencia"].ToString(),
+                        Comuna = GetComunaById(int.Parse(dr["idCmn"].ToString()))
+                    };
+                    existe = true;
+                }
+                dr.Close();
+
+                return existe ? obj : null;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
+
+        }
+
         public static Model.ClienteBo Add(Model.ClienteBo cliente)
         {
             var query = new AddCliente();
