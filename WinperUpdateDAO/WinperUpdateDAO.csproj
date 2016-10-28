@@ -45,12 +45,14 @@
     <Compile Include="AddComponente.cs" />
     <Compile Include="AddModuloVersion.cs" />
     <Compile Include="AddPersona.cs" />
+    <Compile Include="AddTareas.cs" />
     <Compile Include="AddUsuario.cs" />
     <Compile Include="AddUsuarioCliente.cs" />
     <Compile Include="AddVersion.cs" />
     <Compile Include="AddVersionCliente.cs" />
     <Compile Include="AddVersionToAmbiente.cs" />
     <Compile Include="CnaAmbientes.cs" />
+    <Compile Include="CnaClienteByNroLicencia.cs" />
     <Compile Include="CnaClientes.cs" />
     <Compile Include="CnaClienteUsuario.cs" />
     <Compile Include="CnaComponenteByName.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="CnaPerfiles.cs" />
     <Compile Include="CnaPersona.cs" />
     <Compile Include="CnaRegiones.cs" />
+    <Compile Include="CnaTareas.cs" />
     <Compile Include="CnaUsuario.cs" />
     <Compile Include="CnaUsuarioById.cs" />
     <Compile Include="CnaUsuariosCliente.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="UpdCliente.cs" />
     <Compile Include="UpdComponente.cs" />
     <Compile Include="UpdPersona.cs" />
+    <Compile Include="UpdTareas.cs" />
     <Compile Include="UpdUsuario.cs" />
     <Compile Include="UpdVersion.cs" />
   </ItemGroup>

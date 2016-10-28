@@ -56,6 +56,12 @@
     <Compile Include="AboutWinperUpdate.Designer.cs">
       <DependentUpon>AboutWinperUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ambiente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ambiente.Designer.cs">
+      <DependentUpon>Ambiente.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,8 +70,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
     <EmbeddedResource Include="AboutWinperUpdate.resx">
       <DependentUpon>AboutWinperUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ambiente.resx">
+      <DependentUpon>Ambiente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPrincipal.resx">
       <DependentUpon>FormPrincipal.cs</DependentUpon>

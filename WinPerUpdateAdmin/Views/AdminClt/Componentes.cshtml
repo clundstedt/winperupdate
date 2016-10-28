@@ -135,11 +135,35 @@
                                         </div>
                                     </div>
                                     <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
-                                        </a>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group-sm margin-bottom-sm">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-labeled btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+                                                            <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar Script
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li ng-repeat="ambiente in ambientes"><a href="#">{{ambiente.Nombre}}</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group-sm margin-bottom-sm">
+                                                    <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                                        <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
+                                                    </a>
+                                                </div> 
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                {{otro.Modulo}}
+                                {{otro.Name}}
+                                {{version.IdVersion}}
+                                {{userSession}}
+                                {{idCliente}}
                             </div>
                         </div>
                     </div>

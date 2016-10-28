@@ -37,13 +37,6 @@ namespace ProcessMsg.Model
         public string NroTrbc { get; set; }
         public string NroTrbh { get; set; }
         public string NroUsr { get; set; }
-        /*
-        public string MesIniFmt
-        {
-            get
-            {
-                return string.Format("{0}-{1}-{2}",DateTime.Now.);
-            }
-        }*/
+
     }
 }

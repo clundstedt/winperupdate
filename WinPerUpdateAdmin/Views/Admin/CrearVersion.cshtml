@@ -155,8 +155,8 @@
                                         </div>
                                     </div>
                                     <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a href="Admin#/EditComponente/{{idversion}}/{{ejecutable.Name}}" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C'">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                        <a href="Admin#/EditComponente/{{idversion}}/{{ejecutable.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
+                                            <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
                                         </a>
                                     </div>
                                 </div>
@@ -185,9 +185,10 @@
                                         </div>
                                     </div>
                                     <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a href="Admin#/EditComponente/{{idversion}}/{{reporte.Name}}" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C'">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                        <a href="Admin#/EditComponente/{{idversion}}/{{reporte.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
+                                            <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
                                         </a>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -215,8 +216,8 @@
                                         </div>
                                     </div>
                                     <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a href="Admin#/EditComponente/{{idversion}}/{{otro.Name}}" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C'">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                                        <a href="Admin#/EditComponente/{{idversion}}/{{otro.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
+                                            <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
                                         </a>
                                     </div>
                                 </div>

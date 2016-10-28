@@ -14,6 +14,7 @@
 
         function activate() {
             $scope.versiones = [];
+           
 
             serviceAdmin.getVersiones().success(function (data) {
                 $scope.versiones = data;

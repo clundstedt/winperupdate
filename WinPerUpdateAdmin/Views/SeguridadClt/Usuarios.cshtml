@@ -48,9 +48,10 @@
                             </div>
                         </div>
                         <div class="panel-footer text-right" ng-init="inficha=true">
-                            <a href="/SeguridadClt#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
-                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            <a href="/SeguridadClt#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" ng-disabled="blockBtn" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
                             </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -77,9 +78,10 @@
                             </div>
                         </div>
                         <div class="panel-footer text-right" ng-init="inficha=true">
-                            <a href="/SeguridadClt#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" class="btn btn-labeled btn-primary">
-                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Editar
+                            <a href="/SeguridadClt#/EditCliente/{{idCliente}}/Usuario/{{usuario.Id}}" ng-disabled="blockBtn" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary">
+                                <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
                             </a>
+                            
                         </div>
                     </div>
                 </div>

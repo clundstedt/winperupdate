@@ -9,7 +9,7 @@
 
     function ambientes($scope, serviceAmbientes, serviceSeguridad) {
         $scope.title = 'Ambientes';
-
+ 
         activate();
 
         function activate() {
