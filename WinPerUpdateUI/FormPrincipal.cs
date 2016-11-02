@@ -22,6 +22,7 @@ namespace WinPerUpdateUI
         ContextMenu ContextMenu1 = new ContextMenu();
         private bool ServerInAccept = true;
         private bool TreePoblado = false;
+        private ClienteBo cliente = new ClienteBo();
 
         public FormPrincipal()
         {
@@ -42,8 +43,10 @@ namespace WinPerUpdateUI
         {
             //' Restaurar por si se minimizó
             //' Este evento manejará tanto los menús Restaurar como el NotifyIcon.DoubleClick
-            ShowInTaskbar = true;
-            WindowState = FormWindowState.Normal;
+            //ShowInTaskbar = true;
+            //WindowState = FormWindowState.Normal;
+            var form = new frmVersiones();
+            form.Show();
         }
 
         private void AcercaDe_Click(object sender, System.EventArgs e)
@@ -115,30 +118,48 @@ namespace WinPerUpdateUI
 
         private void notifyIcon2_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            ShowInTaskbar = true;
-            WindowState = FormWindowState.Normal;
+            //ShowInTaskbar = true;
+            //WindowState = FormWindowState.Normal;
+            var form = new frmVersiones();
+            form.Show();
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
             ContextMenu1.MenuItems.Add("&Restaurar", new EventHandler(this.Restaurar_Click));
             ContextMenu1.MenuItems[0].DefaultItem = true;
-            ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
+            ContextMenu1.MenuItems[0].Enabled = false;
 
-            //'
-            //' Añadimos un separador
+            ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
             ContextMenu1.MenuItems.Add("-");
-            //' Añadimos el elemento Acerca de...
             ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
-            //' Añadimos otro separador
             ContextMenu1.MenuItems.Add("-");
-            //' Añadimos la opción de salir
             ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
 
             notifyIcon2.ContextMenu = ContextMenu1;
 
             WindowState = FormWindowState.Minimized;
-            ShowInTaskbar = false;
+            ShowInTaskbar = false;            
+            timer1.Stop();
+
+            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+            string nroLicencia = key.GetValue("Licencia").ToString();
+            key.Close();
+
+            if (!string.IsNullOrEmpty(nroLicencia))
+            {
+                string server = ConfigurationManager.AppSettings["server"];
+                string port = ConfigurationManager.AppSettings["port"];
+
+                string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + nroLicencia + "#");
+                cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
+                if (cliente != null)
+                {
+                    ContextMenu1.MenuItems[0].Enabled = true;
+                    timer1.Start();
+                }
+            }
+            
         }
 
         private void Ambiente_Click(object sender, EventArgs e)
@@ -159,19 +180,22 @@ namespace WinPerUpdateUI
             if (ServerInAccept)
             {
                 // TODO: Insert monitoring activities here.
+
                 string server = ConfigurationManager.AppSettings["server"];
                 string port = ConfigurationManager.AppSettings["port"];
                 string dirTmp = Path.GetTempPath();
                 dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
                 var versiones = new List<VersionBo>();
-                string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
+                string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#");
                 versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
                 if (versiones != null)
                 {
                     var release = versiones.SingleOrDefault(x => x.Estado == 'P');
                     if (release != null)
                     {
+                        Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+
                         if (!File.Exists(dirTmp + release.Instalador))
                         {
                             ServerInAccept = false;
@@ -202,42 +226,25 @@ namespace WinPerUpdateUI
                             notifyIcon2.ShowBalloonTip(1000);
 
                             label2.Text = string.Format("Ya se encuentra disponible la versión {0} de Winper. Esta versión contiene las siguientes actualizaciones:", release.Release);
-                            treeModulos.Nodes.Clear();
 
-                            treeModulos.Nodes.Add("Winper V " + release.Release);
-                            string modulo = "";
-                            foreach (var componente in release.Componentes)
-                            {
-                                if (!modulo.Equals(componente.Modulo))
-                                {
-                                    modulo = componente.Modulo;
-                                    treeModulos.Nodes[0].Nodes.Add(modulo);
-                                }
-                            }
-
-                            //WindowState = FormWindowState.Normal;
+                            key.SetValue("Version", release.Release);
+                            key.SetValue("Status", "");
 
                             ServerInAccept = true;
                             TreePoblado = true;
                         }
-                        else if (!TreePoblado)
+                        else
                         {
-                            label2.Text = string.Format("Ya se encuentra disponible la versión {0} de Winper. Esta versión contiene las siguientes actualizaciones:", release.Release);
-                            treeModulos.Nodes.Clear();
-
-                            treeModulos.Nodes.Add("Winper V " + release.Release);
-                            string modulo = "";
-                            foreach (var componente in release.Componentes)
+                            string nroVersion = key.GetValue("Version").ToString();
+                            if (!nroVersion.Equals(release.Release))
                             {
-                                if (!modulo.Equals(componente.Modulo))
-                                {
-                                    modulo = componente.Modulo;
-                                    treeModulos.Nodes[0].Nodes.Add(modulo);
-                                }
+                                // Actualizamos la versión en la registry
+                                key.SetValue("Version", release.Release);
+                                key.SetValue("Status", "");
                             }
-
-                            TreePoblado = true;
                         }
+
+                        key.Close();
                     }
                 }
             }

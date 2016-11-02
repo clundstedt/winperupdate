@@ -33,6 +33,8 @@
             this.txtNroLicencia = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.clbAmbientes = new System.Windows.Forms.CheckedListBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbPerfil = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -46,7 +48,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(225, 183);
+            this.btnAceptar.Location = new System.Drawing.Point(225, 232);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(100, 23);
             this.btnAceptar.TabIndex = 2;
@@ -56,7 +58,7 @@
             // 
             // txtNroLicencia
             // 
-            this.txtNroLicencia.Location = new System.Drawing.Point(17, 25);
+            this.txtNroLicencia.Location = new System.Drawing.Point(17, 24);
             this.txtNroLicencia.Name = "txtNroLicencia";
             this.txtNroLicencia.Size = new System.Drawing.Size(309, 20);
             this.txtNroLicencia.TabIndex = 3;
@@ -66,7 +68,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 60);
+            this.label2.Location = new System.Drawing.Point(16, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 13);
             this.label2.TabIndex = 0;
@@ -75,16 +77,39 @@
             // clbAmbientes
             // 
             this.clbAmbientes.FormattingEnabled = true;
-            this.clbAmbientes.Location = new System.Drawing.Point(19, 81);
+            this.clbAmbientes.Location = new System.Drawing.Point(19, 76);
             this.clbAmbientes.Name = "clbAmbientes";
             this.clbAmbientes.Size = new System.Drawing.Size(306, 94);
             this.clbAmbientes.TabIndex = 4;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 182);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Perfíl Usuario";
+            // 
+            // cmbPerfil
+            // 
+            this.cmbPerfil.FormattingEnabled = true;
+            this.cmbPerfil.Items.AddRange(new object[] {
+            "Administrador",
+            "DBA",
+            "Otro"});
+            this.cmbPerfil.Location = new System.Drawing.Point(20, 199);
+            this.cmbPerfil.Name = "cmbPerfil";
+            this.cmbPerfil.Size = new System.Drawing.Size(303, 21);
+            this.cmbPerfil.TabIndex = 6;
             // 
             // Ambiente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(348, 218);
+            this.ClientSize = new System.Drawing.Size(335, 267);
+            this.Controls.Add(this.cmbPerfil);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.clbAmbientes);
             this.Controls.Add(this.txtNroLicencia);
             this.Controls.Add(this.btnAceptar);
@@ -106,5 +131,7 @@
         private System.Windows.Forms.TextBox txtNroLicencia;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckedListBox clbAmbientes;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbPerfil;
     }
 }

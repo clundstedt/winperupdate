@@ -155,7 +155,7 @@ namespace WinperUpdateServer
 
                                 break;
 
-                            case "checklicencia":
+                            case "checklicencia": // checklicencia#nroLicencia
                                 string nroLicencia = token[1];
                                 var cliente = ProcessMsg.Cliente.GetClienteByLicencia(nroLicencia, eventLog1);
 
@@ -163,7 +163,7 @@ namespace WinperUpdateServer
                                 Send(handler, json);
                                 break;
 
-                            case "ambientes":
+                            case "ambientes": // ambientes#idCliente
                                 idCliente = int.Parse(token[1]);
                                 var ambientes = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, eventLog1);
 
@@ -171,11 +171,9 @@ namespace WinperUpdateServer
                                 Send(handler, json);
                                 break;
 
-                            case "getversiones":
-                                //eventLog1.WriteEntry(String.Format("Call ListarVersiones('{0}','{1}')", token[1], dirVersiones), EventLogEntryType.Information, ++eventId);
-
-                                //var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
-                                var lista = ProcessMsg.Version.GetVersiones(eventLog1);
+                            case "getversiones": // getversiones#idCliente
+                                idCliente = int.Parse(token[1]);
+                                var lista = ProcessMsg.Cliente.GetVersiones(idCliente, eventLog1);
                                 foreach (var item in lista)
                                 {
                                     if (!String.IsNullOrEmpty(item.Instalador))
@@ -187,6 +185,14 @@ namespace WinperUpdateServer
                                 }
 
                                 json = JsonConvert.SerializeObject(lista);
+                                Send(handler, json);
+                                break;
+
+                            case "getversion": // getversiones#NumVersion
+                                string release = token[1];
+                                var version = ProcessMsg.Version.GetVersion(release, eventLog1);
+
+                                json = JsonConvert.SerializeObject(version);
                                 Send(handler, json);
                                 break;
 

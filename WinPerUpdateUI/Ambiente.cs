@@ -18,11 +18,64 @@ namespace WinPerUpdateUI
         public Ambiente()
         {
             InitializeComponent();
+
+            cmbPerfil.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            try
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+
+                txtNroLicencia.Text = key.GetValue("Licencia").ToString();
+                string ambientes = key.GetValue("Ambientes").ToString();
+                string perfil = key.GetValue("Perfil").ToString();
+                key.Close();
+
+                string server = ConfigurationManager.AppSettings["server"];
+                string port = ConfigurationManager.AppSettings["port"];
+
+                var cliente = new ClienteBo();
+                string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + txtNroLicencia.Text + "#");
+                cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
+
+                if (cliente != null)
+                {
+                    var lista = new List<AmbienteBo>();
+                    json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id + "#");
+                    lista = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
+                    if (lista != null)
+                    {
+                        clbAmbientes.Items.Clear();
+
+                        foreach (var item in lista)
+                        {
+                            clbAmbientes.Items.Add(item.Nombre, ambientes.IndexOf(item.Nombre) >= 0);
+                        }
+                    }
+
+                    int index = cmbPerfil.FindString(perfil);
+                    cmbPerfil.SelectedIndex = index;
+                }
+
+            }
+            catch (Exception ex) { };
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
+            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+            key.SetValue("Licencia", txtNroLicencia.Text);
+            key.SetValue("Perfil", cmbPerfil.Items[cmbPerfil.SelectedIndex]);
+            key.SetValue("Version", "");
+            key.SetValue("Status", "");
 
+            string ambientes = "";
+            foreach (var item in clbAmbientes.CheckedItems)
+            {
+                ambientes += ambientes.Length == 0 ? item : "," + item;
+            }
+
+            key.SetValue("Ambientes", ambientes);
+            key.Close();
         }
 
         private void txtNroLicencia_TextChanged(object sender, EventArgs e)

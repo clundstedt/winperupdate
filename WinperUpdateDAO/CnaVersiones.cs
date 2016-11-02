@@ -18,5 +18,22 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public SqlDataReader Execute(string release)
+        {
+            SpName = @" select * from Versiones where NumVersion = @release";
+            try
+            {
+                ParmsDictionary.Add("@release", release);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
     }
 }
