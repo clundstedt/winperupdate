@@ -12,11 +12,52 @@
             getCliente: getCliente,
             getVersion: getVersion,
             getVersiones: getVersiones,
+            getScript: getScript,
 
-            addVersion: addVersion
+            existeTarea: existeTarea,
+
+            addVersion: addVersion,
+            addTarea: addTarea
         };
 
         return service;
+
+        function getScript(idVersion, NameFile) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/'+idVersion+'/Componentes/'+NameFile+'/script',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene componente SQL');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene componente SQL');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+
+        }
 
         function getVersiones(id) {
             var deferred = $q.defer();
@@ -154,6 +195,91 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
                     deferred.reject('No se pudo agregar la versión al cliente');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addTarea(idVersion, idCliente, idAmbientes, CodPrf, Modulo, NameFile) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var tarea = {
+                "idClientes": idCliente,
+                "Ambientes": {
+                    "idAmbientes": idAmbientes
+                },
+                "CodPrf": CodPrf,
+                "Estado": 0,
+                "Modulo": Modulo,
+                "NameFile": NameFile,
+                "Error": ""
+            }
+                
+            $.ajax({
+                url: "api/Version/" + idVersion + "/Tarea",
+                type: "POST",
+                dataType: 'Json',
+                data: tarea,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la tarea');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo agregar la tarea');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function existeTarea(idCliente, idAmbiente, idVersion, nameFile) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Tarea/' + idCliente + '/' + idAmbiente + '/' + idVersion + '/' + nameFile + '/Existe',
+                type: "get",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existe la tarea');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existe la tarea');
                 }
             });
 

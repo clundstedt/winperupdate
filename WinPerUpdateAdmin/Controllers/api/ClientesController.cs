@@ -179,7 +179,10 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+        
         #endregion
+
+
 
         #region post
         [Route("api/Clientes")]

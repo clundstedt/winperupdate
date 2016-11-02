@@ -37,5 +37,28 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public SqlDataReader Execute(int idCliente, int idAmbiente, int idVersion, string nameFile)
+        {
+            SpName = @"SELECT * FROM tareas 
+                                      WHERE idClientes = @idClientes
+                                        AND idAmbientes = @idAmbientes
+                                        AND idVersion = @idVersion
+                                        AND NameFile = @NameFile";
+            try
+            {
+                ParmsDictionary.Add("@idClientes", idCliente);
+                ParmsDictionary.Add("@idAmbientes", idAmbiente);
+                ParmsDictionary.Add("@idVersion", idVersion);
+                ParmsDictionary.Add("@NameFile", nameFile);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }
