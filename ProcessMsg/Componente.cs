@@ -73,6 +73,7 @@ namespace ProcessMsg
             return lista;
         }
 
+
         public static Model.AtributosArchivoBo AddComponente(int idVersion, Model.AtributosArchivoBo componente)
         {
             try

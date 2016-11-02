@@ -119,7 +119,7 @@
                             <span class="fa fa-file-o"></span> Sin Componentes
                         </div>
                         <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in version.Componentes | filtroOtros">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in version.Componentes | filtroOtros" ng-controller="controllerHome">
                                 <div class="item panel panel-success">
                                     <div class="panel-heading">
                                         <h3 class="panel-title single-line">{{otro.Name}}</h3>
@@ -144,7 +144,7 @@
                                                             <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li ng-repeat="ambiente in ambientes"><a href="#">{{ambiente.Nombre}}</a></li>
+                                                            <li  ng-repeat="ambiente in ambientes"><a ng-click="ShowConfirmEjecSQL(ambiente.idAmbientes, ambiente.Nombre, otro.Modulo, otro.Name, userSession.Cliente.Id, userSession.CodPrf)" data-toggle="modal">{{ambiente.Nombre}}</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>  
@@ -159,11 +159,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{otro.Modulo}}
-                                {{otro.Name}}
-                                {{version.IdVersion}}
-                                {{userSession}}
-                                {{idCliente}}
                             </div>
                         </div>
                     </div>
@@ -189,6 +184,45 @@
                     <span style="color: red">{{mensaje}}</span>
                     <button class="btn btn-danger" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
                     <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ejecsql-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmar Ejecución</h4>
+                </div>
+                <div class="modal-body">
+                    A continuación se procederá a ejecutar el script <b>{{nombrearchExSQL}}</b> de la versión <b>{{version.Release}}</b> en el 
+                    ambiente <b>{{nombreambienteExSQL}}</b>, esta tarea <b>NO</b> es inmediata, debe esperar a que WinperUpdate la realice.
+                    Si desea ejecutar usted el script, puede copiarlo haciendo click en la opción <b>Ver Script</b>.
+                    <textarea class="form-control" ng-show="showScript" ng-model="txtarea" rows="15"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion)" ng-disabled="estaVigente">Ejecutar Script</button>
+                    <button class="btn btn-info" ng-click="ShowScriptSQL(version.IdVersion, nombrearchExSQL, idAmbienteExSQL, userSession)" ng-disabled="estaVigente">Ver Script</button>
+                    <button class="btn btn-default btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="avisoexsql-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Aviso de Ejecución</h4>
+                </div>
+                <div class="modal-body">
+                    {{msgAvisoExSQL}}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>

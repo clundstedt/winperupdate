@@ -20,6 +20,15 @@
             $scope.idUsuario = $("#idToken").val();
             $scope.idAmbiente = 0;
             $scope.mensaje = "";
+            $scope.showScript = false;
+
+            $scope.idAmbienteExSQL = -1;
+            $scope.nombreambienteExSQL = "";
+            $scope.moduloExSQL = "";
+            $scope.nombrearchExSQL = "";
+            $scope.idcltExSQL = -1;
+            $scope.codprfExSQL = -1;
+            $scope.msgAvisoExSQL = "";
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idversion = $routeParams.idVersion;
@@ -77,6 +86,46 @@
                 $scope.idAmbiente = id;
                 $scope.estaVigente = false;
                 $("#publish-modal").modal('show');
+            }
+
+            $scope.ShowConfirmEjecSQL = function (id, nombre,modulo,  nombrearch, idClt, CodPrf) {
+                $scope.idAmbienteExSQL = id;
+                $scope.nombreambienteExSQL = nombre;
+                $scope.moduloExSQL = modulo;
+                $scope.nombrearchExSQL = nombrearch;
+                $scope.idcltExSQL = idClt;
+                $scope.codprfExSQL = CodPrf;
+                $("#ejecsql-modal").modal('show');
+            }
+
+            $scope.EjecutarTareaSQL = function (idVersion) {
+                $("#ejecsql-modal").modal('toggle');
+
+                serviceAdmin.existeTarea($scope.idcltExSQL, $scope.idAmbienteExSQL, idVersion, $scope.nombrearchExSQL).success(function (data) {
+                    if (!data) {
+                        serviceAdmin.addTarea(idVersion, $scope.idcltExSQL, $scope.idAmbienteExSQL, $scope.codprfExSQL, $scope.moduloExSQL, $scope.nombrearchExSQL).success(function (data) {
+                            if (data == 1) {
+                                $scope.msgAvisoExSQL = "El script ya fue programado, WinperUpdate procederá a ejecutarlo en el ambiente seleccionado.";
+                            }
+                        }).error(function (err) {
+                            $scope.msgAvisoExSQL = "ERROR CONTROLADO: " + err;
+                        });
+                    } else {
+                        $scope.msgAvisoExSQL = "El script ya fue programado en este ambiente y versión.";
+                    }
+                }).error(function (err) {
+                    console.log(err);
+                });
+                $("#avisoexsql-modal").modal('show');
+            }
+
+            $scope.ShowScriptSQL = function (idVersion, NameFile) {
+                serviceAdmin.getScript(idVersion, NameFile).success(function (data) {
+                    $scope.showScript = true;
+                    $scope.txtarea = data;
+                }).error(function (err) {
+                    console.log(err);
+                });
             }
 
             $scope.Publicar = function () {

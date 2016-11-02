@@ -50,6 +50,19 @@ namespace ProcessMsg
             }
         }
 
+        public static bool ExisteTarea(int idCliente, int idAmbiente, int idVersion, string nameFile)
+        {
+            try
+            {
+                return new CnaTareas().Execute(idCliente, idAmbiente, idVersion, nameFile).Read();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         public static int Add(ProcessMsg.Model.TareaBo tarea)
         {
             try

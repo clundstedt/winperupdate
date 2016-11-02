@@ -20,7 +20,7 @@ namespace WinperUpdateDAO
                                           ,idVersion
                                           ,NameFile
                                           ,Error)
-                                    VALUE (@idClientes
+                                    VALUES(@idClientes
                                           ,@idAmbientes
                                           ,@CodPrf
                                           ,@Estado
