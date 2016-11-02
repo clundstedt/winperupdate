@@ -23,6 +23,7 @@
             $scope.fechaini = '';
             $scope.formData.estado = 'N';
             $scope.mensaje = '';
+            
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idversion = $routeParams.idVersion;

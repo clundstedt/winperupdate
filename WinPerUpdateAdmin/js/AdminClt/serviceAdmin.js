@@ -12,6 +12,7 @@
             getCliente: getCliente,
             getVersion: getVersion,
             getVersiones: getVersiones,
+            getAmbientes: getAmbientes,
 
             addVersion: addVersion
         };
@@ -126,6 +127,44 @@
             }
 
             return promise;
+        }
+
+        function getAmbientes(idCliente, idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Cliente/' + idCliente + '/Version/' + idVersion + '/Ambiente',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen ambientes');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen ambientes');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+
         }
 
         function addVersion(id, idCliente, idAmbiente, estado) {

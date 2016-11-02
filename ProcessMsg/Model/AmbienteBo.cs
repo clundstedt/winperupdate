@@ -18,5 +18,13 @@ namespace ProcessMsg.Model
         public string UserDbo { get; set; }
         public string PwdDbo { get; set; }
         public char Estado { get; set; }
+
+        public string NomTipo
+        {
+            get
+            {
+                return Tipo == 1 ? "Producción" : "Desarrollo";
+            }
+        }
     }
 }

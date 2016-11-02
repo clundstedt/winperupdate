@@ -60,16 +60,16 @@ namespace ProcessMsg
             return lista;
         }
 
-        public static List<Model.VersionBo> GetVersion(string release, EventLog log)
+        public static Model.VersionBo GetVersion(string release, EventLog log)
         {
-            var lista = new List<Model.VersionBo>();
+            var obj = new Model.VersionBo();
             var consulta = new CnaVersiones();
             try
             {
                 var dr = consulta.Execute(release);
-                while (dr.Read())
+                if (dr.Read())
                 {
-                    var obj = new Model.VersionBo
+                    obj = new Model.VersionBo
                     {
                         IdVersion = int.Parse(dr["idVersion"].ToString()),
                         Release = dr["NumVersion"].ToString(),
@@ -95,9 +95,10 @@ namespace ProcessMsg
                         }
                     };
 
-                    lista.Add(obj);
                 }
                 dr.Close();
+
+                return obj;
             }
             catch (Exception ex)
             {
@@ -106,7 +107,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
 
-            return lista;
         }
 
         public static List<string> GetModulosVersiones(int idVersion, EventLog log)
@@ -269,6 +269,11 @@ namespace ProcessMsg
                     file.WriteLine(@"");
                     file.WriteLine(@"[Icons]");
                     file.WriteLine(@"Name: ""{group}\WinPer""; Filename: ""{app}\reconect.exe""");
+
+                    file.WriteLine(@"");
+                    file.WriteLine(@"[Registry]");
+                    file.WriteLine(@"Root: HKCU; Subkey: ""SOFTWARE\WinperUpdate""; ValueType: string; ValueName: ""Version""; ValueData: """ + version.Release + "\"");
+                    file.WriteLine(@"Root: HKCU; Subkey: ""SOFTWARE\WinperUpdate""; ValueType: string; ValueName: ""Status""; ValueData: """ + "updated" + "\"");
 
                     file.Close();
                 }

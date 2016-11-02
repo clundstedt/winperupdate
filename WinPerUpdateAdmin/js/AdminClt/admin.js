@@ -38,7 +38,7 @@
 
                     serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
                         //console.log(JSON.stringify(cliente));
-                        serviceAmbientes.getAmbientes(cliente.Id).success(function (ambiente) {
+                        serviceAdmin.getAmbientes(cliente.Id, $scope.idversion).success(function (ambiente) {
                             $scope.ambientes = ambiente;
                         }).
                         error(function (err) {

@@ -15,10 +15,13 @@
         $scope.blockBoton = false;
         $scope.tipoAlerta = "alert-success";
         $scope.msgAlerta = "Clave cambiadas exitosamente!";
+
+        
         
         activate();
 
         function activate() {
+
 
             factoryHome.getUsuarioSession($scope.id).success(function (data) {
                 $scope.userSession = data;

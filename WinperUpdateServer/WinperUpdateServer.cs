@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -117,6 +117,8 @@ namespace WinperUpdateServer
             string json = string.Empty;
             int idCliente = 0;
 
+            
+
             try
             {
                 // Retrieve the state object and the handler socket
@@ -150,9 +152,14 @@ namespace WinperUpdateServer
 
                         switch (token[0])
                         {
-                            case "querys":
+                            case "tareas":
                                 idCliente = int.Parse(token[1]);
+                                int CodPrf = int.Parse(token[2]);
 
+                                var tareas = ProcessMsg.Tareas.GetTareasPendientes(idCliente, CodPrf);
+
+                                json = JsonConvert.SerializeObject(tareas);
+                                Send(handler, json);
                                 break;
 
                             case "checklicencia": // checklicencia#nroLicencia
@@ -208,13 +215,13 @@ namespace WinperUpdateServer
 
                             case "getcomponentes":
                                 //var listaArchivos = ProcessMsg.Version.ListarDirectorio(token[1], dirVersiones, eventLog1);
-                                var version = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == int.Parse(token[1]));
+                                var version2 = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == int.Parse(token[1]));
 
                                 var listaArchivos = ProcessMsg.Componente.GetComponentes(int.Parse(token[1]), token[2], eventLog1);
 
                                 foreach (var archivo in listaArchivos)
                                 {
-                                    string fileName = dirVersiones + version.Release + "\\" + archivo.Name;
+                                    string fileName = dirVersiones + version2.Release + "\\" + archivo.Name;
                                     System.IO.FileInfo info = new System.IO.FileInfo(fileName);
                                     archivo.Length = info.Length;
                                 }

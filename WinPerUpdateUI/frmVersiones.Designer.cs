@@ -89,6 +89,8 @@
             this.treeModulos.Name = "treeModulos";
             this.treeModulos.Size = new System.Drawing.Size(182, 344);
             this.treeModulos.TabIndex = 0;
+            this.treeModulos.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeModulos_NodeMouseClick);
+            this.treeModulos.Click += new System.EventHandler(this.treeModulos_Click);
             // 
             // listView1
             // 

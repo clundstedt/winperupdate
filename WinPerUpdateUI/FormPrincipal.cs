@@ -66,6 +66,7 @@ namespace WinPerUpdateUI
 
         private void FormPrincipal_Activated(object sender, EventArgs e)
         {
+            /*
             string server = ConfigurationManager.AppSettings["server"];
             string port = ConfigurationManager.AppSettings["port"];
             string dirTmp = Path.GetTempPath();
@@ -113,7 +114,7 @@ namespace WinPerUpdateUI
                     }
                 }
             }
-
+            */
         }
 
         private void notifyIcon2_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -186,7 +187,7 @@ namespace WinPerUpdateUI
                 string dirTmp = Path.GetTempPath();
                 dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
-                var versiones = new List<VersionBo>();
+               var versiones = new List<VersionBo>();
                 string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#");
                 versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
                 if (versiones != null)
@@ -195,6 +196,8 @@ namespace WinPerUpdateUI
                     if (release != null)
                     {
                         Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                        string nroVersion = key.GetValue("Version").ToString();
+                        if (nroVersion.Equals(release.Release)) return;
 
                         if (!File.Exists(dirTmp + release.Instalador))
                         {
@@ -225,8 +228,6 @@ namespace WinPerUpdateUI
 
                             notifyIcon2.ShowBalloonTip(1000);
 
-                            label2.Text = string.Format("Ya se encuentra disponible la versión {0} de Winper. Esta versión contiene las siguientes actualizaciones:", release.Release);
-
                             key.SetValue("Version", release.Release);
                             key.SetValue("Status", "");
 
@@ -235,7 +236,6 @@ namespace WinPerUpdateUI
                         }
                         else
                         {
-                            string nroVersion = key.GetValue("Version").ToString();
                             if (!nroVersion.Equals(release.Release))
                             {
                                 // Actualizamos la versión en la registry
@@ -250,108 +250,6 @@ namespace WinPerUpdateUI
             }
         }
 
-        private void treeModulos_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void treeModulos_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
-
-            var versiones = new List<VersionBo>();
-            string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
-            versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
-
-            string modulo = e.Node.Text;
-            var padre = e.Node.Parent;
-            if (padre == null)
-            {
-                listView1.Clear();
-
-                listView1.Columns.Add("Número", 80, HorizontalAlignment.Left);
-                listView1.Columns.Add("Fecha", 120, HorizontalAlignment.Left);
-                listView1.Columns.Add("Comentario", 290, HorizontalAlignment.Left);
-
-                if (versiones != null)
-                {
-                    string[] token = modulo.Split(new Char[] { ' ' });
-
-                    var release = versiones.SingleOrDefault(x => x.Release.Equals(token[2]));
-                    if (release != null)
-                    {
-                        var item = new ListViewItem(release.Release);
-                        item.SubItems.Add(release.FechaFmt);
-                        item.SubItems.Add(release.Comentario);
-
-                        listView1.Items.Add(item);
-                    }
-                }
-            }
-            else
-            {
-                listView1.Clear();
-
-                listView1.Columns.Add("Nombre", 120, HorizontalAlignment.Left);
-                listView1.Columns.Add("Fecha", 120, HorizontalAlignment.Left);
-                listView1.Columns.Add("Versión", 70, HorizontalAlignment.Left);
-                listView1.Columns.Add("Comentario", 290, HorizontalAlignment.Left);
-
-                if (versiones != null)
-                {
-                    string[] token = padre.Text.Split(new Char[] { ' ' });
-
-                    var release = versiones.SingleOrDefault(x => x.Release.Equals(token[2]));
-
-                    foreach (var componente in release.Componentes.Where(x => x.Modulo.Equals(modulo)))
-                    {
-                        var item = new ListViewItem(componente.Name);
-                        item.SubItems.Add(componente.DateCreateFmt);
-                        item.SubItems.Add(componente.Version);
-                        item.SubItems.Add(componente.Comentario);
-
-                        listView1.Items.Add(item);
-                    }
-                }
-
-            }
-        }
-
-        private void btnInstalar_Click(object sender, EventArgs e)
-        {
-            string dirTmp = Path.GetTempPath();
-            dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
-
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
-
-            var versiones = new List<VersionBo>();
-            string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
-            versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
-
-            for (int i = 0; i < treeModulos.Nodes.Count; i++)
-            {
-                string[] token = treeModulos.Nodes[i].Text.Split(new Char[] { ' ' });
-                var release = versiones.SingleOrDefault(x => x.Release.Equals(token[2]));
-
-                if (release != null)
-                {
-                    if (File.Exists(dirTmp + release.Instalador))
-                    {
-                        string Command = dirTmp + release.Instalador;
-
-                        Process myProcess = new Process();
-                        myProcess.StartInfo.FileName = Command;
-                        myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                        myProcess.StartInfo.RedirectStandardError = true;
-                        myProcess.StartInfo.UseShellExecute = false;
-
-                        myProcess.Start();
-                    }
-                }
-            }
-
-        }
     }
 }

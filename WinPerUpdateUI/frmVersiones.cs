@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using ProcessMsg.Model;
 using System.Windows.Forms;
 using System.Configuration;
+using System.IO;
+using System.Diagnostics;
 
 namespace WinPerUpdateUI
 {
@@ -29,6 +31,7 @@ namespace WinPerUpdateUI
             {
                 lblTitulo.Text = "Usted se encuentra Actualizado";
                 lblSubtitulo.Text = "Usted ya tiene la última versión liberada de WINPER. El detalle de esta versión se muestra a continuación:";
+                btnInstalar.Enabled = false;
             }
             else
             {
@@ -70,6 +73,105 @@ namespace WinPerUpdateUI
         }
 
         private void btnInstalar_Click(object sender, EventArgs e)
+        {
+            string dirTmp = Path.GetTempPath();
+            dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
+
+            string server = ConfigurationManager.AppSettings["server"];
+            string port = ConfigurationManager.AppSettings["port"];
+
+
+            for (int i = 0; i < treeModulos.Nodes.Count; i++)
+            {
+                string[] token = treeModulos.Nodes[i].Text.Split(new Char[] { ' ' });
+
+                var version = new VersionBo();
+                string json = Utils.StrSendMsg(server, int.Parse(port), "getversion#" + token[2] + "#");
+                version = JsonConvert.DeserializeObject<VersionBo>(json);
+
+                if (version != null)
+                {
+                    if (File.Exists(dirTmp + version.Instalador))
+                    {
+                        string Command = dirTmp + version.Instalador;
+
+                        Process myProcess = new Process();
+                        myProcess.StartInfo.FileName = Command;
+                        myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+                        myProcess.StartInfo.RedirectStandardError = true;
+                        myProcess.StartInfo.UseShellExecute = false;
+
+                        myProcess.Start();
+                    }
+                }
+            }
+        }
+
+        private void treeModulos_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            string server = ConfigurationManager.AppSettings["server"];
+            string port = ConfigurationManager.AppSettings["port"];
+
+            string modulo = e.Node.Text;
+
+            var padre = e.Node.Parent;
+            if (padre == null)
+            {
+                string[] token = modulo.Split(new Char[] { ' ' });
+
+                var version = new VersionBo();
+                string json = Utils.StrSendMsg(server, int.Parse(port), "getversion#" + token[2] + "#");
+                version = JsonConvert.DeserializeObject<VersionBo>(json);
+
+                listView1.Clear();
+
+                listView1.Columns.Add("Número", 80, HorizontalAlignment.Left);
+                listView1.Columns.Add("Fecha", 120, HorizontalAlignment.Left);
+                listView1.Columns.Add("Comentario", 290, HorizontalAlignment.Left);
+
+                if (version != null)
+                {
+
+                    var item = new ListViewItem(version.Release);
+                    item.SubItems.Add(version.FechaFmt);
+                    item.SubItems.Add(version.Comentario);
+
+                    listView1.Items.Add(item);
+                }
+            }
+            else
+            {
+                string[] token = padre.Text.Split(new Char[] { ' ' });
+
+                var version = new VersionBo();
+                string json = Utils.StrSendMsg(server, int.Parse(port), "getversion#" + token[2] + "#");
+                version = JsonConvert.DeserializeObject<VersionBo>(json);
+
+                listView1.Clear();
+
+                listView1.Columns.Add("Nombre", 120, HorizontalAlignment.Left);
+                listView1.Columns.Add("Fecha", 120, HorizontalAlignment.Left);
+                listView1.Columns.Add("Versión", 70, HorizontalAlignment.Left);
+                listView1.Columns.Add("Comentario", 290, HorizontalAlignment.Left);
+
+                if (version != null)
+                {
+
+                    foreach (var componente in version.Componentes.Where(x => x.Modulo.Equals(modulo)))
+                    {
+                        var item = new ListViewItem(componente.Name);
+                        item.SubItems.Add(componente.DateCreateFmt);
+                        item.SubItems.Add(componente.Version);
+                        item.SubItems.Add(componente.Comentario);
+
+                        listView1.Items.Add(item);
+                    }
+                }
+
+            }
+        }
+
+        private void treeModulos_Click(object sender, EventArgs e)
         {
 
         }

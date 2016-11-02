@@ -29,6 +29,25 @@ namespace MiPrimerAPP.Controllers.api
             }
         }
 
+        [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/Ambiente")]
+        [HttpGet]
+        public Object GetAmbientesByVersion(int idCliente, int idVersion)
+        {
+            try
+            {
+                var list = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, idVersion, null);
+                if (list.Count == 0)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.AmbienteBo)null);
+                }
+                return list.OrderBy(x => x.Nombre);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Cliente/{idCliente:int}/Ambiente/{idAmbiente:int}")]
         [HttpGet]
         public Object Get(int idCliente,int idAmbiente)
