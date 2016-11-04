@@ -24,5 +24,43 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public int ExecuteTareaReportada(int idTarea)
+        {
+            SpName = @"UPDATE tareas SET reportado = 1 WHERE idtareas = @idTareas";
+            try
+            {
+                ParmsDictionary.Add("@idTareas", idTarea);
+
+                return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public int ExecuteTodasTareas(int idCliente, int idVersion)
+        {
+            SpName = @"UPDATE tareas SET reportado = 1 
+                                                 WHERE idClientes = @idClientes 
+                                                   AND idVersion = @idVersion
+                                                   AND Estado = 0
+                                                    OR Estado = 2";
+            try
+            {
+                ParmsDictionary.Add("@idClientes", idCliente);
+                ParmsDictionary.Add("@idVersion", idVersion);
+
+                return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
     }
 }

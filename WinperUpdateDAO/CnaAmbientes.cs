@@ -56,6 +56,28 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+        /// <summary>
+        /// Obtiene el estado del ambiente segun las tareas programadas
+        /// </summary>
+        /// <param name="idVersion"></param>
+        /// <param name="idAmbiente"></param>
+        /// <returns></returns>
+        public SqlDataReader ExecuteAmbienteOK(int idVersion, int idAmbiente)
+        {
+            SpName = @"SELECT dbo.fcn_ambienteok(@idVersion,@idAmbiente) AS OK";
+            try
+            {
+                ParmsDictionary.Add("@idVersion", idVersion);
+                ParmsDictionary.Add("@idAmbiente", idAmbiente);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
 
     }
 }

@@ -19,7 +19,9 @@ namespace WinperUpdateDAO
                                           ,Modulo
                                           ,idVersion
                                           ,NameFile
-                                          ,Error)
+                                          ,Error
+                                          ,FechaRegistro
+                                          ,Reportado)
                                     VALUES(@idClientes
                                           ,@idAmbientes
                                           ,@CodPrf
@@ -27,7 +29,9 @@ namespace WinperUpdateDAO
                                           ,@Modulo
                                           ,@idVersion
                                           ,@NameFile
-                                          ,@Error)";
+                                          ,@Error
+                                          ,GetDate()
+                                          ,0)";
             try
             {
                 ParmsDictionary.Add("@idClientes",idClientes);

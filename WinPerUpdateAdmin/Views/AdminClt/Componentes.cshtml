@@ -10,15 +10,18 @@
 <br/>
 <div class="container">
     <div class="row">
+        <div class="alert alert-warning" ng-show="existeTareaAtrasada" ng-controller="controllerHome">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ADVERTENCIA:</strong> Existen componentes SQL que aún no se ejecutan, click <button ng-click="ShowDetalleTarea(userSession.Cliente.Id, version.IdVersion)" type="button" class="btn btn-warning btn-xs">AQUÍ</button> para ver detalle.
+        </div>
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <a ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
+                    <a ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
                         <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V'"></span> Publicar en {{ambiente.Nombre}}
                     </a>
                 </div>
             </div>
-
+            
             <div class="btn-toolbar visible-xs-block">
                 <div class="btn-group" role="toolbar">
                     <div class="btn-group" role="group">
@@ -119,6 +122,7 @@
                             <span class="fa fa-file-o"></span> Sin Componentes
                         </div>
                         <div class="row">
+                            
                             <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in version.Componentes | filtroOtros" ng-controller="controllerHome">
                                 <div class="item panel panel-success">
                                     <div class="panel-heading">
@@ -140,7 +144,7 @@
                                                 <div class="input-group-sm margin-bottom-sm">
                                                     <div class="dropdown">
                                                         <button class="btn btn-labeled btn-success dropdown-toggle" type="button" data-toggle="dropdown">
-                                                            <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar Script
+                                                            <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar en...
                                                             <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
@@ -216,7 +220,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Aviso de Ejecución</h4>
+                    <h4 class="modal-title">Aviso WinperUpdate</h4>
                 </div>
                 <div class="modal-body">
                     {{msgAvisoExSQL}}
@@ -228,5 +232,54 @@
         </div>
     </div>
 
+    <div id="detalletareas-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Detalle de Componentes SQL</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ambiente</th>
+                                <th>Estado</th>
+                                <th>Componente</th>
+                                <th>Error</th>
+                                <th>Fecha de Registro</th>
+                                <th>Reportar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="tarea in tareasAtrasadas" class="{{tarea.ClassId}}">
+                                <td>{{tarea.Ambientes.Nombre}}</td>
+                                <td>{{tarea.EstadoFmt}}</td>
+                                <td>{{tarea.NameFile}}</td>
+                                <td><textarea ng-disabled="tarea.Estado==0" class="form-control" ng-model="tarea.Error"></textarea></td>
+                                <td><span class="label label-default">{{tarea.FechaRegistroFmt}}</span></td>
+                                <td>
+                                    <button ng-click="ReportarTareaAtrasada(tarea)" ng-disabled="tarea.Reportado || labelReportar=='Enviando...'" class="btn btn-info" type="button">
+                                        <span ng-hide="tarea.Reportado" class="fa fa-envelope"></span>
+                                        <span ng-show="tarea.Reportado" class="fa fa-check"></span>
+                                        {{labelReportar}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" ng-click="ReportarTodasTareas()" ng-disabled="labelReportarTodasTareas=='Enviando...' || labelReportar=='Enviando...'">
+                    {{labelReportarTodasTareas}}
+                    </button>
+                    <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
 

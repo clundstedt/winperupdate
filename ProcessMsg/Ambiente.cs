@@ -10,6 +10,27 @@ namespace ProcessMsg
 {
     public class Ambiente
     {
+
+        public static bool AmbienteOK(int idVersion, int idAmbiente)
+        {
+            try
+            {
+                bool ok = false;
+                var reader = new CnaAmbientes().ExecuteAmbienteOK(idVersion, idAmbiente);
+                while (reader.Read())
+                {
+                    ok = bool.Parse(reader["OK"].ToString());
+                }
+
+                reader.Close();
+                return ok;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.AmbienteBo> GetAmbientesByCliente(int idCliente, EventLog log)
         {
             List<Model.AmbienteBo> lista = new List<Model.AmbienteBo>();

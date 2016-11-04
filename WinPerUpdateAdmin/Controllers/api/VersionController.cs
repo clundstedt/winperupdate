@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,6 +11,46 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class VersionController : ApiController
     {
         #region get
+
+        [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/DetalleTareaAtrasada")]
+        [HttpGet]
+        public Object GetDetalleTareaNoEx(int idCliente, int idVersion)
+        {
+            try
+            {
+                return ProcessMsg.Tareas.GetTareasNoEx(idCliente, idVersion);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/TareaAtrasada")]
+        [HttpGet]
+        public Object GetTareaNoEx(int idCliente, int idVersion)
+        {
+            try
+            {
+                bool paso = false;
+                var lista = ProcessMsg.Tareas.GetTareasNoEx(idCliente, idVersion);
+                lista.ForEach(x =>
+                {
+                    if (x.ExisteAtraso)
+                    {
+                        paso = true;
+                    }
+                }
+                );
+
+                return paso;
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         // GET: api/Version
         [Route("api/Version")]
         [HttpGet]
@@ -138,6 +179,72 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region post
+        [Route("api/Cliente/{idClientes:int}/Version/{idVersion:int}/ReportarTodasTareas")]
+        [HttpPost]
+        public Object PostReportTodasTareas(int idClientes, int idVersion, [FromBody]List<ProcessMsg.Model.TareaBo> tareas)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+            try
+            {
+
+                string msg = string.Format("Reporte de Tareas Atrasadas en el cliente {0}"
+                    , idClientes);
+
+                tareas.ForEach(x => 
+                {
+                    msg += string.Format("<br><br>Ambiente: {0}<br>Estado: {1}<br>ID Versión: {2}<br>Fecha y Hora de Registro: {3}<br>Archivo: {4}<br>ERROR: {5}"
+                    , x.Ambientes.Nombre, x.EstadoFmt, x.idVersion, x.FechaRegistroFmt, x.NameFile, x.Error);
+                }
+                );
+
+
+                var res = ProcessMsg.Utils.SendMail(msg, "Reporte Tarea Atrasada", ProcessMsg.Utils.CorreoSoporte);
+                if (res)
+                {
+                    if (ProcessMsg.Tareas.ReportarTodasTareas(idClientes, idVersion) > 0)
+                    {
+                        response.StatusCode = HttpStatusCode.OK;
+                    }
+                }
+
+
+                return Content(response.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/ReportarTareaAtrasada")]
+        [HttpPost]
+        public Object PostReportTareaAtrasada([FromBody]ProcessMsg.Model.TareaBo tarea)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+            try
+            {
+                string msg = string.Format("Reporte de Tareas Atrasadas en el cliente {0}<br><br>Ambiente: {1}<br>Estado: {2}<br>ID Versión: {3}<br>Fecha y Hora de Registro: {4}<br>Archivo: {5}<br>ERROR: {6}"
+                    , tarea.idClientes, tarea.Ambientes.Nombre, tarea.EstadoFmt, tarea.idVersion, tarea.FechaRegistroFmt, tarea.NameFile, tarea.Error);
+
+                var res = ProcessMsg.Utils.SendMail(msg, "Reporte Tarea Atrasada", ProcessMsg.Utils.CorreoSoporte);
+                if (res)
+                {
+                    if (ProcessMsg.Tareas.ReportarTarea(tarea.idTareas) > 0)
+                    {
+                        response.StatusCode = HttpStatusCode.OK;
+                    }
+                }
+
+
+                return Content(response.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [Route("api/Version")]
         [HttpPost]
         public Object Post([FromBody]ProcessMsg.Model.VersionBo version)
