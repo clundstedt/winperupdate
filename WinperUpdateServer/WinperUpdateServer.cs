@@ -178,9 +178,10 @@ namespace WinperUpdateServer
                                 Send(handler, json);
                                 break;
 
-                            case "getversiones": // getversiones#idCliente
+                            case "getversiones": // getversiones#idCliente#idAmbiente
                                 idCliente = int.Parse(token[1]);
-                                var lista = ProcessMsg.Cliente.GetVersiones(idCliente, eventLog1);
+                                int idAmbiente = int.Parse(token[2]);
+                                var lista = ProcessMsg.Cliente.GetVersionesAmbiente(idCliente, idAmbiente, eventLog1);
                                 foreach (var item in lista)
                                 {
                                     if (!String.IsNullOrEmpty(item.Instalador))
@@ -334,7 +335,8 @@ namespace WinperUpdateServer
             if (!ServerInAccept)
             {
                 eventLog1.WriteEntry("Lanzamos servidor");
-                StartListening(10000);
+                string port = ConfigurationManager.AppSettings["port"];
+                StartListening(int.Parse(port));
             }
         }
 

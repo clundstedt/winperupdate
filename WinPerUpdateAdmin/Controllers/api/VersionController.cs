@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -206,6 +208,22 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
+        [Route("api/Version/{idVersion:int}/LComponentes")]
+        [HttpPost]
+        public Object PostListaComponentes(int idVersion, [FromBody]IEnumerable<ProcessMsg.Model.AtributosArchivoBo> archivo)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Version/{idVersion:int}/Cliente/{idCliente:int}")]
         [HttpPost]
         public Object PostVersionCliente(int idVersion, int idCliente)
@@ -294,7 +312,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         #endregion
 
-            #region put
+        #region put
         [Route("api/Version/{idVersion:int}")]
         [HttpPut]
         public Object Put(int idVersion, [FromBody]ProcessMsg.Model.VersionBo version)

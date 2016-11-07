@@ -23,6 +23,7 @@ namespace WinPerUpdateUI
         private bool ServerInAccept = true;
         private bool TreePoblado = false;
         private ClienteBo cliente = new ClienteBo();
+        private List<AmbienteBo> ambientes = new List<AmbienteBo>();
 
         public FormPrincipal()
         {
@@ -145,6 +146,7 @@ namespace WinPerUpdateUI
 
             Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
             string nroLicencia = key.GetValue("Licencia").ToString();
+            string ambientecfg = key.GetValue("Ambientes").ToString();
             key.Close();
 
             if (!string.IsNullOrEmpty(nroLicencia))
@@ -156,6 +158,15 @@ namespace WinPerUpdateUI
                 cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
                 if (cliente != null)
                 {
+                    json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id.ToString() + "#");
+                    foreach (var ambiente in JsonConvert.DeserializeObject<List<AmbienteBo>>(json))
+                    {
+                        if (ambientecfg.Contains(ambiente.Nombre))
+                        {
+                            ambientes.Add(ambiente);
+                        }
+                    }
+
                     ContextMenu1.MenuItems[0].Enabled = true;
                     timer1.Start();
                 }
@@ -187,64 +198,67 @@ namespace WinPerUpdateUI
                 string dirTmp = Path.GetTempPath();
                 dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
-               var versiones = new List<VersionBo>();
-                string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#");
-                versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
-                if (versiones != null)
+                foreach (var item in ambientes)
                 {
-                    var release = versiones.SingleOrDefault(x => x.Estado == 'P');
-                    if (release != null)
+                    var versiones = new List<VersionBo>();
+                    string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#" + item.idAmbientes.ToString() + "#");
+                    versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
+                    if (versiones != null)
                     {
-                        Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
-                        string nroVersion = key.GetValue("Version").ToString();
-                        if (nroVersion.Equals(release.Release)) return;
-
-                        if (!File.Exists(dirTmp + release.Instalador))
+                        var release = versiones.SingleOrDefault(x => x.Estado == 'P');
+                        if (release != null)
                         {
-                            ServerInAccept = false;
+                            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                            string nroVersion = key.GetValue("Version").ToString();
+                            if (nroVersion.Equals(release.Release)) return;
 
-                            FileStream stream = new FileStream(dirTmp + release.Instalador, FileMode.CreateNew, FileAccess.Write);
-                            BinaryWriter writer = new BinaryWriter(stream);
-
-                            int nPosIni = 0;
-                            while (nPosIni < release.Length)
+                            if (!File.Exists(dirTmp + release.Instalador))
                             {
-                                long largoMax = release.Length - nPosIni;
-                                if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
-                                string newmsg = string.Format("getfile#{0}\\Output\\{1}#{2}#{3}#", release.Release, release.Instalador, nPosIni, largoMax);
-                                var buffer = Utils.SendMsg(server, int.Parse(port), newmsg);
-                                writer.Write(buffer, 0, buffer.Length);
+                                ServerInAccept = false;
 
-                                nPosIni += SIZEBUFFER;
-                            }
+                                FileStream stream = new FileStream(dirTmp + release.Instalador, FileMode.CreateNew, FileAccess.Write);
+                                BinaryWriter writer = new BinaryWriter(stream);
 
-                            writer.Close();
-                            stream.Close();
+                                int nPosIni = 0;
+                                while (nPosIni < release.Length)
+                                {
+                                    long largoMax = release.Length - nPosIni;
+                                    if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
+                                    string newmsg = string.Format("getfile#{0}\\Output\\{1}#{2}#{3}#", release.Release, release.Instalador, nPosIni, largoMax);
+                                    var buffer = Utils.SendMsg(server, int.Parse(port), newmsg);
+                                    writer.Write(buffer, 0, buffer.Length);
 
-                            // Avisamos llegada de nueva versión
-                            notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
-                            notifyIcon2.BalloonTipText = "Existen una nueva versión de winper";
-                            notifyIcon2.BalloonTipTitle = "Winper Update";
+                                    nPosIni += SIZEBUFFER;
+                                }
 
-                            notifyIcon2.ShowBalloonTip(1000);
+                                writer.Close();
+                                stream.Close();
 
-                            key.SetValue("Version", release.Release);
-                            key.SetValue("Status", "");
+                                // Avisamos llegada de nueva versión
+                                notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
+                                notifyIcon2.BalloonTipText = "Existen una nueva versión de winper";
+                                notifyIcon2.BalloonTipTitle = "Winper Update";
 
-                            ServerInAccept = true;
-                            TreePoblado = true;
-                        }
-                        else
-                        {
-                            if (!nroVersion.Equals(release.Release))
-                            {
-                                // Actualizamos la versión en la registry
+                                notifyIcon2.ShowBalloonTip(1000);
+
                                 key.SetValue("Version", release.Release);
                                 key.SetValue("Status", "");
-                            }
-                        }
 
-                        key.Close();
+                                ServerInAccept = true;
+                                TreePoblado = true;
+                            }
+                            else
+                            {
+                                if (!nroVersion.Equals(release.Release))
+                                {
+                                    // Actualizamos la versión en la registry
+                                    key.SetValue("Version", release.Release);
+                                    key.SetValue("Status", "");
+                                }
+                            }
+
+                            key.Close();
+                        }
                     }
                 }
             }

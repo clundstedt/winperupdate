@@ -59,6 +59,55 @@ namespace ProcessMsg
             return lista;
         }
 
+        public static List<Model.VersionBo> GetVersionesAmbiente(int idCliente, int idAmbiente, EventLog log)
+        {
+            var lista = new List<Model.VersionBo>();
+            var consulta = new CnaVersionesCliente();
+            try
+            {
+                var dr = consulta.Execute(idCliente, idAmbiente);
+                while (dr.Read())
+                {
+                    var obj = new Model.VersionBo
+                    {
+                        IdVersion = int.Parse(dr["idVersion"].ToString()),
+                        Release = dr["NumVersion"].ToString(),
+                        Fecha = DateTime.Parse(dr["FecVersion"].ToString()),
+                        Estado = dr["Estado"].ToString()[0],
+                        Comentario = dr["Comentario"].ToString(),
+                        Usuario = dr["Usuario"].ToString(),
+                        Instalador = dr["Instalador"].ToString(),
+                        Componentes = new List<Model.AtributosArchivoBo>()
+                    };
+
+                    foreach (var modulo in Version.GetModulosVersiones(obj.IdVersion, null))
+                    {
+                        foreach (var componente in Componente.GetComponentes(obj.IdVersion, modulo, null))
+                        {
+                            obj.Componentes.Add(new Model.AtributosArchivoBo
+                            {
+                                Name = componente.Name,
+                                DateCreate = componente.DateCreate,
+                                Version = componente.Version,
+                                Modulo = componente.Modulo
+                            });
+                        }
+                    };
+
+                    lista.Add(obj);
+                }
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
+
+            return lista;
+        }
+
         public static List<Model.RegionBo> GetRegiones()
         {
             var lista = new List<Model.RegionBo>();

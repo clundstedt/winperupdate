@@ -43,6 +43,12 @@
                 });
             }
 
+            $scope.Test = function () {
+                serviceLogin.test(1).success(function (data) {
+                    console.log(data);
+                });
+            }
+
             $scope.EnviarMail = function () {
                 $scope.showerror = false;
                 $scope.showsuccess = false;
