@@ -98,10 +98,23 @@ namespace WinPerUpdateUI
             ShowInTaskbar = false;            
             timer1.Stop();
 
-            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
-            string nroLicencia = key.GetValue("Licencia").ToString();
-            string ambientecfg = key.GetValue("Ambientes").ToString();
-            key.Close();
+            string nroLicencia = "";
+            string ambientecfg = "";
+
+            try
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                nroLicencia = key.GetValue("Licencia").ToString();
+                ambientecfg = key.GetValue("Ambientes").ToString();
+                key.Close();
+            }
+            catch (Exception ex)
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                key.SetValue("Licencia", "");
+                key.SetValue("Ambientes", "");
+                key.Close();
+            }
 
             if (!string.IsNullOrEmpty(nroLicencia))
             {
