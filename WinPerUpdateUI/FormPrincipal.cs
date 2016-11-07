@@ -28,7 +28,7 @@ namespace WinPerUpdateUI
         public FormPrincipal()
         {
             InitializeComponent();
-            ServerInAccept = true;
+            ServerInAccept = false;
             this.CenterToScreen();
         }
 
@@ -67,55 +67,6 @@ namespace WinPerUpdateUI
 
         private void FormPrincipal_Activated(object sender, EventArgs e)
         {
-            /*
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
-            string dirTmp = Path.GetTempPath();
-            dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
-
-            var versiones = new List<VersionBo>();
-            string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#");
-            versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
-            if (versiones != null)
-            {
-                var release = versiones.SingleOrDefault(x => x.Estado == 'P');
-                if (release != null)
-                {
-                    if (File.Exists(dirTmp + release.Instalador)) {
-                        label2.Text = string.Format("Ya se encuentra disponible la versión {0} de Winper. Esta versión contiene las siguientes actualizaciones:", release.Release);
-                        treeModulos.Nodes.Clear();
-
-                        treeModulos.Nodes.Add("Winper V " + release.Release);
-                        string modulo = "";
-                        foreach (var componente in release.Componentes)
-                        {
-                            if (!modulo.Equals(componente.Modulo))
-                            {
-                                modulo = componente.Modulo;
-                                treeModulos.Nodes[0].Nodes.Add(modulo);
-                            }
-                        }
-
-                        TreePoblado = true;
-                    }
-
-                    listView1.Clear();
-
-                    listView1.Columns.Add("Número", 80, HorizontalAlignment.Left);
-                    listView1.Columns.Add("Fecha", 120, HorizontalAlignment.Left);
-                    listView1.Columns.Add("Comentario", 290, HorizontalAlignment.Left);
-
-                    if (versiones != null)
-                    {
-                        var item = new ListViewItem(release.Release);
-                        item.SubItems.Add(release.FechaFmt);
-                        item.SubItems.Add(release.Comentario);
-
-                        listView1.Items.Add(item);
-                    }
-                }
-            }
-            */
         }
 
         private void notifyIcon2_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -129,12 +80,15 @@ namespace WinPerUpdateUI
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
             ContextMenu1.MenuItems.Add("&Restaurar", new EventHandler(this.Restaurar_Click));
-            ContextMenu1.MenuItems[0].DefaultItem = true;
             ContextMenu1.MenuItems[0].Enabled = false;
 
             ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
+            ContextMenu1.MenuItems[1].Enabled = false;
+
             ContextMenu1.MenuItems.Add("-");
             ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
+            ContextMenu1.MenuItems[2].DefaultItem = true;
+
             ContextMenu1.MenuItems.Add("-");
             ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
 
@@ -154,21 +108,31 @@ namespace WinPerUpdateUI
                 string server = ConfigurationManager.AppSettings["server"];
                 string port = ConfigurationManager.AppSettings["port"];
 
-                string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + nroLicencia + "#");
-                cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
-                if (cliente != null)
+                try
                 {
-                    json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id.ToString() + "#");
-                    foreach (var ambiente in JsonConvert.DeserializeObject<List<AmbienteBo>>(json))
+                    string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + nroLicencia + "#");
+                    cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
+                    if (cliente != null)
                     {
-                        if (ambientecfg.Contains(ambiente.Nombre))
+                        json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id.ToString() + "#");
+                        foreach (var ambiente in JsonConvert.DeserializeObject<List<AmbienteBo>>(json))
                         {
-                            ambientes.Add(ambiente);
+                            if (ambientecfg.Contains(ambiente.Nombre))
+                            {
+                                ambientes.Add(ambiente);
+                            }
                         }
-                    }
 
-                    ContextMenu1.MenuItems[0].Enabled = true;
-                    timer1.Start();
+                        ContextMenu1.MenuItems[0].Enabled = true;
+                        ContextMenu1.MenuItems[1].Enabled = true;
+                        ContextMenu1.MenuItems[2].DefaultItem = false;
+                        ContextMenu1.MenuItems[0].DefaultItem = true;
+                        timer1.Start();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Winper Update no tiene conexión con el servidor central");
                 }
             }
             
