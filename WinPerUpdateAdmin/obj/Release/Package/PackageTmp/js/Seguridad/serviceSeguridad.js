@@ -154,7 +154,7 @@
                 },
                 "EstUsr": estado
             };
-            console.debug(JSON.stringify(usuario));
+            //console.debug(JSON.stringify(usuario));
 
             $.ajax({
                 url: '/api/Usuarios/' + id,

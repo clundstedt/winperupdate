@@ -29,6 +29,12 @@
             $scope.idcltExSQL = -1;
             $scope.codprfExSQL = -1;
             $scope.msgAvisoExSQL = "";
+            $scope.isTareaAtrasada = false;
+            $scope.tareasAtrasadas = [];
+            $scope.labelReportar = "Enviar";
+            $scope.labelReportarTodasTareas = "Reportar Todo";
+
+            
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idversion = $routeParams.idVersion;
@@ -53,6 +59,15 @@
                         error(function (err) {
                             console.error(err);
                         });
+
+                        serviceAdmin.existeTareaAtrasada(cliente.Id, $scope.idversion).success(function (data) {
+                            $scope.existeTareaAtrasada = data;
+                            console.log($scope.existeTareaAtrasada);
+                        }).error(function (err) {
+                            console.log(err);
+                        });
+
+                        
                     })
                     .error(function (err) {
                         console.error(err);
@@ -81,11 +96,70 @@
                 });
             }
 
-            $scope.ShowConfirmPublish = function (id, nombre) {
-                $scope.nombreambiente = nombre;
-                $scope.idAmbiente = id;
-                $scope.estaVigente = false;
-                $("#publish-modal").modal('show');
+            $scope.ExistenTareasNoReportadas = function () {
+                for (var i = 0; i < $scope.tareasAtrasadas.length; i++) {
+                    if (!$scope.tareasAtrasadas[i].Reportado) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            $scope.ReportarTodasTareas = function () {
+                if ($scope.ExistenTareasNoReportadas()) {
+                    console.log($scope.tareasAtrasadas);
+                    $scope.labelReportarTodasTareas = "Enviando...";
+                    serviceAdmin.reportarTodasTareas($scope.tareasAtrasadas).success(function (data) {
+                        if (data) {
+                            for (var i = 0; i < $scope.tareasAtrasadas.length; i++) {
+                                $scope.tareasAtrasadas[i].Reportado = true;
+                            }
+                            $scope.labelReportarTodasTareas = "Reportados";
+                        }
+                    }).error(function (err) {
+                        console.log(err);
+                    });
+                } else {
+                    $scope.labelReportarTodasTareas = "Reportados";
+                }
+            }
+
+            $scope.ReportarTareaAtrasada = function (tarea) {
+                $scope.labelReportar = "Enviando...";
+                serviceAdmin.reportarTareaAtrasada(tarea).success(function (data) {
+                    if (data) {
+                        $scope.labelReportar = "";
+                        tarea.Reportado = true;
+                    }
+                }).error(function (err) {
+                    console.log(err);
+                });
+            }
+
+            $scope.ShowDetalleTarea = function (idCliente, idVersion) {
+                serviceAdmin.detalleTareasNoEx(idCliente, idVersion).success(function (data) {
+                    $scope.tareasAtrasadas = data;
+                    
+                }).error(function (err) {
+                    console.log(err);
+                });
+                $("#detalletareas-modal").modal('show');
+            }
+
+            $scope.ShowConfirmPublish = function (id, nombre, idVersion) {
+                serviceAdmin.ambienteOK(id, idVersion).success(function (data) {
+                    if (data) {
+                        $scope.nombreambiente = nombre;
+                        $scope.idAmbiente = id;
+                        $scope.estaVigente = false;
+                        $("#publish-modal").modal('show');
+                    } else {
+                        $scope.msgAvisoExSQL = "En este ambiente deben ejecutarse correctamente los script SQL antes de publicar.";
+                        $("#avisoexsql-modal").modal('show');
+                    }
+                }).error(function (err) {
+                    console.log(err);
+                });
             }
 
             $scope.ShowConfirmEjecSQL = function (id, nombre,modulo,  nombrearch, idClt, CodPrf) {
@@ -151,3 +225,5 @@
         }
     }
 })();
+
+

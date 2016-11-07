@@ -10,6 +10,9 @@ namespace ProcessMsg
 {
     public static class Utils
     {
+        ///Correo soporte Winper Update
+        public static string CorreoSoporte = "gabriel.santi92@gmail.com";
+
         /// Encripta una cadena
         public static string Encriptar(this string _cadenaAencriptar)
         {

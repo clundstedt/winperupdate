@@ -9,6 +9,49 @@ namespace ProcessMsg
 {
     public class Tareas
     {
+    
+        public static List<ProcessMsg.Model.TareaBo> GetTareasNoEx(int idClientes, int idVersion)
+        {
+            List<ProcessMsg.Model.TareaBo> lista = new List<ProcessMsg.Model.TareaBo>();
+            try
+            {
+                var reader = new CnaTareas().ExecuteTareasNoEx(idClientes, idVersion);
+                while (reader.Read())
+                {
+                    lista.Add(new ProcessMsg.Model.TareaBo
+                    {
+                        idTareas = int.Parse(reader["idTareas"].ToString()),
+                        idClientes = int.Parse(reader["CltTarea"].ToString()),
+                        Ambientes = new Model.AmbienteBo
+                        {
+                            idAmbientes = int.Parse(reader["idAmbientes"].ToString()),
+                            idClientes = int.Parse(reader["idClientes"].ToString()),
+                            Nombre = reader["Nombre"].ToString(),
+                            Tipo = int.Parse(reader["Tipo"].ToString()),
+                            ServerBd = reader["ServerBd"].ToString(),
+                            Instancia = reader["Instancia"].ToString(),
+                            NomBd = reader["NomBd"].ToString(),
+                            UserDbo = reader["UserDbo"].ToString(),
+                            PwdDbo = ProcessMsg.Utils.DesEncriptar(reader["PwdDbo"].ToString())
+                        },
+                        CodPrf = int.Parse(reader["CodPrf"].ToString()),
+                        Estado = int.Parse(reader["Estado"].ToString()),
+                        Modulo = reader["Modulo"].ToString(),
+                        idVersion = int.Parse(reader["idVersion"].ToString()),
+                        NameFile = reader["NameFile"].ToString(),
+                        Error = reader["Error"].ToString(),
+                        FechaRegistro = Convert.ToDateTime(reader["FechaRegistro"].ToString()),
+                        Reportado = bool.Parse(reader["Reportado"].ToString())
+                    });
+                }
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<ProcessMsg.Model.TareaBo> GetTareasPendientes(int idClientes, int CodPrf) 
         {
             List<ProcessMsg.Model.TareaBo> lista = new List<ProcessMsg.Model.TareaBo>();
@@ -38,7 +81,9 @@ namespace ProcessMsg
                         Modulo = reader["Modulo"].ToString(),
                         idVersion = int.Parse(reader["idVersion"].ToString()),
                         NameFile = reader["NameFile"].ToString(),
-                        Error=reader["Error"].ToString()
+                        Error=reader["Error"].ToString(),
+                        FechaRegistro=Convert.ToDateTime(reader["FechaRegistro"].ToString()),
+                        Reportado = bool.Parse(reader["Reportado"].ToString())
                     });
                 }
                 return lista;
@@ -83,6 +128,32 @@ namespace ProcessMsg
             try
             {
                 return new UpdTareas().Execute(idTareas);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int ReportarTarea(int idTareas)
+        {
+            try
+            {
+                return new UpdTareas().ExecuteTareaReportada(idTareas);
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int ReportarTodasTareas(int idCliente, int idVersion)
+        {
+            try
+            {
+                return new UpdTareas().ExecuteTodasTareas(idCliente, idVersion);
             }
             catch (Exception ex)
             {

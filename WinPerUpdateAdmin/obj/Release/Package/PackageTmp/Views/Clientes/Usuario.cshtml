@@ -14,8 +14,11 @@
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idUsuario==0">
+                    <a ng-click="ShowConfirm()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-danger">
                         <span class="fa fa-fw fa-trash-o"></span> Caducar Usuario
+                    </a>
+                    <a ng-click="ShowConfirm()" ng-hide="formData.estado=='V' || idUsuario==0" data-toggle="modal" class="btn btn-success">
+                        <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
                     </a>
                 </div>
             </div>
@@ -28,8 +31,11 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a ng-click="ShowConfirm()" data-toggle="modal" ng-hide="idUsuario==0">
-                                    <span class="text-danger"><span class="fa fa-fw fa-trash-o"></span> Caducar Usuario</span>
+                                <a ng-click="ShowConfirm()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-danger">
+                                    <span class="fa fa-fw fa-trash-o"></span> Caducar Usuario
+                                </a>
+                                <a ng-click="ShowConfirm()" ng-hide="formData.estado=='V' || idUsuario==0" data-toggle="modal" class="btn btn-success">
+                                    <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
                                 </a>
                             </li>
                         </ul>
@@ -107,13 +113,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Confirmar Caducar</h4>
+                    <h4 class="modal-title" ng-show="formData.estado=='V'">Confirmar Caducar</h4>
+                    <h4 class="modal-title" ng-show="formData.estado=='C'">Confirmar Vigencia</h4>
                 </div>
                 <div class="modal-body">
-                    Confirma que desea caducar al Usuario ?
+                    <span ng-show="formData.estado=='V'">Confirma que desea caducar al Usuario ?</span>
+                    <span ng-show="formData.estado=='C'">Confirma que desea dejar Vigente al Usuario ?</span>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
+                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('C')" ng-show="formData.estado=='V'">Confirmar</button>
+                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('V')" ng-show="formData.estado=='C'">Confirmar</button>
                     <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

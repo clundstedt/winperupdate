@@ -22,10 +22,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 16:23:58</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/03/2014 20:33:56</publishTime>
+      <publishTime>03/08/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/ProcessMsg.dll">
-      <publishTime>10/17/2016 18:45:39</publishTime>
+      <publishTime>11/07/2016 10:51:44</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/18/2015 21:19:46</publishTime>
@@ -79,7 +79,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/28/2015 05:02:18</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
-      <publishTime>02/11/2014 16:26:04</publishTime>
+      <publishTime>11/02/2014 16:26:04</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
       <publishTime>01/28/2015 05:02:32</publishTime>
@@ -97,10 +97,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/WinPerUpdateAdmin.dll">
-      <publishTime>10/18/2016 11:44:38</publishTime>
+      <publishTime>11/07/2016 10:51:48</publishTime>
     </File>
     <File Include="bin/WinperUpdateDAO.dll">
-      <publishTime>10/17/2016 18:45:38</publishTime>
+      <publishTime>11/07/2016 10:51:44</publishTime>
     </File>
     <File Include="Content/bootstrap-datepicker.css">
       <publishTime>08/26/2016 17:35:02</publishTime>
@@ -418,7 +418,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/26/2016 15:51:17</publishTime>
     </File>
     <File Include="Content/Images/user.png">
-      <publishTime>10/07/2016 10:52:58</publishTime>
+      <publishTime>07/10/2016 10:52:58</publishTime>
     </File>
     <File Include="Content/jasny-bootstrap.css">
       <publishTime>08/24/2016 18:33:50</publishTime>
@@ -430,7 +430,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/24/2016 18:33:50</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>03/10/2016 11:15:40</publishTime>
+      <publishTime>10/21/2016 17:01:18</publishTime>
     </File>
     <File Include="css/font-awesome.css">
       <publishTime>08/24/2016 18:33:19</publishTime>
@@ -475,82 +475,106 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/24/2016 18:28:37</publishTime>
     </File>
     <File Include="js/AdminClt/admin.js">
-      <publishTime>10/17/2016 16:14:21</publishTime>
+      <publishTime>11/07/2016 10:30:27</publishTime>
     </File>
     <File Include="js/AdminClt/app.js">
-      <publishTime>10/17/2016 13:11:37</publishTime>
+      <publishTime>10/19/2016 16:27:17</publishTime>
     </File>
     <File Include="js/AdminClt/serviceAdmin.js">
-      <publishTime>10/17/2016 15:58:29</publishTime>
+      <publishTime>11/07/2016 10:30:27</publishTime>
+    </File>
+    <File Include="js/AmbientesClt/ambientes.js">
+      <publishTime>11/02/2016 09:32:05</publishTime>
+    </File>
+    <File Include="js/AmbientesClt/app.js">
+      <publishTime>10/19/2016 12:48:43</publishTime>
+    </File>
+    <File Include="js/AmbientesClt/mantenedor.js">
+      <publishTime>10/19/2016 14:52:22</publishTime>
+    </File>
+    <File Include="js/AmbientesClt/serviceAmbientes.js">
+      <publishTime>10/19/2016 17:52:47</publishTime>
     </File>
     <File Include="js/Clientes/app.js">
       <publishTime>10/13/2016 18:05:36</publishTime>
     </File>
     <File Include="js/Clientes/clientes.js">
-      <publishTime>10/14/2016 17:10:03</publishTime>
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="js/Clientes/inicio.js">
-      <publishTime>03/10/2016 12:17:12</publishTime>
+      <publishTime>10/03/2016 12:17:12</publishTime>
     </File>
     <File Include="js/Clientes/serviceClientes.js">
-      <publishTime>10/17/2016 18:34:39</publishTime>
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="js/Clientes/usuarios.js">
-      <publishTime>10/17/2016 10:12:36</publishTime>
+      <publishTime>10/21/2016 12:30:56</publishTime>
+    </File>
+    <File Include="js/Home/controllerHome.js">
+      <publishTime>11/02/2016 09:32:05</publishTime>
+    </File>
+    <File Include="js/Home/factoryHome.js">
+      <publishTime>10/21/2016 10:40:24</publishTime>
     </File>
     <File Include="js/Login/app.js">
       <publishTime>08/26/2016 10:17:59</publishTime>
     </File>
     <File Include="js/Login/login.js">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/04/2016 17:41:21</publishTime>
     </File>
     <File Include="js/Login/serviceLogin.js">
-      <publishTime>10/17/2016 18:34:50</publishTime>
+      <publishTime>11/04/2016 18:21:17</publishTime>
+    </File>
+    <File Include="js/Perfil/app.js">
+      <publishTime>10/21/2016 10:40:24</publishTime>
+    </File>
+    <File Include="js/Perfil/perfil.js">
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="js/Seguridad/app.js">
-      <publishTime>10/07/2016 17:29:35</publishTime>
+      <publishTime>07/10/2016 17:29:35</publishTime>
     </File>
     <File Include="js/Seguridad/mantenedor.js">
-      <publishTime>10/17/2016 10:22:02</publishTime>
+      <publishTime>10/19/2016 10:21:48</publishTime>
     </File>
     <File Include="js/Seguridad/seguridad.js">
-      <publishTime>10/07/2016 16:28:46</publishTime>
+      <publishTime>07/10/2016 16:28:46</publishTime>
     </File>
     <File Include="js/Seguridad/serviceSeguridad.js">
-      <publishTime>10/17/2016 18:34:59</publishTime>
+      <publishTime>10/19/2016 10:19:23</publishTime>
     </File>
     <File Include="js/SeguridadClt/app.js">
-      <publishTime>10/17/2016 18:44:22</publishTime>
+      <publishTime>10/18/2016 17:33:15</publishTime>
     </File>
     <File Include="js/SeguridadClt/seguridad.js">
-      <publishTime>10/17/2016 18:33:17</publishTime>
+      <publishTime>10/21/2016 12:33:05</publishTime>
     </File>
     <File Include="js/SeguridadClt/serviceSeguridad.js">
-      <publishTime>10/17/2016 18:33:40</publishTime>
+      <publishTime>10/18/2016 17:46:59</publishTime>
     </File>
     <File Include="js/Version/admin.js">
-      <publishTime>10/17/2016 13:06:13</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="js/Version/app.js">
-      <publishTime>10/07/2016 11:23:54</publishTime>
+      <publishTime>07/10/2016 11:23:54</publishTime>
     </File>
     <File Include="js/Version/componente.js">
-      <publishTime>09/01/2016 12:35:33</publishTime>
+      <publishTime>01/09/2016 12:35:33</publishTime>
     </File>
     <File Include="js/Version/editcomponente.js">
-      <publishTime>09/07/2016 16:18:04</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="js/Version/publicar.js">
-      <publishTime>10/05/2016 12:42:21</publishTime>
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="js/Version/serviceAdmin.js">
       <publishTime>10/17/2016 18:35:12</publishTime>
     </File>
     <File Include="js/Version/version.js">
-      <publishTime>09/14/2016 10:53:01</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>03/10/2016 09:30:04</publishTime>
+      <publishTime>10/03/2016 09:30:04</publishTime>
     </File>
     <File Include="Scripts/angular-file-upload.js">
       <publishTime>08/31/2016 11:41:04</publishTime>
@@ -835,73 +859,100 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2016 09:16:54</publishTime>
     </File>
     <File Include="Scripts/smart-table.js">
-      <publishTime>03/10/2016 09:30:03</publishTime>
+      <publishTime>10/03/2016 09:30:03</publishTime>
     </File>
     <File Include="Scripts/smart-table.min.js">
-      <publishTime>03/10/2016 09:30:03</publishTime>
+      <publishTime>10/03/2016 09:30:03</publishTime>
     </File>
     <File Include="Scripts/smart-table.min.js.map">
-      <publishTime>03/10/2016 09:30:03</publishTime>
+      <publishTime>10/03/2016 09:30:03</publishTime>
     </File>
     <File Include="Views/Admin/CrearComponente.cshtml">
       <publishTime>08/31/2016 16:28:28</publishTime>
     </File>
     <File Include="Views/Admin/CrearVersion.cshtml">
-      <publishTime>10/04/2016 16:35:36</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="Views/Admin/EditComponente.cshtml">
-      <publishTime>09/07/2016 15:20:49</publishTime>
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="Views/Admin/Index.cshtml">
       <publishTime>09/26/2016 10:08:47</publishTime>
     </File>
     <File Include="Views/Admin/PubParcial.cshtml">
-      <publishTime>10/05/2016 10:20:44</publishTime>
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="Views/Admin/UploadFile.cshtml">
       <publishTime>08/31/2016 12:13:38</publishTime>
     </File>
     <File Include="Views/Admin/Versiones.cshtml">
-      <publishTime>10/17/2016 12:41:39</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
+    </File>
+    <File Include="Views/AdminClt/Componentes.cshtml">
+      <publishTime>11/07/2016 10:30:27</publishTime>
     </File>
     <File Include="Views/AdminClt/Index.cshtml">
       <publishTime>10/17/2016 12:21:40</publishTime>
     </File>
     <File Include="Views/AdminClt/Versiones.cshtml">
-      <publishTime>10/17/2016 15:25:54</publishTime>
+      <publishTime>10/19/2016 15:54:56</publishTime>
+    </File>
+    <File Include="Views/AmbientesClt/Ambientes.cshtml">
+      <publishTime>11/02/2016 09:32:05</publishTime>
+    </File>
+    <File Include="Views/AmbientesClt/Crear.cshtml">
+      <publishTime>10/26/2016 16:13:52</publishTime>
+    </File>
+    <File Include="Views/AmbientesClt/Index.cshtml">
+      <publishTime>10/19/2016 10:54:19</publishTime>
     </File>
     <File Include="Views/Clientes/Crear.cshtml">
-      <publishTime>10/14/2016 17:30:48</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="Views/Clientes/Index.cshtml">
       <publishTime>09/26/2016 10:16:34</publishTime>
     </File>
     <File Include="Views/Clientes/Inicio.cshtml">
-      <publishTime>10/04/2016 09:25:18</publishTime>
+      <publishTime>04/10/2016 09:25:18</publishTime>
     </File>
     <File Include="Views/Clientes/Usuario.cshtml">
-      <publishTime>10/14/2016 17:28:04</publishTime>
+      <publishTime>10/18/2016 18:33:30</publishTime>
+    </File>
+    <File Include="Views/Home/Cuenta.cshtml">
+      <publishTime>10/21/2016 17:01:18</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>10/17/2016 11:08:47</publishTime>
+      <publishTime>11/04/2016 17:34:51</publishTime>
+    </File>
+    <File Include="Views/Home/Menus.cshtml">
+      <publishTime>10/21/2016 17:52:52</publishTime>
+    </File>
+    <File Include="Views/Home/Perfil.cshtml">
+      <publishTime>10/21/2016 10:40:24</publishTime>
     </File>
     <File Include="Views/Seguridad/CrearUsuario.cshtml">
-      <publishTime>10/13/2016 18:02:24</publishTime>
+      <publishTime>10/26/2016 16:13:52</publishTime>
     </File>
     <File Include="Views/Seguridad/Index.cshtml">
-      <publishTime>10/05/2016 18:20:24</publishTime>
+      <publishTime>05/10/2016 18:20:24</publishTime>
     </File>
     <File Include="Views/Seguridad/Inicio.cshtml">
-      <publishTime>10/13/2016 11:34:20</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="Views/SeguridadClt/Index.cshtml">
       <publishTime>10/17/2016 18:41:15</publishTime>
     </File>
+    <File Include="Views/SeguridadClt/Usuario.cshtml">
+      <publishTime>10/18/2016 18:33:28</publishTime>
+    </File>
     <File Include="Views/SeguridadClt/Usuarios.cshtml">
-      <publishTime>10/17/2016 18:37:42</publishTime>
+      <publishTime>11/02/2016 09:32:05</publishTime>
+    </File>
+    <File Include="Views/Shared/r_MENUANTIGUO.cshtml">
+      <publishTime>10/21/2016 17:45:09</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/17/2016 18:38:36</publishTime>
+      <publishTime>11/07/2016 10:30:27</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>08/24/2016 18:28:36</publishTime>
@@ -910,7 +961,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/24/2016 18:29:49</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/18/2016 11:21:22</publishTime>
+      <publishTime>11/07/2016 10:51:53</publishTime>
     </File>
   </ItemGroup>
 </Project>

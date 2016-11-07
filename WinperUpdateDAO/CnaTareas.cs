@@ -19,7 +19,7 @@ namespace WinperUpdateDAO
         {
             SpName = @"SELECT t.idTareas, t.idClientes as CltTarea, a.*
                              ,t.CodPrf, t.Estado, t.Modulo, t.idVersion
-                             ,t.NameFile, t.Error
+                             ,t.NameFile, t.Error, t.FechaRegistro, t.Reportado
                                              FROM Tareas t INNER JOIN Ambientes a
                                              ON t.idAmbientes = a.idAmbientes
                                              WHERE t.idClientes = @idClientes
@@ -57,6 +57,36 @@ namespace WinperUpdateDAO
             catch(Exception ex)
             {
                 var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+        /// <summary>
+        /// Obtiene las tareas que no fueron ejecutadas con exito o que no han sido ejecutadas
+        /// </summary>
+        /// <param name="idCliente"></param>
+        /// <param name="idVersion"></param>
+        /// <returns></returns>
+        public SqlDataReader ExecuteTareasNoEx(int idClientes, int idVersion)
+        {
+            SpName = @"SELECT t.idTareas, t.idClientes as CltTarea, a.*
+                             ,t.CodPrf, t.Estado, t.Modulo, t.idVersion
+                             ,t.NameFile, t.Error, t.FechaRegistro, t.Reportado
+                                             FROM Tareas t INNER JOIN Ambientes a
+                                             ON t.idAmbientes = a.idAmbientes
+                                             WHERE t.idClientes = @idClientes
+                                             AND t.idVersion = @idVersion
+                                             AND t.Estado = 0
+                                             OR t.Estado = 2";
+            try
+            {
+                ParmsDictionary.Add("@idClientes",idClientes);
+                ParmsDictionary.Add("@idVersion", idVersion);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteTareasNoEx", ex.Message);
                 throw new Exception(msg, ex);
             }
         }

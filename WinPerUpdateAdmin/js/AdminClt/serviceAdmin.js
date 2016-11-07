@@ -16,12 +16,228 @@
             getScript: getScript,
 
             existeTarea: existeTarea,
+            ambienteOK: ambienteOK,
+            existeTareaAtrasada: existeTareaAtrasada,
+            detalleTareasNoEx: detalleTareasNoEx,
+            reportarTareaAtrasada: reportarTareaAtrasada,
+            reportarTodasTareas: reportarTodasTareas,
 
             addVersion: addVersion,
             addTarea: addTarea
         };
 
         return service;
+
+        function reportarTodasTareas(tareas) {
+
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            var tareasSend = [];
+
+            for (var i = 0; i < tareas.length; i++) {
+                var tareaSend = {
+                    "idTareas": tareas[i].idTareas,
+                    "idClientes": tareas[i].idClientes,
+                    "Ambientes": {
+                        "Nombre": tareas[i].Ambientes.Nombre
+                    },
+                    "Estado": tareas[i].Estado,
+                    "idVersion": tareas[i].idVersion,
+                    "NameFile": tareas[i].NameFile,
+                    "Error": tareas[i].Error,
+                    "FechaRegistro": tareas[i].FechaRegistro
+                };
+                tareasSend.push(tareaSend);
+            }
+
+            $.ajax({
+                url: "/api/Cliente/"+tareasSend[0].idClientes+"/Version/"+tareasSend[0].idVersion+"/ReportarTodasTareas",
+                type: "POST",
+                dataType: 'text',
+                contentType: "application/json",
+                data: JSON.stringify(tareasSend),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudieron reportar las tareas');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudieron reportar las tareas');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function reportarTareaAtrasada(tarea) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var tareaSend = {
+                "idTareas": tarea.idTareas,
+                "idClientes": tarea.idClientes,
+                "Ambientes": {
+                    "Nombre": tarea.Ambientes.Nombre
+                },
+                "Estado": tarea.Estado,
+                "idVersion": tarea.idVersion,
+                "NameFile": tarea.NameFile,
+                "Error": tarea.Error,
+                "FechaRegistro": tarea.FechaRegistro
+            };
+
+            $.ajax({
+                url: "/api/ReportarTareaAtrasada",
+                type: "POST",
+                dataType: 'Json',
+                data: tareaSend,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo reportar la tarea');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo reportar la tarea');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function detalleTareasNoEx(idCliente, idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Cliente/' + idCliente + '/Version/' + idVersion + '/DetalleTareaAtrasada',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene tareas SQL');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene tareas SQL');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function existeTareaAtrasada(idCliente, idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Cliente/' + idCliente + '/Version/' + idVersion + '/TareaAtrasada',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene tareas SQL');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene tareas SQL');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function ambienteOK(idAmbiente, idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Ambiente/'+idAmbiente+'/Version/'+idVersion+'/OK',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene componente SQL');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene componente SQL');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getScript(idVersion, NameFile) {
             var deferred = $q.defer();

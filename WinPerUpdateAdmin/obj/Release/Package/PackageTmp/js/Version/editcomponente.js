@@ -15,12 +15,14 @@
         function activate() {
             console.log(JSON.stringify($routeParams));
             $scope.idVersion = $routeParams.idVersion;
+            console.log($scope.idVersion);
             $scope.namecomponente = $routeParams.name;
             $scope.modulos = [];
             $scope.formData = {};
 
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;
+                
             }).error(function (data) {
                 console.debug(data);
             });

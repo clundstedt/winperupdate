@@ -14,6 +14,7 @@
 
         function activate() {
             $scope.clientes = [];
+            $scope.clientesVersion = [];
             $scope.mensaje = "";
             $scope.totclientes = 0;
 
@@ -27,14 +28,28 @@
                 });
 
                 serviceClientes.getClientes().success(function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var item = {
-                            Check: false,
-                            Tipo: 0,
-                            Cliente: data[i]
-                        };
-                        $scope.clientes.push(item);
-                    }
+                    serviceClientes.getClientesVersion($scope.idVersion).success(function (data2) {
+                        for (var i = 0; i < data.length; i++) {
+                            var item = {
+                                Check: false,
+                                Tipo: 0,
+                                Lectura: true,
+                                Cliente: data[i]
+                            };
+                            $scope.clientes.push(item);
+                        }
+                        for (var i = 0; i < data.length; i++) {
+                            var idClt = $scope.clientes[i].Cliente.Id;
+                            for (var j = 0; j < data2.length; j++) {
+                                if (idClt == data2[j].Id) {
+                                    $scope.clientes[i].Tipo = 1;
+                                    $scope.clientes[i].Lectura = false;
+                                }
+                            }
+                        }
+                    }).error(function (err) {
+                        console.error(err);
+                    });
                 }).error(function (data) {
                     console.error(data);
                 });
@@ -69,7 +84,7 @@
             $scope.Publicar = function () {
                 var index = 0;
                 angular.forEach($scope.clientes, function (item) {
-                    if (item.Tipo == 1) {
+                    if (item.Tipo == 1 && item.Lectura) {
                         console.log("Agregando Cliente " + item.Cliente.Id + " a la version " + $scope.idVersion);
                         serviceAdmin.addCliente($scope.idVersion, item.Cliente.Id).success(function (data) {
                             index++;

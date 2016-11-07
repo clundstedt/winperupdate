@@ -17,6 +17,10 @@
             templateUrl: '/AdminClt/Versiones',
             controller: 'admin'
         }).
+        when('/EditVersion/:idVersion', {
+            templateUrl: '/AdminClt/Componentes',
+            controller: 'admin'
+        }).
         otherwise({
             redirectTo: '/'
         });
@@ -47,5 +51,42 @@
             return salida;
         }
     })
+
+    .filter('filtroEjecutables', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (componente) {
+                if (componente.Tipo == 'exe') {
+                    salida.push(componente)
+                }
+            });
+            return salida;
+        }
+    })
+
+    .filter('filtroReportes', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (componente) {
+                if (componente.Tipo == 'qrp') {
+                    salida.push(componente)
+                }
+            });
+            return salida;
+        }
+    })
+
+    .filter('filtroOtros', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (componente) {
+                if (componente.Tipo == 'otro') {
+                    salida.push(componente)
+                }
+            });
+            return salida;
+        }
+    })
+
     ;
 })();

@@ -10,6 +10,21 @@ namespace MiPrimerAPP.Controllers.api
     public class AmbientesController : ApiController
     {
         #region get
+
+        [Route("api/Ambiente/{idAmbiente:int}/Version/{idVersion:int}/OK")]
+        [HttpGet]
+        public Object AmbienteOK(int idAmbiente, int idVersion)
+        {
+            try
+            {
+                return ProcessMsg.Ambiente.AmbienteOK(idVersion, idAmbiente);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Cliente/{idCliente:int}/Ambiente")]
         [HttpGet]
         public Object GetAmbientesByCliente(int idCliente)

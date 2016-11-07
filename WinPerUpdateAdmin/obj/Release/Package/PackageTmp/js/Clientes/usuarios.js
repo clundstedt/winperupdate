@@ -43,6 +43,8 @@
                     $scope.formData.estado = data.EstUsr,
                     $scope.titulo = "Modificar Usuario";
                     $scope.labelcreate = "Modificar";
+
+                    console.log("estado = " + $scope.formData.estado);
                 }).error(function (err) {
                     console.log(err);
                 });
@@ -54,6 +56,7 @@
                 if ($scope.idUsuario == 0) {
                     serviceClientes.addUsuario($scope.idCliente, formData.perfil, formData.apellido, formData.nombre, formData.mail, 'V').success(function (data) {
                         $scope.idUsuario = data.Id;
+                        $scope.formData.estado = "V",
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
                     }).error(function (err) {
@@ -74,7 +77,7 @@
                 $("#delete-modal").modal('show');
             }
 
-            $scope.Eliminar = function () {
+            $scope.Eliminar = function (estado) {
                 serviceClientes.getUsuario($scope.idCliente, $scope.idUsuario).success(function (data) {
                     serviceClientes.updUsuario( $scope.idCliente,
                                                 $scope.idUsuario,
@@ -83,7 +86,7 @@
                                                 data.Persona.Apellidos,
                                                 data.Persona.Nombres,
                                                 data.Persona.Mail,
-                                                'C').success(function (data2) {
+                                                estado).success(function (data2) {
                                                     $('.close').click();
 
                                                     $window.setTimeout(function () {

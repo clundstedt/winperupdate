@@ -67,7 +67,7 @@
                 $("#delete-modal").modal('show');
             }
 
-            $scope.Eliminar = function () {
+            $scope.Eliminar = function (estado) {
                 serviceSeguridad.getUsuario($scope.idUsuario).success(function (data) {
                     serviceSeguridad.updUsuario($scope.idUsuario,
                                                 data.CodPrf,
@@ -75,7 +75,7 @@
                                                 data.Persona.Apellidos,
                                                 data.Persona.Nombres,
                                                 data.Persona.Mail,
-                                                'C').success(function (data2) {
+                                                estado).success(function (data2) {
                         $('.close').click();
 
                         $window.setTimeout(function () {
