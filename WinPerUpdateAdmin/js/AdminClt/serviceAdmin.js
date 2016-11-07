@@ -54,6 +54,7 @@
                 url: "/api/Cliente/"+tareasSend[0].idClientes+"/Version/"+tareasSend[0].idVersion+"/ReportarTodasTareas",
                 type: "POST",
                 dataType: 'text',
+                contentType: "application/json",
                 data: JSON.stringify(tareasSend),
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {

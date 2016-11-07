@@ -114,11 +114,13 @@
                             for (var i = 0; i < $scope.tareasAtrasadas.length; i++) {
                                 $scope.tareasAtrasadas[i].Reportado = true;
                             }
-                            $scope.labelReportarTodasTareas = "";
+                            $scope.labelReportarTodasTareas = "Reportados";
                         }
                     }).error(function (err) {
                         console.log(err);
                     });
+                } else {
+                    $scope.labelReportarTodasTareas = "Reportados";
                 }
             }
 
