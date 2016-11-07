@@ -27,6 +27,13 @@ namespace WinPerUpdateUI
             string status = key.GetValue("Status").ToString();
             key.Close();
 
+            if (string.IsNullOrEmpty(version))
+            {
+                lblTitulo.Text = "Usted se encuentra Actualizado";
+                lblSubtitulo.Text = "Usted ya tiene la última versión liberada de WINPER. Pronto le informaremos de nuevas actualizaciones";
+                btnInstalar.Enabled = false;
+                return;
+            }
             if (status.ToLower().Equals("updated"))
             {
                 lblTitulo.Text = "Usted se encuentra Actualizado";
@@ -58,13 +65,16 @@ namespace WinPerUpdateUI
                     json = Utils.StrSendMsg(server, int.Parse(port), "getversion#" + version + "#");
                     release = JsonConvert.DeserializeObject<VersionBo>(json);
 
-                    string modulo = "";
-                    foreach (var componente in release.Componentes)
+                    if (release.Componentes != null)
                     {
-                        if (!modulo.Equals(componente.Modulo))
+                        string modulo = "";
+                        foreach (var componente in release.Componentes)
                         {
-                            modulo = componente.Modulo;
-                            treeModulos.Nodes[0].Nodes.Add(modulo);
+                            if (!modulo.Equals(componente.Modulo))
+                            {
+                                modulo = componente.Modulo;
+                                treeModulos.Nodes[0].Nodes.Add(modulo);
+                            }
                         }
                     }
                 }

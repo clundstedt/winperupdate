@@ -21,7 +21,6 @@ namespace WinPerUpdateUI
         const int SIZEBUFFER = 16384;
         ContextMenu ContextMenu1 = new ContextMenu();
         private bool ServerInAccept = true;
-        private bool TreePoblado = false;
         private ClienteBo cliente = new ClienteBo();
         private List<AmbienteBo> ambientes = new List<AmbienteBo>();
 
@@ -74,7 +73,7 @@ namespace WinPerUpdateUI
             //ShowInTaskbar = true;
             //WindowState = FormWindowState.Normal;
             var form = new frmVersiones();
-            form.Show();
+            form.ShowDialog();
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
@@ -83,7 +82,7 @@ namespace WinPerUpdateUI
             ContextMenu1.MenuItems[0].Enabled = false;
 
             ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
-            ContextMenu1.MenuItems[1].Enabled = false;
+            ContextMenu1.MenuItems[1].Enabled = true;
 
             ContextMenu1.MenuItems.Add("-");
             ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
@@ -98,10 +97,23 @@ namespace WinPerUpdateUI
             ShowInTaskbar = false;            
             timer1.Stop();
 
-            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
-            string nroLicencia = key.GetValue("Licencia").ToString();
-            string ambientecfg = key.GetValue("Ambientes").ToString();
-            key.Close();
+            string nroLicencia = "";
+            string ambientecfg = "";
+
+            try
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                nroLicencia = key.GetValue("Licencia").ToString();
+                ambientecfg = key.GetValue("Ambientes").ToString();
+                key.Close();
+            }
+            catch (Exception ex)
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                key.SetValue("Licencia", "");
+                key.SetValue("Ambientes", "");
+                key.Close();
+            }
 
             if (!string.IsNullOrEmpty(nroLicencia))
             {
@@ -122,9 +134,7 @@ namespace WinPerUpdateUI
                                 ambientes.Add(ambiente);
                             }
                         }
-
                         ContextMenu1.MenuItems[0].Enabled = true;
-                        ContextMenu1.MenuItems[1].Enabled = true;
                         ContextMenu1.MenuItems[2].DefaultItem = false;
                         ContextMenu1.MenuItems[0].DefaultItem = true;
                         timer1.Start();
@@ -132,17 +142,61 @@ namespace WinPerUpdateUI
                 }
                 catch (Exception ex)
                 {
+                    ContextMenu1.MenuItems[0].Enabled = false;
+                    ContextMenu1.MenuItems[1].Enabled = false;
                     MessageBox.Show("Winper Update no tiene conexión con el servidor central");
                 }
-            }
-            
+            }            
         }
 
         private void Ambiente_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
             var form = new Ambiente();
-            form.Show();
+            form.ShowDialog();
+
+            try
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                string nroLicencia = key.GetValue("Licencia").ToString();
+                string ambientecfg = key.GetValue("Ambientes").ToString();
+                key.Close();
+
+                if (!string.IsNullOrEmpty(nroLicencia))
+                {
+                    string server = ConfigurationManager.AppSettings["server"];
+                    string port = ConfigurationManager.AppSettings["port"];
+
+                    try
+                    {
+                        string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + nroLicencia + "#");
+                        cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
+                        if (cliente != null)
+                        {
+                            json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id.ToString() + "#");
+                            foreach (var ambiente in JsonConvert.DeserializeObject<List<AmbienteBo>>(json))
+                            {
+                                if (ambientecfg.Contains(ambiente.Nombre))
+                                {
+                                    ambientes.Add(ambiente);
+                                }
+                            }
+                            ContextMenu1.MenuItems[0].Enabled = true;
+                            ContextMenu1.MenuItems[2].DefaultItem = false;
+                            ContextMenu1.MenuItems[0].DefaultItem = true;
+                            timer1.Start();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ContextMenu1.MenuItems[0].Enabled = false;
+                        ContextMenu1.MenuItems[1].Enabled = false;
+                        MessageBox.Show("Winper Update no tiene conexión con el servidor central");
+                    }
+                }
+
+            }
+            catch (Exception ex) { };
         }
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
@@ -209,7 +263,6 @@ namespace WinPerUpdateUI
                                 key.SetValue("Status", "");
 
                                 ServerInAccept = true;
-                                TreePoblado = true;
                             }
                             else
                             {
