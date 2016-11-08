@@ -76,6 +76,8 @@ namespace WinPerUpdateUI
 
             key.SetValue("Ambientes", ambientes);
             key.Close();
+
+            this.Close();
         }
 
         private void txtNroLicencia_TextChanged(object sender, EventArgs e)

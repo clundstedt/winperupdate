@@ -23,6 +23,7 @@
             $scope.fechaini = '';
             $scope.formData.estado = 'N';
             $scope.mensaje = '';
+            $scope.idUsuario = $("#idToken").val();
             
 
             if (!jQuery.isEmptyObject($routeParams)) {
@@ -99,7 +100,7 @@
                         data1.Instalador = data.Output;
                         //console.log(JSON.stringify(data1));
 
-                        serviceAdmin.updVersion($scope.idversion, data1.Release, data1.FechaFmt, data1.Estado, '', '', data1.Instalador).success(function (data2) {
+                        serviceAdmin.updVersion($scope.idversion, data1.Release, data1.FechaFmt, data1.Estado, data1.Comentario, $scope.idUsuario, data1.Instalador).success(function (data2) {
                             $scope.mensaje = "Versión Publicada exitosamente ";
                             console.debug($scope.mensaje);
                             //console.log(JSON.stringify(data2));
