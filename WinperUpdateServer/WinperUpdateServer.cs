@@ -152,11 +152,37 @@ namespace WinperUpdateServer
 
                         switch (token[0])
                         {
-                            case "tareas":
+                            case "settarea": // settarea#idTarea#estado#mensaje
+                                int idTarea = int.Parse(token[1]);
+                                int estado = int.Parse(token[2]);
+                                string mensaje = "";
+                                for (int i = 3; i < token.Length; i++)
+                                {
+                                    mensaje += (mensaje == "") ? token[i] : "#" + token[i];
+                                }
+
+                                int respuesta = ProcessMsg.Tareas.SetEstadoTarea(idTarea, estado, mensaje);
+                                json = JsonConvert.SerializeObject(respuesta);
+                                Send(handler, json);
+
+                                break; 
+
+                            case "tareas": // tareas#idCliente#Codprf#
                                 idCliente = int.Parse(token[1]);
                                 int CodPrf = int.Parse(token[2]);
 
                                 var tareas = ProcessMsg.Tareas.GetTareasPendientes(idCliente, CodPrf);
+                                foreach (var tarea in tareas)
+                                {
+                                    var item = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == tarea.idVersion);
+
+                                    string fileName = dirVersiones + item.Release + "\\" + tarea.NameFile;
+                                    if (File.Exists(fileName))
+                                    {
+                                        System.IO.FileInfo info = new System.IO.FileInfo(fileName);
+                                        tarea.LengthFile = info.Length;
+                                    }
+                                }
 
                                 json = JsonConvert.SerializeObject(tareas);
                                 Send(handler, json);
@@ -196,7 +222,7 @@ namespace WinperUpdateServer
                                 Send(handler, json);
                                 break;
 
-                            case "getversion": // getversiones#NumVersion
+                            case "getversion": // getversion#NumVersion
                                 string release = token[1];
                                 var version = ProcessMsg.Version.GetVersion(release, eventLog1);
 
@@ -204,10 +230,14 @@ namespace WinperUpdateServer
                                 Send(handler, json);
                                 break;
 
-                            case "getmodulos":
-                                //eventLog1.WriteEntry(String.Format("Call ListarVersiones('{0}','{1}')", token[1], dirVersiones), EventLogEntryType.Information, ++eventId);
+                            case "getversionbyid": // getversionbyid#NumVersion
+                                var version2 = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == int.Parse(token[1]));
 
-                                //var lista = ProcessMsg.Version.ListarVersiones(token[1], dirVersiones, eventLog1);
+                                json = JsonConvert.SerializeObject(version2);
+                                Send(handler, json);
+                                break;
+
+                            case "getmodulos":
                                 var listaModulos = ProcessMsg.Version.GetModulosVersiones(int.Parse(token[1]), eventLog1);
 
                                 json = JsonConvert.SerializeObject(listaModulos);
@@ -216,13 +246,13 @@ namespace WinperUpdateServer
 
                             case "getcomponentes":
                                 //var listaArchivos = ProcessMsg.Version.ListarDirectorio(token[1], dirVersiones, eventLog1);
-                                var version2 = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == int.Parse(token[1]));
+                                var version3 = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == int.Parse(token[1]));
 
                                 var listaArchivos = ProcessMsg.Componente.GetComponentes(int.Parse(token[1]), token[2], eventLog1);
 
                                 foreach (var archivo in listaArchivos)
                                 {
-                                    string fileName = dirVersiones + version2.Release + "\\" + archivo.Name;
+                                    string fileName = dirVersiones + version3.Release + "\\" + archivo.Name;
                                     System.IO.FileInfo info = new System.IO.FileInfo(fileName);
                                     archivo.Length = info.Length;
                                 }

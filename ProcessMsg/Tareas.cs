@@ -136,6 +136,19 @@ namespace ProcessMsg
             }
         }
 
+        public static int SetEstadoTarea(int idTareas, int estado, string msgErr)
+        {
+            try
+            {
+                return new UpdTareas().Execute(idTareas, estado, msgErr);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         public static int ReportarTarea(int idTareas)
         {
             try

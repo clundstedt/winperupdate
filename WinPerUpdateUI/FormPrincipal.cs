@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using ProcessMsg.Model;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WinPerUpdateUI
 {
@@ -27,7 +29,7 @@ namespace WinPerUpdateUI
         public FormPrincipal()
         {
             InitializeComponent();
-            ServerInAccept = false;
+            ServerInAccept = true;
             this.CenterToScreen();
         }
 
@@ -216,8 +218,9 @@ namespace WinPerUpdateUI
                 string dirTmp = Path.GetTempPath();
                 dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
+                // 1.- Verificamos versiones
                 foreach (var item in ambientes)
-                {
+                { 
                     var versiones = new List<VersionBo>();
                     string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#" + item.idAmbientes.ToString() + "#");
                     versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
@@ -278,9 +281,107 @@ namespace WinPerUpdateUI
                         }
                     }
                 }
+
+                // 2.- Verificamos script que se deben ejecutar
+                Microsoft.Win32.RegistryKey key2 = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                string perfil = key2.GetValue("Perfil").ToString();
+                string ambiente = key2.GetValue("Ambientes").ToString();
+                key2.Close();
+
+                if (perfil.Equals("Administrador") || perfil.Equals("DBA"))
+                {
+                    int idPerfil = perfil.Equals("Administrador") ? 11 : 12;
+                    var tareas = new List<TareaBo>();
+                    string mensaje = "tareas#" + cliente.Id.ToString() + "#" + idPerfil.ToString() + "#";
+                    string jsont = Utils.StrSendMsg(server, int.Parse(port), mensaje);
+                    tareas = JsonConvert.DeserializeObject<List<TareaBo>>(jsont);
+
+                    foreach (var tarea in tareas.Where(x => x.Estado == 0 && x.LengthFile > 0))
+                    {
+                        if (ambiente.Contains(tarea.Ambientes.Nombre))
+                        {
+                            ServerInAccept = false;
+
+                            jsont = Utils.StrSendMsg(server, int.Parse(port), "getversionbyid#" + tarea.idVersion.ToString() + "#");
+                            var release = JsonConvert.DeserializeObject<VersionBo>(jsont);
+
+                            if (File.Exists(dirTmp + tarea.NameFile))
+                            {
+                                File.Delete(dirTmp + tarea.NameFile);
+                            }
+                            FileStream stream = new FileStream(dirTmp + tarea.NameFile, FileMode.CreateNew, FileAccess.Write);
+                            BinaryWriter writer = new BinaryWriter(stream);
+
+                            int nPosIni = 0;
+                            while (nPosIni < tarea.LengthFile)
+                            {
+                                long largoMax = tarea.LengthFile - nPosIni;
+                                if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
+                                string newmsg = string.Format("getfile#{0}\\{1}#{2}#{3}#", release.Release, tarea.NameFile, nPosIni, largoMax);
+                                var buffer = Utils.SendMsg(server, int.Parse(port), newmsg);
+                                writer.Write(buffer, 0, buffer.Length);
+
+                                nPosIni += SIZEBUFFER;
+                            }
+
+                            writer.Close();
+                            stream.Close();
+
+                            // ejecutamos archivo en base e datos
+                            EjecutarQuery(tarea.idTareas, 
+                                          dirTmp + tarea.NameFile, 
+                                          tarea.Ambientes.Instancia + "\\" + tarea.Ambientes.ServerBd, 
+                                          tarea.Ambientes.NomBd,
+                                          tarea.Ambientes.UserDbo,
+                                          tarea.Ambientes.PwdDbo);
+
+                            ServerInAccept = true;
+                        }
+                    }
+                }
             }
         }
 
+        private Boolean EjecutarQuery (int idTarea, string nameFile, string Server, string DataBase, string User, string Password)
+        {
+            string ConnectionStr = string.Format("Database={0};Server={1};User={2};Password={3};Connect Timeout=200;Integrated Security=;", DataBase, Server, User, Password);
+            string server = ConfigurationManager.AppSettings["server"];
+            string port = ConfigurationManager.AppSettings["port"];
 
+            SqlConnection conn = new SqlConnection();
+            try
+            {
+                var sr = File.OpenText(nameFile);
+                string query = sr.ReadToEnd();
+                sr.Close();
+
+                conn = new SqlConnection(ConnectionStr);
+                conn.Open();
+
+                var comm = conn.CreateCommand();
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = query;
+                comm.ExecuteNonQuery();
+
+                conn.Close();
+
+                //ProcessMsg.Tareas.SetEstadoTarea(idTarea, 1, "");
+                Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#1#OK#");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+
+                var msg = "Error al abrir la conexion" + ex.Message + ".";
+                //ProcessMsg.Tareas.SetEstadoTarea(idTarea, 2, ex.Message);
+                Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#2#" + ex.Message + "#");
+
+                //throw new Exception(msg, ex);
+            }
+
+            return false;
+        }
     }
 }
