@@ -26,6 +26,7 @@ namespace WinPerUpdateUI
                 Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
 
                 txtNroLicencia.Text = key.GetValue("Licencia").ToString();
+                txtDirWinper.Text = key.GetValue("DirWinPer").ToString();
                 string ambientes = key.GetValue("Ambientes").ToString();
                 string perfil = key.GetValue("Perfil").ToString();
                 key.Close();
@@ -65,13 +66,30 @@ namespace WinPerUpdateUI
             Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
             key.SetValue("Licencia", txtNroLicencia.Text);
             key.SetValue("Perfil", cmbPerfil.Items[cmbPerfil.SelectedIndex]);
-            key.SetValue("Version", "");
-            key.SetValue("Status", "");
+            key.SetValue("DirWinper", txtDirWinper.Text);
 
             string ambientes = "";
             foreach (var item in clbAmbientes.CheckedItems)
             {
                 ambientes += ambientes.Length == 0 ? item : "," + item;
+                Microsoft.Win32.RegistryKey keya = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate\" + item);
+                try
+                {
+                    string version = keya.GetValue("Version").ToString();
+                }
+                catch (Exception ex)
+                {
+                    keya.SetValue("Version", "");
+                }
+                try
+                {
+                    string estado = keya.GetValue("Status").ToString();
+                }
+                catch (Exception ex)
+                {
+                    keya.SetValue("Status", "");
+                }
+                keya.Close();
             }
 
             key.SetValue("Ambientes", ambientes);

@@ -16,11 +16,8 @@ namespace WinperUpdateDAO
         /// <returns></returns>
         public SqlDataReader Execute(int idCliente)
         {
-            SpName = @" SELECT	a1.*, a2.Estado
+            SpName = @" SELECT	a1.*, ' ' as Estado
                         FROM	ambientes a1
-                        LEFT JOIN  Versiones_has_Clientes_has_Ambientes a2
-                        on      a2.idClientes = a1.idClientes
-                        and     a2.idAmbientes = a1.idAmbientes
                         WHERE	a1.idClientes = @idCliente
                         ";
             try

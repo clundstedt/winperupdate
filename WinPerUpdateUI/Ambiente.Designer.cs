@@ -35,6 +35,8 @@
             this.clbAmbientes = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbPerfil = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtDirWinper = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -48,7 +50,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(225, 232);
+            this.btnAceptar.Location = new System.Drawing.Point(223, 291);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(100, 23);
             this.btnAceptar.TabIndex = 2;
@@ -103,11 +105,29 @@
             this.cmbPerfil.Size = new System.Drawing.Size(303, 21);
             this.cmbPerfil.TabIndex = 6;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 237);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Directorio Winper";
+            // 
+            // txtDirWinper
+            // 
+            this.txtDirWinper.Location = new System.Drawing.Point(20, 253);
+            this.txtDirWinper.Name = "txtDirWinper";
+            this.txtDirWinper.Size = new System.Drawing.Size(303, 20);
+            this.txtDirWinper.TabIndex = 8;
+            // 
             // Ambiente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 267);
+            this.ClientSize = new System.Drawing.Size(335, 324);
+            this.Controls.Add(this.txtDirWinper);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.cmbPerfil);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.clbAmbientes);
@@ -133,5 +153,7 @@
         private System.Windows.Forms.CheckedListBox clbAmbientes;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbPerfil;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtDirWinper;
     }
 }

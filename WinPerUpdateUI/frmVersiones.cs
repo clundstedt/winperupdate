@@ -90,7 +90,6 @@ namespace WinPerUpdateUI
             string server = ConfigurationManager.AppSettings["server"];
             string port = ConfigurationManager.AppSettings["port"];
 
-
             for (int i = 0; i < treeModulos.Nodes.Count; i++)
             {
                 string[] token = treeModulos.Nodes[i].Text.Split(new Char[] { ' ' });
@@ -112,6 +111,8 @@ namespace WinPerUpdateUI
                         myProcess.StartInfo.UseShellExecute = false;
 
                         myProcess.Start();
+
+                        this.Close();
                     }
                 }
             }

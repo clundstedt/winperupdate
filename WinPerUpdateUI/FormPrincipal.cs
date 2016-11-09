@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace WinPerUpdateUI
 {
@@ -355,13 +356,29 @@ namespace WinPerUpdateUI
                 string query = sr.ReadToEnd();
                 sr.Close();
 
+                // split script on GO command
+                IEnumerable<string> commandStrings = Regex.Split(query, @"^\s*GO\s*$",
+                                         RegexOptions.Multiline | RegexOptions.IgnoreCase);
+
                 conn = new SqlConnection(ConnectionStr);
                 conn.Open();
 
-                var comm = conn.CreateCommand();
-                comm.CommandType = CommandType.Text;
-                comm.CommandText = query;
-                comm.ExecuteNonQuery();
+                foreach (string commandString in commandStrings)
+                {
+                    if (commandString.Trim() != "")
+                    {
+                        using (var command = new SqlCommand(commandString, conn))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+
+                //var comm = conn.CreateCommand();
+                //comm.CommandType = CommandType.Text;
+                //comm.CommandText = query;
+                //comm.ExecuteNonQuery();
 
                 conn.Close();
 
