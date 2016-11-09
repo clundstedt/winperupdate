@@ -19,6 +19,7 @@ namespace ProcessMsg.Model
         public string NameFile { get; set; }
         public string Error { get; set; }
         public DateTime FechaRegistro { get; set; }
+        public long LengthFile { get; set; }
 
         public bool Reportado { get; set; }
 
