@@ -154,7 +154,7 @@
                         $scope.estaVigente = false;
                         $("#publish-modal").modal('show');
                     } else {
-                        $scope.msgAvisoExSQL = "En este ambiente deben ejecutarse correctamente los script SQL antes de publicar.";
+                        $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
                         $("#avisoexsql-modal").modal('show');
                     }
                 }).error(function (err) {
