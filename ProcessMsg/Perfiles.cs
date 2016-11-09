@@ -23,7 +23,8 @@ namespace ProcessMsg
                         Descripcion = reader["Descripcion"].ToString(),
                         Link = reader["Link"].ToString(),
                         CodPrf = int.Parse(reader["CodPrf"].ToString()),
-                        Icon = reader["Icon"].ToString()
+                        Icon = reader["Icon"].ToString(),
+                        Submenus=reader["Submenus"].ToString()
                     });
                 }
                 return lista;

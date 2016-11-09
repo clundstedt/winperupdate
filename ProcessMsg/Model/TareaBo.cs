@@ -8,7 +8,7 @@ namespace ProcessMsg.Model
 {
     public class TareaBo
     {
-        private const int TiempoAtraso = 10;
+        private const int TiempoAtraso = 10; //Expresado en minutos
         public int idTareas { get; set; }
         public int idClientes { get; set; }
         public AmbienteBo Ambientes { get; set; }
