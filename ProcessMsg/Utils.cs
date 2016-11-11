@@ -11,7 +11,7 @@ namespace ProcessMsg
     public static class Utils
     {
         ///Correo soporte Winper Update
-        public static string CorreoSoporte = "gabriel.santi92@gmail.com";
+        public static string CorreoSoporte = ConfigurationManager.AppSettings["correoSoporte"];
 
         /// Encripta una cadena
         public static string Encriptar(this string _cadenaAencriptar)

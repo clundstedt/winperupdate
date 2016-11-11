@@ -66,7 +66,7 @@ namespace WinperUpdateDAO
         /// <param name="idCliente"></param>
         /// <param name="idVersion"></param>
         /// <returns></returns>
-        public SqlDataReader ExecuteTareasNoEx(int idClientes, int idVersion)
+        public SqlDataReader ExecuteTareas(int idClientes, int idVersion)
         {
             SpName = @"SELECT t.idTareas, t.idClientes as CltTarea, a.*
                              ,t.CodPrf, t.Estado, t.Modulo, t.idVersion
@@ -74,9 +74,7 @@ namespace WinperUpdateDAO
                                              FROM Tareas t INNER JOIN Ambientes a
                                              ON t.idAmbientes = a.idAmbientes
                                              WHERE t.idClientes = @idClientes
-                                             AND t.idVersion = @idVersion
-                                             AND t.Estado = 0
-                                             OR t.Estado = 2";
+                                             AND t.idVersion = @idVersion";
             try
             {
                 ParmsDictionary.Add("@idClientes",idClientes);

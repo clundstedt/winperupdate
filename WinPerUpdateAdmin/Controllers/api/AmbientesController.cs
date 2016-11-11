@@ -11,6 +11,20 @@ namespace MiPrimerAPP.Controllers.api
     {
         #region get
 
+        [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/{NameFile}/Ambientes")]
+        [HttpGet]
+        public Object GetAmbientesNoEx(int idCliente, int idVersion, string NameFile)
+        {
+            try
+            {
+                return ProcessMsg.Ambiente.GetAmbientesNoEx(idCliente, idVersion, NameFile).Where(x => !x.EjecutadoOK);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Ambiente/{idAmbiente:int}/Version/{idVersion:int}/OK")]
         [HttpGet]
         public Object AmbienteOK(int idAmbiente, int idVersion)

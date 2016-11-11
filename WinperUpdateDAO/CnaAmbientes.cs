@@ -16,11 +16,8 @@ namespace WinperUpdateDAO
         /// <returns></returns>
         public SqlDataReader Execute(int idCliente)
         {
-            SpName = @" SELECT	a1.*, a2.Estado
+            SpName = @" SELECT	a1.*, ' ' as Estado
                         FROM	ambientes a1
-                        LEFT JOIN  Versiones_has_Clientes_has_Ambientes a2
-                        on      a2.idClientes = a1.idClientes
-                        and     a2.idAmbientes = a1.idAmbientes
                         WHERE	a1.idClientes = @idCliente
                         ";
             try
@@ -69,6 +66,26 @@ namespace WinperUpdateDAO
             {
                 ParmsDictionary.Add("@idVersion", idVersion);
                 ParmsDictionary.Add("@idAmbiente", idAmbiente);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public SqlDataReader ExecuteAmbientesNoEx(int idCliente, int idVersion, string NameFile)
+        {
+            SpName = @"SELECT *, dbo.fcn_isAmbienteEx(idAmbientes,@idVersion,@NameFile) AS EjecutadoOK 
+                                                                                                 FROM Ambientes
+                                                                                                 WHERE idClientes = @idCliente";
+            try
+            {
+                ParmsDictionary.Add("@idCliente", idCliente);
+                ParmsDictionary.Add("@idVersion", idVersion);
+                ParmsDictionary.Add("@NameFile", NameFile);
 
                 return Connector.ExecuteQuery(SpName, ParmsDictionary);
             }

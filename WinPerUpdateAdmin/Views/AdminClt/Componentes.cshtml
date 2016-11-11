@@ -10,15 +10,15 @@
 <br/>
 <div class="container">
     <div class="row">
-        <div class="alert alert-warning" ng-show="existeTareaAtrasada" ng-controller="controllerHome">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ADVERTENCIA:</strong> Existen componentes SQL que aún no se ejecutan, click <button ng-click="ShowDetalleTarea(userSession.Cliente.Id, version.IdVersion)" type="button" class="btn btn-warning btn-xs">AQUÍ</button> para ver detalle.
+        <div class="alert alert-info" ng-controller="controllerHome">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> AVISO:</strong> Puede hacer seguimiento de las tareas agendadas haciendo click en  <button ng-click="ShowDetalleTarea(userSession.Cliente.Id, version.IdVersion)" type="button" class="btn btn-info btn-xs">Estado de Tareas</button>.
         </div>
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <a ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
+                    <button ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
                         <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V'"></span> Publicar en {{ambiente.Nombre}}
-                    </a>
+                    </button>
                 </div>
             </div>
             
@@ -142,13 +142,17 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group-sm margin-bottom-sm">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-labeled btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+                                                    <div class="dropdown" ng-controller="controllerHome">
+                                                        <button class="btn btn-labeled btn-success dropdown-toggle" ng-click="GetAmbientesNoEx(userSession.Cliente.Id, version.IdVersion, otro.Name)" type="button" data-toggle="dropdown">
                                                             <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar en...
                                                             <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li  ng-repeat="ambiente in ambientes"><a ng-click="ShowConfirmEjecSQL(ambiente.idAmbientes, ambiente.Nombre, otro.Modulo, otro.Name, userSession.Cliente.Id, userSession.CodPrf)" data-toggle="modal">{{ambiente.Nombre}}</a></li>
+                                                            <li  ng-repeat="ambiente in ambientesNoEjecutados">
+                                                                <a ng-click="ShowConfirmEjecSQL(ambiente.idAmbientes, ambiente.Nombre, otro.Modulo, otro.Name, userSession.Cliente.Id, userSession.CodPrf)" data-toggle="modal">
+                                                                    {{ambiente.Nombre}}
+                                                                </a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>  
@@ -207,7 +211,8 @@
                     <textarea class="form-control" ng-show="showScript" ng-model="txtarea" rows="15"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion)" ng-disabled="estaVigente">Ejecutar Script</button>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#confejscman-modal" ng-disabled="estaVigente">Ejecutar Script Manualmente</button>
+                    <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion, 0)" ng-disabled="estaVigente">Ejecutar Script</button>
                     <button class="btn btn-info" ng-click="ShowScriptSQL(version.IdVersion, nombrearchExSQL, idAmbienteExSQL, userSession)" ng-disabled="estaVigente">Ver Script</button>
                     <button class="btn btn-default btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
@@ -226,6 +231,26 @@
                     {{msgAvisoExSQL}}
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confejscman-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmación WinperUpdate</h4>
+                </div>
+                <div class="modal-body">
+                    Usted optó por la ejecución manual del script, WinperUpdate asumirá que este script lo ejecutó
+                    directamente en la base de datos de Winper. Si ocurrió un error durante la ejecución manual, puede
+                    reportarlo desde la opción <b>Estado de Tareas</b>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion, 3)">Confirmar Ejecución Manual</button>
                     <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
@@ -252,28 +277,77 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="tarea in tareasAtrasadas" class="{{tarea.ClassId}}">
+                            <tr ng-repeat="tarea in detalleTareas" class="{{tarea.ClassId}}">
                                 <td>{{tarea.Ambientes.Nombre}}</td>
                                 <td>{{tarea.EstadoFmt}}</td>
                                 <td>{{tarea.NameFile}}</td>
-                                <td><textarea ng-disabled="tarea.Estado==0" class="form-control" ng-model="tarea.Error"></textarea></td>
+                                <td>
+                                    <textarea ng-disabled="tarea.Estado==0 || tarea.Estado==1" class="form-control" ng-model="tarea.Error"></textarea>
+                                </td>
                                 <td><span class="label label-default">{{tarea.FechaRegistroFmt}}</span></td>
                                 <td>
-                                    <button ng-click="ReportarTareaAtrasada(tarea)" ng-disabled="tarea.Reportado || labelReportar=='Enviando...'" class="btn btn-info" type="button">
-                                        <span ng-hide="tarea.Reportado" class="fa fa-envelope"></span>
-                                        <span ng-show="tarea.Reportado" class="fa fa-check"></span>
-                                        {{labelReportar}}
-                                    </button>
+                                    <div class="row" ng-hide="tarea.Estado == 1 || tarea.Estado == 3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group-sm">
+                                                    <button ng-click="ReportarTareaAtrasada(tarea)" ng-hide="tarea.Estado == 1 || tarea.Estado == 3" ng-disabled="tarea.Reportado || labelReportar=='Enviando...' || labelReportarTodasTareas=='Enviando...'" class="btn btn-info btn-sm" type="button">
+                                                        <span ng-hide="tarea.Reportado" class="fa fa-envelope"></span>
+                                                        <span ng-show="tarea.Reportado" class="fa fa-check"></span>
+                                                        {{labelReportar}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-hide="tarea.Estado == 1 || tarea.Estado == 3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group-sm">
+                                                    <button class="btn btn-success btn-sm" type="button" ng-click="AsignarEstadoManual(tarea, 3)">
+                                                        Asignar Exito
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group-sm">
+                                                    <button class="btn btn-danger btn-sm" ng-show="tarea.Estado == 3" ng-click="AsignarEstadoManual(tarea, 4)">
+                                                        Asignar Error
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group-sm">
+                                                    <button class="btn btn-info btn-sm" ng-show="tarea.Estado == 3" ng-click="downloadFile(version.IdVersion, tarea.NameFile)">
+                                                        Descargar Script
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <span class="error_ingreso" ng-show="actAvisoTareasNoReportadas">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No hay tareas que reportar.
+                    </span>
+                    <span class="error_ingreso" ng-show="actErrorTextArea">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Debe escribir el error en el área de texto.
+                    </span>
                     <button class="btn btn-info" ng-click="ReportarTodasTareas()" ng-disabled="labelReportarTodasTareas=='Reportados' || labelReportarTodasTareas=='Enviando...' || labelReportar=='Enviando...'">
                     {{labelReportarTodasTareas}}
                     </button>
-                    <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
+                    <button class="btn btn-default btn-primary" ng-click="actAvisoTareasNoReportadas = false; actErrorTextArea = false;" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
