@@ -10,7 +10,36 @@ namespace ProcessMsg
 {
     public class Ambiente
     {
-
+        public static List<ProcessMsg.Model.AmbienteBo> GetAmbientesNoEx(int idCliente, int idVersion, string NameFile)
+        {
+            try
+            {
+                List<ProcessMsg.Model.AmbienteBo> lista = new List<Model.AmbienteBo>();
+                var reader = new CnaAmbientes().ExecuteAmbientesNoEx(idCliente, idVersion, NameFile);
+                while (reader.Read())
+                {
+                    lista.Add(new ProcessMsg.Model.AmbienteBo
+                    {
+                        idAmbientes = int.Parse(reader["idAmbientes"].ToString()),
+                        idClientes = int.Parse(reader["idClientes"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        Tipo = int.Parse(reader["Tipo"].ToString()),
+                        ServerBd = reader["ServerBd"].ToString(),
+                        Instancia = reader["Instancia"].ToString(),
+                        NomBd = reader["NomBd"].ToString(),
+                        UserDbo = reader["UserDbo"].ToString(),
+                        PwdDbo = Utils.DesEncriptar(reader["PwdDbo"].ToString()),
+                        EjecutadoOK = bool.Parse(reader["EjecutadoOK"].ToString())
+                    });
+                }
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static bool AmbienteOK(int idVersion, int idAmbiente)
         {
             try

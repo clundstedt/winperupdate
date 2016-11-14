@@ -76,5 +76,25 @@ namespace WinperUpdateDAO
             }
         }
 
+        public SqlDataReader ExecuteAmbientesNoEx(int idCliente, int idVersion, string NameFile)
+        {
+            SpName = @"SELECT *, dbo.fcn_isAmbienteEx(idAmbientes,@idVersion,@NameFile) AS EjecutadoOK 
+                                                                                                 FROM Ambientes
+                                                                                                 WHERE idClientes = @idCliente";
+            try
+            {
+                ParmsDictionary.Add("@idCliente", idCliente);
+                ParmsDictionary.Add("@idVersion", idVersion);
+                ParmsDictionary.Add("@NameFile", NameFile);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
     }
 }

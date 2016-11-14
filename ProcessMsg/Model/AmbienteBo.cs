@@ -19,6 +19,8 @@ namespace ProcessMsg.Model
         public string PwdDbo { get; set; }
         public char Estado { get; set; }
 
+        public bool EjecutadoOK { get; set; }
+
         public string NomTipo
         {
             get

@@ -10,12 +10,12 @@ namespace ProcessMsg
     public class Tareas
     {
     
-        public static List<ProcessMsg.Model.TareaBo> GetTareasNoEx(int idClientes, int idVersion)
+        public static List<ProcessMsg.Model.TareaBo> GetTareas(int idClientes, int idVersion)
         {
             List<ProcessMsg.Model.TareaBo> lista = new List<ProcessMsg.Model.TareaBo>();
             try
             {
-                var reader = new CnaTareas().ExecuteTareasNoEx(idClientes, idVersion);
+                var reader = new CnaTareas().ExecuteTareas(idClientes, idVersion);
                 while (reader.Read())
                 {
                     lista.Add(new ProcessMsg.Model.TareaBo

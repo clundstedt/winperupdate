@@ -66,7 +66,8 @@ namespace WinperUpdateDAO
                                                  WHERE idClientes = @idClientes 
                                                    AND idVersion = @idVersion
                                                    AND Estado = 0
-                                                    OR Estado = 2";
+                                                    OR Estado = 2
+                                                    OR Estado = 4";
             try
             {
                 ParmsDictionary.Add("@idClientes", idCliente);

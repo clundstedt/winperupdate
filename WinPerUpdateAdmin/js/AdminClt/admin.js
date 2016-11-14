@@ -30,16 +30,19 @@
             $scope.codprfExSQL = -1;
             $scope.msgAvisoExSQL = "";
             $scope.isTareaAtrasada = false;
-            $scope.tareasAtrasadas = [];
+            $scope.detalleTareas = [];
             $scope.labelReportar = "Enviar";
             $scope.labelReportarTodasTareas = "Reportar Todo";
-
-            
+            $scope.ambientesNoEjecutados = [];
+            $scope.actAvisoTareasNoReportadas = false;
+            $scope.errorTextArea = false;
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idversion = $routeParams.idVersion;
                 $scope.titulo = "Modificar Versión";
                 $scope.labelcreate = "Modificar";
+
+
 
                 serviceAdmin.getVersion($scope.idversion).success(function (data) {
                     $scope.version = data;
@@ -66,7 +69,6 @@
                         }).error(function (err) {
                             console.log(err);
                         });
-
                         
                     })
                     .error(function (err) {
@@ -96,23 +98,65 @@
                 });
             }
 
-            $scope.ExistenTareasNoReportadas = function () {
-                for (var i = 0; i < $scope.tareasAtrasadas.length; i++) {
-                    if (!$scope.tareasAtrasadas[i].Reportado) {
+            $scope.EjecutadoEnPruebas = function (idAmbientes)
+            {
+                var existePruebas = false;
+                var ex = true;
+                if (!$scope.isAmbientePrueba(idAmbientes)) {
+                    for (var i = 0; i < $scope.ambientes.length; i++) {
+                        if ($scope.ambientes[i].Tipo != 1) {
+                            existePruebas = true;
+                        }
+                    }
+                    if (existePruebas) {
+                        for (var i = 0; i < $scope.ambientes.length; i++) {
+                            if ($scope.ambientes[i].Tipo != 1 && $scope.ambientes[i].Estado  != 'V') {
+                                ex = false;
+                            }
+                        }
+                    }
+                }
+            
+
+                return ex;
+            }
+
+            $scope.isAmbientePrueba = function (idAmbiente) {
+                for (var i = 0; i < $scope.ambientes.length; i++) {
+                    if ($scope.ambientes[i].idAmbientes == idAmbiente && $scope.ambientes[i].Tipo != 1) {
                         return true;
                     }
                 }
                 return false;
             }
 
+            $scope.ExistenTareasNoReportadas = function () {
+                for (var i = 0; i < $scope.detalleTareas.length; i++) {
+                    if (!$scope.detalleTareas[i].Reportado && ($scope.detalleTareas[i].Estado == 0 || $scope.detalleTareas[i].Estado == 2 || $scope.detalleTareas[i].Estado == 4)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            $scope.GetAmbientesNoEx = function (idCliente, idVersion, Namefile) {
+                serviceAdmin.getAmbientesNoEx(idCliente, idVersion, Namefile).success(function (data) {
+                    $scope.ambientesNoEjecutados = data;
+                }).error(function (err) {
+                    console.log(err);
+                });
+            }
+
             $scope.ReportarTodasTareas = function () {
                 if ($scope.ExistenTareasNoReportadas()) {
-                    console.log($scope.tareasAtrasadas);
+                    console.log($scope.detalleTareas);
                     $scope.labelReportarTodasTareas = "Enviando...";
-                    serviceAdmin.reportarTodasTareas($scope.tareasAtrasadas).success(function (data) {
+                    serviceAdmin.reportarTodasTareas($scope.detalleTareas).success(function (data) {
                         if (data) {
-                            for (var i = 0; i < $scope.tareasAtrasadas.length; i++) {
-                                $scope.tareasAtrasadas[i].Reportado = true;
+                            for (var i = 0; i < $scope.detalleTareas.length; i++) {
+                                if ($scope.detalleTareas[i].Estado == 0 || $scope.detalleTareas[i].Estado == 2 || $scope.detalleTareas[i].Estado == 4) {
+                                    $scope.detalleTareas[i].Reportado = true;
+                                }
                             }
                             $scope.labelReportarTodasTareas = "Reportados";
                         }
@@ -120,7 +164,7 @@
                         console.log(err);
                     });
                 } else {
-                    $scope.labelReportarTodasTareas = "Reportados";
+                    $scope.actAvisoTareasNoReportadas = true;
                 }
             }
 
@@ -136,9 +180,30 @@
                 });
             }
 
+            $scope.AsignarEstadoManual = function (tarea, estado) {
+                if (tarea.Error.trim().length > 0) {
+                    tarea.Estado = estado;
+                    if (tarea.Estado == 3) {
+                        tarea.Error = "Error corregido por el cliente";
+                    }
+
+                    serviceAdmin.asignarEstadoManual(tarea).success(function (data) {
+                        $("#detalletareas-modal").modal('toggle');
+                        setTimeout(function () {
+                            $scope.ShowDetalleTarea(tarea.idClientes, tarea.idVersion);
+                        }, 1500);
+                    }).error(function (err) {
+                        console.error(err);
+                    });
+                } else {
+                    $scope.actErrorTextArea = true;
+                }
+            }
+
             $scope.ShowDetalleTarea = function (idCliente, idVersion) {
-                serviceAdmin.detalleTareasNoEx(idCliente, idVersion).success(function (data) {
-                    $scope.tareasAtrasadas = data;
+                serviceAdmin.detalleTareas(idCliente, idVersion).success(function (data) {
+                    
+                    $scope.detalleTareas = data;
                     
                 }).error(function (err) {
                     console.log(err);
@@ -147,19 +212,24 @@
             }
 
             $scope.ShowConfirmPublish = function (id, nombre, idVersion) {
-                serviceAdmin.ambienteOK(id, idVersion).success(function (data) {
-                    if (data) {
-                        $scope.nombreambiente = nombre;
-                        $scope.idAmbiente = id;
-                        $scope.estaVigente = false;
-                        $("#publish-modal").modal('show');
-                    } else {
-                        $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
-                        $("#avisoexsql-modal").modal('show');
-                    }
-                }).error(function (err) {
-                    console.log(err);
-                });
+                if ($scope.EjecutadoEnPruebas(id)) {
+                    serviceAdmin.ambienteOK(id, idVersion).success(function (data) {
+                        if (data) {
+                            $scope.nombreambiente = nombre;
+                            $scope.idAmbiente = id;
+                            $scope.estaVigente = false;
+                            $("#publish-modal").modal('show');
+                        } else {
+                            $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
+                            $("#avisoexsql-modal").modal('show');
+                        }
+                    }).error(function (err) {
+                        console.log(err);
+                    });
+                } else {
+                    $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinperUpdate debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
+                    $("#avisoexsql-modal").modal('show');
+                }
             }
 
             $scope.ShowConfirmEjecSQL = function (id, nombre,modulo,  nombrearch, idClt, CodPrf) {
@@ -172,14 +242,17 @@
                 $("#ejecsql-modal").modal('show');
             }
 
-            $scope.EjecutarTareaSQL = function (idVersion) {
+            $scope.EjecutarTareaSQL = function (idVersion, Estado) {
                 $("#ejecsql-modal").modal('toggle');
-
                 serviceAdmin.existeTarea($scope.idcltExSQL, $scope.idAmbienteExSQL, idVersion, $scope.nombrearchExSQL).success(function (data) {
                     if (!data) {
-                        serviceAdmin.addTarea(idVersion, $scope.idcltExSQL, $scope.idAmbienteExSQL, $scope.codprfExSQL, $scope.moduloExSQL, $scope.nombrearchExSQL).success(function (data) {
-                            if (data == 1) {
-                                $scope.msgAvisoExSQL = "El script ya fue programado, WinperUpdate procederá a ejecutarlo en el ambiente seleccionado.";
+                        serviceAdmin.addTarea(idVersion, $scope.idcltExSQL, $scope.idAmbienteExSQL, $scope.codprfExSQL, $scope.moduloExSQL, $scope.nombrearchExSQL, Estado).success(function (data2) {
+                            if (data2 == 1) {
+                                if (Estado == 3) {
+                                    $scope.msgAvisoExSQL = "WinperUpdate procederá a descargar el script en su ordenador dentro de unos segundos, usted debe ejecutarlo directamente en la base de datos. Si necesita descargar nuevamente el archivo puede hacerlo de la opción Estado de Tareas";
+                                } else {
+                                    $scope.msgAvisoExSQL = "El script ya fue programado, WinperUpdate procederá a ejecutarlo en el ambiente seleccionado. Si usted confirmó la ejecución manual comenzará la descarga del archivo.";
+                                }
                             }
                         }).error(function (err) {
                             $scope.msgAvisoExSQL = "ERROR CONTROLADO: " + err;
@@ -190,6 +263,15 @@
                 }).error(function (err) {
                     console.log(err);
                 });
+
+
+                if (Estado == 3) {
+                    $("#confejscman-modal").modal('toggle');
+                    setTimeout(function () {
+                        $scope.downloadFile(idVersion, $scope.nombrearchExSQL);
+                    }, 5000);
+                    
+                }
                 $("#avisoexsql-modal").modal('show');
             }
 
@@ -200,6 +282,10 @@
                 }).error(function (err) {
                     console.log(err);
                 });
+            }
+
+            $scope.downloadFile = function (idVersion, NameFile) {
+                window.location = '/api/Version/' + idVersion + '/Componentes/' + NameFile + '/script';
             }
 
             $scope.Publicar = function () {

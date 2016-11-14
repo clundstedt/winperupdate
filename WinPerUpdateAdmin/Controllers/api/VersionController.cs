@@ -13,13 +13,14 @@ namespace WinPerUpdateAdmin.Controllers.api
     {
         #region get
 
-        [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/DetalleTareaAtrasada")]
+        [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/DetalleTarea")]
         [HttpGet]
-        public Object GetDetalleTareaNoEx(int idCliente, int idVersion)
+        public Object GetDetalleTarea(int idCliente, int idVersion)
         {
             try
             {
-                return ProcessMsg.Tareas.GetTareasNoEx(idCliente, idVersion);
+                var obj = ProcessMsg.Tareas.GetTareas(idCliente, idVersion);
+                return Content(HttpStatusCode.OK, obj);
             }
             catch (Exception ex)
             {
@@ -34,7 +35,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 bool paso = false;
-                var lista = ProcessMsg.Tareas.GetTareasNoEx(idCliente, idVersion);
+                var lista = ProcessMsg.Tareas.GetTareas(idCliente, idVersion);
                 lista.ForEach(x =>
                 {
                     if (x.ExisteAtraso)
@@ -120,19 +121,61 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
-                if(version == null)
+                if (version == null)
                 {
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
                 }
-                
+
                 var obj = ProcessMsg.Componente.GetComponentes(version.IdVersion, null).SingleOrDefault(x => x.Name.Equals(nameFile));
                 if (obj == null)
                 {
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
                 }
 
-                string dirfmt = string.Format("{0}{1}/{2}", HttpContext.Current.Server.MapPath("~/Uploads/"),version.Release,obj.Name);
-                string contenidoSQL = System.IO.File.ReadAllText(dirfmt);
+                string dirfmt = string.Format("{0}{1}/{2}", HttpContext.Current.Server.MapPath("~/Uploads/"), version.Release, obj.Name);
+
+                Byte[] objByte = System.IO.File.ReadAllBytes(dirfmt);
+                if (objByte == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ByteArrayContent)null);
+                }
+                HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.OK);
+
+                message.Content = new ByteArrayContent(objByte);
+                message.Content.Headers.ContentLength = objByte.Length;
+                message.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                message.Content.Headers.Add("Content-Disposition", "attachment; filename=" +obj.Name);
+                return message;
+
+
+                //return contenidoSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/{idVersion:int}/Componentes/{nameFile}/leerscript")]
+        [HttpGet]
+        public Object GetContenidoSQL(int idVersion, string nameFile)
+        {
+            try
+            {
+                var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                if (version == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                var obj = ProcessMsg.Componente.GetComponentes(version.IdVersion, null).SingleOrDefault(x => x.Name.Equals(nameFile));
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                string dirfmt = string.Format("{0}{1}/{2}", HttpContext.Current.Server.MapPath("~/Uploads/"), version.Release, obj.Name);
+                var contenidoSQL = System.IO.File.ReadAllText(dirfmt);
 
                 return contenidoSQL;
             }
@@ -193,8 +236,12 @@ namespace WinPerUpdateAdmin.Controllers.api
 
                 tareas.ForEach(x => 
                 {
-                    msg += string.Format("<br><br>Ambiente: {0}<br>Estado: {1}<br>ID Versión: {2}<br>Fecha y Hora de Registro: {3}<br>Archivo: {4}<br>ERROR: {5}"
-                    , x.Ambientes.Nombre, x.EstadoFmt, x.idVersion, x.FechaRegistroFmt, x.NameFile, x.Error);
+                    if (x.Estado == 0 || x.Estado == 2 || x.Estado == 4)
+                    {
+                        msg += string.Format("<br><br>Ambiente: {0}<br>Estado: {1}<br>ID Versión: {2}<br>Fecha y Hora de Registro: {3}<br>Archivo: {4}<br>ERROR: {5}"
+                       , x.Ambientes.Nombre, x.EstadoFmt, x.idVersion, x.FechaRegistroFmt, x.NameFile, x.Error);
+                    }
+                    
                 }
                 );
 
@@ -419,6 +466,32 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region put
+        [Route("api/ReportarTareaManual")]
+        [HttpPut]
+        public Object ReportarTareaManual([FromBody]ProcessMsg.Model.TareaBo tarea)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+
+                var obj = ProcessMsg.Tareas.SetEstadoTarea(tarea.idTareas, tarea.Estado, tarea.Error);
+                if (obj == 0)
+                {
+                    response.StatusCode = HttpStatusCode.Accepted;
+                }
+                else
+                {
+                    return Content(HttpStatusCode.OK, obj);
+                }
+
+                return Content(response.StatusCode, (ProcessMsg.Model.TareaBo)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Version/{idVersion:int}")]
         [HttpPut]
         public Object Put(int idVersion, [FromBody]ProcessMsg.Model.VersionBo version)
