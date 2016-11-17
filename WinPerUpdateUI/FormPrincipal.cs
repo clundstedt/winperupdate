@@ -48,7 +48,11 @@ namespace WinPerUpdateUI
             //' Este evento manejará tanto los menús Restaurar como el NotifyIcon.DoubleClick
             //ShowInTaskbar = true;
             //WindowState = FormWindowState.Normal;
+
+            var menu = (MenuItem)sender;
+
             var form = new frmVersiones();
+            form.ambiente = menu.Text;
             form.Show();
         }
 
