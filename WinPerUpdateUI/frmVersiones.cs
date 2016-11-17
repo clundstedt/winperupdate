@@ -17,69 +17,11 @@ namespace WinPerUpdateUI
 {
     public partial class frmVersiones : Form
     {
+        public string ambiente = String.Empty;
+
         public frmVersiones()
         {
             InitializeComponent();
-
-            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
-            string nroLicencia = key.GetValue("Licencia").ToString();
-            string version = key.GetValue("Version").ToString();
-            string status = key.GetValue("Status").ToString();
-            key.Close();
-
-            if (string.IsNullOrEmpty(version))
-            {
-                lblTitulo.Text = "Usted se encuentra Actualizado";
-                lblSubtitulo.Text = "Usted ya tiene la última versión liberada de WINPER. Pronto le informaremos de nuevas actualizaciones";
-                btnInstalar.Enabled = false;
-                return;
-            }
-            if (status.ToLower().Equals("updated"))
-            {
-                lblTitulo.Text = "Usted se encuentra Actualizado";
-                lblSubtitulo.Text = "Usted ya tiene la última versión liberada de WINPER. El detalle de esta versión se muestra a continuación:";
-                btnInstalar.Enabled = false;
-            }
-            else
-            {
-                lblTitulo.ForeColor = Color.Red;
-                lblTitulo.Text = "Actualización requerida";
-                lblSubtitulo.Text = "Usted no tiene la última versión liberada de WINPER (" + version + "). Para actualizarla favor dar click en el botón Instalar ...";
-            }
-
-            treeModulos.Nodes.Clear();
-            treeModulos.Nodes.Add("Winper V " + version);
-
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
-
-            key.Close();
-
-            if (!string.IsNullOrEmpty(nroLicencia))
-            {
-                string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + nroLicencia + "#");
-                var cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
-                if (cliente != null)
-                {
-                    var release = new VersionBo();
-                    json = Utils.StrSendMsg(server, int.Parse(port), "getversion#" + version + "#");
-                    release = JsonConvert.DeserializeObject<VersionBo>(json);
-
-                    if (release.Componentes != null)
-                    {
-                        string modulo = "";
-                        foreach (var componente in release.Componentes)
-                        {
-                            if (!modulo.Equals(componente.Modulo))
-                            {
-                                modulo = componente.Modulo;
-                                treeModulos.Nodes[0].Nodes.Add(modulo);
-                            }
-                        }
-                    }
-                }
-            }
-
         }
 
         private void btnInstalar_Click(object sender, EventArgs e)
@@ -184,6 +126,72 @@ namespace WinPerUpdateUI
 
         private void treeModulos_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void frmVersiones_Load(object sender, EventArgs e)
+        {
+            this.Text = this.Text + " Ambiente " + ambiente;
+
+            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+            string nroLicencia = key.GetValue("Licencia").ToString();
+            key.Close();
+
+            Microsoft.Win32.RegistryKey keya = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\" + ambiente);
+            string version = keya.GetValue("Version").ToString();
+            string status = keya.GetValue("Status").ToString();
+            keya.Close();
+
+            if (string.IsNullOrEmpty(version))
+            {
+                lblTitulo.Text = "Usted se encuentra Actualizado";
+                lblSubtitulo.Text = "Usted ya tiene la última versión liberada de WINPER. Pronto le informaremos de nuevas actualizaciones";
+                btnInstalar.Enabled = false;
+                return;
+            }
+            if (status.ToLower().Equals("updated"))
+            {
+                lblTitulo.Text = "Usted se encuentra Actualizado";
+                lblSubtitulo.Text = "Usted ya tiene la última versión liberada de WINPER. El detalle de esta versión se muestra a continuación:";
+                btnInstalar.Enabled = false;
+            }
+            else
+            {
+                lblTitulo.ForeColor = Color.Red;
+                lblTitulo.Text = "Actualización requerida";
+                lblSubtitulo.Text = "Usted no tiene la última versión liberada de WINPER (" + version + "). Para actualizarla favor dar click en el botón Instalar ...";
+            }
+
+            treeModulos.Nodes.Clear();
+            treeModulos.Nodes.Add("Winper V " + version);
+
+            string server = ConfigurationManager.AppSettings["server"];
+            string port = ConfigurationManager.AppSettings["port"];
+
+            if (!string.IsNullOrEmpty(nroLicencia))
+            {
+                string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + nroLicencia + "#");
+                var cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
+                if (cliente != null)
+                {
+                    var release = new VersionBo();
+                    json = Utils.StrSendMsg(server, int.Parse(port), "getversion#" + version + "#");
+                    release = JsonConvert.DeserializeObject<VersionBo>(json);
+
+                    if (release.Componentes != null)
+                    {
+                        string modulo = "";
+                        foreach (var componente in release.Componentes)
+                        {
+                            if (!modulo.Equals(componente.Modulo))
+                            {
+                                modulo = componente.Modulo;
+                                treeModulos.Nodes[0].Nodes.Add(modulo);
+                            }
+                        }
+                    }
+                }
+            }
 
         }
     }
