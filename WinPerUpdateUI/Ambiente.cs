@@ -26,7 +26,6 @@ namespace WinPerUpdateUI
                 Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
 
                 txtNroLicencia.Text = key.GetValue("Licencia").ToString();
-                txtDirWinper.Text = key.GetValue("DirWinPer").ToString();
                 string ambientes = key.GetValue("Ambientes").ToString();
                 string perfil = key.GetValue("Perfil").ToString();
                 key.Close();
@@ -45,11 +44,16 @@ namespace WinPerUpdateUI
                     lista = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
                     if (lista != null)
                     {
-                        clbAmbientes.Items.Clear();
+                        dgAmbientes.Rows.Clear();
 
                         foreach (var item in lista)
                         {
-                            clbAmbientes.Items.Add(item.Nombre, ambientes.IndexOf(item.Nombre) >= 0);
+                            Microsoft.Win32.RegistryKey keyv = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\" + item.Nombre);
+                            string directorio = key.GetValue("DirWinper").ToString();
+
+                            dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, directorio);
+
+                            keyv.Close();
                         }
                     }
 
@@ -68,27 +72,31 @@ namespace WinPerUpdateUI
             key.SetValue("Perfil", cmbPerfil.Items[cmbPerfil.SelectedIndex]);
 
             string ambientes = "";
-            foreach (var item in clbAmbientes.CheckedItems)
+            foreach (DataGridViewRow item in dgAmbientes.Rows)
             {
-                ambientes += ambientes.Length == 0 ? item : "," + item;
-                Microsoft.Win32.RegistryKey keya = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate\" + item);
+                string nombreAmbiente = item.Cells[1].Value.ToString();
+                string directorio = item.Cells[2].Value.ToString();
+
+                ambientes += ambientes.Length == 0 ? nombreAmbiente : "," + nombreAmbiente;
+                Microsoft.Win32.RegistryKey keya = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate\" + nombreAmbiente);
                 try
                 {
                     string version = keya.GetValue("Version").ToString();
+                    keya.SetValue("DirWinper", directorio);
                 }
                 catch (Exception ex)
                 {
                     keya.SetValue("Version", "");
-                    keya.SetValue("DirWinper", txtDirWinper.Text);
+                    keya.SetValue("DirWinper", directorio);
                 }
                 try
+
                 {
                     string estado = keya.GetValue("Status").ToString();
                 }
                 catch (Exception ex)
                 {
                     keya.SetValue("Status", "");
-                    keya.SetValue("DirWinper", txtDirWinper.Text);
                 }
                 keya.Close();
             }
@@ -125,14 +133,19 @@ namespace WinPerUpdateUI
                 ambientes = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
                 if (ambientes != null)
                 {
-                    clbAmbientes.Items.Clear();
+                    dgAmbientes.Rows.Clear();
 
                     foreach (var item in ambientes)
                     {
-                        clbAmbientes.Items.Add(item.Nombre, false);
+                        dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, "");
                     }
                 }
             }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

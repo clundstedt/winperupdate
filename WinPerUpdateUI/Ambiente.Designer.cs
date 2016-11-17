@@ -28,15 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.txtNroLicencia = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.clbAmbientes = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbPerfil = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtDirWinper = new System.Windows.Forms.TextBox();
+            this.dgAmbientes = new System.Windows.Forms.DataGridView();
+            this.CodAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NomAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DirAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dgAmbientes)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -50,7 +55,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(223, 291);
+            this.btnAceptar.Location = new System.Drawing.Point(368, 263);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(100, 23);
             this.btnAceptar.TabIndex = 2;
@@ -62,7 +67,7 @@
             // 
             this.txtNroLicencia.Location = new System.Drawing.Point(17, 24);
             this.txtNroLicencia.Name = "txtNroLicencia";
-            this.txtNroLicencia.Size = new System.Drawing.Size(309, 20);
+            this.txtNroLicencia.Size = new System.Drawing.Size(451, 20);
             this.txtNroLicencia.TabIndex = 3;
             this.txtNroLicencia.TextChanged += new System.EventHandler(this.txtNroLicencia_TextChanged);
             this.txtNroLicencia.Leave += new System.EventHandler(this.txtNroLicencia_Leave);
@@ -76,18 +81,10 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Ambientes donde Opera";
             // 
-            // clbAmbientes
-            // 
-            this.clbAmbientes.FormattingEnabled = true;
-            this.clbAmbientes.Location = new System.Drawing.Point(19, 76);
-            this.clbAmbientes.Name = "clbAmbientes";
-            this.clbAmbientes.Size = new System.Drawing.Size(306, 94);
-            this.clbAmbientes.TabIndex = 4;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 182);
+            this.label3.Location = new System.Drawing.Point(14, 219);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 13);
             this.label3.TabIndex = 5;
@@ -100,37 +97,66 @@
             "Administrador",
             "DBA",
             "Otro"});
-            this.cmbPerfil.Location = new System.Drawing.Point(20, 199);
+            this.cmbPerfil.Location = new System.Drawing.Point(17, 236);
             this.cmbPerfil.Name = "cmbPerfil";
-            this.cmbPerfil.Size = new System.Drawing.Size(303, 21);
+            this.cmbPerfil.Size = new System.Drawing.Size(451, 21);
             this.cmbPerfil.TabIndex = 6;
             // 
-            // label4
+            // dgAmbientes
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 237);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Directorio Winper";
+            this.dgAmbientes.AllowUserToAddRows = false;
+            this.dgAmbientes.AllowUserToDeleteRows = false;
+            this.dgAmbientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgAmbientes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.CodAmbiente,
+            this.NomAmbiente,
+            this.DirAmbiente});
+            this.dgAmbientes.Location = new System.Drawing.Point(17, 76);
+            this.dgAmbientes.Name = "dgAmbientes";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgAmbientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgAmbientes.Size = new System.Drawing.Size(451, 125);
+            this.dgAmbientes.TabIndex = 7;
+            this.dgAmbientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
-            // txtDirWinper
+            // CodAmbiente
             // 
-            this.txtDirWinper.Location = new System.Drawing.Point(20, 253);
-            this.txtDirWinper.Name = "txtDirWinper";
-            this.txtDirWinper.Size = new System.Drawing.Size(303, 20);
-            this.txtDirWinper.TabIndex = 8;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.CodAmbiente.DefaultCellStyle = dataGridViewCellStyle1;
+            this.CodAmbiente.HeaderText = "Codigo";
+            this.CodAmbiente.Name = "CodAmbiente";
+            this.CodAmbiente.ReadOnly = true;
+            this.CodAmbiente.Visible = false;
+            this.CodAmbiente.Width = 50;
+            // 
+            // NomAmbiente
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.NomAmbiente.DefaultCellStyle = dataGridViewCellStyle2;
+            this.NomAmbiente.HeaderText = "Ambiente";
+            this.NomAmbiente.Name = "NomAmbiente";
+            this.NomAmbiente.ReadOnly = true;
+            // 
+            // DirAmbiente
+            // 
+            this.DirAmbiente.HeaderText = "Directorio";
+            this.DirAmbiente.Name = "DirAmbiente";
+            this.DirAmbiente.Width = 250;
             // 
             // Ambiente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 324);
-            this.Controls.Add(this.txtDirWinper);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(480, 298);
+            this.Controls.Add(this.dgAmbientes);
             this.Controls.Add(this.cmbPerfil);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.clbAmbientes);
             this.Controls.Add(this.txtNroLicencia);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.label2);
@@ -139,6 +165,7 @@
             this.Name = "Ambiente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ambiente";
+            ((System.ComponentModel.ISupportInitialize)(this.dgAmbientes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -150,10 +177,11 @@
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.TextBox txtNroLicencia;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckedListBox clbAmbientes;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbPerfil;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtDirWinper;
+        private System.Windows.Forms.DataGridView dgAmbientes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CodAmbiente;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NomAmbiente;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DirAmbiente;
     }
 }

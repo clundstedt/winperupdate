@@ -81,15 +81,12 @@ namespace WinPerUpdateUI
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-            ContextMenu1.MenuItems.Add("&Restaurar", new EventHandler(this.Restaurar_Click));
-            ContextMenu1.MenuItems[0].Enabled = false;
-
             ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
-            ContextMenu1.MenuItems[1].Enabled = true;
+            ContextMenu1.MenuItems[0].Enabled = true;
 
             ContextMenu1.MenuItems.Add("-");
             ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
-            ContextMenu1.MenuItems[2].DefaultItem = true;
+            ContextMenu1.MenuItems[1].DefaultItem = true;
 
             ContextMenu1.MenuItems.Add("-");
             ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
@@ -130,16 +127,28 @@ namespace WinPerUpdateUI
                     if (cliente != null)
                     {
                         json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id.ToString() + "#");
+
+                        ContextMenu1.MenuItems.Clear();
+
+                        MenuItem addDevice = new MenuItem("&Estado de la Versión");
+                        addDevice.Enabled = true;
                         foreach (var ambiente in JsonConvert.DeserializeObject<List<AmbienteBo>>(json))
                         {
-                            if (ambientecfg.Contains(ambiente.Nombre))
-                            {
-                                ambientes.Add(ambiente);
-                            }
+                            addDevice.MenuItems.Add(new MenuItem(ambiente.Nombre, new EventHandler(this.Restaurar_Click)));
                         }
-                        ContextMenu1.MenuItems[0].Enabled = true;
-                        ContextMenu1.MenuItems[2].DefaultItem = false;
-                        ContextMenu1.MenuItems[0].DefaultItem = true;
+                        ContextMenu1.MenuItems.Add(addDevice);
+
+                        ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
+                        ContextMenu1.MenuItems[1].Enabled = true;
+
+                        ContextMenu1.MenuItems.Add("-");
+                        ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
+                        ContextMenu1.MenuItems[2].DefaultItem = true;
+
+                        ContextMenu1.MenuItems.Add("-");
+                        ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
+
+                        notifyIcon2.ContextMenu = ContextMenu1;
                         timer1.Start();
                     }
                 }
