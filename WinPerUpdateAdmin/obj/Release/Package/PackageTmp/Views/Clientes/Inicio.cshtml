@@ -46,7 +46,7 @@
                         <span class="fa fa-signal"></span> Clientes Existentes
                     </div>
                     <div class="table-responsive" ng-hide="clientes.length==0">
-                        <table st-table="clientes" class="table table-striped">
+                        <table st-table="displayClientes" st-safe-src="clientes" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Rut</th>
@@ -55,9 +55,13 @@
                                     <th>Comuna</th>
                                     <th>Acci&oacute;n</th>
                                 </tr>
+                                <tr>
+                                    <th colspan="5"><input st-search="" class="form-control" placeholder="Busqueda global ..." type="text" /></th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="cliente in clientes" class="row-tabla" style="height: 20px;">
+                                
+                                <tr ng-repeat="cliente in displayClientes" class="row-tabla" style="height: 20px;">
                                     <td style="vertical-align: middle;">{{cliente.RutFmt}}</td>
                                     <td style="vertical-align: middle;">{{cliente.Nombre}}</td>
                                     <td style="vertical-align: middle;">{{cliente.Direccion}}</td>

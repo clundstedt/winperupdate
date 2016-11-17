@@ -18,15 +18,60 @@
             existeTarea: existeTarea,
             ambienteOK: ambienteOK,
             existeTareaAtrasada: existeTareaAtrasada,
-            detalleTareasNoEx: detalleTareasNoEx,
+            detalleTareas: detalleTareas,
             reportarTareaAtrasada: reportarTareaAtrasada,
             reportarTodasTareas: reportarTodasTareas,
+            asignarEstadoManual: asignarEstadoManual,
+            getAmbientesNoEx: getAmbientesNoEx,
 
             addVersion: addVersion,
             addTarea: addTarea
         };
 
         return service;
+
+        function asignarEstadoManual(tarea) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var tareaSend = {
+                "idTareas": tarea.idTareas,
+                "Estado": tarea.Estado,
+                "Error": tarea.Error
+            };
+
+            $.ajax({
+                url: "/api/ReportarTareaManual",
+                type: "PUT",
+                dataType: 'Json',
+                data: tareaSend,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo reportar la tarea');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo reportar la tarea');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function reportarTodasTareas(tareas) {
 
@@ -134,12 +179,12 @@
             return promise;
         }
 
-        function detalleTareasNoEx(idCliente, idVersion) {
+        function detalleTareas(idCliente, idVersion) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Cliente/' + idCliente + '/Version/' + idVersion + '/DetalleTareaAtrasada',
+                url: '/api/Cliente/' + idCliente + '/Version/' + idVersion + '/DetalleTarea',
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
@@ -203,6 +248,44 @@
 
             return promise;
         }
+        function getAmbientesNoEx(idCliente, idVersion, NameFile) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Cliente/' + idCliente + '/Version/' + idVersion + '/' + NameFile + '/Ambientes',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen ambientes');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen ambientes');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+
+        }
+
 
         function ambienteOK(idAmbiente, idVersion) {
             var deferred = $q.defer();
@@ -244,7 +327,7 @@
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Version/'+idVersion+'/Componentes/'+NameFile+'/script',
+                url: '/api/Version/' + idVersion + '/Componentes/' + NameFile + '/leerscript',
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
@@ -466,7 +549,7 @@
             return promise;
         }
 
-        function addTarea(idVersion, idCliente, idAmbientes, CodPrf, Modulo, NameFile) {
+        function addTarea(idVersion, idCliente, idAmbientes, CodPrf, Modulo, NameFile, Estado) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -476,7 +559,7 @@
                     "idAmbientes": idAmbientes
                 },
                 "CodPrf": CodPrf,
-                "Estado": 0,
+                "Estado": Estado,
                 "Modulo": Modulo,
                 "NameFile": NameFile,
                 "Error": ""

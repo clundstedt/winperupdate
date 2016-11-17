@@ -368,8 +368,6 @@
     <Content Include="Scripts\ngrut.js" />
     <Content Include="Scripts\smart-table.js" />
     <Content Include="Scripts\smart-table.min.js" />
-    <Content Include="Uploads\10.0.1\calc_sdo_pje_indiv.sql" />
-    <Content Include="Uploads\10.0.1\recapa60.exe" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -432,9 +430,6 @@
     <Content Include="Views\Home\Perfil.cshtml" />
     <Content Include="Views\Shared\r_MENUANTIGUO.cshtml" />
     <Content Include="Views\Home\Menus.cshtml" />
-    <Content Include="Uploads\10.0.1\recapa46.qrp" />
-    <Content Include="Uploads\10.0.1\WP100120161108101713.iss" />
-    <Content Include="Uploads\10.0.1\WP100120161108101939.iss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -445,6 +440,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProcessMsg\ProcessMsg.csproj">
