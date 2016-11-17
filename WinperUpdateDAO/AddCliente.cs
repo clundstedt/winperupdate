@@ -39,5 +39,42 @@ namespace WinperUpdateDAO
             }
         }
 
+        public bool ExecuteClientesHasModulos(int idCliente, int[] idModulos)
+        {
+            SpName = @"INSERT INTO Clientes_has_ModulosWinper (idClientes
+                                                              ,idModulo)
+                                                        VALUES({0}
+                                                              ,{1})";
+            string del = @"DELETE FROM Clientes_has_ModulosWinper 
+                                                            WHERE idClientes = @idClienteDel";
+            object[,] querys = new object[idModulos.Length+1, 2];
+            try
+            {
+                for (int i = 0; i < idModulos.Length; i++)
+                {
+                    string[] datos =
+                    {
+                        "@idCliente"+i,
+                        "@idModulo"+i
+                    };
+                    var sql = string.Format(SpName,datos[0],datos[1]);
+                    var parms = new ConnectorDB.ThDictionary();
+                    parms.Add(datos[0],idCliente);
+                    parms.Add(datos[1],idModulos[i]);
+
+                    querys[i + 1, 0] = sql;
+                    querys[i + 1, 1] = parms;
+                }
+                ParmsDictionary.Add("@idClienteDel", idCliente);
+                querys[0, 0] = del;
+                querys[0, 1] = ParmsDictionary;
+                return Connector.ExecuteQueryTrans(querys);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

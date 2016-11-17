@@ -21,18 +21,20 @@ namespace WinPerUpdateAdmin
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.min.js",
                       "~/Scripts/bootstrap-datepicker.min.js",
-                      "~/Scripts/locales/bootstrap-datepicker.es.min.js",
-                      "~/Scripts/jasny-bootstrap.min.js"));
+                      "~/Scripts/locales/bootstrap-datepicker.es.min.js"
+                      ,"~/Scripts/jasny-bootstrap.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datepicker.min.css",
-                      "~/Content/jasny-bootstrap.min.css",
+                      "~/Content/jasny-bootstrap.min.css"
+                      , "~/Content/select.css",
                       "~/Content/Site.css").Include("~/css/font-awesome.min.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                           "~/Scripts/angular.min.js"
-                          ,"~/Scripts/angular-route.min.js"
+                              "~/Scripts/angular.min.js"
+                            , "~/Scripts/angular-route.min.js"
+                            , "~/Scripts/select.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
@@ -77,7 +79,8 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/ambientesclt").Include(
-                        "~/js/AmbientesClt/app.js"
+                      "~/Scripts/angular-file-upload.min.js"
+                      ,  "~/js/AmbientesClt/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
                       , "~/js/AmbientesClt/ambientes.js"

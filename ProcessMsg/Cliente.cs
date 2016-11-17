@@ -10,6 +10,7 @@ namespace ProcessMsg
 {
     public class Cliente
     {
+        #region Metodos GETs
         public static List<Model.VersionBo> GetVersiones(int idCliente, EventLog log)
         {
             var lista = new List<Model.VersionBo>();
@@ -337,60 +338,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
-        public static Model.ClienteBo Add(Model.ClienteBo cliente)
-        {
-            int codError = 0;
-            string msgError = "";
-            var query = new AddCliente();
-            try
-            {
-                var dr = query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
-                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh,cliente.NroUsr);
-                while (dr.Read())
-                {
-                    codError = int.Parse(dr["codErr"].ToString());
-                    msgError = dr["msgErr"].ToString();
-                    if (codError == 0)
-                    {
-                        return GetClientes().SingleOrDefault(x => x.Rut == cliente.Rut);
-                    }else
-                    {
-                        var msg = "Excepcion Controlada: " + msgError;
-                        throw new Exception(msg);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                var msg = "Excepcion Controlada: " + ex.Message;
-                throw new Exception(msg, ex);
-            }
-
-            return null;
-        }
-
-        public static Model.ClienteBo Update(int id, Model.ClienteBo cliente)
-        {
-            var query = new UpdCliente();
-            try
-            {
-                if (query.Execute(id, cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
-                                 ,cliente.NroLicencia, cliente.EstMtc, cliente.Mesini, cliente.NroTrbc, cliente.NroTrbh, cliente.NroUsr) > 0)
-                {
-                    return GetClientes().SingleOrDefault(x => x.Id == id);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                var msg = "Excepcion Controlada: " + ex.Message;
-                throw new Exception(msg, ex);
-            }
-
-            return null;
-        }
-
         public static int GetFolioLicencia()
         {
             try
@@ -399,25 +346,12 @@ namespace ProcessMsg
                 var dr = new CnaClientes().GetFolio("Licencia");
                 while (dr.Read())
                 {
-                    if (int.TryParse(dr[0].ToString(),out numFolio))
+                    if (int.TryParse(dr[0].ToString(), out numFolio))
                     {
-                        return numFolio+1;
+                        return numFolio + 1;
                     }
                 }
                 return 1000;
-            }catch(Exception ex)
-            {
-                var msg = "Excepcion Controlada: " + ex.Message;
-                throw new Exception(msg, ex);
-            }
-        }
-
-        public static int Delete(int id)
-        {
-            var query = new DelCliente();
-            try
-            {
-                return query.Execute(id);
             }
             catch (Exception ex)
             {
@@ -425,21 +359,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
-        public static int AddUsuario(int idCliente, int idUsuario)
-        {
-            var query = new AddUsuarioCliente();
-            try
-            {
-                return query.Execute(idUsuario, idCliente);
-            }
-            catch (Exception ex)
-            {
-                var msg = "Excepcion Controlada: " + ex.Message;
-                throw new Exception(msg, ex);
-            }
-        }
-
+        
         public static List<Model.UsuarioBo> GetUsuarios(int idCliente)
         {
             var lista = new List<Model.UsuarioBo>();
@@ -475,6 +395,123 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
+        public static List<Model.ModuloBo> GetClientesHasModulo(int idCliente)
+        {
+            List<Model.ModuloBo> lista = new List<Model.ModuloBo>();
+            try
+            {
+                var reader = new CnaClientes().ExecuteClientesHasModulos(idCliente);
+                while (reader.Read())
+                {
+                    lista.Add(new Model.ModuloBo
+                    {
+                        idModulo = int.Parse(reader["idModulo"].ToString()),
+                        NomModulo = reader["NomModulo"].ToString()
+                    });
+                }
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        #endregion
+        public static Model.ClienteBo Add(Model.ClienteBo cliente)
+        {
+            int codError = 0;
+            string msgError = "";
+            var query = new AddCliente();
+            try
+            {
+                var dr = query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
+                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh,cliente.NroUsr);
+                while (dr.Read())
+                {
+                    codError = int.Parse(dr["codErr"].ToString());
+                    msgError = dr["msgErr"].ToString();
+                    if (codError == 0)
+                    {
+                        return GetClientes().SingleOrDefault(x => x.Rut == cliente.Rut);
+                    }else
+                    {
+                        var msg = "Excepcion Controlada: " + msgError;
+                        throw new Exception(msg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+
+            return null;
+        }
+        public static bool AddClientesHasModulos(int idCliente, int[] idModulos)
+        {
+            try
+            {
+                return new AddCliente().ExecuteClientesHasModulos(idCliente, idModulos);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static int AddUsuario(int idCliente, int idUsuario)
+        {
+            var query = new AddUsuarioCliente();
+            try
+            {
+                return query.Execute(idUsuario, idCliente);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static Model.ClienteBo Update(int id, Model.ClienteBo cliente)
+        {
+            var query = new UpdCliente();
+            try
+            {
+                if (query.Execute(id, cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
+                                 ,cliente.NroLicencia, cliente.EstMtc, cliente.Mesini, cliente.NroTrbc, cliente.NroTrbh, cliente.NroUsr) > 0)
+                {
+                    return GetClientes().SingleOrDefault(x => x.Id == id);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+
+            return null;
+        }
+        public static int Delete(int id)
+        {
+            var query = new DelCliente();
+            try
+            {
+                return query.Execute(id);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        
+
+        
 
     }
 }

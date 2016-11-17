@@ -137,6 +137,161 @@ namespace ProcessMsg
             }
         }
 
+        public static bool AddAmbientesXLSX(int idCliente, string archivo, string hoja, string fin)
+        {
+            try
+            {
+                var tabla = VerificarDatosAmbientes(idCliente, archivo, hoja);
+                return new AddAmbiente().ExecuteAmbientesXLSX(tabla);
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        /// <summary>
+        /// Verifica los AmbienteXLSX estan todos sin errores
+        /// </summary>
+        /// <param name="idCliente"></param>
+        /// <returns>Cantidad de AmbientesXLSX sin errores</returns>
+        public static int GetAmbXlSXOk(int idCliente)
+        {
+            try
+            {
+                int count = 0;
+                var reader = new CnaAmbientes().ExecuteAmbXLSXOk(idCliente);
+                while (reader.Read())
+                {
+                    count = int.Parse(reader["count"].ToString());
+                }
+                return count;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int AddAmbXLSXtoAmb(int idCliente)
+        {
+            try
+            {
+                return new AddAmbiente().ExecuteAmbXLSXtoAmb(idCliente);
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static List<ProcessMsg.Model.AmbientesXLSXBo> GetAmbientesXLSX(int idCliente)
+        {
+            List<ProcessMsg.Model.AmbientesXLSXBo> lista = new List<Model.AmbientesXLSXBo>();
+            try
+            {
+                var reader = new CnaAmbientes().ExecuteAmbientesXLSX(idCliente);
+                while (reader.Read())
+                {
+                    lista.Add(new Model.AmbientesXLSXBo
+                    {
+                        idAmbientes = int.Parse(reader["idAmbientes"].ToString()),
+                        idClientes = int.Parse(reader["idClientes"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        Tipo = int.Parse(reader["Tipo"].ToString()),
+                        ServerBd = reader["ServerBd"].ToString(),
+                        Instancia = reader["Instancia"].ToString(),
+                        NomBd = reader["NomBd"].ToString(),
+                        UserDbo = reader["UserDbo"].ToString(),
+                        PwdDbo = Utils.DesEncriptar(reader["PwdDbo"].ToString()),
+                        FechaRegistroEx = Convert.ToDateTime(reader["FechaRegistro"].ToString()),
+                        EstadoRegistro = int.Parse(reader["EstadoRegistro"].ToString()),
+                        ErrorRegistro = reader["ErrorRegistro"].ToString()
+                    });
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        private static System.Data.DataTable VerificarDatosAmbientes(int idClientes, string Archivo, string Hoja)
+        {
+            System.Data.DataTable dt = new CnaAmbientes().selectExcel(Archivo, Hoja);
+            System.Data.DataTable dtAmbientes = new System.Data.DataTable();
+            dtAmbientes.Columns.Add("idClientes");
+            dtAmbientes.Columns.Add("Nombre");
+            dtAmbientes.Columns.Add("Tipo");
+            dtAmbientes.Columns.Add("ServerBd");
+            dtAmbientes.Columns.Add("Instancia");
+            dtAmbientes.Columns.Add("NomBd");
+            dtAmbientes.Columns.Add("UserDbo");
+            dtAmbientes.Columns.Add("PwdDbo");
+            dtAmbientes.Columns.Add("FechaRegistro");
+            dtAmbientes.Columns.Add("EstadoRegistro");
+            dtAmbientes.Columns.Add("ErrorRegistro");
+            string ErrorRegistro = "";
+            int tipo;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProcessMsg.Model.AmbientesXLSXBo ambiente;
+                tipo = 0;
+                ErrorRegistro = "";
+                if (string.IsNullOrEmpty(dt.Rows[i][0].ToString()) || dt.Rows[i][0].ToString().Length > 99)
+                {
+                    ErrorRegistro += "Error en la columna 'Nombre', está vacía o sobre pasa el límite de caracteres (100) || ";
+                }
+                if (!int.TryParse(dt.Rows[i][1].ToString(), out tipo))
+                {
+                    ErrorRegistro += "Error en la columna 'Tipo', debe ser numerica || ";
+                }else if (!(tipo >= 1 && tipo <= 2))
+                {
+                    ErrorRegistro += "Error en la columna 'Tipo', debe ser 1 (Producción) o 2 (Pruebas) || ";
+                }
+                if (string.IsNullOrEmpty(dt.Rows[i][2].ToString()) || dt.Rows[i][2].ToString().Length > 99)
+                {
+                    ErrorRegistro += "Error en la columna 'ServerBd', está vacía o sobre pasa el límite de caracteres (100) || ";
+                }
+                if (string.IsNullOrEmpty(dt.Rows[i][3].ToString()) || dt.Rows[i][3].ToString().Length > 99)
+                {
+                    ErrorRegistro += "Error en la columna 'Instancia', está vacía o sobre pasa el límite de caracteres (100) || ";
+                }
+                if (string.IsNullOrEmpty(dt.Rows[i][4].ToString()) || dt.Rows[i][4].ToString().Length > 99)
+                {
+                    ErrorRegistro += "Error en la columna 'NomBd', está vacía o sobre pasa el límite de caracteres (100) || ";
+                }
+                if (string.IsNullOrEmpty(dt.Rows[i][5].ToString()) || dt.Rows[i][5].ToString().Length > 49)
+                {
+                    ErrorRegistro += "Error en la columna 'UserDbo', está vacía o sobre pasa el límite de caracteres (50) || ";
+                }
+                if (string.IsNullOrEmpty(dt.Rows[i][6].ToString()) || dt.Rows[i][6].ToString().Length > 49)
+                {
+                    ErrorRegistro += "Error en la columna 'PwdDbo', está vacía o sobre pasa el límite de caracteres (50) || ";
+                }
+                
+                ambiente = new Model.AmbientesXLSXBo
+                {
+                    idClientes = idClientes,
+                    Nombre = dt.Rows[i][0].ToString(),
+                    Tipo = (int.TryParse(dt.Rows[i][1].ToString(), out tipo) ? tipo : (int?)null),
+                    ServerBd = dt.Rows[i][2].ToString(),
+                    Instancia = dt.Rows[i][3].ToString(),
+                    NomBd = dt.Rows[i][4].ToString(),
+                    UserDbo = dt.Rows[i][5].ToString(),
+                    PwdDbo = Utils.Encriptar(dt.Rows[i][6].ToString()),
+                    ErrorRegistro = ErrorRegistro,
+                    EstadoRegistro = (string.IsNullOrEmpty(ErrorRegistro) ? 0 : 1)
+                };
+                dtAmbientes.Rows.Add(ambiente.idClientes,ambiente.Nombre, ambiente.Tipo,ambiente.ServerBd,ambiente.Instancia
+                    ,ambiente.NomBd,ambiente.UserDbo, ambiente.PwdDbo,ambiente.FechaRegistro, ambiente.EstadoRegistro, ambiente.ErrorRegistro);
+
+            }
+            return dtAmbientes;
+        }
+
         public static Model.AmbienteBo Add(int idCliente, Model.AmbienteBo ambiente)
         {
             try

@@ -1,4 +1,18 @@
-﻿<div class="row">
+﻿<style>
+    .my-drop-zone {
+        border: dotted 3px lightgray;
+    }
+
+    .nv-file-over {
+        border: dotted 3px red;
+    }
+    /* Default class applied to drop zones on over */
+    .another-file-over-class {
+        border: dotted 3px green;
+    }
+
+</style>
+<div class="row">
     <div class="col-md-12">
         <h1>{{title}}</h1>
         <ol class="breadcrumb autoscroll">
@@ -15,11 +29,24 @@
                     <a href="/AmbientesClt#/Crear/{{idCliente}}" class="btn btn-labeled btn-success">
                         <span class="btn-label"><span class="fa fa-cube"></span></span> Crear Ambiente
                     </a>
+                    <a data-toggle="modal" data-target="#export-modal" class="btn btn-labeled btn-warning">
+                        <span class="btn-label"><span class="fa fa-file-excel-o"></span></span> Exportar Ambientes de Excel
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-warning" ng-show="ambxlsxwarn">
+                <span class="fa fa-exclamation-triangle"></span>
+                ADVERTENCIA: Usted exportó ambientes desde un Excel. Existen algunos errores, click 
+                <button type="button" class="btn btn-warning btn-sm" ng-click="CargarAmbXLSX()">AQUÍ</button> 
+                para ver el estado.
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -66,11 +93,10 @@
                                         </a>
                                     </td>
                                 </tr>
-
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" class="text-center">
+                                    <td colspan="7" class="text-center">
                                         <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
@@ -82,5 +108,111 @@
         </div>
     </div>
 </div>
-<br />
+        <br />
+        <div id="export-modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" ng-click="uploader.clearQueue()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Exportación de Ambientes desde Excel</h4>
+                    </div>
+                    <div class="modal-body">
+                        Aquí usted podrá exportar desde una planilla Excel todos sus ambientes. Para poder utilizar el formato
+                        correcto, puede descargar la planilla desde la opción <b>Descargar Planilla</b>.
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12" nv-file-drop="" uploader="uploader" options="uploadOptions">
+                                Arrastre la planilla Excel a la "Drop Zone" o seleccione manualmente el archivo
+                                <div ng-show="uploader.isHTML5">
+                                    <!-- 3. nv-file-over uploader="link" over-class="className" -->
+                                    <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                                        Drop zone
+                                    </div>
+                                </div>
+                                <input type="file" nv-file-select="" uploader="uploader" multiple /><br />
+                                <span class="error_ingreso" ng-hide="uploader.queue.length > 0">
+                                    No hay ninguna planilla seleccionada.
+                                </span>
+                                <span class="label label-info" ng-show="uploader.queue.length > 0">
+                                    {{uploader.queue[0].file.name}}
+                                </span>
+                                <br /><br />
+                                <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                    <span class="glyphicon glyphicon-upload"></span> Subir
+                                </button>
+                                <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancelar
+                                </button>
+                                <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                    <span class="glyphicon glyphicon-trash"></span> Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" ng-click="downloadFile()" class="btn btn-warning">Descargar Planilla</button>
+                        <button type="button" ng-click="uploader.clearQueue()" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+<div id="ambxlsx-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ambientes Exportados</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" ng-hide="false">
+                            <table st-table="ambientesxlsx" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Tipo</th>
+                                        <th>ServerBd</th>
+                                        <th>Instancia</th>
+                                        <th>Nombre BD</th>
+                                        <th>Usuario DBO</th>
+                                        <th>Password DBO</th>
+                                        <th>Error</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ambientexlsx in ambientesxlsx" class="{{ambientexlsx.GetClass}}">
+                                        <td>{{ambientexlsx.idAmbientes}}</td>
+                                        <td>{{ambientexlsx.Nombre}}</td>
+                                        <td>{{ambientexlsx.Tipo}}</td>
+                                        <td>{{ambientexlsx.ServerBd}}</td>
+                                        <td>{{ambientexlsx.Instancia}}</td>
+                                        <td>{{ambientexlsx.NomBd}}</td>
+                                        <td>{{ambientexlsx.UserDbo}}</td>
+                                        <td>{{ambientexlsx.PwdDbo}}</td>
+                                        <td>
+                                            <textarea class="form-control" ng-model="ambientexlsx.ErrorRegistro"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="9" class="text-center">
+                                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@
 
         // 3rd Party Modules
         , 'smart-table'
+        , 'ui.select'
     ])
 
     .config(function ($routeProvider) {
@@ -50,5 +51,5 @@
             return salida;
         }
     })
-    ;
+;
 })();

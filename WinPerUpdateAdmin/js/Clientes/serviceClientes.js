@@ -18,15 +18,93 @@
             getClientesVersion: getClientesVersion,
             getKey: getKey,
             getFolio: getFolio,
+            getModulos: getModulos,
+            getModulosCliente: getModulosCliente, 
 
             addCliente: addCliente,
             addUsuario: addUsuario,
             updCliente: updCliente,
             updUsuario: updUsuario,
-            delCliente: delCliente
+            delCliente: delCliente,
+
+            addModuloCliente: addModuloCliente
         };
 
         return service;
+
+        function getModulosCliente(idCliente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Cliente/' + idCliente + '/ModulosWinper',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen módulos');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen módulos');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getModulos() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Modulos',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen módulos');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen módulos');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+
+        }
+
 
         function getRegiones() {
             var deferred = $q.defer();
@@ -270,6 +348,45 @@
                     deferred.reject('No existe el usuario');
                 }
 
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addModuloCliente(idCliente, modulos) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            console.log("MODULOS SELECCIONADOS: "+modulos);
+
+            $.ajax({
+                url: '/api/Cliente/'+idCliente+'/Modulos',
+                type: "POST",
+                dataType: 'text',
+                contentType: "application/json",
+                data: JSON.stringify(modulos),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar el cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('ERR:No se pudo agregar el cliente');
+                }
             });
 
             promise.success = function (fn) {

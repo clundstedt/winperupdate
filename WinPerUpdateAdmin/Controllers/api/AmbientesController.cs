@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace MiPrimerAPP.Controllers.api
@@ -10,6 +11,49 @@ namespace MiPrimerAPP.Controllers.api
     public class AmbientesController : ApiController
     {
         #region get
+        [Route("api/AmbientesXLSX/Planilla")]
+        [HttpGet]
+        public Object GetPlanillaAmbientesXLSX()
+        {
+            try
+            {
+                string dirfmt = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes/PlanillaAmbientes.xlsx"));
+                
+                Byte[] objByte = System.IO.File.ReadAllBytes(dirfmt);
+                if (objByte == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ByteArrayContent)null);
+                }
+                HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.Created);
+
+                message.Content = new ByteArrayContent(objByte);
+                message.Content.Headers.ContentLength = objByte.Length;
+                message.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                message.Content.Headers.Add("Content-Disposition", "attachment; filename=PlanillaAmbientes.xlsx");
+                message.StatusCode = HttpStatusCode.OK;
+
+                return message;
+
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        [Route("api/Cliente/{idCliente:int}/AmbientesXLSX")]
+        [HttpGet]
+        public Object GetAmbientesXLSX(int idCliente)
+        {
+            try
+            {
+                return ProcessMsg.Ambiente.GetAmbientesXLSX(idCliente).OrderBy(x => x.idAmbientes);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
 
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/{NameFile}/Ambientes")]
         [HttpGet]
