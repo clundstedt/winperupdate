@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data;
+using System.Data.OleDb;
 
 namespace WinperUpdateDAO
 {
@@ -96,5 +98,56 @@ namespace WinperUpdateDAO
             }
         }
 
+        public SqlDataReader ExecuteAmbXLSXOk(int idCliente)
+        {
+            SpName = @"SELECT count(*) as count 
+                                          FROM ambientesxlsx 
+                                          WHERE idClientes = @idCliente
+                                          AND EstadoRegistro = 1";
+            try
+            {
+                ParmsDictionary.Add("@idCliente", idCliente);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+        public SqlDataReader ExecuteAmbientesXLSX(int idCliente)
+        {
+            SpName = @"SELECT * FROM ambientesXLSX WHERE idClientes = @idCliente";
+            try
+            {
+                ParmsDictionary.Add("@idCliente", idCliente);
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+        public DataTable selectExcel(string Arch, string Hoja)
+        {
+
+            OleDbConnection Conex = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Arch + ";Extended Properties=Excel 12.0;");
+
+            OleDbCommand CmdOle = new OleDbCommand();
+
+            CmdOle.Connection = Conex;
+            CmdOle.CommandType = CommandType.Text;
+            CmdOle.CommandText = "SELECT * FROM [" + Hoja + "$]";
+
+            OleDbDataAdapter AdaptadorOle = new OleDbDataAdapter(CmdOle.CommandText, Conex);
+
+            DataTable dt = new DataTable();
+
+            AdaptadorOle.Fill(dt);
+
+            return dt;
+        }
     }
 }

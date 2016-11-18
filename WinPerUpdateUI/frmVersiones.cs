@@ -28,6 +28,7 @@ namespace WinPerUpdateUI
         {
             string dirTmp = Path.GetTempPath();
             dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
+            dirTmp += ambiente + "\\";
 
             string server = ConfigurationManager.AppSettings["server"];
             string port = ConfigurationManager.AppSettings["port"];
@@ -55,6 +56,10 @@ namespace WinPerUpdateUI
                         myProcess.Start();
 
                         this.Close();
+
+                        var form = new Instalar();
+                        form.ambiente = ambiente;
+                        form.Show();
                     }
                 }
             }

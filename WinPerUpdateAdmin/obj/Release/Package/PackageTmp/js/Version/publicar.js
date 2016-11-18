@@ -92,6 +92,7 @@
                                 $scope.mensaje = "Versión publicada exitosamente.";
                             }
                         }).error(function (data) {
+                            $scope.mensaje = "Ocurrió un error durante el proceso de publicación, verifique la consola";
                             console.error(data);
                         });
                     }

@@ -11,5 +11,7 @@ namespace ProcessMsg.Model
         public int idModulo { get; set; }
 
         public string NomModulo { get; set; }
+        public string Suite { get; set; }
+        public string NomExe { get; set; }
     }
 }

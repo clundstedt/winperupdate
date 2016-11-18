@@ -5,9 +5,9 @@
         .module('app')
         .controller('mantenedor', mantenedor);
 
-    mantenedor.$inject = ['$scope','$window', '$routeParams', 'serviceAmbientes'];
+    mantenedor.$inject = ['$scope', '$window', '$routeParams', 'serviceAmbientes'];
 
-    function mantenedor($scope,$window, $routeParams, serviceAmbientes) {
+    function mantenedor($scope, $window, $routeParams, serviceAmbientes) {
         $scope.title = 'Mantenedor Ambiente';
 
         activate();
@@ -18,7 +18,9 @@
             $scope.idCliente = $routeParams.idCliente;
             $scope.labelcreate = ($scope.idAmbiente == 0) ? "Crear" : "Modificar";
             $scope.increate = true;
-            $scope.tipos = [{ "Codigo": 1, "Descripcion": "Producción" }, { "Codigo": 2, "Descripcion": "Desarrollo" }]
+            $scope.tipos = [{ "Codigo": 1, "Descripcion": "Producción" }, { "Codigo": 2, "Descripcion": "Pruebas" }]
+
+
 
             if ($scope.idAmbiente > 0) {
                 serviceAmbientes.getAmbiente($scope.idCliente, $scope.idAmbiente).success(function (data) {

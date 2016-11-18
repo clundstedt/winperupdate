@@ -22,6 +22,24 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+        public SqlDataReader ExecuteClientesHasModulos(int idCliente)
+        {
+            SpName = @"SELECT mw.* FROM ModulosWinper mw 
+                                              INNER JOIN Clientes_has_ModulosWinper chm
+                                                      ON chm.idModulo = mw.idModulo 
+                                                   WHERE chm.idClientes = @idCliente";
+            try
+            {
+                ParmsDictionary.Add("@idCliente", idCliente);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
 
         /// <summary>
         /// Obtiene los clientes que tienen una version especificada

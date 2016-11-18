@@ -10,6 +10,25 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class ClientesController : ApiController
     {
         #region get
+        [Route("api/Cliente/{idCliente:int}/ModulosWinper")]
+        [HttpGet]
+        public Object GetModulosCliente(int idCliente)
+        {
+            try
+            {
+                var obj = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.RegionBo)null);
+                }
+
+                return ProcessMsg.Cliente.GetClientesHasModulo(idCliente);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
         [Route("api/Clientes")]
         [HttpGet]
         public Object Get()
@@ -179,12 +198,37 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-        
+
         #endregion
 
-
-
         #region post
+        [Route("api/Cliente/{idCliente:int}/Modulos")]
+        [HttpPost]
+        public Object PostModulosClientes(int idCliente,[FromBody]List<ProcessMsg.Model.ModuloBo> modulos)
+        {
+            try
+            {
+                var cliente = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
+                if (cliente != null)
+                {
+                    if (modulos.Count > 0)
+                    {
+                        var idModulos = modulos.Select(x => x.idModulo).ToArray();
+                        if (ProcessMsg.Cliente.AddClientesHasModulos(idCliente, idModulos))
+                        {
+                            return Content(HttpStatusCode.OK, true);
+                        }
+                    }
+                    return Content(HttpStatusCode.Created,false);
+                }
+                return Content(HttpStatusCode.NotFound, (ProcessMsg.Model.ClienteBo)null);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Clientes")]
         [HttpPost]
         public Object Post([FromBody]ProcessMsg.Model.ClienteBo cliente)

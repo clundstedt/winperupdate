@@ -156,6 +156,7 @@ namespace ConnectorDB
                     }
                 }
             }
+            var s = comm.CommandText;
             try
             {
                 return comm.ExecuteReader(CommandBehavior.CloseConnection);
@@ -295,6 +296,85 @@ namespace ConnectorDB
                 throw new Exception(msg, ex);
             }
 
+        }
+        /// <summary>
+        /// Ejecuta una transacción SQL
+        /// </summary>
+        /// <param name="query">Matriz de 2 dimensiones que contiene las sentencias[0] y los parametros[1]</param>
+        /// <returns>true si la transacción se realizó con exito</returns>
+        public bool ExecuteQueryTrans(object[,] query)
+        {
+            try
+            {
+                ReadParameters();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Error al leer connection string. " + ex.Message + ".";
+                throw new Exception(msg, ex);
+            }
+
+            SqlConnection conn;
+            try
+            {
+                conn = new SqlConnection(ConnectionStr);
+                conn.Open();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Error al abrir la conexion, " + ex.Message + ".";
+                throw new Exception(msg, ex);
+            }
+            var tran = conn.BeginTransaction();
+            var comm = conn.CreateCommand();
+            try
+            {
+                
+                comm.Transaction = tran;
+                comm.CommandType = CommandType.Text;
+                
+                for (int i = 0; i < query.GetLength(0); i++)
+                {
+                    comm.CommandText = query[i, 0].ToString();
+                    var parm = query[i, 1] as ThDictionary;
+                    if (parm != null)
+                    {
+                        var iterator = parm.GetValues();
+                        foreach (var kvp in iterator)
+                        {
+                            try
+                            {
+                                comm.Parameters.Add(kvp.Value == null
+                                                        ? new SqlParameter(kvp.Key, DBNull.Value)
+                                                        : new SqlParameter(kvp.Key, kvp.Value));
+                            }
+                            catch (Exception ex)
+                            {
+                                var msg = "Error al agregar parámetros: " + kvp.Key + "=" + kvp.Value + " | " + ex.Message;
+                                // Todo Implementar tipo correcto de excepción.
+                                throw new Exception(msg, ex);
+                            }
+                        }
+                    }
+                    comm.ExecuteNonQuery();
+                }
+                tran.Commit();
+                return true;
+            }
+            catch(SqlException sqlex)
+            {
+                tran.Rollback();
+                var msg = "Error al ejecutar comando: " + comm + " -> " + sqlex.Message;
+                // Todo Implementar tipo correcto de excepción.
+                throw new Exception(msg, sqlex);
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                var msg = "Error en transaccion: "+ ex.Message;
+                // Todo Implementar tipo correcto de excepción.
+                throw new Exception(msg, ex);
+            }
         }
     }
 }

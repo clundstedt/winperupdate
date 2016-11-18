@@ -26,6 +26,7 @@ namespace WinPerUpdateUI
         private bool ServerInAccept = true;
         private ClienteBo cliente = new ClienteBo();
         private List<AmbienteBo> ambientes = new List<AmbienteBo>();
+        public string ambienteUpdate = "";
 
         public FormPrincipal()
         {
@@ -80,6 +81,7 @@ namespace WinPerUpdateUI
             //ShowInTaskbar = true;
             //WindowState = FormWindowState.Normal;
             var form = new frmVersiones();
+            form.ambiente = ambienteUpdate;
             form.ShowDialog();
         }
 
@@ -136,7 +138,8 @@ namespace WinPerUpdateUI
 
                         MenuItem addDevice = new MenuItem("&Estado de la Versión");
                         addDevice.Enabled = true;
-                        foreach (var ambiente in JsonConvert.DeserializeObject<List<AmbienteBo>>(json))
+                        ambientes = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
+                        foreach (var ambiente in ambientes)
                         {
                             addDevice.MenuItems.Add(new MenuItem(ambiente.Nombre, new EventHandler(this.Restaurar_Click)));
                         }
@@ -230,7 +233,6 @@ namespace WinPerUpdateUI
                 string server = ConfigurationManager.AppSettings["server"];
                 string port = ConfigurationManager.AppSettings["port"];
                 string dirTmp = Path.GetTempPath();
-                dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
 
                 // 1.- Verificamos versiones
                 foreach (var item in ambientes)
@@ -243,15 +245,22 @@ namespace WinPerUpdateUI
                         var release = versiones.SingleOrDefault(x => x.Estado == 'P');
                         if (release != null)
                         {
-                            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate\" + item.Nombre);
                             string nroVersion = key.GetValue("Version").ToString();
                             if (nroVersion.Equals(release.Release)) return;
 
-                            if (!File.Exists(dirTmp + release.Instalador))
+                            string dirTmpversion = dirTmp + (dirTmp.EndsWith("\\") ? "" : "\\");
+                            dirTmpversion += item.Nombre;
+                            if (!Directory.Exists(dirTmpversion))
+                            {
+                                Directory.CreateDirectory(dirTmpversion);
+                            }
+                            string nameIntalador = dirTmpversion + "\\" + release.Instalador;
+                            if (!File.Exists(nameIntalador))
                             {
                                 ServerInAccept = false;
 
-                                FileStream stream = new FileStream(dirTmp + release.Instalador, FileMode.CreateNew, FileAccess.Write);
+                                FileStream stream = new FileStream(nameIntalador, FileMode.CreateNew, FileAccess.Write);
                                 BinaryWriter writer = new BinaryWriter(stream);
 
                                 int nPosIni = 0;
@@ -270,8 +279,9 @@ namespace WinPerUpdateUI
                                 stream.Close();
 
                                 // Avisamos llegada de nueva versión
+                                ambienteUpdate = item.Nombre;
                                 notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
-                                notifyIcon2.BalloonTipText = "Existen una nueva versión de winper";
+                                notifyIcon2.BalloonTipText = "Existen una nueva versión de winper para el ambiente " + item.Nombre;
                                 notifyIcon2.BalloonTipTitle = "Winper Update";
 
                                 notifyIcon2.ShowBalloonTip(1000);

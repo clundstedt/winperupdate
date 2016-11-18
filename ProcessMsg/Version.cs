@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Xml;
 using WinperUpdateDAO;
@@ -284,6 +285,48 @@ namespace ProcessMsg
             {                
                 var msg = "Excepcion Controlada: " + ex.Message;
                 throw new Exception(msg, ex);
+            }
+        }
+
+        /// <summary>
+        /// Copia un directorio en la ruta de destino
+        /// </summary>
+        /// <param name="dirOrigen">directorio a copiar</param>
+        /// <param name="dirDestino">directorio de destino</param>
+        /// <param name="copiarSubDirs">especifica si se quieren copiar los subdirectorios</param>
+        /// <param name="overWrite">especifica si se quieren sobreescribir los archivos</param>
+        public static void CopiarDirectorio(string dirOrigen, string dirDestino, bool copiarSubDirs, bool overWrite)
+        {
+            DirectoryInfo dir = new DirectoryInfo(dirOrigen);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "El directorio no existe: "
+                    + dirOrigen);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            if (!Directory.Exists(dirDestino))
+            {
+                Directory.CreateDirectory(dirDestino);
+            }
+            
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+
+                string temppath = Path.Combine(dirDestino, file.Name);
+                file.CopyTo(temppath, overWrite);
+            }
+            
+            if (copiarSubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(dirDestino, subdir.Name);
+                    CopiarDirectorio(subdir.FullName, temppath, copiarSubDirs, overWrite);
+                }
             }
         }
 

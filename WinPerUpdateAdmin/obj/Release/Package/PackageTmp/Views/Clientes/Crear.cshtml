@@ -188,6 +188,36 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <div class="input-group-sm margin-bottom-sm">
+                                        <ui-select multiple ng-model="formData.modulos" theme="bootstrap"  close-on-select="false" title="Seleccione un Modulo">
+                                            <ui-select-match placeholder="Seleccione uno o más módulos">{{$item.NomModulo}}</ui-select-match>
+                                            <ui-select-choices repeat="modulo in modulosWinper">
+                                                {{modulo.NomModulo}}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group-sm margin-bottom-sm">
+                                        <div class="btn-toolbar hidden-xs">
+                                            <div class="btn-group btn-group-sm" role="toolbar">
+                                                <button type="button" class="btn btn-info" ng-click="formData.modulos = modulosWinper">
+                                                    Seleccionar  Todo
+                                                </button>
+                                                <button type="button" class="btn btn-default" ng-click="formData.modulos = []">
+                                                    Limpiar  Selección
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">

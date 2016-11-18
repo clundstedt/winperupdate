@@ -49,11 +49,17 @@ namespace WinPerUpdateUI
                         foreach (var item in lista)
                         {
                             Microsoft.Win32.RegistryKey keyv = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\" + item.Nombre);
-                            string directorio = key.GetValue("DirWinper").ToString();
 
-                            dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, directorio);
-
-                            keyv.Close();
+                            try
+                            {
+                                string directorio = keyv.GetValue("DirWinper").ToString();
+                                dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, directorio);
+                                keyv.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, "");
+                            }
                         }
                     }
 

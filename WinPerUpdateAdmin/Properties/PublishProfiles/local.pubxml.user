@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/22/2013 09:43:40</publishTime>
     </File>
     <File Include="bin/Connector.dll">
-      <publishTime>09/09/2016 11:11:23</publishTime>
+      <publishTime>11/17/2016 15:39:27</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>06/15/2015 03:06:24</publishTime>
@@ -25,7 +25,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/03/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/ProcessMsg.dll">
-      <publishTime>11/17/2016 15:18:19</publishTime>
+      <publishTime>11/17/2016 15:39:27</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/18/2015 21:19:46</publishTime>
@@ -97,10 +97,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/WinPerUpdateAdmin.dll">
-      <publishTime>11/17/2016 15:20:09</publishTime>
+      <publishTime>11/17/2016 16:55:34</publishTime>
     </File>
     <File Include="bin/WinperUpdateDAO.dll">
-      <publishTime>11/17/2016 15:18:18</publishTime>
+      <publishTime>11/17/2016 15:39:27</publishTime>
     </File>
     <File Include="Content/bootstrap-datepicker.css">
       <publishTime>08/26/2016 17:35:02</publishTime>
@@ -429,6 +429,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/jasny-bootstrap.min.css">
       <publishTime>08/24/2016 18:33:50</publishTime>
     </File>
+    <File Include="Content/select.css">
+      <publishTime>11/17/2016 15:38:36</publishTime>
+    </File>
     <File Include="Content/Site.css">
       <publishTime>10/21/2016 17:01:18</publishTime>
     </File>
@@ -484,28 +487,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/14/2016 09:17:42</publishTime>
     </File>
     <File Include="js/AmbientesClt/ambientes.js">
-      <publishTime>11/02/2016 09:32:05</publishTime>
+      <publishTime>11/17/2016 15:38:36</publishTime>
     </File>
     <File Include="js/AmbientesClt/app.js">
-      <publishTime>10/19/2016 12:48:43</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/AmbientesClt/mantenedor.js">
-      <publishTime>10/19/2016 14:52:22</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/AmbientesClt/serviceAmbientes.js">
-      <publishTime>10/19/2016 17:52:47</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/Clientes/app.js">
-      <publishTime>10/13/2016 18:05:36</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/Clientes/clientes.js">
-      <publishTime>10/26/2016 16:13:52</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/Clientes/inicio.js">
       <publishTime>10/03/2016 12:17:12</publishTime>
     </File>
     <File Include="js/Clientes/serviceClientes.js">
-      <publishTime>10/26/2016 16:13:52</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/Clientes/usuarios.js">
       <publishTime>10/21/2016 12:30:56</publishTime>
@@ -565,7 +568,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2016 09:32:05</publishTime>
     </File>
     <File Include="js/Version/publicar.js">
-      <publishTime>10/26/2016 16:13:52</publishTime>
+      <publishTime>11/17/2016 15:38:37</publishTime>
     </File>
     <File Include="js/Version/serviceAdmin.js">
       <publishTime>10/17/2016 18:35:12</publishTime>
@@ -858,6 +861,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/ngrut.js">
       <publishTime>09/30/2016 09:16:54</publishTime>
     </File>
+    <File Include="Scripts/select.js">
+      <publishTime>11/17/2016 15:38:36</publishTime>
+    </File>
     <File Include="Scripts/smart-table.js">
       <publishTime>10/03/2016 09:30:03</publishTime>
     </File>
@@ -898,7 +904,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/19/2016 15:54:56</publishTime>
     </File>
     <File Include="Views/AmbientesClt/Ambientes.cshtml">
-      <publishTime>11/02/2016 09:32:05</publishTime>
+      <publishTime>11/17/2016 15:38:36</publishTime>
     </File>
     <File Include="Views/AmbientesClt/Crear.cshtml">
       <publishTime>10/26/2016 16:13:52</publishTime>
@@ -907,7 +913,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/19/2016 10:54:19</publishTime>
     </File>
     <File Include="Views/Clientes/Crear.cshtml">
-      <publishTime>11/09/2016 18:27:50</publishTime>
+      <publishTime>11/17/2016 15:38:36</publishTime>
     </File>
     <File Include="Views/Clientes/Index.cshtml">
       <publishTime>09/26/2016 10:16:34</publishTime>
@@ -925,7 +931,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/08/2016 18:43:19</publishTime>
     </File>
     <File Include="Views/Home/Menus.cshtml">
-      <publishTime>11/08/2016 18:43:20</publishTime>
+      <publishTime>11/17/2016 15:38:36</publishTime>
     </File>
     <File Include="Views/Home/Perfil.cshtml">
       <publishTime>10/21/2016 10:40:24</publishTime>

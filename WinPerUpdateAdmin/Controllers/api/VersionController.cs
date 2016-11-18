@@ -146,9 +146,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 message.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
                 message.Content.Headers.Add("Content-Disposition", "attachment; filename=" +obj.Name);
                 return message;
-
-
-                //return contenidoSQL;
+                
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@
         // Custom modules 
 
         // 3rd Party Modules
-        
+        , 'angularFileUpload'
     ])
 
     .config(function ($routeProvider) {

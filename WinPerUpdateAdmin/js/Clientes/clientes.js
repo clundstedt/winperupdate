@@ -17,12 +17,14 @@
         activate();
 
         function activate() {
+            $scope.modulosWinper = [];
             $scope.idCliente = 0;
             $scope.titulo = "Crear Cliente";
             $scope.labelcreate = "Crear un Cliente";
             $scope.increate = true;
             $scope.rutok = true;
             $scope.formData = {};
+            $scope.formData.modulos = [];
             $scope.mensaje = '';
             $scope.totales = [0, 0];
             $scope.usuarios = [];
@@ -47,6 +49,11 @@
                 console.error(data);
             });
 
+            serviceClientes.getModulos().success(function (modulos) {
+                $scope.modulosWinper = modulos;
+            }).error(function (err) {
+                console.error(err);
+            });
             
 
             if (!jQuery.isEmptyObject($routeParams)) {
@@ -67,7 +74,7 @@
                     $scope.formData.nrotrbh = data.NroTrbh;
                     $scope.formData.nrousr = data.NroUsr;
 
-                    
+                    $scope.CargarModulosCliente($scope.idCliente);
 
                     serviceClientes.getComunas(data.Comuna.Region.idRgn).success(function (data2) {
                         $scope.comunas = data2;
@@ -97,6 +104,12 @@
                 }).error(function (err) {
                     console.log(err);
                 });
+            }
+
+            $scope.seleccionTodosModulo = function () {
+                for (var i = 0; i < $scope.modulosWinper.length; i++) {
+                    $scope.formData.modulos.push($scope.modulosWinper[i].NomModulo);
+                }
             }
 
             $scope.Comunas = function (formData) {
@@ -139,9 +152,12 @@
                     serviceClientes.addCliente(arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
-
-                        console.log(JSON.stringify(data));
                         $scope.idCliente = data.Id;
+                        serviceClientes.addModuloCliente(data.Id, $scope.formData.modulos).success(function (data) {
+                            $scope.CargarModulosCliente(data.Id);
+                        }).error(function (err) {
+                            console.log(err);
+                        });
                     }).error(function (data) {
                         console.error(data);
                     });
@@ -150,12 +166,23 @@
                     serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
-
-                        console.log(JSON.stringify(data));
+                        serviceClientes.addModuloCliente($scope.idCliente, $scope.formData.modulos).success(function (data) {
+                            $scope.CargarModulosCliente($scope.idCliente);
+                        }).error(function (err) {
+                            console.log(err);
+                        });
                     }).error(function (data) {
                         console.error(data);
                     });
                 }
+            }
+
+            $scope.CargarModulosCliente = function (idCliente) {
+                serviceClientes.getModulosCliente(idCliente).success(function (data) {
+                    $scope.formData.modulos = data;
+                }).error(function (err) {
+                    console.log(err);
+                });
             }
 
             $scope.Eliminar = function () {

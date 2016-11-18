@@ -46,6 +46,7 @@
     <Compile Include="Cliente.cs" />
     <Compile Include="Componente.cs" />
     <Compile Include="Model\AmbienteBo.cs" />
+    <Compile Include="Model\AmbientesXLSXBo.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
     <Compile Include="Model\ClienteBo.cs" />
     <Compile Include="Model\MenusBo.cs" />
