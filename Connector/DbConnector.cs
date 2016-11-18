@@ -32,8 +32,8 @@ namespace ConnectorDB
             string msg = "String de conexion vacío, revise: ConfigurationManager.ConnectionStrings['ApplicationServices'].ConnectionString";
             try
             {
-                ConnectionStr = ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
-
+                ConnectionStr = DesEncriptar(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
+                
                 if (!String.IsNullOrEmpty(ConnectionStr)) return;
                 throw new NullReferenceException(msg);
             }
@@ -375,6 +375,15 @@ namespace ConnectorDB
                 // Todo Implementar tipo correcto de excepción.
                 throw new Exception(msg, ex);
             }
+        }
+
+        private string DesEncriptar(string _cadenaAdesencriptar)
+        {
+            string result = string.Empty;
+            byte[] decryted = Convert.FromBase64String(_cadenaAdesencriptar);
+            //result = System.Text.Encoding.Unicode.GetString(decryted, 0, decryted.ToArray().Length);
+            result = System.Text.Encoding.Unicode.GetString(decryted);
+            return result;
         }
     }
 }

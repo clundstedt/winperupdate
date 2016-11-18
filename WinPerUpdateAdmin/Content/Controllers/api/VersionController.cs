@@ -12,6 +12,26 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class VersionController : ApiController
     {
         #region get
+        [Route("api/Version/NuevoRelease")]
+        [HttpGet]
+        public Object GetNuevoRelease()
+        {
+            try
+            {
+                var obj = ProcessMsg.Version.GetVersiones(null).OrderByDescending(x => x.IdVersion).ElementAt(0);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj != null ? ProcessMsg.Utils.GenerarVersionSiguiente(obj.Release) : "";
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
 
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/DetalleTarea")]
         [HttpGet]
@@ -60,7 +80,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                var obj = ProcessMsg.Version.GetVersiones(null);
+                var obj = ProcessMsg.Version.GetVersiones(null).OrderByDescending(x => x.IdVersion);
                 if (obj == null)
                 {
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);

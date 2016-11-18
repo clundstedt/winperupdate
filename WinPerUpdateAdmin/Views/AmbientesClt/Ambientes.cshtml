@@ -1,5 +1,5 @@
 ﻿<style>
-    .my-drop-zone {
+    .my-drop-zone { 
         border: dotted 3px lightgray;
     }
 
@@ -30,7 +30,7 @@
                         <span class="btn-label"><span class="fa fa-cube"></span></span> Crear Ambiente
                     </a>
                     <a data-toggle="modal" data-target="#export-modal" class="btn btn-labeled btn-warning">
-                        <span class="btn-label"><span class="fa fa-file-excel-o"></span></span> Exportar Ambientes de Excel
+                        <span class="btn-label"><span class="fa fa-file-excel-o"></span></span> Importar Ambientes desde Excel
                     </a>
                 </div>
             </div>
@@ -41,7 +41,7 @@
         <div class="col-md-12">
             <div class="alert alert-warning" ng-show="ambxlsxwarn">
                 <span class="fa fa-exclamation-triangle"></span>
-                ADVERTENCIA: Usted exportó ambientes desde un Excel. Existen algunos errores, click 
+                ADVERTENCIA: Usted importó ambientes desde un Excel. WinperUpdate detectó algunos errores, click 
                 <button type="button" class="btn btn-warning btn-sm" ng-click="CargarAmbXLSX()">AQUÍ</button> 
                 para ver el estado.
             </div>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="modal-body">
                         Aquí usted podrá exportar desde una planilla Excel todos sus ambientes. Para poder utilizar el formato
-                        correcto, puede descargar la planilla desde la opción <b>Descargar Planilla</b>.
+                        correcto, puede descargar la planilla desde la opción <b>Generar Estructura</b>.
                         <br />
                         <br />
                         <div class="row">
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" ng-click="downloadFile()" class="btn btn-warning">Descargar Planilla</button>
+                        <button type="button" ng-click="downloadFile()" class="btn btn-warning">Generar Estructura</button>
                         <button type="button" ng-click="uploader.clearQueue()" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>

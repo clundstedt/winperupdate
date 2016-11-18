@@ -121,5 +121,39 @@ namespace ProcessMsg
             }
             return licencia.ToUpper();
         }
+        /// <summary>
+        /// Genera la version siguiente de la especificada en el parametro
+        /// </summary>
+        /// <param name="VersionActual"></param>
+        /// <returns>Version siguiente</returns>
+        public static string GenerarVersionSiguiente(string VersionActual)
+        {
+            int vInt = 0;
+            if (int.TryParse(VersionActual.Replace(".", ""), out vInt))
+            {
+                string versionSgt = "";
+                string versionFmt = "";
+                int contPto = 1;
+                var p = VersionActual.Split('.');
+                string num = (vInt + 1).ToString();
+                for (int i = num.Length - 1; i >= 0; i--)
+                {
+                    if (contPto <= p.Length - 1)
+                    {
+                        versionSgt += num.ElementAt(i) + ".";
+                        num = num.Remove(i);
+                        contPto++;
+                    }
+                }
+                versionSgt.Reverse().ToList().ForEach(x =>
+                {
+                    versionFmt += x;
+                });
+                return num + versionFmt;
+            }else
+            {
+                return "Formato de la versión incorrecto";
+            }
+        }
     }
 }
