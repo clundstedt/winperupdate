@@ -380,18 +380,18 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Content\Controllers\api\AmbientesController.cs" />
-    <Compile Include="Content\Controllers\Clientes\AdminCltController.cs" />
-    <Compile Include="Content\Controllers\Admin\AdminController.cs" />
-    <Compile Include="Content\Controllers\api\ClientesController.cs" />
-    <Compile Include="Content\Controllers\api\ModuloController.cs" />
-    <Compile Include="Content\Controllers\api\SeguridadController.cs" />
-    <Compile Include="Content\Controllers\api\VersionController.cs" />
-    <Compile Include="Content\Controllers\Clientes\AmbientesCltController.cs" />
-    <Compile Include="Content\Controllers\Clientes\ClientesController.cs" />
-    <Compile Include="Content\Controllers\Home\HomeController.cs" />
-    <Compile Include="Content\Controllers\Clientes\SeguridadCltController.cs" />
-    <Compile Include="Content\Controllers\Seguridad\SeguridadController.cs" />
+    <Compile Include="Controllers\api\AmbientesController.cs" />
+    <Compile Include="Controllers\Clientes\AdminCltController.cs" />
+    <Compile Include="Controllers\Admin\AdminController.cs" />
+    <Compile Include="Controllers\api\ClientesController.cs" />
+    <Compile Include="Controllers\api\ModuloController.cs" />
+    <Compile Include="Controllers\api\SeguridadController.cs" />
+    <Compile Include="Controllers\api\VersionController.cs" />
+    <Compile Include="Controllers\Clientes\AmbientesCltController.cs" />
+    <Compile Include="Controllers\Clientes\ClientesController.cs" />
+    <Compile Include="Controllers\Home\HomeController.cs" />
+    <Compile Include="Controllers\Clientes\SeguridadCltController.cs" />
+    <Compile Include="Controllers\Seguridad\SeguridadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
