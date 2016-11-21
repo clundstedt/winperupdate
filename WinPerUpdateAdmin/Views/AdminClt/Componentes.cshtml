@@ -16,7 +16,7 @@
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <button ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
+                    <button ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion, true)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
                         <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V'"></span> Publicar en {{ambiente.Nombre}}
                     </button>
                 </div>
@@ -232,6 +232,26 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confpub-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                </div>
+                <div class="modal-body">
+                    {{msgAvisoExSQL}}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ShowConfirmPublish(idAmbiente,nombreambiente, version.IdVersion, false)" data-dismiss="modal">
+                        Publicar de todas formas
+                    </button>
+                    <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>

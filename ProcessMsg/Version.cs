@@ -252,7 +252,7 @@ namespace ProcessMsg
                     file.WriteLine(@"[Setup]");
                     file.WriteLine(@"AppName=WinPer");
                     file.WriteLine(@"AppVersion=" + version.Release);
-                    file.WriteLine(@"DefaultDirName={pf}\WinPer");
+                    file.WriteLine(@"DefaultDirName={usertemplates}\WinPer");
                     file.WriteLine(@"DefaultGroupName=WinPer");
                     file.WriteLine(@"Compression=lzma2");
                     file.WriteLine(@"SolidCompression=yes");
@@ -261,7 +261,10 @@ namespace ProcessMsg
                     file.WriteLine(@"[Files]");
                     foreach (var componente in version.Componentes)
                     {
-                        file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
+                        if (componente.Tipo.Equals("qrp") || componente.Tipo.Equals("exe"))
+                        {
+                            file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
+                        }
                     }
                     //file.WriteLine(@"");
                     //file.WriteLine(@"[Icons]");
@@ -273,8 +276,8 @@ namespace ProcessMsg
 
                     file.WriteLine(@"");
                     file.WriteLine(@"[Registry]");
-                    file.WriteLine(@"Root: HKCU; Subkey: ""SOFTWARE\WinperUpdate""; ValueType: string; ValueName: ""Version""; ValueData: """ + version.Release + "\"");
-                    file.WriteLine(@"Root: HKCU; Subkey: ""SOFTWARE\WinperUpdate""; ValueType: string; ValueName: ""Status""; ValueData: """ + "updated" + "\"");
+                    //file.WriteLine(@"Root: HKCU; Subkey: ""SOFTWARE\WinperUpdate""; ValueType: string; ValueName: ""Version""; ValueData: """ + version.Release + "\"");
+                    file.WriteLine(@"Root: HKCU; Subkey: ""SOFTWARE\WinperUpdate""; ValueType: string; ValueName: ""Status""; ValueData: """ + "begin" + "\"");
 
                     file.Close();
                 }

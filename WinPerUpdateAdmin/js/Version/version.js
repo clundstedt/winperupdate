@@ -24,6 +24,7 @@
             $scope.formData.estado = 'N';
             $scope.mensaje = '';
             $scope.idUsuario = $("#idToken").val();
+            $scope.btnBlock = true;
             
 
             if (!jQuery.isEmptyObject($routeParams)) {
@@ -48,6 +49,12 @@
 
                 }).error(function (data) {
                     console.error(data);
+                });
+            }else{
+                serviceAdmin.getNuevoRelease().success(function (data) {
+                    $scope.formData.release = data;
+                }).error(function (err) {
+                    console.log(err);
                 });
             }
 

@@ -18,6 +18,7 @@
             genVersion: genVersion,
 
             getModulos: getModulos,
+            getNuevoRelease: getNuevoRelease,
 
             getComponente: getComponente,
             addComponente: addComponente,
@@ -28,6 +29,42 @@
         };
 
         return service;
+
+        function getNuevoRelease() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/NuevoRelease',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene versiones creadas');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene versiones creadas');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getVersiones() {
             var deferred = $q.defer();
