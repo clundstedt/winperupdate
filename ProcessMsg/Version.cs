@@ -13,6 +13,39 @@ namespace ProcessMsg
 {
     public class Version
     {
+        public static List<Model.VersionToClienteBo> GetVersionesToCliente(int idCliente)
+        {
+            try
+            {
+                List<Model.VersionToClienteBo> lista = new List<Model.VersionToClienteBo>();
+                var reader = new CnaVersionesCliente().ExecuteVersionesCliente(idCliente);
+                while (reader.Read())
+                {
+                    lista.Add(new Model.VersionToClienteBo
+                    {
+                        Cliente = new Model.ClienteBo { Id = int.Parse(reader["idClientes"].ToString()) },
+                        Version = new Model.VersionBo
+                        {
+                            IdVersion = int.Parse(reader["idVersion"].ToString()),
+                            Release = reader["NumVersion"].ToString()
+                        },
+                        Ambiente = new Model.AmbienteBo
+                        {
+                            idAmbientes = int.Parse(reader["idAmbientes"].ToString()),
+                            Nombre = reader["nombre"].ToString()
+                        },
+                        Estado = char.Parse(reader["Estado"].ToString()),
+                        FechaInstalacion = Convert.ToDateTime(reader["FechaInstalacion"].ToString())
+                    });
+                }
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.VersionBo> GetVersiones(EventLog log)
         {
             var lista = new List<Model.VersionBo>();
@@ -253,6 +286,7 @@ namespace ProcessMsg
                     file.WriteLine(@"AppName=WinPer");
                     file.WriteLine(@"AppVersion=" + version.Release);
                     file.WriteLine(@"DefaultDirName={usertemplates}\WinPer");
+                    file.WriteLine(@"DisableDirPage=yes");
                     file.WriteLine(@"DefaultGroupName=WinPer");
                     file.WriteLine(@"Compression=lzma2");
                     file.WriteLine(@"SolidCompression=yes");

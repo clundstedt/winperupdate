@@ -10,6 +10,31 @@ namespace ProcessMsg
 {
     public class Componente
     {
+        public static List<ProcessMsg.Model.AtributosArchivoBo> GetComponentesOficiales(string rutaOficial)
+        {
+            List<ProcessMsg.Model.AtributosArchivoBo> lista = new List<ProcessMsg.Model.AtributosArchivoBo>();
+            try
+            {
+                var files = new System.IO.DirectoryInfo(rutaOficial).GetFiles();
+                files.ToList().ForEach(x =>
+                {
+                    lista.Add(new ProcessMsg.Model.AtributosArchivoBo
+                    {
+                        Name = x.Name,
+                        LastWrite = x.LastWriteTime,
+                        Version = FileVersionInfo.GetVersionInfo(x.FullName).FileVersion,
+                        Length = x.Length,
+                        DateCreate = x.CreationTime
+                    });
+                });
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.AtributosArchivoBo> GetComponentes(int idVersion, EventLog log)
         {
             var lista = new List<Model.AtributosArchivoBo>();
