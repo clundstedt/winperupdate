@@ -19,7 +19,8 @@
             getKey: getKey,
             getFolio: getFolio,
             getModulos: getModulos,
-            getModulosCliente: getModulosCliente, 
+            getModulosCliente: getModulosCliente,
+            getVersionesClientes: getVersionesClientes,
 
             addCliente: addCliente,
             addUsuario: addUsuario,
@@ -31,6 +32,41 @@
         };
 
         return service;
+
+        function getVersionesClientes(idCliente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Cliente/' + idCliente + '/VersionesInstaladas',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen versiones');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen versiones');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getModulosCliente(idCliente) {
             var deferred = $q.defer();

@@ -1,6 +1,7 @@
 ﻿@foreach (var item in Model)
 {
-    if (Request.Path.Equals(item.Link))
+    var ruta = (Request.Path.EndsWith("/") ? Request.Path : Request.Path + "/");
+    if (ruta.Equals(item.Link))
     {
         if (string.IsNullOrEmpty(item.Submenus))
         {
@@ -22,7 +23,7 @@
                 <ul class="dropdown-menu">
                     @for (int i = 0; i < item.GetSubMenus.GetLength(0); i++)
                     {
-                        <li><a href="@item.GetSubMenus[i,1]">@item.GetSubMenus[i,0]</a></li>
+                        <li><a href="@item.GetSubMenus[i, 1]">@item.GetSubMenus[i, 0]</a></li>
                     }
                     
                 </ul>
@@ -52,7 +53,7 @@
                 <ul class="dropdown-menu">
                     @for (int i = 0; i < item.GetSubMenus.GetLength(0); i++)
                     {
-                        <li><a href="@item.GetSubMenus[i,1]">@item.GetSubMenus[i, 0]</a></li>
+                        <li><a href="@item.GetSubMenus[i, 1]">@item.GetSubMenus[i, 0]</a></li>
                     }
 
                 </ul>

@@ -10,6 +10,19 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class ClientesController : ApiController
     {
         #region get
+        [Route("api/Cliente/{idCliente:int}/VersionesInstaladas")]
+        [HttpGet]
+        public Object GetVersionesClientes(int idCliente)
+        {
+            try
+            {
+                return ProcessMsg.Version.GetVersionesToCliente(idCliente);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
         [Route("api/Cliente/{idCliente:int}/ModulosWinper")]
         [HttpGet]
         public Object GetModulosCliente(int idCliente)

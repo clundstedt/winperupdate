@@ -218,6 +218,15 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <label>N° de Licencia: {{formData.folio + '' + formData.estmtc + '' + formData.mesini + '' + formData.nrotrbc + '' + formData.nrotrbh + '' + formData.nrousr}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
@@ -350,23 +359,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover">
+                    <table st-table="displayVersionesCliente" st-safe-src="versionesCliente" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Release</th>
                                 <th>Fecha</th>
                                 <th>Ambiente</th>
                             </tr>
+                            <tr>
+                                <th colspan="3"><input st-search="" class="form-control" placeholder="Busqueda..." type="text" /></th>
+                            </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Release</th>
-                                <th>Fecha</th>
-                                <th>Ambiente</th>
+                                <td colspan="3" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
                             </tr>
                         </tfoot>
                         <tbody>
-
+                            <tr ng-repeat="versionCliente in displayVersionesCliente">
+                                <td>{{versionCliente.Version.Release}}</td>
+                                <td>{{versionCliente.FechaInstalacionFmt}}</td>
+                                <td>{{versionCliente.Ambiente.Nombre}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
