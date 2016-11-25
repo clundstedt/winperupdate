@@ -31,7 +31,7 @@
                         <div class="form-group ">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                                <input class="form-control" type="password" name="password" placeholder="Clave" ng-model="formData.password" required="required" ng-minlength="6" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }" ng-keyup="KeyUpEvent($event.keyCode, frmMain.$valid, formData)">
+                                <input class="form-control" type="password" name="password" placeholder="Clave" onke ng-model="formData.password" required="required" ng-minlength="6" ng-maxlength="100" ng-keyup="frmMain.$valid  && KeyUpEvent($event.keyCode, formData)" ng-model-options="{ updateOn: 'change' }">
                             </div>
                             <span class="error_ingreso" ng-show="frmMain.password.$error.minlength">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo de la clave debe tener 6 caracteres como mínimo

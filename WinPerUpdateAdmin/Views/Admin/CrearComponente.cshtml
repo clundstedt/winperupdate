@@ -53,6 +53,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th></th>
                     <th width="50%">Name</th>
                     <th ng-show="uploader.isHTML5">Size</th>
                     <th ng-show="uploader.isHTML5">Progress</th>
@@ -62,6 +63,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="item in uploader.queue">
+                    <td>
+                    <span class="error_ingreso" ng-hide="ComponenteOkSegunFecha(item.file)">
+                        <i class="fa fa-exclamation-triangle" title="La fecha de modificación de este componente es menor que la del componente oficial. Verifique que sea el correcto" aria-hidden="true"></i>
+                    </span>
+                    </td>
                     <td><strong>{{ item.file.name }}</strong></td>
                     <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
                     <td ng-show="uploader.isHTML5">
@@ -75,7 +81,7 @@
                         <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
                     </td>
                     <td nowrap>
-                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !ComponenteOkSegunFecha(item.file)">
                             <span class="glyphicon glyphicon-upload"></span> Subir
                         </button>
                         <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -96,7 +102,7 @@
                     <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
                 </div>
             </div>
-            <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+            <button type="button" class="btn btn-success btn-s" ng-click="VerificaComponentesOkSegunFecha()" ng-disabled="!uploader.getNotUploadedItems().length">
                 <span class="glyphicon glyphicon-upload"></span> Subir Todos
             </button>
             <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
@@ -109,4 +115,25 @@
 
     </div>
 
+</div>
+
+<div id="errorcompsegfec-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Aviso WinperUpdate</h4>
+            </div>
+            <div class="modal-body">
+                <p>Existen componentes con errores, por favor verifique que todos los componentes fueron
+                agregados correctamente antes de subirlos.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
 </div>

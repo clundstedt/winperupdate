@@ -12,19 +12,40 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class VersionController : ApiController
     {
         #region get
-        [Route("api/Version/NuevoRelease")]
+        [Route("api/Version/ComponentesOficiales")]
         [HttpGet]
-        public Object GetNuevoRelease()
+        public Object GetComponentesOficiales()
         {
             try
             {
-                var obj = ProcessMsg.Version.GetVersiones(null).OrderByDescending(x => x.IdVersion).ElementAt(0);
+                var obj = ProcessMsg.Componente.GetComponentesOficiales(HttpContext.Current.Server.MapPath("~/VersionOficial/N+1"));
                 if (obj == null)
                 {
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
                 }
 
-                return obj != null ? ProcessMsg.Utils.GenerarVersionSiguiente(obj.Release) : "";
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/UltimaRelease")]
+        [HttpGet]
+        public Object GetUltimaRelease()
+        {
+            try
+            {
+                var lista = ProcessMsg.Version.GetVersiones(null);
+                var obj = (lista.Count == 0 ? null : lista.OrderByDescending(x => x.IdVersion).First());
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj.Release;
             }
             catch (Exception ex)
             {
@@ -360,12 +381,14 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    var modulo = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.NomExe.StartsWith(archivo.Name.ToUpper().Substring(0,archivo.Name.IndexOf('.'))));
+                    if (modulo == null) archivo.Modulo = "N/A"; else archivo.Modulo = modulo.NomModulo;
                     var obj = ProcessMsg.Componente.AddComponente(idVersion, archivo);
                     if (obj == null)
                     {
                         response.StatusCode = HttpStatusCode.Accepted;
                     }
-                    else
+                    else 
                     {
                         return Content(HttpStatusCode.Created, obj);
                     }

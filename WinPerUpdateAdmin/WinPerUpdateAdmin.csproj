@@ -432,7 +432,6 @@
     <Content Include="Views\AdminClt\Componentes.cshtml" />
     <Content Include="Views\Home\Cuenta.cshtml" />
     <Content Include="Views\Home\Perfil.cshtml" />
-    <Content Include="Views\Shared\r_MENUANTIGUO.cshtml" />
     <Content Include="Views\Home\Menus.cshtml" />
     <Content Include="Uploads\10.0.1\recapa46.qrp" />
     <Content Include="Uploads\10.0.1\WP100120161108101713.iss" />

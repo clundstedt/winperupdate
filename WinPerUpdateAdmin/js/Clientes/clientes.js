@@ -41,7 +41,7 @@
             { valor: "10", nommes: "Octubre" },
             { valor: "11", nommes: "Noviembre" },
             { valor: "12", nommes: "Diciembre" }, ];
-
+            $scope.versionesCliente = [];
             
             serviceClientes.getRegiones().success(function (regiones) {
                 $scope.regiones = regiones;
@@ -91,6 +91,12 @@
 
                     }).error(function (data) {
                         console.error(data);
+                    });
+
+                    serviceClientes.getVersionesClientes($scope.idCliente).success(function (data) {
+                        $scope.versionesCliente = data;
+                    }).error(function (err) {
+                        console.error(err);
                     });
 
                 }).error(function (data) {
@@ -200,7 +206,6 @@
 
             $scope.GenKey = function (formOK, formData) {
                 if (formOK) {
-                    console.log(formData.folio + "" + formData.estmtc + "" + formData.mesini + "" + formData.nrotrbc + "" + formData.nrotrbh + "" + formData.nrousr)
                     serviceClientes.getKey(formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
                         formData.licencia = data;
                     }).error(function (err) {
