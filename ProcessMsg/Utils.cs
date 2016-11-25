@@ -114,7 +114,7 @@ namespace ProcessMsg
             for (int i = 0; i < hash.Length; i++)
             {
                 licencia += hash[i];
-                if ((i + 1) % 8 == 0 && (i + 1) < hash.Length)
+                if ((i + 1) % 4 == 0 && (i + 1) < hash.Length)
                 {
                     licencia += "-";
                 }
@@ -126,6 +126,7 @@ namespace ProcessMsg
         /// </summary>
         /// <param name="VersionActual"></param>
         /// <returns>Version siguiente</returns>
+        /*
         public static string GenerarVersionSiguiente(string VersionActual)
         {
             int vInt = 0;
@@ -154,6 +155,6 @@ namespace ProcessMsg
             {
                 return "Formato de la versión incorrecto";
             }
-        }
+        }*/
     }
 }

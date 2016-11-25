@@ -14,7 +14,6 @@ namespace ProcessMsg.Model
         public string Version { get; set; }
         public string Modulo { get; set; }
         public string Comentario { get; set; }
-
         public string Tipo
         {
             get
@@ -46,5 +45,7 @@ namespace ProcessMsg.Model
                 return string.Format("{0:dd/MM/yyyy hhhh:mm:ss}", LastWrite);
             }
         }
+
+        public string MensajeToolTip { get; set; }
     }
 }

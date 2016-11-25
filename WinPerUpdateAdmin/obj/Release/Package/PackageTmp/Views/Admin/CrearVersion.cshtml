@@ -23,9 +23,9 @@
                         <span class="fa fa-fw fa-trash-o"></span> Eliminar
                     </a>
 
-                    <a href="Admin#/PublicarParcial/{{idversion}}" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
+                    <button ng-click="PublicarParcial(idversion)" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
                         <span class="fa fa-fw fa-bullhorn"></span> Publicar Parcialmente
-                    </a>
+                    </button>
                 </div>
             </div>
 
@@ -75,6 +75,7 @@
                                 <input class="form-control" type="text" name="name" ng-disabled="btnBlock" placeholder="Release" ng-model="formData.release" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" ng-click="btnBlock = !btnBlock"><i class="fa fa-pencil fa-fw"></i></button>
+                                    <button class="btn btn-default" type="button" ng-click="AumentarRelease(formData)"><i class="fa fa-plus fa-fw"></i></button>
                                 </span>
                             </div>
                             <span class="error_ingreso" ng-show="frmMain.name.$error.maxlength">
@@ -144,8 +145,8 @@
                             <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
                         </div>
                         <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroEjecutables">
-                                <div class="item panel panel-success">
+                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroEjecutables" ng-init="isOk = ComponenteOkSegunVersion(ejecutable)">
+                                <div class="item panel panel-{{isOk}}">
                                     <div class="panel-heading">
                                         <h3 class="panel-title single-line">{{ejecutable.Name}}</h3>
                                     </div>
@@ -156,6 +157,19 @@
                                                 <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.Modulo}}</li>
                                                 <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.DateCreateFmt}}</li>
                                                 <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.Version}}</li>
+                                                <li>
+                                                    <div ng-hide="isOk == 'success'" class="alert alert-{{isOk}}">
+                                                        <span class="fa fa-fw fa-exclamation-triangle"></span>
+                                                        <a href="" data-toggle="tooltip" title="{{ejecutable.MensajeToolTip}}">
+                                                            Más Información
+                                                        </a>
+                                                    </div>
+                                                    <script>
+                                                    $(document).ready(function(){
+                                                    $('[data-toggle="tooltip"]').tooltip();
+                                                    });
+                                                    </script>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -274,6 +288,25 @@
             </div>
         </div>
     </div>
+    <div id="avisocomOk-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                </div>
+                <div class="modal-body">
+                    Esta acción no puede ejecutarse debido a que WinperUpdate ha detectado que existen componentes 
+                    cuya versión no es válida en comparación con la versión oficial Winper. Por favor revise los componentes 
+                    erróneos y vuelva a subirlos.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <input type="hidden" id="Version" value="{{idversion}}" />

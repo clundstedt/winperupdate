@@ -14,17 +14,20 @@ namespace WinperUpdateDAO
                                              idClientes
                                             ,idAmbientes
                                             ,idVersion
-                                            ,Estado)
+                                            ,Estado
+                                            ,FechaInstalacion)
                                       VALUES(@idCliente
                                             ,@idAmbiente
                                             ,@idVersion
-                                            ,@Estado)";
+                                            ,@Estado
+                                            ,@FechaInstalacion)";
             try
             {
                 ParmsDictionary.Add("@idCliente", idCliente);
                 ParmsDictionary.Add("@idAmbiente", idAmbiente);
                 ParmsDictionary.Add("@idVersion", idVersion);
                 ParmsDictionary.Add("@Estado", estado);
+                ParmsDictionary.Add("@FechaInstalacion", DateTime.Now);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
 

@@ -15,12 +15,48 @@
         function activate() {
             $scope.componentes = [];
             $scope.idVersion = $routeParams.idVersion;
+            $scope.componentesOficiales = [];
 
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;
             }).error(function (data) {
                 console.debug(data);
             });
+
+            serviceAdmin.getComponentesOficiales().success(function (data) {
+                $scope.componentesOficiales = data;
+            }).error(function (err) {
+                console.error(err);
+            });
+
+            $scope.VerificaComponentesOkSegunFecha = function () {
+                var paso = false;
+                for (var i = 0; i < $scope.componentesOficiales.length; i++) {
+                    for (var j = 0; j < uploader.queue.length; j++) {
+                        if ($scope.componentesOficiales[i].Name == uploader.queue[j].file.name) {
+                            if (new Date($scope.componentesOficiales[i].LastWrite) > uploader.queue[j].file.lastModifiedDate) {
+                                paso = true;
+                            }
+                        }
+                    }
+                }
+                if (paso) {
+                    $("#errorcompsegfec-modal").modal('show');
+                } else {
+                    uploader.uploadAll();
+                }
+            }
+
+            $scope.ComponenteOkSegunFecha = function (file) {
+                for (var i = 0; i < $scope.componentesOficiales.length; i++) {
+                    if ($scope.componentesOficiales[i].Name == file.name) {
+                        if (new Date($scope.componentesOficiales[i].LastWrite) > file.lastModifiedDate) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
 
             var uploadOptions = {
                 url: '/Admin/Upload?idVersion=' + $scope.idVersion,
@@ -71,6 +107,9 @@
             };
             uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 //console.info('onCompleteItem', fileItem, response, status, headers);
+            };
+            uploader.onAfterAddingFile = function (fileItem) {
+                
             };
 
             //console.info('uploader', uploader);

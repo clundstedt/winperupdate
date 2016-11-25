@@ -20,9 +20,8 @@
             $scope.labelloginsendclave = "Enviar Clave";
             $scope.msgerror = "";
 
-            $scope.KeyUpEvent = function (KeyCode, ValidForm, formData) {
-                console.log("" + KeyCode + "" + ValidForm + "" + formData.password);
-                if (KeyCode == 13 && ValidForm) {
+            $scope.KeyUpEvent = function (KeyCode, formData) {
+                if (KeyCode == 13) {
                     $scope.CheckAccess(formData);
                 }
             }

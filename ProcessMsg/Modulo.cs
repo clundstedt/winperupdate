@@ -22,7 +22,9 @@ namespace ProcessMsg
                     var obj = new Model.ModuloBo
                     {
                         idModulo = int.Parse(dr["idModulo"].ToString()),
-                        NomModulo = dr["NomModulo"].ToString()
+                        NomModulo = dr["NomModulo"].ToString(),
+                        Suite = dr["Suite"].ToString(),
+                        NomExe = dr["NomExe"].ToString()
                     };
 
                     lista.Add(obj);

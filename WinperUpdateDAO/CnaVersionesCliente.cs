@@ -55,5 +55,35 @@ namespace WinperUpdateDAO
             }
         }
 
+        public SqlDataReader ExecuteVersionesCliente(int idClientes)
+        {
+            SpName = @"SELECT vca.idClientes
+	                         ,vca.idVersion
+	                         ,vca.idAmbientes
+	                         ,vca.Estado
+	                         ,vca.fechainstalacion
+	                         ,v.numversion
+	                         ,a.nombre
+	                     FROM Versiones_has_Clientes_has_Ambientes vca
+	               INNER JOIN Versiones_has_Clientes vc
+	                       ON vca.idVersion = vc.idVersion AND vca.idClientes = vc.idClientes
+	               INNER JOIN Versiones v
+	                       ON vc.idVersion = v.idVersion
+	               INNER JOIN Ambientes a
+	                       ON a.idAmbientes = vca.idAmbientes
+	                    WHERE vca.idClientes = @idCliente";
+            try
+            {
+                ParmsDictionary.Add("@idCliente", idClientes);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
     }
 }
