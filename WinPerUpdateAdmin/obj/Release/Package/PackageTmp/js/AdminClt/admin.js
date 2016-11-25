@@ -98,7 +98,7 @@
                 });
             }
 
-            $scope.EjecutadoEnPruebas = function (idAmbientes)
+            $scope.EjecutadoEnPruebas = function (idAmbientes, paso)
             {
                 var existePruebas = false;
                 var ex = true;
@@ -117,7 +117,7 @@
                     }
                 }
             
-
+                if (!paso) ex = true;
                 return ex;
             }
 
@@ -211,8 +211,8 @@
                 $("#detalletareas-modal").modal('show');
             }
 
-            $scope.ShowConfirmPublish = function (id, nombre, idVersion) {
-                if ($scope.EjecutadoEnPruebas(id)) {
+            $scope.ShowConfirmPublish = function (id, nombre, idVersion, paso) {
+                if ($scope.EjecutadoEnPruebas(id,paso)) {
                     serviceAdmin.ambienteOK(id, idVersion).success(function (data) {
                         if (data) {
                             $scope.nombreambiente = nombre;
@@ -227,8 +227,10 @@
                         console.log(err);
                     });
                 } else {
+                    $scope.nombreambiente = nombre;
+                    $scope.idAmbiente = id;
                     $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinperUpdate debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
-                    $("#avisoexsql-modal").modal('show');
+                    $("#confpub-modal").modal('show');
                 }
             }
 

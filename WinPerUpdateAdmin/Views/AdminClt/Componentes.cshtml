@@ -191,7 +191,7 @@
                 <div class="modal-footer">
                     <span style="color: red">{{mensaje}}</span>
                     <button class="btn btn-danger" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
-                    <button class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -214,7 +214,7 @@
                     <button class="btn btn-warning" data-toggle="modal" data-target="#confejscman-modal" ng-disabled="estaVigente">Ejecutar Script Manualmente</button>
                     <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion, 0)" ng-disabled="estaVigente">Ejecutar Script</button>
                     <button class="btn btn-info" ng-click="ShowScriptSQL(version.IdVersion, nombrearchExSQL, idAmbienteExSQL, userSession)" ng-disabled="estaVigente">Ver Script</button>
-                    <button class="btn btn-default btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -231,7 +231,7 @@
                     {{msgAvisoExSQL}}
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -271,7 +271,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion, 3)">Confirmar Ejecución Manual</button>
-                    <button class="btn btn-default btn-primary" data-dismiss="modal">OK</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -367,7 +367,7 @@
                     <button class="btn btn-info" ng-click="ReportarTodasTareas()" ng-disabled="labelReportarTodasTareas=='Reportados' || labelReportarTodasTareas=='Enviando...' || labelReportar=='Enviando...'">
                     {{labelReportarTodasTareas}}
                     </button>
-                    <button class="btn btn-default btn-primary" ng-click="actAvisoTareasNoReportadas = false; actErrorTextArea = false;" data-dismiss="modal">OK</button>
+                    <button class="btn btn-default" ng-click="actAvisoTareasNoReportadas = false; actErrorTextArea = false;" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
