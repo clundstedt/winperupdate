@@ -50,7 +50,11 @@
             });
 
             serviceClientes.getModulos().success(function (modulos) {
-                $scope.modulosWinper = modulos;
+                for (var i = 0; i < modulos.length; i++) {
+                    if(modulos.Estado == 'V'){
+                        $scope.modulosWinper.push(modulos[i]);
+                    }
+                }
             }).error(function (err) {
                 console.error(err);
             });

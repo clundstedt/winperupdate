@@ -42,36 +42,31 @@
                 $scope.titulo = "Modificar Versión";
                 $scope.labelcreate = "Modificar";
 
-
-
-                serviceAdmin.getVersion($scope.idversion).success(function (data) {
-                    $scope.version = data;
-                    $scope.version.Estado = 'N';
-
-                    angular.forEach($scope.version.Componentes, function (item) {
-                        if (item.Tipo == 'exe') $scope.totales[0]++;
-                        else if (item.Tipo == 'qrp') $scope.totales[1]++;
-                        else $scope.totales[2]++;
+                serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
+                    //console.log(JSON.stringify(cliente));
+                    serviceAdmin.getAmbientes(cliente.Id, $scope.idversion).success(function (ambiente) {
+                        $scope.ambientes = ambiente;
+                    }).
+                    error(function (err) {
+                        console.error(err);
                     });
 
-                    serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
-                        //console.log(JSON.stringify(cliente));
-                        serviceAdmin.getAmbientes(cliente.Id, $scope.idversion).success(function (ambiente) {
-                            $scope.ambientes = ambiente;
-                        }).
-                        error(function (err) {
-                            console.error(err);
-                        });
+                    serviceAdmin.existeTareaAtrasada(cliente.Id, $scope.idversion).success(function (data) {
+                        $scope.existeTareaAtrasada = data;
+                    }).error(function (err) {
+                        console.log(err);
+                    });
 
-                        serviceAdmin.existeTareaAtrasada(cliente.Id, $scope.idversion).success(function (data) {
-                            $scope.existeTareaAtrasada = data;
-                            console.log($scope.existeTareaAtrasada);
-                        }).error(function (err) {
-                            console.log(err);
+                    serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (data) {
+                        $scope.version = data;
+                        $scope.version.Estado = 'N';
+
+                        angular.forEach($scope.version.Componentes, function (item) {
+                            if (item.Tipo == 'exe') $scope.totales[0]++;
+                            else if (item.Tipo == 'qrp') $scope.totales[1]++;
+                            else $scope.totales[2]++;
                         });
-                        
-                    })
-                    .error(function (err) {
+                    }).error(function (err) {
                         console.error(err);
                     });
 

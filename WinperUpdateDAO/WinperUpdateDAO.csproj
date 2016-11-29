@@ -43,6 +43,7 @@
     <Compile Include="AddAmbiente.cs" />
     <Compile Include="AddCliente.cs" />
     <Compile Include="AddComponente.cs" />
+    <Compile Include="AddModulo.cs" />
     <Compile Include="AddModuloVersion.cs" />
     <Compile Include="AddPersona.cs" />
     <Compile Include="AddTareas.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="DelAmbiente.cs" />
     <Compile Include="DelCliente.cs" />
     <Compile Include="DelComponente.cs" />
+    <Compile Include="DelModulo.cs" />
     <Compile Include="delUsuario.cs" />
     <Compile Include="DelVersion.cs" />
     <Compile Include="PubVersion.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="UpdAmbiente.cs" />
     <Compile Include="UpdCliente.cs" />
     <Compile Include="UpdComponente.cs" />
+    <Compile Include="UpdModulo.cs" />
     <Compile Include="UpdPersona.cs" />
     <Compile Include="UpdTareas.cs" />
     <Compile Include="UpdUsuario.cs" />

@@ -135,6 +135,42 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
+        [Route("api/Version/{idVersion:int}/Cliente/{idCliente:int}/Componentes")]
+        [HttpGet]
+        public Object Get(int idVersion, int idCliente)
+        {
+            try
+            {
+                List<ProcessMsg.Model.AtributosArchivoBo> listaComps = new List<ProcessMsg.Model.AtributosArchivoBo>();
+                var obj = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                var modulosCliente = ProcessMsg.Cliente.GetClientesHasModulo(idCliente);
+                obj.Componentes.ForEach(componente =>
+                {
+                    modulosCliente.ForEach(modulos =>
+                    {
+                        if (componente.Modulo.Equals(modulos.NomModulo))
+                        {
+                            listaComps.Add(componente);
+                        }
+                    });
+                });
+                obj.Componentes = listaComps;
+
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
+
         [Route("api/Version/{idVersion:int}/Componentes")]
         [HttpGet]
         public Object GetComponentes(int idVersion)
@@ -381,8 +417,9 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    /*Asigna el modulo al componente al insertarlo en la tabla - se debe revisar segun nuevo diagrama -
                     var modulo = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.NomExe.StartsWith(archivo.Name.ToUpper().Substring(0,archivo.Name.IndexOf('.'))));
-                    if (modulo == null) archivo.Modulo = "N/A"; else archivo.Modulo = modulo.NomModulo;
+                    if (modulo == null) archivo.Modulo = "N/A"; else archivo.Modulo = modulo.NomModulo;*/
                     var obj = ProcessMsg.Componente.AddComponente(idVersion, archivo);
                     if (obj == null)
                     {

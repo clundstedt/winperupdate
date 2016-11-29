@@ -23,6 +23,7 @@
             reportarTodasTareas: reportarTodasTareas,
             asignarEstadoManual: asignarEstadoManual,
             getAmbientesNoEx: getAmbientesNoEx,
+            getVersionCliente: getVersionCliente,
 
             addVersion: addVersion,
             addTarea: addTarea
@@ -431,6 +432,42 @@
 
             return promise;
 
+        }
+
+        function getVersionCliente(id,idCliente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/' + id + '/Cliente/' + idCliente + "/Componentes",
+                type: "get",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existe la version');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existe la version');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
         }
 
         function getVersion(id) {

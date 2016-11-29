@@ -24,8 +24,8 @@ namespace WinperUpdateDAO
         }
         public SqlDataReader ExecuteClientesHasModulos(int idCliente)
         {
-            SpName = @"SELECT mw.* FROM ModulosWinper mw 
-                                              INNER JOIN Clientes_has_ModulosWinper chm
+            SpName = @"SELECT mw.* FROM Modulos mw 
+                                              INNER JOIN Clientes_has_Modulos chm
                                                       ON chm.idModulo = mw.idModulo 
                                                    WHERE chm.idClientes = @idCliente";
             try

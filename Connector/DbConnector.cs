@@ -297,6 +297,71 @@ namespace ConnectorDB
             }
 
         }
+
+        /// <summary>
+        /// Método para ejecutar querys que no retornan datos (Insert / Update / Delete ).
+        /// </summary>
+        /// <param name="query">Query a Ejecutar</param>
+        /// <param name="parmsDictionary">Lista de parametros de la query</param>
+        /// <returns></returns>
+        public int ExecuteQueryNoResultScalar(string query, ThDictionary parmsDictionary)
+        {
+            try
+            {
+                ReadParameters();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Error al leer connection string. " + ex.Message + ".";
+                throw new Exception(msg, ex);
+            }
+
+            SqlConnection conn;
+            try
+            {
+                conn = new SqlConnection(ConnectionStr);
+                conn.Open();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Error al abrir la conexion, " + ex.Message + ".";
+                throw new Exception(msg, ex);
+            }
+
+            var comm = conn.CreateCommand();
+            comm.CommandType = CommandType.Text;
+            comm.CommandText = query;
+            if (parmsDictionary != null)
+            {
+                var iterator = parmsDictionary.GetValues();
+                foreach (var kvp in iterator)
+                {
+                    try
+                    {
+                        comm.Parameters.Add(kvp.Value == null
+                                                ? new SqlParameter(kvp.Key, DBNull.Value)
+                                                : new SqlParameter(kvp.Key, kvp.Value));
+                    }
+                    catch (Exception ex)
+                    {
+                        var msg = "Error al agregar parámetros: " + kvp.Key + "=" + kvp.Value + " | " + ex.Message;
+                        // Todo Implementar tipo correcto de excepción.
+                        throw new Exception(msg, ex);
+                    }
+                }
+            }
+            try
+            {
+                return (int)comm.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Error al ejecutar comando: " + comm + " -> " + ex.Message;
+                // Todo Implementar tipo correcto de excepción.
+                throw new Exception(msg, ex);
+            }
+
+        }
         /// <summary>
         /// Ejecuta una transacción SQL
         /// </summary>

@@ -50,6 +50,7 @@
     <Compile Include="Model\AtributosArchivoBo.cs" />
     <Compile Include="Model\ClienteBo.cs" />
     <Compile Include="Model\MenusBo.cs" />
+    <Compile Include="Model\ModuloXLSXBo.cs" />
     <Compile Include="Model\PerfilesBo.cs" />
     <Compile Include="Model\TareaBo.cs" />
     <Compile Include="Model\UsuarioBo.cs" />
