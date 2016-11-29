@@ -1,0 +1,191 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Detalles Modulo</h1>
+        <ol class="breadcrumb autoscroll">
+            <li><a href="/Modulos#/">Modulos</a></li>
+            <li class="active">{{accion}} Modulo</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-toolbar hidden-xs">
+            <div class="btn-group btn-group-sm" role="toolbar">
+                <button class="btn btn-labeled btn-danger" data-target="#confelim-modal" data-toggle="modal" ng-disabled="formData.estado == 'C'" ng-show="accion == 'Modificar'">
+                    Caducar Módulo
+                </button>
+                <button class="btn btn-labeled btn-success" data-target="#confvigen-modal" data-toggle="modal" ng-disabled="formData.estado == 'V'" ng-show="accion == 'Modificar'">
+                    Establecer como Vigente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-{{tipoalert}}" ng-show="tipoalert != ''">
+            <span class="fa fa-exclamation-triangle" ng-show="tipoalert == 'danger'"></span>
+            {{msgalert}}
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    {{accion}} Modulo
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Nombre del Módulo"><i class="fa fa-cube fa-fw"></i></span>
+                                    <input type="text" class="form-control" placeholder="Nombre del Modulo" ng-model="formData.nombre" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" title="Directorio del Módulo"><i class="fa fa-file-o fa-fw"></i></span>
+                                    <input type="text" class="form-control" placeholder="Directorio del Módulo" ng-model="formData.directorio" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group margin-bottom-sm">
+                                    <span class="input-group-addon" title="Comentario"><i class="fa fa-comment-o fa-fw"></i></span>
+                                    <textarea class="form-control" rows="5" ng-model="formData.descripcion" placeholder="Descripción"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" ng-model="formData.iscore" ng-true-value="true" ng-false-value="false">Marcar este módulo como parte de los módulos principales del sistema.</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group-sm">
+                                <button type="button" class="btn btn-primary btn-block" ng-click="Accion(formData)">
+                                    {{accion}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Componentes
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive" ng-hide="false" ng-controller="inicio">
+                        <table st-table="displayComponentes" st-safe-src="componentes" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="5"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
+                                </tr>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Directorio</th>
+                                    <th>Sistema Principal</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="componente in displayComponentes" class="row-tabla" style="height: 20px;">
+                                    <td style="vertical-align: middle;">
+                                        
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        
+                                    </td>
+                                    <td>
+                                        <a href="/Modulos#/EditarModulo/{{}}" class="btn btn-labeled btn-info">
+                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Modificar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confelim-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirme Eliminación</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    A continuación se procederá a caducar el módulo.
+                    ¿Está seguro que desea caducarlo?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="Eliminar()">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confvigen-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirme Vigencia</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    A continuación se procederá a establecer como vigente el módulo.
+                    ¿Está seguro que desea establecer como vigente?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="Vigente()">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

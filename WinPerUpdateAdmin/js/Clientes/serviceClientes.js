@@ -402,7 +402,6 @@
         function addModuloCliente(idCliente, modulos) {
             var deferred = $q.defer();
             var promise = deferred.promise;
-            console.log("MODULOS SELECCIONADOS: "+modulos);
 
             $.ajax({
                 url: '/api/Cliente/'+idCliente+'/Modulos',

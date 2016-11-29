@@ -110,6 +110,19 @@ namespace WinPerUpdateAdmin
                       , "~/js/Seguridad/serviceSeguridad.js"
                       ));
 
+            bundles.Add(new ScriptBundle("~/bundles/modulos").Include(
+                        "~/Scripts/angular-file-upload.min.js"
+                      , "~/Scripts/smart-table.min.js"
+                      , "~/js/Modulos/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
+                      , "~/js/Modulos/inicio.js"
+                      , "~/js/Modulos/componentes.js"
+                      , "~/js/Modulos/modulos.js"
+                      , "~/js/Modulos/tipoComponente.js"
+                      , "~/js/Modulos/serviceModulos.js"
+                      ));
+
             bundles.Add(new ScriptBundle("~/bundles/perfil").Include(
                       "~/js/Perfil/app.js"
                       , "~/js/Home/controllerHome.js"

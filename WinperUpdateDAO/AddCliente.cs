@@ -41,11 +41,11 @@ namespace WinperUpdateDAO
 
         public bool ExecuteClientesHasModulos(int idCliente, int[] idModulos)
         {
-            SpName = @"INSERT INTO Clientes_has_ModulosWinper (idClientes
+            SpName = @"INSERT INTO Clientes_has_Modulos (idClientes
                                                               ,idModulo)
                                                         VALUES({0}
                                                               ,{1})";
-            string del = @"DELETE FROM Clientes_has_ModulosWinper 
+            string del = @"DELETE FROM Clientes_has_Modulos 
                                                             WHERE idClientes = @idClienteDel";
             object[,] querys = new object[idModulos.Length+1, 2];
             try

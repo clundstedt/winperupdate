@@ -93,7 +93,7 @@ namespace ProcessMsg
 
             return lista;
         }
-
+        
         public static Model.VersionBo GetVersion(string release, EventLog log)
         {
             var obj = new Model.VersionBo();
