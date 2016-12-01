@@ -45,13 +45,17 @@
     <Compile Include="Ambiente.cs" />
     <Compile Include="Cliente.cs" />
     <Compile Include="Componente.cs" />
+    <Compile Include="ComponenteModulo.cs" />
     <Compile Include="Model\AmbienteBo.cs" />
     <Compile Include="Model\AmbientesXLSXBo.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
     <Compile Include="Model\ClienteBo.cs" />
+    <Compile Include="Model\ComponenteModuloBo.cs" />
     <Compile Include="Model\MenusBo.cs" />
+    <Compile Include="Model\ModuloXLSXBo.cs" />
     <Compile Include="Model\PerfilesBo.cs" />
     <Compile Include="Model\TareaBo.cs" />
+    <Compile Include="Model\TipoComponenteBo.cs" />
     <Compile Include="Model\UsuarioBo.cs" />
     <Compile Include="Model\ComunaBo.cs" />
     <Compile Include="Model\ModuloBo.cs" />

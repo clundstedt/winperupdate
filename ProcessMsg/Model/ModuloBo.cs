@@ -11,7 +11,23 @@ namespace ProcessMsg.Model
         public int idModulo { get; set; }
 
         public string NomModulo { get; set; }
-        public string Suite { get; set; }
-        public string NomExe { get; set; }
+        public string Descripcion { get; set; }
+        public bool isCore { get; set; }
+        public string Directorio { get; set; }
+        public char Estado { get; set; }
+        public string isCoreFmt
+        {
+            get
+            {
+                return isCore ? "Este módulo es parte del sistema principal." : "Este módulo no es parte del sistema principal.";
+            }
+        }
+        public string EstadoFmt
+        {
+            get
+            {
+                return Estado == 'C' ? "Caducado" : "Vigente";
+            }
+        }
     }
 }

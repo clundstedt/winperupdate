@@ -162,6 +162,11 @@
     <Content Include="js\Clientes\usuarios.js" />
     <Content Include="js\Home\controllerHome.js" />
     <Content Include="js\Home\factoryHome.js" />
+    <Content Include="js\Modulos\app.js" />
+    <Content Include="js\Modulos\inicio.js" />
+    <Content Include="js\Modulos\modulos.js" />
+    <Content Include="js\Modulos\serviceModulos.js" />
+    <Content Include="js\Modulos\tipoComponente.js" />
     <Content Include="js\Perfil\app.js" />
     <Content Include="js\Perfil\perfil.js" />
     <Content Include="js\SeguridadClt\app.js" />
@@ -285,6 +290,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Scripts\angular-file-upload.min.js.map" />
     <Content Include="Scripts\angular-file-upload.js.map" />
+    <Content Include="Fuentes\PlanillaAmbientes.xlsx" />
+    <Content Include="Fuentes\PlanillaModulos.xlsx" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -389,6 +396,7 @@
     <Compile Include="Controllers\Clientes\ClientesController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Clientes\SeguridadCltController.cs" />
+    <Compile Include="Controllers\Modulos\ModulosController.cs" />
     <Compile Include="Controllers\Seguridad\SeguridadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -431,6 +439,9 @@
     <Content Include="Views\Home\Cuenta.cshtml" />
     <Content Include="Views\Home\Perfil.cshtml" />
     <Content Include="Views\Home\Menus.cshtml" />
+    <Content Include="Views\Modulos\CrearModulo.cshtml" />
+    <Content Include="Views\Modulos\Inicio.cshtml" />
+    <Content Include="Views\Modulos\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -440,8 +451,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Fuentes\AmbientesXlSXClientes\" />
+    <Folder Include="Fuentes\ModulosXLSX\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\" />
+    <Folder Include="VersionOficial\N+1\" />
+    <Folder Include="VersionOficial\N\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProcessMsg\ProcessMsg.csproj">
