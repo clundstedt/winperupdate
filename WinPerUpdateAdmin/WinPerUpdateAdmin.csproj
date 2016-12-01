@@ -163,7 +163,6 @@
     <Content Include="js\Home\controllerHome.js" />
     <Content Include="js\Home\factoryHome.js" />
     <Content Include="js\Modulos\app.js" />
-    <Content Include="js\Modulos\componentes.js" />
     <Content Include="js\Modulos\inicio.js" />
     <Content Include="js\Modulos\modulos.js" />
     <Content Include="js\Modulos\serviceModulos.js" />
@@ -291,6 +290,9 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Scripts\angular-file-upload.min.js.map" />
     <Content Include="Scripts\angular-file-upload.js.map" />
+    <Content Include="Fuentes\PlanillaAmbientes.xlsx" />
+    <Content Include="Fuentes\PlanillaComponentes.xlsx" />
+    <Content Include="Fuentes\PlanillaModulos.xlsx" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -450,8 +452,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Fuentes\AmbientesXlSXClientes\" />
+    <Folder Include="Fuentes\ModulosXLSX\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\" />
+    <Folder Include="VersionOficial\N+1\" />
+    <Folder Include="VersionOficial\N\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProcessMsg\ProcessMsg.csproj">

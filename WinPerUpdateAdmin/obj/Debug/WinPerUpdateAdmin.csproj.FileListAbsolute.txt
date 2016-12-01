@@ -153,3 +153,4 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll.config

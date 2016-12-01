@@ -26,7 +26,7 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@isCore", iscore);
                 ParmsDictionary.Add("@Directorio", Directorio);
 
-                return Connector.ExecuteQueryNoResultScalar(SpName, ParmsDictionary);
+                return (int)Connector.ExecuteQueryScalar(SpName, ParmsDictionary);
             }
             catch(Exception ex)
             {

@@ -100,6 +100,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        
         #endregion
 
         #region Adds
@@ -182,7 +183,7 @@ namespace ProcessMsg
         #region Otros
         private static System.Data.DataTable VerificarDatosModulo(int idUsuario, string Archivo, string Hoja)
         {
-            System.Data.DataTable dt = new CnaModulo().selectExcel(Archivo, Hoja);
+            System.Data.DataTable dt = new CnaModulo().SelectExcel(Archivo, Hoja);
             System.Data.DataTable dtModulos = new System.Data.DataTable();
             dtModulos.Columns.Add("NomModulo");
             dtModulos.Columns.Add("Descripcion");

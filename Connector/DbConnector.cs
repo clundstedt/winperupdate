@@ -304,7 +304,7 @@ namespace ConnectorDB
         /// <param name="query">Query a Ejecutar</param>
         /// <param name="parmsDictionary">Lista de parametros de la query</param>
         /// <returns></returns>
-        public int ExecuteQueryNoResultScalar(string query, ThDictionary parmsDictionary)
+        public object ExecuteQueryScalar(string query, ThDictionary parmsDictionary)
         {
             try
             {
@@ -352,7 +352,7 @@ namespace ConnectorDB
             }
             try
             {
-                return (int)comm.ExecuteScalar();
+                return comm.ExecuteScalar();
             }
             catch (Exception ex)
             {

@@ -19,7 +19,7 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return isCore ? "Si" : "No";
+                return isCore ? "Este módulo es parte del sistema principal." : "Este módulo no es parte del sistema principal.";
             }
         }
         public string EstadoFmt

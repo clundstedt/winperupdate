@@ -39,7 +39,7 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
-        public DataTable selectExcel(string Arch, string Hoja)
+        public DataTable SelectExcel(string Arch, string Hoja)
         {
 
             OleDbConnection Conex = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Arch + ";Extended Properties=Excel 12.0;");

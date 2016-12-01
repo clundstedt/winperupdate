@@ -93,11 +93,27 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="accion == 'Modificar'">
+        <div class="col-md-12">
+            <h1>Componentes</h1>
+        </div>
+    </div>
+    <div class="row" ng-show="accion == 'Modificar'">
+        <div class="col-md-4">
+            <div class="input-group-sm">
+                <button type="button" class="btn btn-success btn-labeled" data-toggle="modal" data-target="#mancom-modal" data-backdrop="static" data-keyboard="false">
+                    <span class="btn-label"><span class="fa fa-plus"></span></span>
+                    Crear un componente
+                </button>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row" ng-show="accion == 'Modificar'">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Componentes
+                    Componentes del Módulo
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" ng-hide="false" ng-controller="inicio">
@@ -108,41 +124,67 @@
                                 </tr>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Directorio</th>
-                                    <th>Sistema Principal</th>
-                                    <th>Estado</th>
+                                    <th>Descripción</th>
+                                    <th>Tipo de Componente</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="componente in displayComponentes" class="row-tabla" style="height: 20px;">
                                     <td style="vertical-align: middle;">
-                                        
+                                        <input type="text" class="form-control" placeholder="Nombre" ng-model="componente.Nombre"/>
                                     </td>
                                     <td style="vertical-align: middle;">
-                                        
+                                        <a href="" ng-hide="componente.VerDescripcion" ng-click="componente.VerDescripcion = true">Ver y Editar Descripción</a>
+                                        <textarea ng-show="componente.VerDescripcion" class="form-control" placeholder="Descripción" rows="3" ng-model="componente.Descripcion"></textarea>
+                                        <a href="" ng-show="componente.VerDescripcion" ng-click="componente.VerDescripcion = false">OK</a>
                                     </td>
                                     <td style="vertical-align: middle;">
-                                        
-                                    </td>
-                                    <td style="vertical-align: middle;">
-                                        
+                                        <div class="input-group margin-bottom-sm" >
+                                            <select class="form-control" ng-model="componente.TipoComponentes.idTipoComponentes" ng-options="tipo.idTipoComponentes as tipo.Nombre for tipo in tipocomponentes">
+                                                <option value="">Tipo de Componente</option>
+                                            </select>
+                                            <span class="input-group-btn" title="Agregar un tipo de componente">
+                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#mantipcom-modal">
+                                                    <i class="fa fa-plus fa-fw"></i>
+                                                </button>
+                                            </span>
+                                        </div>
                                     </td>
                                     <td>
-                                        <a href="/Modulos#/EditarModulo/{{}}" class="btn btn-labeled btn-info">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Modificar
-                                        </a>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-labeled btn-info" ng-disabled="componente.LblModificar != 'Modificar'" ng-click="ModificarComponentesModulos(componente)">
+                                                    <span class="btn-label"><span class="fa fa-{{componente.LblModificar != 'Modificar' ? componente.LblModificar == 'Modificando...' ? 'circle-o-notch fa-spin' : 'check' : 'pencil'}}"></span></span>{{componente.LblModificar}}
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button class="btn btn-labeled btn-danger" ng-click="EliminarComponentesModulos(componente)">
+                                                    <span class="btn-label"><span class="fa fa-{{componente.LblEliminar == 'Eliminar' ? 'trash' : 'spinner fa-spin'}}"></span></span>{{componente.LblEliminar}}
+                                                </button>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" class="text-center">
+                                    <td colspan="4" class="text-center">
                                         <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
                             </tfoot>
                         </table>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary btn-labeled" ng-click="CargarComponentesModulos()">
+                                <span class="btn-label"><span class="fa fa-refresh"></span></span> Actualizar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,6 +226,133 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" ng-click="Vigente()">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mantipcom-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tipos de Componentes</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" title="Nombre del Tipo de Componente"><i class="fa fa-cube fa-fw"></i></span>
+                                <input type="text" class="form-control" placeholder="Nombre del Tipo de Componente" ng-model="formTipoComp.nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label><input type="checkbox" ng-model="formTipoComp.iscompbd" /> Es componente de Base de Datos <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('[data-toggle="tooltip"]').tooltip();
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group-sm">
+                            <button type="button" class="btn btn-primary btn-block" ng-click="CrearTipoComponente(formTipoComp)">
+                                Crear Tipo de Componente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="table-responsive" ng-hide="false" ng-controller="inicio">
+                    <table st-table="displayTipoComponentes" st-safe-src="tipocomponentes" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Base de Datos</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="tipocomponente in displayTipoComponentes" class="row-tabla" style="height: 20px;">
+                                <td style="vertical-align: middle;">
+                                {{tipocomponente.Nombre}}
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{tipocomponente.IsCompBDFmt}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-labeled btn-danger" ng-click="EliminarTipoComponente(tipocomponente)">
+                                        <span class="btn-label"><span class="fa fa-{{tipocomponente.LblEliminarTipo == 'Eliminar' ? 'trash' : 'spinner fa-spin'}}"></span></span> {{tipocomponente.LblEliminarTipo}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="3"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="CreandoComponentes()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mancom-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Componente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group margin-bottom-sm">
+                            <span class="input-group-addon" title="Nombre del Componente"><i class="fa fa-cube fa-fw"></i></span>
+                            <input type="text" class="form-control" ng-model="formComp.nombre" placeholder="Nombre del Componente" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group margin-bottom-sm">
+                            <span class="input-group-addon" title="Tipo de Componente"><i class="fa fa-cube fa-fw"></i></span>
+                            <select class="form-control" ng-model="formComp.tipocomponente" ng-options="tipo.idTipoComponentes as tipo.Nombre for tipo in tipocomponentes">
+                                <option value="">Tipo de Componente</option>
+                            </select>
+                            <span class="input-group-btn" title="Agregar un tipo de componente">
+                                <button type="button" class="btn btn-default" ng-click="ShowManTipCom()">
+                                    <i class="fa fa-plus fa-fw"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div><br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group margin-bottom-sm">
+                            <span class="input-group-addon" title="Descripción"><i class="fa fa-comment-o fa-fw"></i></span>
+                            <textarea class="form-control" rows="5" ng-model="formComp.descripcion" placeholder="Descripción"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="CrearComponentesModulos(formComp)">Crear</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
