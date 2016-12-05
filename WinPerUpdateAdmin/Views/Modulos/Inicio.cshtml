@@ -31,6 +31,9 @@
             <a href="" data-toggle="modal" data-target="#export-modal" class="btn btn-labeled btn-warning">
                 <span class="btn-label"><span class="fa fa-file-excel-o"></span></span>Importar Módulos desde Excel
             </a>
+            <a href="" data-toggle="modal" data-target="#sync-modal" data-backdrop="static" data-keyboard="false" class="btn btn-labeled btn-primary">
+                <span class="btn-label"><span class="fa fa-file-excel-o"></span></span>Sincronizar Componentes de los Módulos
+            </a>
         </div>
     </div>
     <div class="row">
@@ -108,7 +111,7 @@
             </div>
             <div class="modal-body">
                 Aquí usted podrá importar desde una planilla Excel todos sus módulos. Para poder utilizar el formato
-                correcto, puede descargar la planilla desde la opción <b>Generar Estructura</b>.
+                correcto, puede descargar la planilla de muestra desde la opción <b>Generar Estructura</b>.
                 <br />
                 <br />
                 <div class="row">
@@ -198,6 +201,40 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="sync-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Aviso WinperUpdate</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-show="sync == 0">
+                    A continuación se procederá a sincronizar los componentes que se encuentran en el directorio
+                    VersionOficial de WinperUpdate con los que estan registrados en la base de datos.
+                    <br /><br />
+                    Tenga en cuenta que el tipo de cada componente sera asignado segun los registros que tenga la base
+                    de datos, por lo que al final de este proceso se le entregará un reporte con los componentes que no se pudieron
+                    agregar con exito.
+                    <br /><br />
+                    Si desea continuar con este proceso oprima <b>Continuar</b>.
+                </div>
+                <div ng-show="sync == 1">
+                    <center>
+                        <h1><i class="fa fa-circle-o-notch fa-spin"></i></h1>
+                    </center>
+                </div>
+                <div ng-show="sync == 2">
+                    <textarea class="form-control" ng-model="logSync" rows="8"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-disabled="sync == 1" ng-click="SyncComponentes()">Continuar</button>
+                <button type="button" class="btn btn-default" ng-disabled="sync == 1" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

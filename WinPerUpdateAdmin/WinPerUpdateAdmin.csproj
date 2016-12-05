@@ -293,6 +293,7 @@
     <Content Include="Fuentes\PlanillaAmbientes.xlsx" />
     <Content Include="Fuentes\PlanillaModulos.xlsx" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
+    <None Include="Properties\PublishProfiles\Servidor.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />

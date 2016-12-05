@@ -93,17 +93,21 @@
             </div>
         </div>
     </div>
-    <div class="row" ng-show="accion == 'Modificar'">
+    <div class="row">
         <div class="col-md-12">
             <h1>Componentes</h1>
         </div>
     </div>
-    <div class="row" ng-show="accion == 'Modificar'">
-        <div class="col-md-4">
+    <div class="row" >
+        <div class="col-md-12">
             <div class="input-group-sm">
-                <button type="button" class="btn btn-success btn-labeled" data-toggle="modal" data-target="#mancom-modal" data-backdrop="static" data-keyboard="false">
+                <button type="button" class="btn btn-success btn-labeled" ng-show="accion == 'Modificar'" ng-click="LimpiarManComp()" data-toggle="modal" data-target="#mancom-modal" data-backdrop="static" data-keyboard="false">
                     <span class="btn-label"><span class="fa fa-plus"></span></span>
                     Crear un componente
+                </button>
+                <button type="button" class="btn btn-primary btn-labeled" ng-click="LimpiarManTipCom()" data-toggle="modal" data-target="#mantipcom-modal" data-backdrop="static" data-keyboard="false">
+                    <span class="btn-label"><span class="fa fa-plus"></span></span>
+                    Crear un Tipo de Componente
                 </button>
             </div>
         </div>
@@ -145,7 +149,7 @@
                                                 <option value="">Tipo de Componente</option>
                                             </select>
                                             <span class="input-group-btn" title="Agregar un tipo de componente">
-                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#mantipcom-modal">
+                                                <button type="button" class="btn btn-default" ng-click="LimpiarManTipCom()" data-toggle="modal" data-target="#mantipcom-modal">
                                                     <i class="fa fa-plus fa-fw"></i>
                                                 </button>
                                             </span>
@@ -233,7 +237,7 @@
 </div>
 
 <div id="mantipcom-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Tipos de Componentes</h4>
@@ -244,7 +248,17 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon" title="Nombre del Tipo de Componente"><i class="fa fa-cube fa-fw"></i></span>
-                                <input type="text" class="form-control" placeholder="Nombre del Tipo de Componente" ng-model="formTipoComp.nombre" />
+                                <input type="text" class="form-control" placeholder="Nombre del Tipo de Componente. EJ: Imagen" ng-model="formTipoComp.nombre" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" title="Extensiones que soportará este tipo"><i class="fa fa-cube fa-fw"></i></span>
+                                <input type="text" class="form-control" placeholder="Extensiones. EJ: .jpg .png .gif" ng-model="formTipoComp.extensiones" />
                             </div>
                         </div>
                     </div>
@@ -254,6 +268,20 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <label><input type="checkbox" ng-model="formTipoComp.iscompbd" /> Es componente de Base de Datos <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('[data-toggle="tooltip"]').tooltip();
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label><input type="checkbox" ng-model="formTipoComp.iscompdll" /> Es componente DLL <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
                                 <script>
                                     $(document).ready(function () {
                                         $('[data-toggle="tooltip"]').tooltip();

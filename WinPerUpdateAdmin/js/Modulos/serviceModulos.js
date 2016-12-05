@@ -16,6 +16,7 @@
             getTipoComponentes: getTipoComponentes,
 
             setVigente: setVigente,
+            syncComponentes: syncComponentes,
 
             addModulo: addModulo,
             updModulo: updModulo,
@@ -29,6 +30,42 @@
         };
 
         return service;
+
+        function syncComponentes() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Componentes/Sync',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene error de sincronizacion');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene error de sincronizacion');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function setVigente(idModulo) {
             var deferred = $q.defer();
@@ -257,12 +294,14 @@
             return promise;
         }
 
-        function addTipoComponentes(nombre, iscompbd){
+        function addTipoComponentes(nombre, iscompbd, iscompdll, extensiones){
             var deferred = $q.defer();
             var promise = deferred.promise;
             var TipoComponentes = {
                 "Nombre": nombre,
-                "isCompBD": iscompbd
+                "isCompBD": iscompbd,
+                "isCompDLL": iscompdll,
+                "Extensiones": extensiones
             };
             $.ajax({
                 url: '/api/TipoComponentes',

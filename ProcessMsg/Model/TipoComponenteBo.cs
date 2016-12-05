@@ -23,6 +23,15 @@ namespace ProcessMsg.Model
             }
         }
 
+        public bool isCompDLL { get; set; }
+        public string Extensiones { get; set; }
+        public string IsCompDLLFmt
+        {
+            get
+            {
+                return isCompDLL ? "Componente DLL":"No es componente DLL";
+            }
+        }
         public string LblEliminarTipo { get; set; }
     }
 }
