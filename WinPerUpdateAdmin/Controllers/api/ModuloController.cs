@@ -12,6 +12,62 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class ModuloController : ApiController
     {
         #region get
+        [Route("api/Componentes/Sync")]
+        [HttpGet]
+        public Object SyncComponentes()
+        {
+            try
+            {
+                string log = "OK.\n\n";
+                bool hasTipoNull = false;
+                List<ProcessMsg.Model.ComponenteModuloBo> componentesModulos = new List<ProcessMsg.Model.ComponenteModuloBo>();
+                var Modulos = ProcessMsg.Modulo.GetModulos(null);
+                var TipoComponentes = ProcessMsg.ComponenteModulo.GetTipoComponentes();
+                foreach (var m in Modulos)
+                {
+                    DirectoryInfo di = new DirectoryInfo(Path.Combine(HttpContext.Current.Server.MapPath("~/VersionOficial/N+1"), @m.Directorio));
+                    di.GetFiles().ToList().ForEach(file =>
+                    {
+                        
+                        if ((file.Attributes & FileAttributes.System) != FileAttributes.System)
+                        {
+                            componentesModulos.Add(new ProcessMsg.Model.ComponenteModuloBo
+                            {
+                                Modulo = m.idModulo,
+                                Nombre = file.Name,
+                                TipoComponentes = TipoComponentes.Find(x => x.Extensiones.Contains(file.Extension.ToLower()))
+                            });
+                        }
+                    });
+                    di.GetDirectories().ToList().ForEach(dir =>
+                    {
+                        log += string.Format("{0} es un directorio.\n", dir.Name);
+                    });
+                    componentesModulos.Where(c => c.TipoComponentes == null).ToList().ForEach(c =>
+                    {
+                        hasTipoNull = true;
+                        log += string.Format("{0} No contiene un tipo de componente valido.\n", c.Nombre);
+                    });
+
+                }
+                if (!hasTipoNull)
+                {
+                    var r = ProcessMsg.ComponenteModulo.AddComponentesModulos(componentesModulos);
+                    if (int.Parse(r[0].ToString()) == 0)
+                    {
+                        log += "Componentes sincronizados con exito!";
+                        return log;
+                    }
+                    log += "ERROR SQL: " + r[1] + "(" + r[0] + ")";
+                }
+                return log;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/TipoComponentes")]
         [HttpGet]
         public Object GetTipoComponentes()
@@ -134,7 +190,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                if (ProcessMsg.ComponenteModulo.AddTipoComponentes(TipoComponente.Nombre,TipoComponente.isCompBD) == 1)
+                if (ProcessMsg.ComponenteModulo.AddTipoComponentes(TipoComponente.Nombre,TipoComponente.isCompBD, TipoComponente.isCompDLL, TipoComponente.Extensiones) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
                 }

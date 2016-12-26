@@ -250,7 +250,13 @@ namespace WinPerUpdateUI
                             if (nroVersion.Equals(release.Release)) return;
 
                             string dirTmpversion = dirTmp + (dirTmp.EndsWith("\\") ? "" : "\\");
-                            dirTmpversion += item.Nombre;
+                            dirTmpversion += "WINPER";
+                            if (!Directory.Exists(dirTmpversion))
+                            {
+                                Directory.CreateDirectory(dirTmpversion);
+                            }
+
+                            dirTmpversion += ("\\" +item.Nombre);
                             if (!Directory.Exists(dirTmpversion))
                             {
                                 Directory.CreateDirectory(dirTmpversion);

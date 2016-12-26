@@ -11,7 +11,7 @@ namespace WinperUpdateDAO
     {
         public SqlDataReader ExecuteComponentesModulos(int idModulo)
         {
-            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD
+            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones
                                                       FROM ComponentesModulos cm
                                                 INNER JOIN TipoComponentes tc
                                                         ON cm.TipoComponentes = tc.idTipoComponentes
@@ -19,6 +19,22 @@ namespace WinperUpdateDAO
             try
             {
                 ParmsDictionary.Add("@idModulo", idModulo);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteComponentesModulos", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public SqlDataReader ExecuteComponentesModulos(string nombreComponente)
+        {
+            SpName = @"SELECT * FROM ComponentesModulos WHERE Nombre = @Nombre";
+            try
+            {
+                ParmsDictionary.Add("@Nombre", nombreComponente);
 
                 return Connector.ExecuteQuery(SpName, ParmsDictionary);
             }

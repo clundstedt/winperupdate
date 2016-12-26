@@ -64,7 +64,7 @@
                     console.error(err);
                 });
             }
-            
+
             $scope.CargarComponentesModulos = function () {
                 serviceModulos.getComponentesModulo($scope.idModulo).success(function (data) {
                     $scope.componentes = data;
@@ -95,11 +95,21 @@
             }
             
             $scope.CrearTipoComponente = function (formTipoComp) {
-                serviceModulos.addTipoComponentes(formTipoComp.nombre, formTipoComp.iscompbd).success(function (data) {
+                serviceModulos.addTipoComponentes(formTipoComp.nombre, formTipoComp.iscompbd, formTipoComp.iscompdll, $scope.PreparaExtTipoComponente(formTipoComp.extensiones)).success(function (data) {
                     $scope.CargarTipoComponentes();
                 }).error(function (err) {
                     console.error(err);
                 });
+            }
+
+            $scope.PreparaExtTipoComponente = function (extension) {
+                var exts = extension.split(" ");
+                var extFmt = "";
+                for (var i = 0; i < exts.length; i++) {
+                    if (!exts[i].startsWith(".")) exts[i] = "." + exts[i];
+                    extFmt += exts[i] + " ";
+                }
+                return extFmt;
             }
 
             $scope.EliminarTipoComponente = function (tipoComponente) {
@@ -155,6 +165,9 @@
                     $scope.msgalert = "Ocurrió un error durante el proceso de creación del módulo, vuelva a intentarlo.";
                 });
                 $scope.loading = false;
+                $timeout(function () {
+                    $scope.tipoalert = "";
+                }, 10000);
             }
 
             $scope.Modificar = function (formData) {
@@ -168,6 +181,9 @@
                     $scope.msgalert="Ocurrió un error durante el proceso de modificación, vuelva a intentarlo."
                 });
                 $scope.loading = false;
+                $timeout(function () {
+                    $scope.tipoalert = "";
+                }, 10000);
             }
 
             $scope.Eliminar = function () {
@@ -183,6 +199,9 @@
                 });
                 $("#confelim-modal").modal('toggle');
                 $scope.loading = false;
+                $timeout(function () {
+                    $scope.tipoalert = "";
+                }, 10000);
             }
 
             $scope.Vigente = function () {
@@ -198,12 +217,16 @@
                 });
                 $("#confvigen-modal").modal('toggle');
                 $scope.loading = false;
+                $timeout(function () {
+                    $scope.tipoalert = "";
+                }, 10000);
             }
 
             $scope.ShowManTipCom = function () {
                 $("#mancom-modal").modal('hide');
                 $("#mantipcom-modal").modal({ backdrop: 'static', keyboard: false, show: true });
                 $scope.CreandoComponentesModulos = true;
+                $scope.LimpiarManTipCom();
             }
 
             $scope.CreandoComponentes = function () {
@@ -213,6 +236,18 @@
                 }
                 $("#mantipcom-modal").modal('hide');
             }
+
+            $scope.LimpiarManComp = function () {
+                $scope.formComp.nombre = "";
+                $scope.formComp.tipocomponente = null;
+                $scope.formComp.descripcion = "";
+            }
+
+            $scope.LimpiarManTipCom = function () {
+                $scope.formTipoComp.nombre = "";
+                $scope.formTipoComp.iscompbd = false;
+            }
+
         }
     }
 })();

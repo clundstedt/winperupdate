@@ -71,12 +71,12 @@ namespace WinPerUpdateAdmin.Controllers.Admin
         {
             if (file == null)
             {
-                return Json(new { CodErr = 1, MsgErr = "No Files", sVersion = "" });
+                return Json(new { CodErr = 1, MsgErr = "No Files", sVersion = "", sModulo = "" });
             }
             try
             {
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
-                if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", sVersion = "" });
+                if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", sVersion = "", sModulo = "" });
 
                 string sRuta = Server.MapPath("~/Uploads/") + version.Release;
 
@@ -91,15 +91,22 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                     System.IO.File.Delete(sNameFiles);
                 }
 
-                file.SaveAs(sNameFiles);
+                var comp = ProcessMsg.ComponenteModulo.GetComponenteModuloByName(file.FileName);
+                var mod = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.idModulo == comp.Modulo);
+                if (comp != null && mod != null)
+                {
+                    file.SaveAs(sNameFiles);
 
-                FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(sNameFiles);
+                    FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(sNameFiles);
 
-                return Json(new { CodErr = 0, MsgErr = "", sVersion = myFileVersionInfo.FileVersion ?? "S/I" });
+                    return Json(new { CodErr = 0, MsgErr = "", sVersion = myFileVersionInfo.FileVersion ?? "S/I", sModulo = mod.NomModulo });
+                }
+
+                return Json(new { CodErr = 4, MsgErr = "No se encontro el modulo para este componente.", sVersion = "", sModulo = "" });
             }
             catch (Exception ex)
             {
-                return Json(new { CodErr = 3, MsgErr = ex.Message, sVersion = "" });
+                return Json(new { CodErr = 3, MsgErr = ex.Message, sVersion = "", sModulo = "" });
             }
         }
 

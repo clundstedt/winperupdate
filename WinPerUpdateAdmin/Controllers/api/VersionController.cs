@@ -12,6 +12,21 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class VersionController : ApiController
     {
         #region get
+        
+        [Route("api/Version/Componentes/{NombreComponente}/Existe")]
+        [HttpGet]
+        public Object ExisteComponentesModulos(string NombreComponente)
+        {
+            try
+            {
+                return ProcessMsg.ComponenteModulo.ExisteComponentesModulos(NombreComponente);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Version/ComponentesOficiales")]
         [HttpGet]
         public Object GetComponentesOficiales()
@@ -417,9 +432,6 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
-                    /*Asigna el modulo al componente al insertarlo en la tabla - se debe revisar segun nuevo diagrama -
-                    var modulo = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.NomExe.StartsWith(archivo.Name.ToUpper().Substring(0,archivo.Name.IndexOf('.'))));
-                    if (modulo == null) archivo.Modulo = "N/A"; else archivo.Modulo = modulo.NomModulo;*/
                     var obj = ProcessMsg.Componente.AddComponente(idVersion, archivo);
                     if (obj == null)
                     {

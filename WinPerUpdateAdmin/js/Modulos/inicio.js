@@ -13,6 +13,8 @@
         $scope.modulos = [];
         $scope.modulosxlsx = [];
         $scope.modxlsxwarn = false;
+        $scope.sync = 0;
+        $scope.logSync = "";
         activate();
 
         function activate() {
@@ -28,6 +30,22 @@
                 }).error(function (err) {
                     console.error(err);
                 });
+            }
+
+            $scope.SyncComponentes = function () {
+                if ($scope.sync == 0) {
+                    $scope.sync = 1;
+                    serviceModulos.syncComponentes().success(function (dataSync) {
+                        //dataSync: contiene reporte de los componentes NO sincronizados
+                        $scope.logSync = dataSync;
+                        $scope.sync = 2;
+                    }).error(function (errorSync) {
+                        $scope.logSync = errorSync;
+                        $scope.sync = 2;
+                    });
+                } else {
+                    $scope.sync = 0;
+                }
             }
 
 

@@ -9,7 +9,7 @@
 
     function componente($scope, $routeParams, serviceAdmin, FileUploader) {
         $scope.title = 'componente';
-
+        $scope.OkSegunExistencia = false;
         activate();
 
         function activate() {
@@ -40,7 +40,7 @@
                         }
                     }
                 }
-                if (paso) {
+                if (paso || VerificaComponentesOkSegunExistencia()) {
                     $("#errorcompsegfec-modal").modal('show');
                 } else {
                     uploader.uploadAll();
@@ -56,6 +56,29 @@
                     }
                 }
                 return true;
+            }
+
+            $scope.ComponenteOkSegunExistencia = function (fileItem) {
+                serviceAdmin.existeComponente(fileItem.file.name).success(function (data) {
+                    fileItem.isError = !data;
+                }).error(function (err) {
+                    console.error(err);
+                    fileItem.isError = false;
+                });
+            }
+
+            $scope.VerificaComponentesOkSegunExistencia = function () {
+                var paso = false;
+                for (var i = 0; i < uploader.queue.length; i++) {
+                    if (uploader.queue[i].isError) {
+                        paso = true;
+                    }
+                }
+                if (paso) {
+                    $("#errorcompsegfec-modal").modal('show');
+                } else {
+                    uploader.uploadAll();
+                }
             }
 
             var uploadOptions = {
@@ -88,7 +111,7 @@
                 //console.info('onSuccessItem', fileItem);
                 if (response.CodErr == 0) {
                     serviceAdmin
-                        .addComponente($scope.idVersion, 'N/A', fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.sVersion)
+                        .addComponente($scope.idVersion, response.sModulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.sVersion)
                         .success(function (data) {
                             console.log(JSON.stringify(data));
                         })
@@ -109,7 +132,7 @@
                 //console.info('onCompleteItem', fileItem, response, status, headers);
             };
             uploader.onAfterAddingFile = function (fileItem) {
-                
+                $scope.ComponenteOkSegunExistencia(fileItem);
             };
 
             //console.info('uploader', uploader);
