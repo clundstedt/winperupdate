@@ -56,7 +56,7 @@ namespace WinPerUpdateUI
                                 dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, directorio);
                                 keyv.Close();
                             }
-                            catch (Exception ex)
+                            catch (Exception )
                             {
                                 dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, "");
                             }
@@ -68,7 +68,7 @@ namespace WinPerUpdateUI
                 }
 
             }
-            catch (Exception ex) { };
+            catch (Exception ) { };
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -90,7 +90,7 @@ namespace WinPerUpdateUI
                     string version = keya.GetValue("Version").ToString();
                     keya.SetValue("DirWinper", directorio);
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     keya.SetValue("Version", "");
                     keya.SetValue("DirWinper", directorio);
@@ -100,7 +100,7 @@ namespace WinPerUpdateUI
                 {
                     string estado = keya.GetValue("Status").ToString();
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     keya.SetValue("Status", "");
                 }

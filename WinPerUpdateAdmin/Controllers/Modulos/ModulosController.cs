@@ -12,6 +12,10 @@ namespace WinPerUpdateAdmin.Controllers.Modulos
         // GET: Modulos
         public ActionResult Index()
         {
+            if (Session["token"] == null)
+            {
+                return RedirectToAction("Logout", "Home");
+            }
             return View();
         }
 
@@ -40,6 +44,11 @@ namespace WinPerUpdateAdmin.Controllers.Modulos
                 var user = ProcessMsg.Seguridad.GetUsuario(idUsuario);
                 if (user != null)
                 {
+                    if (!Directory.Exists(Server.MapPath("~/Fuentes")))
+                    {
+                        Directory.CreateDirectory(Server.MapPath("~/Fuentes"));
+                    }
+
                     string sRuta = Server.MapPath("~/Fuentes/ModulosXLSX/");
 
                     if (!Directory.Exists(sRuta))

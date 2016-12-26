@@ -72,7 +72,7 @@ namespace ProcessMsg
                 smtp.Send(correo);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }
@@ -121,6 +121,34 @@ namespace ProcessMsg
             }
             return licencia.ToUpper();
         }
+
+        public static iTextSharp.text.pdf.PdfPTable GenerarTablaPDF(int AnchoPorcentaje, int Alineacion, System.Data.DataTable dt)
+        {
+            iTextSharp.text.pdf.PdfPTable tbl = new iTextSharp.text.pdf.PdfPTable(dt.Columns.Count);
+            iTextSharp.text.pdf.PdfPCell[] celCol = new iTextSharp.text.pdf.PdfPCell[dt.Columns.Count];
+            for (int i = 0; i < celCol.Length; i++)
+            {
+                celCol[i] = new iTextSharp.text.pdf.PdfPCell(
+                    new iTextSharp.text.Paragraph(
+                        new iTextSharp.text.Chunk(dt.Columns[i].ColumnName,iTextSharp.text.FontFactory.GetFont("ARIAL",10, iTextSharp.text.Font.BOLD))));
+            }
+            tbl.WidthPercentage = AnchoPorcentaje;
+            tbl.HorizontalAlignment = Alineacion;
+            tbl.Rows.Add(new iTextSharp.text.pdf.PdfPRow(celCol));
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                var cell = new iTextSharp.text.pdf.PdfPCell[dt.Columns.Count];
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    cell[j] = new iTextSharp.text.pdf.PdfPCell(
+                        new iTextSharp.text.Paragraph(
+                            new iTextSharp.text.Chunk(dt.Rows[i][j].ToString(), iTextSharp.text.FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                }
+                tbl.Rows.Add(new iTextSharp.text.pdf.PdfPRow(cell));
+            }
+            return tbl;
+        }
+
         /// <summary>
         /// Genera la version siguiente de la especificada en el parametro
         /// </summary>

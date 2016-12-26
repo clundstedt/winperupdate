@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using ProcessMsg.Model;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Data;
+
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
@@ -113,7 +113,7 @@ namespace WinPerUpdateUI
                 ambientecfg = key.GetValue("Ambientes").ToString();
                 key.Close();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
                 key.SetValue("Licencia", "");
@@ -159,7 +159,7 @@ namespace WinPerUpdateUI
                         timer1.Start();
                     }
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     ContextMenu1.MenuItems[0].Enabled = false;
                     ContextMenu1.MenuItems[1].Enabled = false;
@@ -206,7 +206,7 @@ namespace WinPerUpdateUI
                             timer1.Start();
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
                         ContextMenu1.MenuItems[0].Enabled = false;
                         ContextMenu1.MenuItems[1].Enabled = false;
@@ -215,7 +215,7 @@ namespace WinPerUpdateUI
                 }
 
             }
-            catch (Exception ex) { };
+            catch (Exception ) { };
         }
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)

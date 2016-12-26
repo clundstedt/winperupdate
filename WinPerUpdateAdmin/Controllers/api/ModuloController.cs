@@ -55,10 +55,10 @@ namespace WinPerUpdateAdmin.Controllers.api
                     var r = ProcessMsg.ComponenteModulo.AddComponentesModulos(componentesModulos);
                     if (int.Parse(r[0].ToString()) == 0)
                     {
-                        log += "Componentes sincronizados con exito!";
+                        log += "\nComponentes sincronizados con exito!";
                         return log;
                     }
-                    log += "ERROR SQL: " + r[1] + "(" + r[0] + ")";
+                    log += "\nERROR SQL: " + r[1] + "(" + r[0] + ")";
                 }
                 return log;
             }
@@ -242,6 +242,24 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region put
+        [Route("api/TipoComponentes/{idTipoComponentes:int}")]
+        [HttpPut]
+        public Object UpdComponentesModulos(int idTipoComponentes, [FromBody]ProcessMsg.Model.TipoComponenteBo TipoComponente)
+        {
+            try
+            {
+                if (ProcessMsg.ComponenteModulo.UpdTipoComponentes(idTipoComponentes, TipoComponente.Nombre, TipoComponente.Extensiones,TipoComponente.isCompBD,TipoComponente.isCompDLL) == 1)
+                {
+                    return Content(HttpStatusCode.OK, true);
+                }
+                return Content(HttpStatusCode.Created, false);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/ComponentesModulos/{idComponentesModulos:int}")]
         [HttpPut]
         public Object UpdComponentesModulos(int idComponentesModulos,[FromBody]ProcessMsg.Model.ComponenteModuloBo ComponenteModulo)

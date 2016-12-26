@@ -23,11 +23,36 @@ namespace WinperUpdateDAO
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = string.Format("Error al ejecutar {0}: {1}", "Execute", ex.Message);
                 throw new Exception(msg, ex);
             }
         }
+
+        public int ExecuteTipoComponente(int idTipoComponentes, string Nombre, string Extensiones, bool isCompBD, bool isCompDLL)
+        {
+            SpName = @"UPDATE TipoComponentes SET Nombre = @Nombre
+                                                 ,Extensiones = @Extensiones
+                                                 ,isCompBD = @isCompBD
+                                                 ,isCompDLL = @isCompDLL
+                                            WHERE idTipoComponentes = @idTipoComponentes";
+            try
+            {
+                ParmsDictionary.Add("@Nombre", Nombre);
+                ParmsDictionary.Add("@Extensiones", Extensiones);
+                ParmsDictionary.Add("@isCompBD", isCompBD);
+                ParmsDictionary.Add("@isCompDLL", isCompDLL);
+                ParmsDictionary.Add("@idTipoComponentes", idTipoComponentes);
+
+                return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteTipoComponente", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
     }
 }

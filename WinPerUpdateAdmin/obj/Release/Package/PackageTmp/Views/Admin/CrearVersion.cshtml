@@ -131,115 +131,44 @@
                 </div>
             </div>
             <br />
-            <div role="tabpanel" ng-init="panel=1">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Ejecutables</a></li>
-                    <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Reportes</a></li>
-                    <li role="presentation"><a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">Otros</a></li>
-                </ul>
 
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" ng-class="{active:panel==1}">
-                        <br />
-                        <div class="alert alert-info" ng-show="totales[0]==0">
-                            <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroEjecutables" ng-init="isOk = ComponenteOkSegunVersion(ejecutable)">
-                                <div class="item panel panel-{{isOk}}">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title single-line">{{ejecutable.Name}}</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <img src="~/Content/Images/Run.png" alt="" class="avatar img-thumbnail image-foto" />
-                                        <div class="pull-right" style="width: 50%">
-                                            <ul class="list-unstyled">
-                                                <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.Modulo}}</li>
-                                                <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.DateCreateFmt}}</li>
-                                                <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.Version}}</li>
-                                                <li>
-                                                    <div ng-hide="isOk == 'success'" class="alert alert-{{isOk}}">
-                                                        <span class="fa fa-fw fa-exclamation-triangle"></span>
-                                                        <a href="" data-toggle="tooltip" title="{{ejecutable.MensajeToolTip}}">
-                                                            Más Información
-                                                        </a>
-                                                    </div>
-                                                    <script>
-                                                    $(document).ready(function(){
+            <div class="row" ng-repeat="tipoComp in TipoComponentes">
+                <button data-toggle="collapse" class="btn btn-default btn-block" data-target="#{{$index}}">{{tipoComp.Tipo.Nombre}}</button>
+                
+                <br />
+                <div id="{{$index}}" class="collapse">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroComponente: tipoComp.Tipo.Extensiones" >
+                        <div class="item panel panel-{{ejecutable.isOk}}">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{ejecutable.componente.Name}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/Run.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.componente.Modulo}}</li>
+                                        <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.componente.DateCreateFmt}}</li>
+                                        <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.componente.Version}}</li>
+                                        <li>
+                                            <div ng-hide="ejecutable.isOk == 'success'" class="alert alert-{{ejecutable.isOk}}">
+                                                <span class="fa fa-fw fa-exclamation-triangle"></span>
+                                                <a href="" data-toggle="tooltip" title="{{ejecutable.componente.MensajeToolTip}}">
+                                                    Más Información
+                                                </a>
+                                            </div>
+                                            <script>
+                                                $(document).ready(function () {
                                                     $('[data-toggle="tooltip"]').tooltip();
-                                                    });
-                                                    </script>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a href="Admin#/EditComponente/{{idversion}}/{{ejecutable.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
-                                            <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
-                                        </a>
-                                    </div>
+                                                });
+                                            </script>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
-                        <br />
-                        <div class="alert alert-info" ng-show="totales[1]==0">
-                            <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="reporte in componentes | filtroReportes">
-                                <div class="item panel panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title single-line">{{reporte.Name}}</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <img src="~/Content/Images/Printer.png" alt="" class="avatar img-thumbnail image-foto" />
-                                        <div class="pull-right" style="width: 50%">
-                                            <ul class="list-unstyled">
-                                                <li><span class="fa fa-fw fa-cube"></span> {{reporte.Modulo}}</li>
-                                                <li><span class="fa fa-fw fa-calendar"></span> {{reporte.DateCreateFmt}}</li>
-                                                <li><span class="fa fa-fw fa-bug"></span> {{reporte.Version}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a href="Admin#/EditComponente/{{idversion}}/{{reporte.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
-                                            <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
-                                        </a>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==3}">
-                        <br />
-                        <div class="alert alert-info" ng-show="totales[2]==0">
-                            <span class="fa fa-file-o"></span> Sin Componentes ingresados a&uacute;n
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in componentes | filtroOtros">
-                                <div class="item panel panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title single-line">{{otro.Name}}</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <img src="~/Content/Images/SD Card.png" alt="" class="avatar img-thumbnail image-foto" />
-                                        <div class="pull-right" style="width: 50%">
-                                            <ul class="list-unstyled">
-                                                <li><span class="fa fa-fw fa-cube"></span> {{otro.Modulo}}</li>
-                                                <li><span class="fa fa-fw fa-calendar"></span> {{otro.DateCreateFmt}}</li>
-                                                <li><span class="fa fa-fw fa-bug"></span> {{otro.Version}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a href="Admin#/EditComponente/{{idversion}}/{{otro.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
-                                            <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
-                                        </a>
-                                    </div>
-                                </div>
+                            <div class="panel-footer text-right" ng-init="inficha=true">
+                                <a href="Admin#/EditComponente/{{idversion}}/{{ejecutable.componente.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
+                                    <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
+                                </a>
                             </div>
                         </div>
                     </div>

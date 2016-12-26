@@ -42,6 +42,9 @@
             { valor: "11", nommes: "Noviembre" },
             { valor: "12", nommes: "Diciembre" }, ];
             $scope.versionesCliente = [];
+
+            $scope.trabPlantas = [];
+            $scope.trabHonorarios = [];
             
             serviceClientes.getRegiones().success(function (regiones) {
                 $scope.regiones = regiones;
@@ -51,12 +54,24 @@
 
             serviceClientes.getModulos().success(function (modulos) {
                 for (var i = 0; i < modulos.length; i++) {
-                    if(modulos.Estado == 'V'){
+                    if(modulos[i].Estado == 'V'){
                         $scope.modulosWinper.push(modulos[i]);
                     }
                 }
             }).error(function (err) {
                 console.error(err);
+            });
+
+            serviceClientes.getTrabPlantas().success(function (data) {
+                $scope.trabPlantas = data;
+            }).error(function (err) {
+                console.log(err)
+            });
+
+            serviceClientes.getTrabHonorarios().success(function (data) {
+                $scope.trabHonorarios = data;
+            }).error(function (err) {
+                console.log(err)
             });
             
 

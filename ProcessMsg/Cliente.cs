@@ -10,7 +10,133 @@ namespace ProcessMsg
 {
     public class Cliente
     {
+        #region Class
+        public class Trabs
+        {
+            public string idTrab { get; set; }
+            public string Descripcion { get; set; }
+        }
+        #endregion
+
         #region Metodos GETs
+        public static System.Data.DataTable GetVersionToClientePDF(int idCliente)
+        {
+            try
+            {
+                System.Data.DataTable dt = new System.Data.DataTable();
+                dt.Columns.Add("Release");
+                dt.Columns.Add("Fecha de Instalación");
+                dt.Columns.Add("Ambiente");
+                var ins = Version.GetVersionesToCliente(idCliente);
+                foreach (var i in ins)
+                {
+                    dt.Rows.Add(i.Version.Release,i.FechaInstalacionFmt,i.Ambiente.Nombre);
+                }
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static System.Data.DataTable GetModulosClientePDF(int idCliente)
+        {
+            try
+            {
+                System.Data.DataTable dt = new System.Data.DataTable();
+                dt.Columns.Add("Nombre");
+                dt.Columns.Add("Descripción");
+                dt.Columns.Add("Estado");
+                var mod = GetClientesHasModulo(idCliente);
+                foreach (var m in mod)
+                {
+                    dt.Rows.Add(m.NomModulo,m.Descripcion,m.EstadoFmt);
+                }
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static System.Data.DataTable GetClientesPDF()
+        {
+            try
+            {
+                System.Data.DataTable dt = new System.Data.DataTable();
+                dt.Columns.Add("Rut");
+                dt.Columns.Add("Razón Social");
+                dt.Columns.Add("Dirección");
+                dt.Columns.Add("Comuna");
+                dt.Columns.Add("Módulos");
+                var clientes = GetClientes();
+                foreach (var cl in clientes)
+                {
+                    var modulos = GetClientesHasModulo(cl.Id).Select(x => x.NomModulo);
+                    dt.Rows.Add(cl.RutFmt
+                                ,cl.Nombre
+                                ,cl.Direccion
+                                ,cl.Comuna.NomCmn
+                                ,string.Join(" ",modulos.ToArray()));
+                }
+
+                return dt;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static List<Trabs> GetTrabPlantas()
+        {
+            try
+            {
+                List<Trabs> lista = new List<Trabs>();
+                var read = new CnaClientes().GetTrabPlantas();
+                while (read.Read())
+                {
+                    lista.Add(new Trabs
+                    {
+                        idTrab = read["idTrabPlantas"].ToString(),
+                        Descripcion = read["Descripcion"].ToString()
+                    });
+                }
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static List<Trabs> GetTrabHonorarios()
+        {
+            try
+            {
+                List<Trabs> lista = new List<Trabs>();
+                var read = new CnaClientes().GetTrabHonorarios();
+                while (read.Read())
+                {
+                    lista.Add(new Trabs
+                    {
+                        idTrab = read["idTrabHonorarios"].ToString(),
+                        Descripcion = read["Descripcion"].ToString()
+                    });
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.VersionBo> GetVersiones(int idCliente, EventLog log)
         {
             var lista = new List<Model.VersionBo>();
@@ -419,6 +545,8 @@ namespace ProcessMsg
             }
         }
         #endregion
+
+        #region Adds
         public static Model.ClienteBo Add(Model.ClienteBo cliente)
         {
             int codError = 0;
@@ -475,6 +603,9 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        #endregion
+
+        #region Upds
         public static Model.ClienteBo Update(int id, Model.ClienteBo cliente)
         {
             var query = new UpdCliente();
@@ -495,6 +626,9 @@ namespace ProcessMsg
 
             return null;
         }
+        #endregion
+
+        #region Dels
         public static int Delete(int id)
         {
             var query = new DelCliente();
@@ -508,10 +642,10 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        #endregion
 
-        
 
-        
+
 
     }
 }

@@ -47,6 +47,10 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.10.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.10\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -166,7 +170,6 @@
     <Content Include="js\Modulos\inicio.js" />
     <Content Include="js\Modulos\modulos.js" />
     <Content Include="js\Modulos\serviceModulos.js" />
-    <Content Include="js\Modulos\tipoComponente.js" />
     <Content Include="js\Perfil\app.js" />
     <Content Include="js\Perfil\perfil.js" />
     <Content Include="js\SeguridadClt\app.js" />
@@ -293,6 +296,7 @@
     <Content Include="Fuentes\PlanillaAmbientes.xlsx" />
     <Content Include="Fuentes\PlanillaModulos.xlsx" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
+    <None Include="Properties\PublishProfiles\local2.pubxml" />
     <None Include="Properties\PublishProfiles\Servidor.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />

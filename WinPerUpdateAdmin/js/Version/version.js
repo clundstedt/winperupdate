@@ -5,9 +5,9 @@
         .module('app')
         .controller('version', version);
 
-    version.$inject = ['$scope', '$window', '$routeParams', 'serviceAdmin'];
+    version.$inject = ['$scope', '$window', '$routeParams', 'serviceAdmin', '$timeout'];
 
-    function version($scope, $window, $routeParams, serviceAdmin) {
+    function version($scope, $window, $routeParams, serviceAdmin, $timeout) {
         $scope.title = 'version';
 
         activate();
@@ -26,7 +26,7 @@
             $scope.idUsuario = $("#idToken").val();
             $scope.btnBlock = true;
             $scope.componentesOficiales = [];
-
+            $scope.TipoComponentes = [];
             
 
             if (!jQuery.isEmptyObject($routeParams)) {
@@ -38,19 +38,43 @@
                     $scope.formData.release = data.Release;
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
-                    $scope.componentes = data.Componentes;
+                    for (var i = 0; i < data.Componentes.length; i++) {
+                        var comp = {
+                            isOK : "success",
+                            componente: data.Componentes[i]
+                        }
+                        $scope.componentes.push(comp);
+                    }
+                    $timeout(function () {
+                        for (var i = 0; i < $scope.componentes.length; i++) {
+                            $scope.ComponenteOkSegunVersion($scope.componentes[i]);
+                        }
+                        console.log($scope.componentes);
+                    }, 1500);
+                    
                     $scope.formData.comentario = data.Comentario;
 
                     $scope.fechaini = data.FechaFmt;
 
                     angular.forEach($scope.componentes, function (item) {
-                        if (item.Tipo == 'exe') $scope.totales[0]++;
-                        else if (item.Tipo == 'qrp') $scope.totales[1]++;
+                        if (item.componente.Tipo == 'exe') $scope.totales[0]++;
+                        else if (item.componente.Tipo == 'qrp') $scope.totales[1]++;
                         else $scope.totales[2]++;
                     });
 
                 }).error(function (data) {
                     console.error(data);
+                });
+
+                serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var datos = {
+                            Tipo: data[i]
+                        }
+                        $scope.TipoComponentes.push(datos);
+                    }
+                }).error(function (err) {
+                    console.error(err);
                 });
             }else{
                 serviceAdmin.getUltimaRelease().success(function (data) {
@@ -68,39 +92,32 @@
 
             $scope.ComponenteOkSegunVersion = function (file) {
                 for (var i = 0; i < $scope.componentesOficiales.length; i++) {
-                    if ($scope.componentesOficiales[i].Version != null && $scope.componentesOficiales[i].Name == file.Name) {
+                    if ($scope.componentesOficiales[i].Version != null && $scope.componentesOficiales[i].Name == file.componente.Name) {
                         var versionBase = $scope.GenerarNuevaVersion($scope.componentesOficiales[i].Version);
-                        var versionOtra = file.Version;
+                        var versionOtra = file.componente.Version;
                         var comparacion = $scope.ComparaVersion(versionBase, versionOtra);
                         console.log("comparacion: " + comparacion);
                         if (comparacion == 0) {
-                            return "success";
+                            file.isOk = "success";
                         } else if (comparacion == 1) {
-                            file.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente es " + file.Version + " y debiera ser " + versionBase + ", ya que la versión oficial es " + $scope.componentesOficiales[i].Version;
-                            return "warning";
+                            file.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente es " + file.componente.Version + " y debiera ser " + versionBase + ", ya que la versión oficial es " + $scope.componentesOficiales[i].Version;
+                            file.isOk = "warning";
                         } else {
-                            file.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente (" + file.Version + ") debiera ser " + versionBase + ".";
-                            return "danger";
+                            file.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente (" + file.componente.Version + ") debiera ser " + versionBase + ".";
+                            file.isOk = "danger";
                         }
+                        break;
+                    } else {
+                        file.isOk = "success";
                     }
                 }
-                return "success";
+                return file;
             }
 
             $scope.ComponentesOkSegunVersion = function () {
-                for (var i = 0; i < $scope.componentesOficiales.length; i++) {
-                    if ($scope.componentesOficiales[i].Version != null) {
-                        var versionBase = $scope.GenerarNuevaVersion($scope.componentesOficiales[i].Version);
-                        for (var j = 0; j < $scope.componentes.length; j++) {
-                            if ($scope.componentes[j].Version != null) {
-                                var versionOtra = $scope.componentes[j].Version;
-                                if (!isNaN($scope.VersionToInt(versionOtra))) {
-                                    if ($scope.ComparaVersion(versionBase,versionOtra) == -1){
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
+                for (var i = 0; i < $scope.componentes.length; i++) {
+                    if($scope.componentes[i].isOk == "danger"){
+                        return false;
                     }
                 }
                 return true;

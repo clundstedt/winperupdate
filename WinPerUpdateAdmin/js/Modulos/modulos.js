@@ -26,6 +26,9 @@
         $scope.tipocomponentes = [];
         $scope.CreandoComponentesModulos = false;
 
+        $scope.ModificarTipo = 0;
+        $scope.lblModificarTipoComponente = "Modificar";
+
 
         activate();
 
@@ -97,6 +100,10 @@
             $scope.CrearTipoComponente = function (formTipoComp) {
                 serviceModulos.addTipoComponentes(formTipoComp.nombre, formTipoComp.iscompbd, formTipoComp.iscompdll, $scope.PreparaExtTipoComponente(formTipoComp.extensiones)).success(function (data) {
                     $scope.CargarTipoComponentes();
+                    formTipoComp.nombre = "";
+                    formTipoComp.extensiones = "";
+                    formTipoComp.iscompbd = false;
+                    formTipoComp.iscompdll = false;
                 }).error(function (err) {
                     console.error(err);
                 });
@@ -235,6 +242,37 @@
                     $scope.CreandoComponentesModulos = false;
                 }
                 $("#mantipcom-modal").modal('hide');
+            }
+
+            $scope.ModificandoTipoComponente = function (tipocomponente) {
+                $scope.formTipoComp.nombre = tipocomponente.Nombre;
+                $scope.formTipoComp.extensiones = tipocomponente.Extensiones;
+                $scope.formTipoComp.iscompbd = tipocomponente.isCompBD;
+                $scope.formTipoComp.iscompdll = tipocomponente.isCompDLL;
+                $scope.ModificarTipo = tipocomponente.idTipoComponentes;
+            }
+
+            $scope.CancelarModificacionTipoComponente = function () {
+                $scope.formTipoComp.nombre = "";
+                $scope.formTipoComp.extensiones = "";
+                $scope.formTipoComp.iscompbd = "";
+                $scope.formTipoComp.iscompdll = "";
+                $scope.ModificarTipo = 0;
+            }
+
+            $scope.ModificarTipoComponente = function (formTipoComp) {
+                if ($scope.lblModificarTipoComponente != "OK!") {
+                    serviceModulos.updTipoComponente($scope.ModificarTipo, formTipoComp.nombre, formTipoComp.extensiones, formTipoComp.iscompbd, formTipoComp.iscompdll).success(function (data) {
+                        $scope.lblModificarTipoComponente = "OK!";
+                        $scope.CargarTipoComponentes();
+                        $timeout(function () {
+                            $scope.lblModificarTipoComponente = "Modificar";
+                            $scope.CancelarModificacionTipoComponente();
+                        }, 3000);
+                    }).error(function (err) {
+                        $scope.lblModificarTipoComponente = "!ERROR";
+                    });
+                }
             }
 
             $scope.LimpiarManComp = function () {

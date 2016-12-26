@@ -64,9 +64,17 @@
             <tbody>
                 <tr ng-repeat="item in uploader.queue">
                     <td>
-                    <span class="error_ingreso" ng-hide="ComponenteOkSegunFecha(item.file)">
-                        <i class="fa fa-exclamation-triangle" title="La fecha de modificación de este componente es menor que la del componente oficial. Verifique que sea el correcto" aria-hidden="true"></i>
-                    </span>
+                        <span class="error_ingreso" ng-hide="ComponenteOkSegunFecha(item.file)">
+                            <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="La fecha de modificación de este componente es menor que la del componente oficial. Verifique que sea el correcto" aria-hidden="true"></i>
+                        </span>
+                        <span class="error_ingreso" ng-show="item.isError == true">
+                            <i class="fa fa-ban" data-toggle="tooltip" title="Este componente NO existe, debe ingresarlo primero desde el mantenedor de módulos." aria-hidden="true"></i>
+                        </span>
+                        <script>
+                            $(document).ready(function(){
+                            $('[data-toggle="tooltip"]').tooltip();
+                            });
+                        </script>
                     </td>
                     <td><strong>{{ item.file.name }}</strong></td>
                     <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
@@ -81,7 +89,8 @@
                         <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
                     </td>
                     <td nowrap>
-                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !ComponenteOkSegunFecha(item.file)">
+                        <!--ng-hide="!ComponenteOkSegunFecha(item.file)"-->
+                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()"  ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.isError">
                             <span class="glyphicon glyphicon-upload"></span> Subir
                         </button>
                         <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -102,7 +111,7 @@
                     <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
                 </div>
             </div>
-            <button type="button" class="btn btn-success btn-s" ng-click="VerificaComponentesOkSegunFecha()" ng-disabled="!uploader.getNotUploadedItems().length">
+            <button type="button" class="btn btn-success btn-s" ng-click="VerificaComponentesOkSegunExistencia()" ng-disabled="!uploader.getNotUploadedItems().length">
                 <span class="glyphicon glyphicon-upload"></span> Subir Todos
             </button>
             <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
@@ -137,3 +146,4 @@
 
     </div>
 </div>
+

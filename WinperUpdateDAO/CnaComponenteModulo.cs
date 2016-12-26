@@ -58,5 +58,39 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public SqlDataReader ExecuteConDirectorio()
+        {
+            SpName = @"SELECT cm.*, m.directorio
+                                            FROM ComponentesModulos cm INNER JOIN Modulos m
+                                              ON cm.Modulos = m.idModulo";
+            try
+            {
+                return Connector.ExecuteQuery(SpName, null);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteConDirectorio", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+        public SqlDataReader ExecuteTipoComponentesByVersion(int idVersion)
+        {
+            SpName = @"SELECT DISTINCT tc.* 
+                                       FROM TipoComponentes tc INNER JOIN ComponentesModulos cm
+                                         ON tc.idTipoComponentes = cm.TipoComponentes
+                                      WHERE cm.Nombre IN (SELECT NameFile FROM Componentes WHERE idVersion = @idVersion)";
+            try
+            {
+                ParmsDictionary.Add("@idVersion", idVersion);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteByVersion", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }
