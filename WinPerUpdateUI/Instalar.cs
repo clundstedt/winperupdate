@@ -46,7 +46,7 @@ namespace WinPerUpdateUI
 
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
             }

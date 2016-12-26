@@ -15,19 +15,24 @@ namespace ProcessMsg
             List<ProcessMsg.Model.AtributosArchivoBo> lista = new List<ProcessMsg.Model.AtributosArchivoBo>();
             try
             {
-                var files = new System.IO.DirectoryInfo(rutaOficial).GetFiles();
-                files.ToList().ForEach(x =>
+                var dirs = new System.IO.DirectoryInfo(rutaOficial).GetDirectories().ToList();
+                foreach (var dir in dirs)
                 {
-                    lista.Add(new ProcessMsg.Model.AtributosArchivoBo
+                    var files = new System.IO.DirectoryInfo(System.IO.Path.Combine(rutaOficial,dir.Name)).GetFiles();
+                    files.ToList().ForEach(x =>
                     {
-                        Name = x.Name,
-                        LastWrite = x.LastWriteTime,
-                        Version = FileVersionInfo.GetVersionInfo(x.FullName).FileVersion,
-                        Length = x.Length,
-                        DateCreate = x.CreationTime
+                        lista.Add(new ProcessMsg.Model.AtributosArchivoBo
+                        {
+                            Name = x.Name,
+                            LastWrite = x.LastWriteTime,
+                            Version = FileVersionInfo.GetVersionInfo(x.FullName).FileVersion,
+                            Length = x.Length,
+                            DateCreate = x.CreationTime
+                        });
                     });
-                });
-                return lista;
+                }
+
+                return lista.Where(x => x.Version != null).ToList();
             }
             catch(Exception ex)
             {

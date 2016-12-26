@@ -38,5 +38,59 @@ namespace ProcessMsg.Model
         public string NroTrbh { get; set; }
         public string NroUsr { get; set; }
 
+        public string EstMtcFmt
+        {
+            get
+            {
+                return EstMtc == 7 ? "Activo" : "No Activo";
+            }
+        }
+
+        public string MesIniFmt
+        {
+            get
+            {
+                var nom = "";
+                switch (Mesini)
+                {
+                    case "01":
+                        nom = "Enero";
+                        break;
+                    case "02":
+                        nom = "Febrero";
+                        break;
+                    case "03":
+                        nom = "Marzo";
+                        break;
+                    case "04":
+                        nom = "Abril";
+                        break;
+                    case "05":
+                        nom = "Mayo";
+                        break;
+                    case "06":
+                        nom = "Junio";
+                        break;
+                    case "07":
+                        nom = "Julio";
+                        break;
+                    case "08":
+                        nom = "Agosto";
+                        break;
+                    case "09":
+                        nom = "Septiembre";
+                        break;
+                    case "10":
+                        nom = "Octubre";
+                        break;
+                    case "11":
+                        nom = "Noviembre";
+                        break;
+                    default: nom = "Diciembre";
+                        break;
+                }
+                return nom;
+            }
+        }
     }
 }

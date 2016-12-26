@@ -83,5 +83,33 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public SqlDataReader GetTrabPlantas()
+        {
+            SpName = @"SELECT * FROM TrabPlantas";
+            try
+            {
+                return Connector.ExecuteQuery(SpName, null);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "GetTrabPlantas", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public SqlDataReader GetTrabHonorarios()
+        {
+            SpName = @"SELECT * FROM TrabHonorarios";
+            try
+            {
+                return Connector.ExecuteQuery(SpName, null);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "GetTrabHonorarios", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

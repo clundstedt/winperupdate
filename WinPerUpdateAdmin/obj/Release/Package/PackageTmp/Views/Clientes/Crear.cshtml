@@ -155,11 +155,14 @@
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Numero de trabajadores contratados"><i class="fa fa-briefcase fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="nrotrbc" required ng-model="formData.nrotrbc" placeholder="Nro Trabajadores Contratados" />
+                                        <select class="form-control" name="nrotrbc" required ng-model="formData.nrotrbc" ng-options="trab.idTrab as trab.Descripcion for trab in trabPlantas">
+                                            <option value="">-- N° Trabajadores Contratados --</option>
+                                        </select>
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.nrotrbc.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
                                     </span>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -168,7 +171,9 @@
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Numero de trabajadores honorarios"><i class="fa fa-briefcase fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="nrotrbh" required ng-model="formData.nrotrbh" placeholder="Nro Trabajadores Honorarios" />
+                                        <select class="form-control" name="nrotrbh" required ng-model="formData.nrotrbh" ng-options="trab.idTrab as trab.Descripcion for trab in trabHonorarios">
+                                            <option value="">-- N° Trabajadores Honorarios --</option>
+                                        </select>
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.nrotrbh.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido

@@ -17,25 +17,12 @@
                         <span class="fa fa-fw fa-trash-o"></span> Eliminar Cliente
                     </a>
                 </div>
-            </div>
-
-            <div class="btn-toolbar visible-xs-block">
                 <div class="btn-group" role="toolbar">
-                    <div class="btn-group" role="group">
-                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                            <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a ng-click="ShowConfirm()" data-toggle="modal" ng-hide="idCliente==0">
-                                    <span class="text-danger"><span class="fa fa-fw fa-trash-o"></span> Eliminar Cliente</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <button type="button" ng-click="GenerarPDFCliente(idCliente)" class="btn btn-labeled btn-warning" ng-hide="idCliente==0">
+                        <span class="btn-label"><span class="fa fa-file-pdf-o"></span></span>Exportar a PDF
+                    </button>
                 </div>
             </div>
-
         </div>
     </div>
     <br />
@@ -155,11 +142,14 @@
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Numero de trabajadores contratados"><i class="fa fa-briefcase fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="nrotrbc" required ng-model="formData.nrotrbc" placeholder="Nro Trabajadores Contratados" />
+                                        <select class="form-control" name="nrotrbc" required ng-model="formData.nrotrbc" ng-options="trab.idTrab as trab.Descripcion for trab in trabPlantas">
+                                            <option value="">-- N° Trabajadores Contratados --</option>
+                                        </select>
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.nrotrbc.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
                                     </span>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -168,7 +158,9 @@
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Numero de trabajadores honorarios"><i class="fa fa-briefcase fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="nrotrbh" required ng-model="formData.nrotrbh" placeholder="Nro Trabajadores Honorarios" />
+                                        <select class="form-control" name="nrotrbh" required ng-model="formData.nrotrbh" ng-options="trab.idTrab as trab.Descripcion for trab in trabHonorarios">
+                                            <option value="">-- N° Trabajadores Honorarios --</option>
+                                        </select>
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.nrotrbh.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
@@ -261,6 +253,46 @@
     <br/>
     <div class="row" ng-hide="idCliente==0">
         <div class="col-md-12">
+            <h1>Versiones Instaladas</h1>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <table st-table="displayVersionesCliente" st-safe-src="versionesCliente" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Release</th>
+                                <th>Fecha</th>
+                                <th>Ambiente</th>
+                            </tr>
+                            <tr>
+                                <th colspan="3"><input st-search="" class="form-control" placeholder="Busqueda..." type="text" /></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr ng-repeat="versionCliente in displayVersionesCliente">
+                                <td>{{versionCliente.Version.Release}}</td>
+                                <td>{{versionCliente.FechaInstalacionFmt}}</td>
+                                <td>{{versionCliente.Ambiente.Nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="row" ng-hide="idCliente==0">
+        <div class="col-md-12">
             <h1>Usuarios</h1>
         </div>
 
@@ -279,9 +311,7 @@
         </div>
 
     </div>
-
-    <br/>
-
+    <br />
     <div role="tabpanel" ng-init="panel=1">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Administrador</a></li>
@@ -348,45 +378,6 @@
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    <div class="row" ng-hide="idCliente==0">
-        <div class="col-md-12">
-            <h1>Versiones Instaladas</h1>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <table st-table="displayVersionesCliente" st-safe-src="versionesCliente" class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Release</th>
-                                <th>Fecha</th>
-                                <th>Ambiente</th>
-                            </tr>
-                            <tr>
-                                <th colspan="3"><input st-search="" class="form-control" placeholder="Busqueda..." type="text" /></th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3" class="text-center">
-                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr ng-repeat="versionCliente in displayVersionesCliente">
-                                <td>{{versionCliente.Version.Release}}</td>
-                                <td>{{versionCliente.FechaInstalacionFmt}}</td>
-                                <td>{{versionCliente.Ambiente.Nombre}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
 

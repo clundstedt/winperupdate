@@ -147,31 +147,20 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                     //Proceso de copia de N+1 a N
                     string dirN1 = Server.MapPath("~/VersionOficial/N+1");
                     string dirN = Server.MapPath("~/VersionOficial/N");
-                    var files = new DirectoryInfo(dirN1).GetFiles();
-                    var versiones = ProcessMsg.Version.GetVersiones(null).OrderBy(x => x.IdVersion).ToList();
-                    if (versiones.Count >= 2)
+                    var componentesModulos = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
+
+                    var files = new DirectoryInfo(sRuta).GetFiles().ToList();
+                    foreach (var x in files) 
                     {
-                        var penultimaVersion = versiones.ElementAt(versiones.Count - 2);
-                        var componentes = ProcessMsg.Componente.GetComponentes(penultimaVersion.IdVersion, null);
-                        componentes.ForEach(x =>
+                        var comp = componentesModulos.SingleOrDefault(y => y.Nombre.Equals(x.Name));
+                        if (comp != null)
                         {
-                            for (int i = 0; i < files.Length; i++)
-                            {
-                                if (files[i].Name.Equals(x.Name) && (x.Tipo.Equals("exe") || x.Tipo.Equals("qrp")))
-                                {
-                                    files[i].CopyTo(Path.Combine(dirN, files[i].Name), true);
-                                    continue;
-                                }
-                            }
-                        });
-                    }
-                    new DirectoryInfo(sRuta).GetFiles().ToList().ForEach(x =>
-                    {
-                        if (x.Name.EndsWith(".qrp") || x.Name.EndsWith(".exe"))
-                        {
-                            x.CopyTo(Path.Combine(dirN1, x.Name), true);
+                            var oPath = Path.Combine(dirN1, comp.Directorio, comp.Nombre);
+                            var dPath = Path.Combine(dirN, comp.Directorio, comp.Nombre);
+                            new FileInfo(oPath).CopyTo(dPath, true);
+                            x.CopyTo(oPath, true);
                         }
-                    });
+                    }
 
                     return Json(new { CodErr = 0, MsgErr = result, Output = sFile + ".exe" });
                 }

@@ -22,5 +22,7 @@ namespace ProcessMsg.Model
         public string LblEliminar { get; set; }
         public string LblModificar { get; set; }
 
+        public string Directorio { get; set; }
+
     }
 }

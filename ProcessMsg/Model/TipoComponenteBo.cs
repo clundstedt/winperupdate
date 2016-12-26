@@ -19,7 +19,7 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return isCompBD ? "Componente parte de Base de Datos" : "Componente NO es parte de Base de Datos";
+                return isCompBD ? "Si es de Base de Datos" : "NO es de Base de Datos";
             }
         }
 
@@ -29,7 +29,7 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return isCompDLL ? "Componente DLL":"No es componente DLL";
+                return isCompDLL ? "Componente DLL":"NO es componente DLL";
             }
         }
         public string LblEliminarTipo { get; set; }

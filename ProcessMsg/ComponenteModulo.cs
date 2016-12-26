@@ -10,6 +10,31 @@ namespace ProcessMsg
     public class ComponenteModulo
     {
         #region Gets
+        public static List<Model.TipoComponenteBo> GetTipoComponentesByVersion(int idVersion)
+        {
+            try
+            {
+                List<Model.TipoComponenteBo> lista = new List<Model.TipoComponenteBo>();
+                var reader = new CnaComponenteModulo().ExecuteTipoComponentesByVersion(idVersion);
+                while (reader.Read())
+                {
+                    lista.Add(new Model.TipoComponenteBo
+                    {
+                        idTipoComponentes = int.Parse(reader["idTipoComponentes"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        isCompBD = bool.Parse(reader["isCompBD"].ToString()),
+                        isCompDLL = bool.Parse(reader["isCompDLL"].ToString()),
+                        Extensiones = reader["Extensiones"].ToString()
+                    });
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static Model.ComponenteModuloBo GetComponenteModuloByName(string nombre)
         {
             try
@@ -104,6 +129,36 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
+        public static List<Model.ComponenteModuloBo> GetComponentesConDirectorio()
+        {
+            List<Model.ComponenteModuloBo> lista = new List<Model.ComponenteModuloBo>();
+            try
+            {
+                var reader = new CnaComponenteModulo().ExecuteConDirectorio();
+                while (reader.Read())
+                {
+                    lista.Add(new Model.ComponenteModuloBo
+                    {
+                        idComponentesModulos = int.Parse(reader["idComponentesModulos"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        Modulo = int.Parse(reader["Modulos"].ToString()),
+                        TipoComponentes = new Model.TipoComponenteBo
+                        {
+                            idTipoComponentes = int.Parse(reader["TipoComponentes"].ToString())
+                        },
+                        Directorio = reader["Directorio"].ToString()
+                    });
+                }
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         #endregion
 
         #region Adds
@@ -138,7 +193,7 @@ namespace ProcessMsg
                 while (reader.Read())
                 {
                     respuesta[0] = reader["coderr"].ToString();
-                    respuesta[1] = reader["msgerror"].ToString();
+                    respuesta[1] = reader["msgerr"].ToString();
                 }
                 return respuesta;
             }
@@ -169,6 +224,19 @@ namespace ProcessMsg
             try
             {
                 return new UpdComponenteModulo().Execute(idComponentesModulos, Nombre, Descripcion, TipoComponentes);
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int UpdTipoComponentes(int idTipoComponentes, string Nombre, string Extensiones, bool isCompBD, bool isCompDLL)
+        {
+            try
+            {
+                return new UpdComponenteModulo().ExecuteTipoComponente(idTipoComponentes, Nombre, Extensiones, isCompBD, isCompDLL);
             }
             catch(Exception ex)
             {

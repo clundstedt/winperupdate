@@ -295,10 +295,7 @@ namespace ProcessMsg
                     file.WriteLine(@"[Files]");
                     foreach (var componente in version.Componentes)
                     {
-                        if (componente.Tipo.Equals("qrp") || componente.Tipo.Equals("exe"))
-                        {
-                            file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
-                        }
+                        file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
                     }
                     //file.WriteLine(@"");
                     //file.WriteLine(@"[Icons]");
@@ -417,8 +414,7 @@ namespace ProcessMsg
                 log.WriteEntry(msg, EventLogEntryType.Error);
                 throw new Exception(msg, ex);
             }
-
-            return lista;
+            
         }
 
         public static List<Model.AtributosArchivoBo> ListarDirectorio(string directorio, string dirVersiones, EventLog log)

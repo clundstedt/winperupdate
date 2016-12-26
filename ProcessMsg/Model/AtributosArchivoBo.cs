@@ -30,6 +30,22 @@ namespace ProcessMsg.Model
             }
         }
 
+        public string Extension
+        {
+            get
+            {
+                try
+                {
+                    var split = Name.Split('.');
+                    return "." + split[split.Length - 1];
+                }
+                catch(Exception )
+                {
+                    return "otro";
+                }
+            }
+        }
+
         public string DateCreateFmt
         {
             get

@@ -22,6 +22,10 @@
                 console.error(data);
             });
 
+            $scope.GenerarPDF = function () {
+                window.location = '/api/Clientes/PDF';
+            }
+
         }
     }
 })();

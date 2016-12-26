@@ -3,13 +3,233 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace WinPerUpdateAdmin.Controllers.api
 {
     public class ClientesController : ApiController
     {
+        
         #region get
+        [Route("api/Clientes/{idCliente:int}/PDF")]
+        [HttpGet]
+        public Object GetInformeClientes(int idCliente)
+        {
+            try
+            {
+                var Cliente = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
+                if (Cliente != null)
+                {
+                    string pdf = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes"));
+                    #region Creador de directorio y archivo
+                    if (!Directory.Exists(pdf))
+                    {
+                        Directory.CreateDirectory(pdf);
+                    }
+                    pdf = Path.Combine(pdf, "PDF");
+                    if (!Directory.Exists(pdf))
+                    {
+                        Directory.CreateDirectory(pdf);
+                    }
+                    pdf = Path.Combine(pdf, "Clientes");
+                    if (!Directory.Exists(pdf))
+                    {
+                        Directory.CreateDirectory(pdf);
+                    }
+                    pdf = Path.Combine(pdf, string.Format("Cliente{0:ddMMyyyyHHmmss}_{1}.pdf", DateTime.Now, idCliente));
+                    #endregion
+
+                    #region Creando PDF
+                    Document document = new Document();
+
+                    PdfWriter.GetInstance(document,
+                                  new FileStream(pdf,
+                                         FileMode.OpenOrCreate));
+                    document.Open();
+                    #region Titulo
+                    var tituloPdf = new Paragraph(
+                            new Chunk(Cliente.Nombre,
+                            FontFactory.GetFont("ARIAL", 16, iTextSharp.text.Font.UNDERLINE | iTextSharp.text.Font.BOLD)));
+                    tituloPdf.Alignment = Element.ALIGN_CENTER;
+                    document.Add(tituloPdf);
+                    var rutPdf = new Paragraph(
+                            new Chunk(string.Format("{0}",Cliente.RutFmt),
+                            FontFactory.GetFont("ARIAL", 14, iTextSharp.text.Font.BOLD)));
+                    rutPdf.Alignment = Element.ALIGN_CENTER;
+                    document.Add(rutPdf);
+                    #endregion
+                    #region Fecha Generacion
+                    var fechaGeneracion = new Paragraph(
+                            new Chunk(new FileInfo(pdf).CreationTime.ToLongDateString(),
+                            FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.ITALIC)));
+                    fechaGeneracion.Alignment = Element.ALIGN_CENTER;
+                    document.Add(fechaGeneracion);
+                    #endregion
+                    #region Datos Cliente
+                    document.Add(new Paragraph(new Chunk(string.Format("Dirección: {0}",Cliente.Direccion), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("Región: {0}",Cliente.Comuna.Region.NomRgn), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("Comuna: {0}",Cliente.Comuna.NomCmn), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("N° Cliente: {0}",Cliente.NumFolio), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("Estado de Mantención: {0}",Cliente.EstMtcFmt), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("Mes Inicio de Contrato: {0}",Cliente.MesIniFmt), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("N° Trabajadores Contratados: {0}",Cliente.NroTrbc), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("N° Trabajadores Honorarios: {0}",Cliente.NroTrbh), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("Máxima Cantidad de Usuarios Permitidos: {0}",Cliente.NroUsr), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    document.Add(new Paragraph(new Chunk(string.Format("N° Licencia: {0}",Cliente.NroLicencia), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
+                    #endregion
+                    #region Tabla Modulos
+                    document.Add(new Paragraph(new Chunk("Módulos", FontFactory.GetFont("ARIAL",12, iTextSharp.text.Font.BOLD))));
+                    document.Add(new Paragraph(" "));
+                    PdfPTable tbl = ProcessMsg.Utils.GenerarTablaPDF(95, Element.ALIGN_CENTER, ProcessMsg.Cliente.GetModulosClientePDF(Cliente.Id));
+                    document.Add(tbl);
+                    #endregion
+                    #region Tabla Versiones Instaladas
+                    document.Add(new Paragraph(new Chunk("Versiones Instaladas", FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.BOLD))));
+                    document.Add(new Paragraph(" "));
+                    PdfPTable tblv = ProcessMsg.Utils.GenerarTablaPDF(95, Element.ALIGN_CENTER, ProcessMsg.Cliente.GetVersionToClientePDF(Cliente.Id));
+                    document.Add(tblv);
+                    #endregion
+
+                    document.Close();
+                    #endregion
+
+                    #region Descarga de PDF
+                    Byte[] objByte = System.IO.File.ReadAllBytes(pdf);
+                    if (objByte == null)
+                    {
+                        return Content(HttpStatusCode.BadRequest, (ByteArrayContent)null);
+                    }
+                    HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.Created);
+
+                    message.Content = new ByteArrayContent(objByte);
+                    message.Content.Headers.ContentLength = objByte.Length;
+                    message.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+                    message.Content.Headers.Add("Content-Disposition", string.Format("attachment; filename={0}", new FileInfo(pdf).Name));
+                    message.StatusCode = HttpStatusCode.OK;
+
+                    return message;
+                    #endregion
+
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        [Route("api/Clientes/PDF")]
+        [HttpGet]
+        public Object GetInformeClientes()
+        {
+            try
+            {
+                string pdf = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes"));
+                #region Creador de directorio y archivo
+                if (!Directory.Exists(pdf))
+                {
+                    Directory.CreateDirectory(pdf);
+                }
+                pdf = Path.Combine(pdf, "PDF");
+                if (!Directory.Exists(pdf))
+                {
+                    Directory.CreateDirectory(pdf);
+                }
+                pdf = Path.Combine(pdf, "Clientes");
+                if (!Directory.Exists(pdf))
+                {
+                    Directory.CreateDirectory(pdf);
+                }
+                pdf = Path.Combine(pdf, string.Format("InformeClientes{0:ddMMyyyyHHmmss}.pdf", DateTime.Now));
+
+                #endregion
+
+                #region Creando PDF
+                Document document = new Document();
+
+                PdfWriter.GetInstance(document,
+                              new FileStream(pdf,
+                                     FileMode.OpenOrCreate));
+                document.Open();
+                #region Titulo
+                var tituloPdf = new Paragraph(
+                        new Chunk("Informe Clientes",
+                        FontFactory.GetFont("ARIAL", 16, iTextSharp.text.Font.UNDERLINE | iTextSharp.text.Font.BOLD)));
+                tituloPdf.Alignment = Element.ALIGN_CENTER;
+                document.Add(tituloPdf);
+                #endregion
+                #region Fecha Generacion
+                var fechaGeneracion = new Paragraph(
+                        new Chunk(new FileInfo(pdf).CreationTime.ToLongDateString(),
+                        FontFactory.GetFont("ARIAL", 14, iTextSharp.text.Font.ITALIC)));
+                fechaGeneracion.Alignment = Element.ALIGN_CENTER;
+                document.Add(fechaGeneracion);
+                document.Add(new Paragraph(" "));
+                #endregion
+                #region Tabla
+                PdfPTable tbl = ProcessMsg.Utils.GenerarTablaPDF(95, Element.ALIGN_CENTER, ProcessMsg.Cliente.GetClientesPDF());
+            
+                document.Add(tbl);
+                #endregion
+
+                document.Close();
+                #endregion
+
+                #region Descarga de PDF
+                Byte[] objByte = System.IO.File.ReadAllBytes(pdf);
+                if (objByte == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ByteArrayContent)null);
+                }
+                HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.Created);
+
+                message.Content = new ByteArrayContent(objByte);
+                message.Content.Headers.ContentLength = objByte.Length;
+                message.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+                message.Content.Headers.Add("Content-Disposition", string.Format("attachment; filename={0}", new FileInfo(pdf).Name));
+                message.StatusCode = HttpStatusCode.OK;
+
+                return message;
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/TrabPlantas")]
+        [HttpGet]
+        public Object GetTrabPlantas()
+        {
+            try
+            {
+                return ProcessMsg.Cliente.GetTrabPlantas();
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/TrabHonorarios")]
+        [HttpGet]
+        public Object GetTrabHonorarios()
+        {
+            try
+            {
+                return ProcessMsg.Cliente.GetTrabHonorarios();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Cliente/{idCliente:int}/VersionesInstaladas")]
         [HttpGet]
         public Object GetVersionesClientes(int idCliente)

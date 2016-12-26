@@ -11,11 +11,11 @@ namespace WinperUpdateDAO
     {
         public SqlDataReader Execute(int idUsuarios)
         {
-            SpName = @"SELECT m.* 
-                              FROM usuarios u INNER JOIN perfiles p
-                              ON u.CodPrf=p.CodPrf INNER JOIN menus m
-                              ON p.CodPrf = m.CodPrf
-                              WHERE u.idUsuarios = @idUsuarios";
+            SpName = @"SELECT m.* FROM Perfiles_has_Menus pm INNER JOIN Perfiles p
+                                    ON pm.CodPrf = p.CodPrf INNER JOIN Menus m
+                                    ON pm.idMenus = m.idMenus INNER JOIN Usuarios u
+                                    ON p.CodPrf = u.CodPrf
+                                 WHERE u.idUsuarios = @idUsuarios";
             try
             {
                 ParmsDictionary.Add("@idUsuarios", idUsuarios);
@@ -23,7 +23,7 @@ namespace WinperUpdateDAO
                 return Connector.ExecuteQuery(SpName, ParmsDictionary);
             }catch(Exception ex)
             {
-                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Execute", ex.Message);
                 throw new Exception(msg, ex);
             }
         }

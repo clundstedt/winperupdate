@@ -27,6 +27,26 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
+        [Route("api/Version/TipoComponentes/{idVersion:int}")]
+        [HttpGet]
+        public Object GetTipoComponentesByVersion(int idVersion)
+        {
+            try
+            {
+                var obj = ProcessMsg.ComponenteModulo.GetTipoComponentesByVersion(idVersion);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Version/ComponentesOficiales")]
         [HttpGet]
         public Object GetComponentesOficiales()

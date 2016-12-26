@@ -43,12 +43,23 @@
         });
 
     })
+    .filter('filtroComponente', function () {
+        return function (input, ex) {
+            var salida = [];
+            angular.forEach(input, function (componente) {
+                if (ex.includes(componente.componente.Extension)) {
+                    salida.push(componente)
+                }
+            });
+            return salida;
+        }
+    })
 
     .filter('filtroEjecutables', function () {
         return function (input) {
             var salida = [];
             angular.forEach(input, function (componente) {
-                if (componente.Tipo == 'exe') {
+                if (componente.componente.Tipo == 'exe') {
                     salida.push(componente)
                 }
             });
@@ -60,7 +71,7 @@
         return function (input) {
             var salida = [];
             angular.forEach(input, function (componente) {
-                if (componente.Tipo == 'qrp') {
+                if (componente.componente.Tipo == 'qrp') {
                     salida.push(componente)
                 }
             });
@@ -72,7 +83,7 @@
         return function (input) {
             var salida = [];
             angular.forEach(input, function (componente) {
-                if (componente.Tipo == 'otro') {
+                if (componente.componente.Tipo == 'otro') {
                     salida.push(componente)
                 }
             });

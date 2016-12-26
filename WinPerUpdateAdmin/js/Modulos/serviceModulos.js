@@ -26,7 +26,9 @@
             addTipoComponentes: addTipoComponentes,
             delTipoComponentes: delTipoComponentes,
             delComponentesModulos: delComponentesModulos,
-            updComponentesModulos: updComponentesModulos
+            updComponentesModulos: updComponentesModulos,
+
+            updTipoComponente: updTipoComponente
         };
 
         return service;
@@ -51,6 +53,47 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
                     deferred.reject('No tiene error de sincronizacion');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function updTipoComponente(idtipocomponente, nombre, extensiones, bd, dll) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            var tipoComp = {
+                Nombre: nombre,
+                Extensiones: extensiones,
+                isCompBD: bd,
+                isCompDLL: dll
+            };
+            $.ajax({
+                url: 'api/TipoComponentes/' + idtipocomponente,
+                type: "PUT",
+                dataType: 'Json',
+                data: tipoComp,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existe TipoComponente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existe TipoComponente');
                 }
             });
 
