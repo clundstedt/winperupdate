@@ -24,7 +24,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 var Cliente = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
                 if (Cliente != null)
                 {
-                    string pdf = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes"));
+                    string pdf = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes")));
                     #region Creador de directorio y archivo
                     if (!Directory.Exists(pdf))
                     {
@@ -70,6 +70,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     document.Add(fechaGeneracion);
                     #endregion
                     #region Datos Cliente
+                    document.Add(new Paragraph(new Chunk("Datos Cliente", FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.BOLD))));
                     document.Add(new Paragraph(new Chunk(string.Format("Dirección: {0}",Cliente.Direccion), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
                     document.Add(new Paragraph(new Chunk(string.Format("Región: {0}",Cliente.Comuna.Region.NomRgn), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
                     document.Add(new Paragraph(new Chunk(string.Format("Comuna: {0}",Cliente.Comuna.NomCmn), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
@@ -82,7 +83,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     document.Add(new Paragraph(new Chunk(string.Format("N° Licencia: {0}",Cliente.NroLicencia), FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.NORMAL))));
                     #endregion
                     #region Tabla Modulos
-                    document.Add(new Paragraph(new Chunk("Módulos", FontFactory.GetFont("ARIAL",12, iTextSharp.text.Font.BOLD))));
+                    document.Add(new Paragraph(new Chunk("Módulos Contratados", FontFactory.GetFont("ARIAL",12, iTextSharp.text.Font.BOLD))));
                     document.Add(new Paragraph(" "));
                     PdfPTable tbl = ProcessMsg.Utils.GenerarTablaPDF(95, Element.ALIGN_CENTER, ProcessMsg.Cliente.GetModulosClientePDF(Cliente.Id));
                     document.Add(tbl);
@@ -128,7 +129,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                string pdf = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes"));
+                string pdf = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes")));
                 #region Creador de directorio y archivo
                 if (!Directory.Exists(pdf))
                 {

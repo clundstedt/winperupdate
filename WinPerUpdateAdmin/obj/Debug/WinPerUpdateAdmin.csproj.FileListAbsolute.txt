@@ -102,6 +102,8 @@ C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServe
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.dll
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\itextsharp.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\itextsharp.xml
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\roslyn\csc.exe
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -118,6 +120,7 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.pdb
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.dll
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Newtonsoft.Json.dll
@@ -137,6 +140,7 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Connector.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\ProcessMsg.pdb
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.pdb
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\System.Web.Optimization.xml
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\System.Web.Razor.xml
@@ -154,7 +158,3 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
-C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.dll
-C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\itextsharp.dll
-C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\itextsharp.xml

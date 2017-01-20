@@ -10,8 +10,44 @@ namespace WinPerUpdateUI
 {
     public class Utils
     {
-        const int SIZEBUFFER = 65536;
+        public static List<ProcessMsg.Model.ModuloBo> ModulosContratados = new List<ProcessMsg.Model.ModuloBo>();
 
+        const int SIZEBUFFER = 524288;
+        public static void RegistrarLog(string NombreLog, string Text)
+        {
+            var dirTempUser = Path.Combine(Path.GetTempPath(), "WinperUI");
+            if (!System.IO.Directory.Exists(dirTempUser))
+            {
+                System.IO.Directory.CreateDirectory(dirTempUser);
+            }
+            var log = Path.Combine(dirTempUser, string.Format("{0:ddMMyyyy}{1}",DateTime.Now,NombreLog));
+            StreamWriter writer = new StreamWriter(log, true);
+            writer.WriteLine(string.Format("{0:dd/MM/yyyy HH:mm:ss} | {1}", DateTime.Now, Text));
+            writer.Close();
+        }
+
+        public static string ShowDialogInput(string text, string caption, bool isPassword = false)
+        {
+            System.Windows.Forms.Form prompt = new System.Windows.Forms.Form()
+            {
+                Width = 500,
+                Height = 150,
+                FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+            };
+            System.Windows.Forms.Label textLabel = new System.Windows.Forms.Label() { Left = 50, Top = 20, Text = text, AutoSize = true, AutoEllipsis = true };
+            System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox() { Left = 50, Top = 50, Width = 400 };
+            if (isPassword) textBox.PasswordChar = 'X';
+            System.Windows.Forms.Button confirmation = new System.Windows.Forms.Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = System.Windows.Forms.DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            return prompt.ShowDialog() == System.Windows.Forms.DialogResult.OK ? textBox.Text : "";
+        }
         static string BytesToStringConverted(byte[] bytes)
         {
             using (var stream = new MemoryStream(bytes))
@@ -21,6 +57,69 @@ namespace WinPerUpdateUI
                     return streamReader.ReadToEnd();
                 }
             }
+        }
+
+        public static byte[] SendMsg(string ipServer, int port, string message, int sizeBuffer)
+        {
+            string output = "";
+
+            try
+            {
+                // Create a TcpClient.
+                // The client requires a TcpServer that is connected
+                // to the same address specified by the server and port
+                // combination.
+                TcpClient client = new TcpClient(ipServer, port);
+                //eventLog1.WriteEntry("Servidor acepta coneccion ...");
+
+                // Get a client stream for reading and writing.
+                // Stream stream = client.GetStream();
+                NetworkStream stream = client.GetStream();
+
+                // Translate the passed message into ASCII and store it as a byte array.
+                Byte[] data = new Byte[sizeBuffer];
+                data = System.Text.Encoding.ASCII.GetBytes(message);
+
+                // Send the message to the connected TcpServer. 
+                stream.Write(data, 0, message.Length);
+
+                output = "Sent: " + message;
+                //eventLog1.WriteEntry(output);
+
+                // Buffer to store the response bytes.
+                data = new Byte[sizeBuffer];
+
+                // String to store the response ASCII representation.
+                //String responseData = String.Empty;
+
+                // Read the first batch of the TcpServer response bytes.
+                Int32 bytes = stream.Read(data, 0, data.Length);
+                Byte[] responseData = new Byte[bytes];
+
+                for (int i = 0; i < bytes; i++) responseData[i] = data[i];
+
+                //output = string.Format("Received ({0}): {1} ", bytes, responseData);
+                output = string.Format("Byte Received : {0}", bytes);
+                //eventLog1.WriteEntry(output);
+
+                // Close everything.
+                stream.Close();
+                client.Close();
+
+                return responseData;
+            }
+            catch (ArgumentNullException e)
+            {
+                output = "ArgumentNullException: " + e;
+                //eventLog1.WriteEntry(output);
+            }
+            catch (SocketException e)
+            {
+                output = "SocketException: " + e.ToString();
+                //eventLog1.WriteEntry(output);
+            }
+
+            return null;
         }
 
         public static byte[] SendMsg(string ipServer, int port, string message)
@@ -39,13 +138,13 @@ namespace WinPerUpdateUI
                 // Get a client stream for reading and writing.
                 // Stream stream = client.GetStream();
                 NetworkStream stream = client.GetStream();
-
+                
                 // Translate the passed message into ASCII and store it as a byte array.
                 Byte[] data = new Byte[SIZEBUFFER];
                 data = System.Text.Encoding.ASCII.GetBytes(message);
 
                 // Send the message to the connected TcpServer. 
-                stream.Write(data, 0, data.Length);
+                stream.Write(data, 0, message.Length);
 
                 output = "Sent: " + message;
                 //eventLog1.WriteEntry(output);
@@ -104,7 +203,7 @@ namespace WinPerUpdateUI
                 NetworkStream stream = client.GetStream();
 
                 // Translate the passed message into ASCII and store it as a byte array.
-                Byte[] data = new Byte[1024];
+                Byte[] data = new Byte[SIZEBUFFER];
                 data = System.Text.Encoding.ASCII.GetBytes(message);
 
                 // Send the message to the connected TcpServer. 
@@ -134,12 +233,14 @@ namespace WinPerUpdateUI
             catch (ArgumentNullException e)
             {
                 output = "ArgumentNullException: " + e;
+                throw new Exception(output);
                 //eventLog1.WriteEntry(output);
             }
             catch (SocketException e)
             {
                 output = "SocketException: " + e.ToString();
                 //eventLog1.WriteEntry(output);
+                throw new Exception(output);
             }
 
             return null;

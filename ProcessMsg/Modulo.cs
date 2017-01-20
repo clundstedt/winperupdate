@@ -100,7 +100,24 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-        
+
+        public static List<Model.ModuloBo> GetModulosWithComponenteByCliente(int idCliente)
+        {
+            try
+            {
+                var modulos = ProcessMsg.Cliente.GetClientesHasModulo(idCliente);
+                foreach (var m in modulos)
+                {
+                    m.ComponentesModulo = ProcessMsg.ComponenteModulo.GetComponentesModulos(m.idModulo);
+                }
+                return modulos;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         #endregion
 
         #region Adds

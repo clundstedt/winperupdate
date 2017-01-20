@@ -52,41 +52,16 @@
         }
     })
 
-    .filter('filtroEjecutables', function () {
-        return function (input) {
+    .filter('filtroComponente', function () {
+        return function (input, ex) {
             var salida = [];
             angular.forEach(input, function (componente) {
-                if (componente.Tipo == 'exe') {
+                if (ex.includes(componente.Extension)) {
                     salida.push(componente)
                 }
             });
             return salida;
         }
     })
-
-    .filter('filtroReportes', function () {
-        return function (input) {
-            var salida = [];
-            angular.forEach(input, function (componente) {
-                if (componente.Tipo == 'qrp') {
-                    salida.push(componente)
-                }
-            });
-            return salida;
-        }
-    })
-
-    .filter('filtroOtros', function () {
-        return function (input) {
-            var salida = [];
-            angular.forEach(input, function (componente) {
-                if (componente.Tipo == 'otro') {
-                    salida.push(componente)
-                }
-            });
-            return salida;
-        }
-    })
-
     ;
 })();

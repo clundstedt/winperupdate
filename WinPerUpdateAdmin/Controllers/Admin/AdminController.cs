@@ -78,7 +78,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", sVersion = "", sModulo = "" });
 
-                string sRuta = Server.MapPath("~/Uploads/") + version.Release;
+                string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Uploads/")) + version.Release;
 
                 if (!Directory.Exists(sRuta))
                 {
@@ -90,16 +90,17 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 {
                     System.IO.File.Delete(sNameFiles);
                 }
-
+                var isSQL = new FileInfo(file.FileName).Extension.ToUpper().Equals(".SQL");
                 var comp = ProcessMsg.ComponenteModulo.GetComponenteModuloByName(file.FileName);
-                var mod = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.idModulo == comp.Modulo);
-                if (comp != null && mod != null)
+                ProcessMsg.Model.ModuloBo mod = null;
+                if(!isSQL) mod = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.idModulo == comp.Modulo);
+                if ((comp != null && mod != null) || isSQL)
                 {
                     file.SaveAs(sNameFiles);
 
                     FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(sNameFiles);
 
-                    return Json(new { CodErr = 0, MsgErr = "", sVersion = myFileVersionInfo.FileVersion ?? "S/I", sModulo = mod.NomModulo });
+                    return Json(new { CodErr = 0, MsgErr = "", sVersion = myFileVersionInfo.FileVersion ?? "S/I", sModulo = (isSQL ? "N/A":mod.NomModulo) });
                 }
 
                 return Json(new { CodErr = 4, MsgErr = "No se encontro el modulo para este componente.", sVersion = "", sModulo = "" });
@@ -119,7 +120,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", Output = "" });
 
-                string sRuta = Server.MapPath("~/Uploads/") + version.Release;
+                string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Uploads/")) + version.Release;
                 if (!sRuta.EndsWith("\\")) sRuta += @"\";
                 string sFile = "WP" + version.Release.Replace(".", "") + string.Format("{0:yyyyMMddhhhhmmss}", DateTime.Now);
 
@@ -141,22 +142,24 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                     System.Diagnostics.Process proc = new System.Diagnostics.Process();
                     proc.StartInfo = procStartInfo;
                     proc.Start();
+                    
 
                     //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
                     string result = proc.StandardOutput.ReadToEnd();
                     //Proceso de copia de N+1 a N
-                    string dirN1 = Server.MapPath("~/VersionOficial/N+1");
-                    string dirN = Server.MapPath("~/VersionOficial/N");
+                    string dirN1 = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N+1";
+                    string dirN = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N";
                     var componentesModulos = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
 
                     var files = new DirectoryInfo(sRuta).GetFiles().ToList();
-                    foreach (var x in files) 
+                    foreach (var x in files)
                     {
-                        var comp = componentesModulos.SingleOrDefault(y => y.Nombre.Equals(x.Name));
-                        if (comp != null)
+                        var comp = componentesModulos.Where(y => y.Nombre.Equals(x.Name)).ToList();
+                        if (comp.Count == 0) continue;
+                        if (comp.ElementAt(0) != null)
                         {
-                            var oPath = Path.Combine(dirN1, comp.Directorio, comp.Nombre);
-                            var dPath = Path.Combine(dirN, comp.Directorio, comp.Nombre);
+                            var oPath = Path.Combine(dirN1, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
+                            var dPath = Path.Combine(dirN, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
                             new FileInfo(oPath).CopyTo(dPath, true);
                             x.CopyTo(oPath, true);
                         }
@@ -164,7 +167,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
 
                     return Json(new { CodErr = 0, MsgErr = result, Output = sFile + ".exe" });
                 }
-                return Json(new { CodErr = 1, MsgErr = "No pudo generar archivo de setup", Output = "" });
+                return Json(new { CodErr = 1, MsgErr = "No pudo generar archivo script de setup", Output = "" });
 
             }
             catch (Exception ex)
@@ -172,6 +175,6 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 return Json(new { CodErr = 3, MsgErr = ex.Message, Output = "" });
             }
         }
-
+        
     }
 }

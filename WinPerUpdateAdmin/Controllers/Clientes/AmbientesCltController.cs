@@ -52,7 +52,7 @@ namespace WinPerUpdateAdmin.Controllers.Clientes
                 var cliente = ProcessMsg.Cliente.GetClienteUsuario(idUsuario);
                 if (cliente != null)
                 {
-                    string sRuta = Server.MapPath("~/Fuentes/AmbientesXlSXClientes/");
+                    string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Fuentes/") + "AmbientesXlSXClientes/");
 
                     if (!Directory.Exists(sRuta))
                     {
@@ -72,7 +72,7 @@ namespace WinPerUpdateAdmin.Controllers.Clientes
                     }
 
                     file.SaveAs(sNameFiles);
-                    if (ProcessMsg.Ambiente.AddAmbientesXLSX(cliente.Id,sNameFiles, "Planilla1", "G1") )
+                    if (ProcessMsg.Ambiente.AddAmbientesXLSX(cliente.Id,sNameFiles, "Ambientes") )
                     {
                         if (ProcessMsg.Ambiente.GetAmbXlSXOk(cliente.Id) == 0)
                         {

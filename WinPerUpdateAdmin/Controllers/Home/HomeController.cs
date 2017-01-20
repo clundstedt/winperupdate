@@ -23,11 +23,11 @@ namespace WinPerUpdateAdmin.Controllers.Home
             if (usuario != null)
             {
                 Session["token"] = usuario.Id.ToString();
-                if (usuario.CodPrf == 1)
+                if (usuario.CodPrf >= 1 && usuario.CodPrf <= 10)
                 {
                     return RedirectToAction("Index", "Admin");
                 }
-                else if (usuario.CodPrf == 11)
+                else if (usuario.CodPrf >= 11)
                 {
                     return RedirectToAction("Index", "AdminClt");
                 }

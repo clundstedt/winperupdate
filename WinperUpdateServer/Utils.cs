@@ -9,7 +9,7 @@ namespace WinperUpdateServer
 {
     public class Utils
     {
-        const int SIZEBUFFER = 16384;
+        const int SIZEBUFFER = 524288;
 
         public static byte[] SendMsg(string ipServer, int port, string message)
         {

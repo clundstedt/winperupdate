@@ -52,6 +52,10 @@
                 console.error(data);
             });
 
+            $scope.GenerarPDFCliente = function (idCliente) {
+                $window.location.href = '/api/Clientes/'+idCliente+'/PDF';
+            }
+
             serviceClientes.getModulos().success(function (modulos) {
                 for (var i = 0; i < modulos.length; i++) {
                     if(modulos[i].Estado == 'V'){

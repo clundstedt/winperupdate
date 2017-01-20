@@ -13,10 +13,6 @@
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <a href="#published-modal" data-toggle="modal" class="btn btn-default">
-                        <span class="fa fa-fw fa-square-o"></span> Publicado
-                    </a>
-
                     <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger">
                         <span class="fa fa-fw fa-trash-o"></span> Eliminar Componente
                     </a>
@@ -30,21 +26,11 @@
                             <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-
-                            <li>
-                                <a href="#published-modal" data-toggle="modal">
-
-                                    <span class="fa fa-square-o"></span> Publicado
-
-                                </a>
-                            </li>
-
                             <li>
                                 <a ng-click="ShowConfirm()" data-toggle="modal">
                                     <span class="text-danger"><span class="fa fa-fw fa-trash-o"></span> Eliminar Componente</span>
                                 </a>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -88,6 +74,19 @@
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-info" ng-repeat="componente in componentes">
+                <div class="panel-heading">
+                    Versión: {{componente.Version}}
+                    Módulo: {{componente.Modulo}}
+                </div>
+                <div class="panel-body">
+                    {{componente.Comentario}}
                 </div>
             </div>
         </div>

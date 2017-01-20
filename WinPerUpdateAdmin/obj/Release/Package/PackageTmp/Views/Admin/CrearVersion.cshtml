@@ -131,7 +131,10 @@
                 </div>
             </div>
             <br />
-
+            <div class="alert alert-warning" ng-show="!ComponentesOkSegunVersion()">
+                <strong>ADVERTENCIA!</strong>: Existen componentes con error de versión. Si desea omitir estos errores click <a href="" data-toggle="modal" data-target="#confirmeomitir-modal" class="alert-link">AQUÍ</a>.
+            </div>
+            <br />
             <div class="row" ng-repeat="tipoComp in TipoComponentes">
                 <button data-toggle="collapse" class="btn btn-default btn-block" data-target="#{{$index}}">{{tipoComp.Tipo.Nombre}}</button>
                 
@@ -149,13 +152,12 @@
                                         <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.componente.Modulo}}</li>
                                         <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.componente.DateCreateFmt}}</li>
                                         <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.componente.Version}}</li>
-                                        <li>
-                                            <div ng-hide="ejecutable.isOk == 'success'" class="alert alert-{{ejecutable.isOk}}">
-                                                <span class="fa fa-fw fa-exclamation-triangle"></span>
-                                                <a href="" data-toggle="tooltip" title="{{ejecutable.componente.MensajeToolTip}}">
-                                                    Más Información
+                                        <li ng-hide="ejecutable.isOk == 'success'">
+                                            <center>
+                                                <a href="" class="error_ingreso" data-toggle="tooltip" title="{{ejecutable.componente.MensajeToolTip}}">
+                                                    <h1><span class="fa fa-fw fa-exclamation-triangle"></span></h1>
                                                 </a>
-                                            </div>
+                                            </center>
                                             <script>
                                                 $(document).ready(function () {
                                                     $('[data-toggle="tooltip"]').tooltip();
@@ -172,6 +174,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmeomitir-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmar</h4>
+                </div>
+                <div class="modal-body">
+                    A continuación se procederá a omitir los componentes con error de versión para su posterior publicación.
+                    Recuerde que una vez publicada la versión, no la podrá eliminar.
+                    <br />
+                    ¿Está seguro que desea omitir los componentes con error de versión?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="OmitirComponentes()">Confirmar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

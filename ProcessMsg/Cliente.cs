@@ -521,7 +521,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
+        
         public static List<Model.ModuloBo> GetClientesHasModulo(int idCliente)
         {
             List<Model.ModuloBo> lista = new List<Model.ModuloBo>();
@@ -533,7 +533,11 @@ namespace ProcessMsg
                     lista.Add(new Model.ModuloBo
                     {
                         idModulo = int.Parse(reader["idModulo"].ToString()),
-                        NomModulo = reader["NomModulo"].ToString()
+                        NomModulo = reader["NomModulo"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        isCore = bool.Parse(reader["isCore"].ToString()),
+                        Directorio = reader["Directorio"].ToString(),
+                        Estado = char.Parse(reader["Estado"].ToString())
                     });
                 }
                 return lista;

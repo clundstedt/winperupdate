@@ -48,124 +48,48 @@
         <div class="col-md-12">
             <h1>Componentes</h1>
             <br />
-            <div role="tabpanel" ng-init="panel=1">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Ejecutables</a></li>
-                    <li role="presentation"><a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Reportes</a></li>
-                    <li role="presentation"><a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">Otros</a></li>
-                </ul>
+            <div class="row" ng-repeat="tipoComp in TipoComponentes">
+                <button data-toggle="collapse" class="btn btn-default btn-block" data-target="#{{$index}}">{{tipoComp.Tipo.Nombre}}</button>
 
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" ng-class="{active:panel==1}">
-                        <br />
-                        <div class="alert alert-info" ng-show="totales[0]==0">
-                            <span class="fa fa-file-o"></span> Sin Componentes
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in version.Componentes | filtroEjecutables">
-                                <div class="item panel panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title single-line">{{ejecutable.Name}}</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <img src="~/Content/Images/Run.png" alt="" class="avatar img-thumbnail image-foto" />
-                                        <div class="pull-right" style="width: 50%">
-                                            <ul class="list-unstyled">
-                                                <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.Modulo}}</li>
-                                                <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.DateCreateFmt}}</li>
-                                                <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.Version}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
-                                        </a>
-                                    </div>
+                <br />
+                <div id="{{$index}}" class="collapse">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in version.Componentes | filtroComponente: tipoComp.Tipo.Extensiones">
+                        <div class="item panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{ejecutable.Name}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/Run.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li><span class="fa fa-fw fa-cube"></span> {{ejecutable.Modulo}}</li>
+                                        <li><span class="fa fa-fw fa-calendar"></span> {{ejecutable.DateCreateFmt}}</li>
+                                        <li><span class="fa fa-fw fa-bug"></span> {{ejecutable.Version}}</li>
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==2}">
-                        <br />
-                        <div class="alert alert-info" ng-show="totales[1]==0">
-                            <span class="fa fa-file-o"></span> Sin Componentes
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="reporte in version.Componentes | filtroReportes">
-                                <div class="item panel panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title single-line">{{reporte.Name}}</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <img src="~/Content/Images/Printer.png" alt="" class="avatar img-thumbnail image-foto" />
-                                        <div class="pull-right" style="width: 50%">
-                                            <ul class="list-unstyled">
-                                                <li><span class="fa fa-fw fa-cube"></span> {{reporte.Modulo}}</li>
-                                                <li><span class="fa fa-fw fa-calendar"></span> {{reporte.DateCreateFmt}}</li>
-                                                <li><span class="fa fa-fw fa-bug"></span> {{reporte.Version}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" ng-class="{active:panel==3}">
-                        <br />
-                        <div class="alert alert-info" ng-show="totales[2]==0">
-                            <span class="fa fa-file-o"></span> Sin Componentes
-                        </div>
-                        <div class="row">
-                            
-                            <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="otro in version.Componentes | filtroOtros" ng-controller="controllerHome">
-                                <div class="item panel panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title single-line">{{otro.Name}}</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <img src="~/Content/Images/SD Card.png" alt="" class="avatar img-thumbnail image-foto" />
-                                        <div class="pull-right" style="width: 50%">
-                                            <ul class="list-unstyled">
-                                                <li><span class="fa fa-fw fa-cube"></span> {{otro.Modulo}}</li>
-                                                <li><span class="fa fa-fw fa-calendar"></span> {{otro.DateCreateFmt}}</li>
-                                                <li><span class="fa fa-fw fa-bug"></span> {{otro.Version}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right" ng-init="inficha=true">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group-sm margin-bottom-sm">
-                                                    <div class="dropdown" ng-controller="controllerHome">
-                                                        <button class="btn btn-labeled btn-success dropdown-toggle" ng-click="GetAmbientesNoEx(userSession.Cliente.Id, version.IdVersion, otro.Name)" type="button" data-toggle="dropdown">
-                                                            <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar en...
-                                                            <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li  ng-repeat="ambiente in ambientesNoEjecutados">
-                                                                <a ng-click="ShowConfirmEjecSQL(ambiente.idAmbientes, ambiente.Nombre, otro.Modulo, otro.Name, userSession.Cliente.Id, userSession.CodPrf)" data-toggle="modal">
-                                                                    {{ambiente.Nombre}}
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>  
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="input-group-sm margin-bottom-sm">
-                                                    <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
-                                                        <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
-                                                    </a>
-                                                </div> 
+                            <div class="panel-footer text-right" ng-init="inficha=true">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group-sm margin-bottom-sm">
+                                            <div class="dropdown" ng-controller="controllerHome" ng-show="isCompBD(ejecutable)">
+                                                <button class="btn btn-labeled btn-success dropdown-toggle" ng-click="GetAmbientesNoEx(userSession.Cliente.Id, version.IdVersion, ejecutable.Name)" type="button" data-toggle="dropdown">
+                                                    <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar en...
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li ng-repeat="ambiente in ambientesNoEjecutados">
+                                                        <a ng-click="ShowConfirmEjecSQL(ambiente.idAmbientes, ambiente.Nombre, ejecutable.Modulo, ejecutable.Name, userSession.Cliente.Id, userSession.CodPrf)" data-toggle="modal">
+                                                            {{ambiente.Nombre}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                    <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                        <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
+                                    </a>
                                 </div>
                             </div>
                         </div>

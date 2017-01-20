@@ -137,7 +137,7 @@ namespace ProcessMsg
             }
         }
 
-        public static bool AddAmbientesXLSX(int idCliente, string archivo, string hoja, string fin)
+        public static bool AddAmbientesXLSX(int idCliente, string archivo, string hoja)
         {
             try
             {

@@ -44,7 +44,7 @@ namespace ProcessMsg.Model
                     { 12, "DBA" }
                 };
                 #pragma warning disable
-                for (int x = 0; x < mz.Length; x++)
+                for (int x = 0; x < mz.GetLength(0); x++)
                 {
                     return (int.Parse(mz[x, 0].ToString()) == CodPrf) ? mz[x, 1].ToString() : null;
                 }

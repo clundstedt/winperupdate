@@ -23,6 +23,7 @@ namespace ProcessMsg.Model
         public string LblModificar { get; set; }
 
         public string Directorio { get; set; }
+        public string NomModulo { get; set; }
 
     }
 }

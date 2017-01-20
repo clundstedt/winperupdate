@@ -16,22 +16,10 @@
                         <span class="btn-label"><span class="fa fa-user"></span></span> Crear Cliente
                     </a>
                 </div>
-            </div>
-
-            <div class="btn-toolbar visible-xs-block">
                 <div class="btn-group" role="toolbar">
-                    <div class="btn-group" role="group">
-                        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                            <span class="fa fa-fw fa-binoculars"></span> Actions <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="/Clientes#/CrearCliente" class="btn btn-labeled btn-success">
-                                    <span class="btn-label"><span class="fa fa-user"></span></span> Crear Cliente
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <button type="button" class="btn btn-labeled btn-warning" ng-click="GenerarPDF()">
+                        <span class="btn-label"><span class="fa fa-file-pdf-o"></span></span>Exportar Clientes a PDF
+                    </button>
                 </div>
             </div>
 

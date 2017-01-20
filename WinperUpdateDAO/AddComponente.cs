@@ -28,5 +28,21 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public System.Data.SqlClient.SqlDataReader Execute(string xml)
+        {
+            SpName = @"EXEC sp_AddComponentesByXml @xml";
+            try
+            {
+                ParmsDictionary.Add("@xml", xml);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Execute(string xml)", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

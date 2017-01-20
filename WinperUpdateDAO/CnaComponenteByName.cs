@@ -21,9 +21,25 @@ namespace WinperUpdateDAO
             }
             catch (Exception ex)
             {
-                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute(int idVersion, string nameFile)", ex.Message);
                 throw new Exception(msg, ex);
             }
         }
+        public SqlDataReader Execute(string nameFile)
+        {
+            SpName = @" select * from Componentes where NameFile = @nameFile";
+            try
+            {
+                ParmsDictionary.Add("@nameFile", nameFile);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Execute(string nameFile)", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
     }
 }

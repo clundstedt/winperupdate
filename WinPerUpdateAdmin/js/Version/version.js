@@ -123,6 +123,15 @@
                 return true;
             }
 
+            $scope.OmitirComponentes = function () {
+                for (var i = 0; i < $scope.componentes.length; i++) {
+                    if ($scope.componentes[i].isOk == "danger") {
+                        $scope.componentes[i].isOk = "success";
+                    }
+                }
+                $("#confirmeomitir-modal").modal('toggle');
+            }
+
             /*
             Retorna -1 Si VersionOtra es menor
             Retorna 0 Si las versiones son iguales
@@ -239,17 +248,22 @@
                     serviceAdmin.getVersion($scope.idversion).success(function (data1) {
                         data1.Estado = 'P';
                         data1.Instalador = data.Output;
-                        serviceAdmin.updVersion($scope.idversion, data1.Release, data1.FechaFmt, data1.Estado, data1.Comentario, $scope.idUsuario, data1.Instalador).success(function (data2) {
-                            $scope.mensaje = "Versión Publicada exitosamente ";
-                            console.debug($scope.mensaje);
-                            $scope.formData.estado = data2.Estado;
-                        }).error(function (data) {
-                            $scope.mensaje("Hubo errores al publicar. Ver el Log");
-                            console.error(data);
-                        });
-
+                        console.log(data1.Instalador);
+                        if (data.CodErr == 0) {
+                            serviceAdmin.updVersion($scope.idversion, data1.Release, data1.FechaFmt, data1.Estado, data1.Comentario, $scope.idUsuario, data1.Instalador).success(function (data2) {
+                                $scope.mensaje = "Versión Publicada exitosamente ";
+                                console.debug($scope.mensaje);
+                                $scope.formData.estado = data2.Estado;
+                            }).error(function (data) {
+                                $scope.mensaje = "Hubo errores al publicar. Ver el Log";
+                                console.error(data);
+                            });
+                        } else {
+                            $scope.mensaje = "Hubo errores al publicar. Ver consola del navegador";
+                            console.error("CodErr: " + data.CodErr + ". MsgErr: " + data.MsgErr);
+                        }
                     }).error(function (data) {
-                        $scope.mensaje("Hubo errores al publicar. Ver el Log");
+                        $scope.mensaje = "Hubo errores al publicar. Ver el Log";
                         console.error(data);
                     });
                 });

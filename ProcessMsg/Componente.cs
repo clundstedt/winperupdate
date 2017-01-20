@@ -10,6 +10,7 @@ namespace ProcessMsg
 {
     public class Componente
     {
+        #region Gets
         public static List<ProcessMsg.Model.AtributosArchivoBo> GetComponentesOficiales(string rutaOficial)
         {
             List<ProcessMsg.Model.AtributosArchivoBo> lista = new List<ProcessMsg.Model.AtributosArchivoBo>();
@@ -71,7 +72,6 @@ namespace ProcessMsg
 
             return lista;
         }
-
         public static List<Model.AtributosArchivoBo> GetComponentes(int idVersion, string modulo, EventLog log)
         {
             var lista = new List<Model.AtributosArchivoBo>();
@@ -102,8 +102,68 @@ namespace ProcessMsg
 
             return lista;
         }
+        public static Model.AtributosArchivoBo GetComponenteByName(int idVersion, string nameFile)
+        {
+            var consulta = new CnaComponenteByName();
+            var obj = new Model.AtributosArchivoBo();
+            try
+            {
+                var dr = consulta.Execute(idVersion, nameFile);
+                while (dr.Read())
+                {
+                    obj = new Model.AtributosArchivoBo
+                    {
+                        idVersion = int.Parse(dr["idVersion"].ToString()),
+                        Name = dr["NameFile"].ToString(),
+                        DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
+                        Version = dr["VersionFile"].ToString(),
+                        Modulo = dr["Modulo"].ToString().Trim(),
+                        Comentario = dr["Comentario"].ToString().Trim()
+                    };
+                }
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
 
+            return obj;
+        }
+        public static List<Model.AtributosArchivoBo> GetComponenteByName(string nameFile)
+        {
+            var consulta = new CnaComponenteByName();
+            var lista = new List<Model.AtributosArchivoBo>();
+            try
+            {
+                var dr = consulta.Execute(nameFile);
+                while (dr.Read())
+                {
+                    lista.Add(new Model.AtributosArchivoBo
+                    {
+                        idVersion = int.Parse(dr["idVersion"].ToString()),
+                        Name = dr["NameFile"].ToString(),
+                        DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
+                        Version = dr["VersionFile"].ToString(),
+                        Modulo = dr["Modulo"].ToString().Trim(),
+                        Comentario = dr["Comentario"].ToString().Trim()
+                    }
+                    );
+                }
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
 
+            return lista;
+        }
+        #endregion
+
+        #region Adds
         public static Model.AtributosArchivoBo AddComponente(int idVersion, Model.AtributosArchivoBo componente)
         {
             try
@@ -134,7 +194,34 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        public static object[] AddComponentes(int idVersion, List<ProcessMsg.Model.AtributosArchivoBo> componentes)
+        {
+            try
+            {
+                string xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><root>";
+                componentes.ForEach(c =>
+                {
+                    xml += string.Format("<parametro Modulo=\"{0}\" idVersion=\"{1}\" NameFile=\"{2}\" FechaFile=\"{3}\"/>", c.Modulo, idVersion, c.Name, c.DateCreate);
+                });
+                xml += "</root>";
+                object[] respuesta = new object[2];
+                var reader = new AddComponente().Execute(xml);
+                while (reader.Read())
+                {
+                    respuesta[0] = reader["coderr"].ToString();
+                    respuesta[1] = reader["msgerr"].ToString();
+                }
+                return respuesta;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        #endregion
 
+        #region Upds
         public static Model.AtributosArchivoBo UpdComponente(int idVersion, Model.AtributosArchivoBo componente)
         {
             try
@@ -160,7 +247,9 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        #endregion
 
+        #region Dels
         public static int DelComponente(int idVersion, Model.AtributosArchivoBo componente)
         {
             try
@@ -175,34 +264,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        #endregion
 
-        public static Model.AtributosArchivoBo GetComponenteByName(int idVersion, string nameFile)
-        {
-            var consulta = new CnaComponenteByName();
-            var obj = new Model.AtributosArchivoBo();
-            try
-            {
-                var dr = consulta.Execute(idVersion, nameFile);
-                while (dr.Read())
-                {
-                    obj = new Model.AtributosArchivoBo
-                    {
-                        Name = dr["NameFile"].ToString(),
-                        DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
-                        Version = dr["VersionFile"].ToString(),
-                        Modulo = dr["Modulo"].ToString().Trim(),
-                        Comentario = dr["Comentario"].ToString().Trim()
-                    };
-                }
-                dr.Close();
-            }
-            catch (Exception ex)
-            {
-                var msg = "Excepcion Controlada: " + ex.Message;
-                throw new Exception(msg, ex);
-            }
-
-            return obj;
-        }
     }
 }

@@ -22,6 +22,8 @@
             $scope.mensaje = "";
             $scope.showScript = false;
 
+            $scope.TipoComponentes = [];
+
             $scope.idAmbienteExSQL = -1;
             $scope.nombreambienteExSQL = "";
             $scope.moduloExSQL = "";
@@ -60,16 +62,23 @@
                     serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (data) {
                         $scope.version = data;
                         $scope.version.Estado = 'N';
+                        console.log($scope.version.Componentes);
 
-                        angular.forEach($scope.version.Componentes, function (item) {
-                            if (item.Tipo == 'exe') $scope.totales[0]++;
-                            else if (item.Tipo == 'qrp') $scope.totales[1]++;
-                            else $scope.totales[2]++;
-                        });
                     }).error(function (err) {
                         console.error(err);
                     });
 
+                }).error(function (err) {
+                    console.error(err);
+                });
+
+                serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var datos = {
+                            Tipo: data[i]
+                        }
+                        $scope.TipoComponentes.push(datos);
+                    }
                 }).error(function (err) {
                     console.error(err);
                 });
@@ -91,6 +100,12 @@
                 .error(function (err) {
                     console.error(err);
                 });
+            }
+
+            $scope.isCompBD = function (ejecutable) {
+                var split = ejecutable.Name.split('.');
+                var ext = split[split.length - 1];
+                return ext == "sql";
             }
 
             $scope.EjecutadoEnPruebas = function (idAmbientes, paso)

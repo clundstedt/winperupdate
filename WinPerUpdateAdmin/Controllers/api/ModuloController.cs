@@ -25,7 +25,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 var TipoComponentes = ProcessMsg.ComponenteModulo.GetTipoComponentes();
                 foreach (var m in Modulos)
                 {
-                    DirectoryInfo di = new DirectoryInfo(Path.Combine(HttpContext.Current.Server.MapPath("~/VersionOficial/N+1"), @m.Directorio));
+                    DirectoryInfo di = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")) , "N+1", @m.Directorio));
                     di.GetFiles().ToList().ForEach(file =>
                     {
                         
@@ -156,7 +156,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                string dirfmt = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes/PlanillaModulos.xlsx"));
+                string dirfmt = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes/")) + "PlanillaModulos.xlsx");
 
                 Byte[] objByte = System.IO.File.ReadAllBytes(dirfmt);
                 if (objByte == null)

@@ -23,7 +23,7 @@ namespace WinperUpdateServer
         // Client  socket.
         public Socket workSocket = null;
         // Size of receive buffer.
-        public const int BufferSize = 1024;
+        public const int BufferSize = 65700;
         // Receive buffer.
         public byte[] buffer = new byte[BufferSize];
         // Received data string.
@@ -40,7 +40,7 @@ namespace WinperUpdateServer
         public void StartListening(int port)
         {
             // Data buffer for incoming data.
-            byte[] bytes = new Byte[1024];
+            byte[] bytes = new Byte[StateObject.BufferSize];
 
             // Establish the local endpoint for the socket.
             // The DNS name of the computer
@@ -262,8 +262,29 @@ namespace WinperUpdateServer
                                 break;
 
                             case "getfile":
-                                var buffer = ProcessMsg.Version.DownloadFile(token[1], int.Parse(token[2]), int.Parse(token[3]), dirVersiones, eventLog1);
-                                Send(handler, buffer);
+                                bool bok = false;
+                                int intentos = 0;
+                                while (!bok)
+                                {
+                                    intentos++;
+                                    var buffer = ProcessMsg.Version.DownloadFile(token[1], int.Parse(token[2]), int.Parse(token[3]), dirVersiones, eventLog1);
+                                    if (buffer.Length == int.Parse(token[3]))
+                                    {
+                                        bok = true;
+                                        if (intentos > 1)
+                                        {
+                                            eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", intentos), EventLogEntryType.Information, ++eventId);
+                                        }
+                                        Send(handler, buffer);
+                                    }
+                                }
+                                //handler.BeginSendFile()                                
+                                break;
+                            case "modulos":
+                                var modulosCliente = ProcessMsg.Modulo.GetModulosWithComponenteByCliente(int.Parse(token[1]));
+
+                                json = JsonConvert.SerializeObject(modulosCliente);
+                                Send(handler, json);
                                 break;
 
                             default:
