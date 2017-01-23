@@ -79,7 +79,7 @@ namespace WinPerUpdateUI
 
                         }
                         form.Close();
-                        string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.Windows) + "\\Temp\\WinPer\\" + version.Release;
+                        string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\WinperSetupUI\\" + version.Release;
                         var comps = new DirectoryInfo(dirComponentes).GetFiles().ToList();
                         int cont = 0;
                         foreach (var x in comps)
@@ -129,24 +129,26 @@ namespace WinPerUpdateUI
             var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\" + ambiente);
             var DirWinper = key.GetValue("DirWinper") == null ? "" : key.GetValue("DirWinper").ToString();
             key.Close();
-            string query = "SELECT ExecutablePath FROM Win32_Process";
+            string query = "SELECT ExecutablePath, Name FROM Win32_Process";
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
 
             foreach (ManagementObject item in searcher.Get())
             {
                 object path = item["ExecutablePath"];
-                object processname = item["ProcessName"];
+                object processname = item["Name"];
                 if (path != null && processname != null)
                 {
-                    if (version.Componentes.Exists(vercomp => vercomp.Name.StartsWith(processname.ToString()))
-                && path.ToString().Equals(DirWinper, StringComparison.OrdinalIgnoreCase))
+                    Utils.RegistrarLog("CheckProcessRun.log", processname + " : "+path + " : DirWinper "+ DirWinper + " : ("+ new FileInfo(path.ToString()).Directory.FullName+")");
+                    Utils.RegistrarLog("CheckProcessRun.log", (version.Componentes.Exists(vercomp => vercomp.Name.Equals(processname.ToString(), StringComparison.OrdinalIgnoreCase))).ToString());
+                    Utils.RegistrarLog("CheckProcessRun.log", (path.ToString().Replace(processname.ToString(), "").Equals(DirWinper, StringComparison.OrdinalIgnoreCase)).ToString());
+                    
+                    if (version.Componentes.Exists(vercomp => vercomp.Name.Equals(processname.ToString(), StringComparison.OrdinalIgnoreCase))
+                && new FileInfo(path.ToString()).Directory.FullName.Equals(DirWinper))
                     {
                         NomProc += processname + " \n";
                     }
                 }
             }
-            
-            
 
             return NomProc;
         }
@@ -302,7 +304,7 @@ namespace WinPerUpdateUI
         {
             var version = (VersionBo)e.Argument;
             Utils.RegistrarLog("InstallFile.log", "INICIO PROCESO DE COPIA");
-            string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.Windows) + "\\Temp\\WinPer\\" + version.Release;
+            string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\WinperSetupUI\\" + version.Release;
             if (System.IO.Directory.Exists(dirComponentes))
             {
                 Utils.RegistrarLog("InstallFile.log", dirComponentes);
@@ -346,6 +348,7 @@ namespace WinPerUpdateUI
         {
             Progreso.LblPorcentaje.Text = string.Format("{0}%",e.ProgressPercentage);
             Progreso.PbProgreso.Value = e.ProgressPercentage;
+            
         }
 
         private void bwCopia_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
