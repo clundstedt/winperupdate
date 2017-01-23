@@ -5,9 +5,9 @@
         .module('app')
         .controller('editcomponente', editcomponente);
 
-    editcomponente.$inject = ['$scope', '$routeParams', '$window', 'serviceAdmin'];
+    editcomponente.$inject = ['$scope', '$routeParams', '$window', 'serviceAdmin', '$timeout'];
 
-    function editcomponente($scope, $routeParams, $window, serviceAdmin) {
+    function editcomponente($scope, $routeParams, $window, serviceAdmin, $timeout) {
         $scope.title = 'editcomponente';
 
         activate();
@@ -19,10 +19,10 @@
             $scope.namecomponente = $routeParams.name;
             $scope.modulos = [];
             $scope.formData = {};
+            $scope.componentes = [];
 
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;
-                
             }).error(function (data) {
                 console.debug(data);
             });
@@ -33,14 +33,28 @@
                 console.debug(data);
             });
 
+            
             serviceAdmin.getComponente($scope.idVersion, $routeParams.name).success(function (data) {
                 $scope.formData.modulo = data.Modulo;
                 $scope.formData.comentario = data.Comentario;
-
-                console.log(JSON.stringify($scope.formData));
+                console.log(data.Modulo);
+                console.log(data.Comentario);
             }).error(function (data) {
-
+                console.error(data);
             });
+
+
+            serviceAdmin.getComponentesByName($routeParams.name).success(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if(data[i].idVersion != $scope.idVersion){
+                        $scope.componentes.push(data[i]);
+                    }
+                }
+                console.log($scope.componentes);
+            }).error(function (err) {
+                console.error(err);
+            });
+            
 
             $scope.titulo = 'Editar Componente';
             $scope.labelcreate = 'Guardar';

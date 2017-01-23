@@ -22,7 +22,7 @@ namespace WinPerUpdateUI
 
         private void Instalar_Load(object sender, EventArgs e)
         {
-            loginstalacion.Text = "Preparando instalación en el ambiente " + ambiente + ", espere un momento ...";
+            loginstalacion.Text = "Preparando instalación en " + ambiente;
         }
 
         private void timerInstalar_Tick(object sender, EventArgs e)

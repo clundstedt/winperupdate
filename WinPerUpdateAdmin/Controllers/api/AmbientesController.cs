@@ -17,7 +17,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
-                string dirfmt = string.Format("{0}", HttpContext.Current.Server.MapPath("~/Fuentes/PlanillaAmbientes.xlsx"));
+                string dirfmt = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes/")) + "PlanillaAmbientes.xlsx");
                 
                 Byte[] objByte = System.IO.File.ReadAllBytes(dirfmt);
                 if (objByte == null)

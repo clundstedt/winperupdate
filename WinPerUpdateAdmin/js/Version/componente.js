@@ -16,6 +16,7 @@
             $scope.componentes = [];
             $scope.idVersion = $routeParams.idVersion;
             $scope.componentesOficiales = [];
+            $scope.modulos = [];
 
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;

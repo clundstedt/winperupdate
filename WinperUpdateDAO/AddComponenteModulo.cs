@@ -33,16 +33,10 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
-        public System.Data.SqlClient.SqlDataReader ExecuteComponenteModulo(System.Data.DataTable dt)
+        public System.Data.SqlClient.SqlDataReader ExecuteComponenteModulo(string xml)
         {
             try
             {
-                string xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><root>";
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    xml += string.Format("<parametro Nombre=\"{0}\" Descripcion=\"{1}\" Modulos=\"{2}\" TipoComponentes=\"{3}\"/>", dt.Rows[i][0], dt.Rows[i][1], dt.Rows[i][2], dt.Rows[i][3]);
-                }
-                xml += "</root>";
                 SpName = @"EXEC sp_AddComponentesModulos @xml";
 
                 ParmsDictionary.Add("@xml", xml);

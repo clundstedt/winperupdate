@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPrincipal));
             this.notifyIcon2 = new System.Windows.Forms.NotifyIcon(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.worker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // notifyIcon2
@@ -46,6 +47,13 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // worker
+            // 
+            this.worker.WorkerReportsProgress = true;
+            this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.worker_DoWork);
+            this.worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.worker_ProgressChanged);
+            this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.worker_RunWorkerCompleted);
             // 
             // FormPrincipal
             // 
@@ -69,6 +77,7 @@
 
         private System.Windows.Forms.NotifyIcon notifyIcon2;
         private System.Windows.Forms.Timer timer1;
+        private System.ComponentModel.BackgroundWorker worker;
     }
 }
 

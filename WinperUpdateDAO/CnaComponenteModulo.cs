@@ -61,7 +61,7 @@ namespace WinperUpdateDAO
 
         public SqlDataReader ExecuteConDirectorio()
         {
-            SpName = @"SELECT cm.*, m.directorio
+            SpName = @"SELECT cm.*, m.directorio, m.NomModulo
                                             FROM ComponentesModulos cm INNER JOIN Modulos m
                                               ON cm.Modulos = m.idModulo";
             try
@@ -77,9 +77,10 @@ namespace WinperUpdateDAO
         public SqlDataReader ExecuteTipoComponentesByVersion(int idVersion)
         {
             SpName = @"SELECT DISTINCT tc.* 
-                                       FROM TipoComponentes tc INNER JOIN ComponentesModulos cm
+                                       FROM TipoComponentes tc LEFT JOIN ComponentesModulos cm
                                          ON tc.idTipoComponentes = cm.TipoComponentes
-                                      WHERE cm.Nombre IN (SELECT NameFile FROM Componentes WHERE idVersion = @idVersion)";
+                                      WHERE cm.Nombre IN (SELECT NameFile FROM Componentes WHERE idVersion = @idVersion)
+                                         OR tc.isCompBD = 1";
             try
             {
                 ParmsDictionary.Add("@idVersion", idVersion);

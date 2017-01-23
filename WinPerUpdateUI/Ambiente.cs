@@ -62,13 +62,17 @@ namespace WinPerUpdateUI
                             }
                         }
                     }
-
+                    
                     int index = cmbPerfil.FindString(perfil);
                     cmbPerfil.SelectedIndex = index;
                 }
 
             }
-            catch (Exception ) { };
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utils.RegistrarLog("Ambiente.log", ex.ToString());
+            }
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -94,6 +98,7 @@ namespace WinPerUpdateUI
                 {
                     keya.SetValue("Version", "");
                     keya.SetValue("DirWinper", directorio);
+                    keya.SetValue("Instalacion", 0);
                 }
                 try
 
@@ -104,6 +109,15 @@ namespace WinPerUpdateUI
                 {
                     keya.SetValue("Status", "");
                 }
+
+                try
+                {
+                    var ins = keya.GetValue("Instalacion");
+                }
+                catch(Exception)
+                {
+                    keya.SetValue("Instalacion", 0);
+                }
                 keya.Close();
             }
 
@@ -111,6 +125,8 @@ namespace WinPerUpdateUI
             key.Close();
 
             this.Close();
+            MessageBox.Show("WinperUpdate se reiniciará para conservar los cambios.", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.Restart();
         }
 
         private void txtNroLicencia_TextChanged(object sender, EventArgs e)
@@ -123,33 +139,45 @@ namespace WinPerUpdateUI
             string server = ConfigurationManager.AppSettings["server"];
             string port = ConfigurationManager.AppSettings["port"];
 
-            var cliente = new ClienteBo();
-            string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + txtNroLicencia.Text + "#");
-            cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
-            if (cliente == null)
+            try
             {
-                MessageBox.Show("Nro de licencia no existe. Favor intente nuevamente");
-                txtNroLicencia.Text = "";
-                txtNroLicencia.Focus();
-            }
-            else
-            {
-                var ambientes = new List<AmbienteBo>();
-                json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id + "#");
-                ambientes = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
-                if (ambientes != null)
+                var cliente = new ClienteBo();
+                string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + txtNroLicencia.Text + "#");
+                cliente = JsonConvert.DeserializeObject<ClienteBo>(json);
+                if (cliente == null)
                 {
-                    dgAmbientes.Rows.Clear();
-
-                    foreach (var item in ambientes)
+                    MessageBox.Show("Nro de licencia no existe. Favor intente nuevamente");
+                    txtNroLicencia.Text = "";
+                    txtNroLicencia.Focus();
+                }
+                else
+                {
+                    var ambientes = new List<AmbienteBo>();
+                    json = Utils.StrSendMsg(server, int.Parse(port), "ambientes#" + cliente.Id + "#");
+                    ambientes = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
+                    if (ambientes != null)
                     {
-                        dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, "");
+                        dgAmbientes.Rows.Clear();
+
+                        foreach (var item in ambientes)
+                        {
+                            dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, "");
+                        }
                     }
                 }
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utils.RegistrarLog("CheckLicencia.log", ex.ToString());
             }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Ambiente_Load(object sender, EventArgs e)
         {
 
         }

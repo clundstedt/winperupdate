@@ -44,12 +44,12 @@ namespace WinPerUpdateAdmin.Controllers.Modulos
                 var user = ProcessMsg.Seguridad.GetUsuario(idUsuario);
                 if (user != null)
                 {
-                    if (!Directory.Exists(Server.MapPath("~/Fuentes")))
+                    if (!Directory.Exists(ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Fuentes"))))
                     {
-                        Directory.CreateDirectory(Server.MapPath("~/Fuentes"));
+                        Directory.CreateDirectory(ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Fuentes")));
                     }
 
-                    string sRuta = Server.MapPath("~/Fuentes/ModulosXLSX/");
+                    string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Fuentes/") +  "ModulosXLSX/");
 
                     if (!Directory.Exists(sRuta))
                     {

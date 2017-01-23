@@ -1,4 +1,5 @@
-﻿(function () {
+﻿/// <reference path="C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\Views/Admin/CrearVersion.cshtml" />
+(function () {
     'use strict';
 
     angular
@@ -12,6 +13,7 @@
             getVersiones: getVersiones,
 
             addVersion: addVersion,
+            addVersionInicial: addVersionInicial,
             updVersion: updVersion,
             delVersion: delVersion,
             getVersion: getVersion,
@@ -22,16 +24,54 @@
             getComponentesOficiales: getComponentesOficiales,
             getTiposComponentes: getTiposComponentes,
             existeComponente: existeComponente,
+            getComponentesByName: getComponentesByName,
 
             getComponente: getComponente,
             addComponente: addComponente,
             updComponente: updComponente,
             delComponente: delComponente,
 
-            addCliente: addCliente
+            addCliente: addCliente,
+            GenVersionInicial: GenVersionInicial
         };
 
         return service;
+
+        function getComponentesByName(NomComponente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Componentes/' + NomComponente+'/Comentario',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No tiene Componentes creadas');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No tiene Componentes creadas');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getTiposComponentes(idVersion) {
             var deferred = $q.defer();
@@ -212,6 +252,87 @@
 
             return promise;
 
+        }
+
+        function GenVersionInicial(idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/VersionInicial/' + idVersion,
+                type: "POST",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la version');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo agregar la version');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addVersionInicial(release, estado, comentario) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+
+            var version = {
+                "Release": release,
+                "Estado": estado,
+                "Comentario": comentario,
+                "Fecha": "null"
+            };
+
+            $.ajax({
+                url: '/api/Version',
+                type: "POST",
+                dataType: 'Json',
+                data: version,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 201) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la version');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo agregar la version');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
         }
 
         function addVersion(release, fecha, estado, comentario, usuario) {
@@ -639,7 +760,7 @@
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Version/' + id +'/Componentes?nameFile=' + name,
+                url: '/api/Version/' + id + '/Componentes/' + name + '/nameFile',
                 type: "get",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {

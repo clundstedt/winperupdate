@@ -54,43 +54,6 @@
             return salida;
         }
     })
-
-    .filter('filtroEjecutables', function () {
-        return function (input) {
-            var salida = [];
-            angular.forEach(input, function (componente) {
-                if (componente.componente.Tipo == 'exe') {
-                    salida.push(componente)
-                }
-            });
-            return salida;
-        }
-    })
-
-    .filter('filtroReportes', function () {
-        return function (input) {
-            var salida = [];
-            angular.forEach(input, function (componente) {
-                if (componente.componente.Tipo == 'qrp') {
-                    salida.push(componente)
-                }
-            });
-            return salida;
-        }
-    })
-
-    .filter('filtroOtros', function () {
-        return function (input) {
-            var salida = [];
-            angular.forEach(input, function (componente) {
-                if (componente.componente.Tipo == 'otro') {
-                    salida.push(componente)
-                }
-            });
-            return salida;
-        }
-    })
-
     .filter('filtroClientesNoSel', function () {
         return function (input) {
             var salida = [];

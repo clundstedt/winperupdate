@@ -38,6 +38,7 @@
             this.versionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.commentHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnInstalar = new System.Windows.Forms.Button();
+            this.bwCopia = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -140,6 +141,13 @@
             this.btnInstalar.UseVisualStyleBackColor = true;
             this.btnInstalar.Click += new System.EventHandler(this.btnInstalar_Click);
             // 
+            // bwCopia
+            // 
+            this.bwCopia.WorkerReportsProgress = true;
+            this.bwCopia.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwCopia_DoWork);
+            this.bwCopia.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwCopia_ProgressChanged);
+            this.bwCopia.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwCopia_RunWorkerCompleted);
+            // 
             // frmVersiones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -175,5 +183,6 @@
         private System.Windows.Forms.ColumnHeader versionHeader;
         private System.Windows.Forms.ColumnHeader commentHeader;
         private System.Windows.Forms.Button btnInstalar;
+        private System.ComponentModel.BackgroundWorker bwCopia;
     }
 }

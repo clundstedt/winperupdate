@@ -281,26 +281,38 @@ namespace ProcessMsg
                     file.WriteLine(@"; ");
                     file.WriteLine(@"; Instalador winper version " + version.Release);
                     file.WriteLine(@"; ");
+                    file.WriteLine("#define MyAppName \"WinPer\"");
+                    file.WriteLine("#define MyAppVersion \""+version.Release+"\"");
+                    file.WriteLine("#define MyAppPublisher \"INNOVASOFT.\"");
+                    file.WriteLine("#define MyAppURL \"http://www.innovasoft.cl\"");
+                    file.WriteLine("#define MyOutputDir \""+dirSource+"Output\"");
+                    file.WriteLine("#define MyOutputBaseFilename \""+ fileVersion + "\"");
                     file.WriteLine(@"");
                     file.WriteLine(@"[Setup]");
-                    file.WriteLine(@"AppName=WinPer");
-                    file.WriteLine(@"AppVersion=" + version.Release);
-                    file.WriteLine(@"DefaultDirName={usertemplates}\WinPer");
+                    file.WriteLine(@"AppId={{"+idVersion+"}}");
+                    file.WriteLine(@"AppName={#MyAppName}");
+                    file.WriteLine(@"AppVersion={#MyAppVersion}");
+                    file.WriteLine(@"AppPublisher={#MyAppPublisher}");
+                    file.WriteLine(@"AppPublisherURL={#MyAppURL}");
+                    file.WriteLine(@"AppSupportURL={#MyAppURL}");
+                    file.WriteLine(@"AppUpdatesURL={#MyAppURL}");
+                    file.WriteLine(@"DefaultDirName={win}\Temp\{#MyAppName}\{#MyAppVersion}");
                     file.WriteLine(@"DisableDirPage=yes");
-                    file.WriteLine(@"DefaultGroupName=WinPer");
-                    file.WriteLine(@"Compression=lzma2");
+                    file.WriteLine(@"DefaultGroupName={#MyAppName}");
+                    file.WriteLine(@"DisableProgramGroupPage=yes");
+                    file.WriteLine(@"OutputDir={#MyOutputDir}");
+                    file.WriteLine(@"OutputBaseFilename={#MyOutputBaseFilename}");
+                    file.WriteLine(@"Compression=lzma");
                     file.WriteLine(@"SolidCompression=yes");
-                    file.WriteLine(@"OutputBaseFilename=" + fileVersion);
+                    file.WriteLine(@"");
+                    file.WriteLine(@"[Languages]");
+                    file.WriteLine("Name: \"spanish\"; MessagesFile: \"compiler:Languages\\Spanish.isl\"");
                     file.WriteLine(@"");
                     file.WriteLine(@"[Files]");
                     foreach (var componente in version.Componentes)
                     {
                         file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
                     }
-                    //file.WriteLine(@"");
-                    //file.WriteLine(@"[Icons]");
-                    //file.WriteLine(@"Name: ""{group}\WinPer""; Filename: ""{app}\reconect.exe""");
-
                     file.WriteLine(@"");
                     file.WriteLine(@"[Icons]");
                     file.WriteLine(@"Name: ""{group}\WinPer""; Filename: ""{app}\reconect.exe""");
@@ -453,8 +465,14 @@ namespace ProcessMsg
         {
             try
             {
-                Byte[] buffer = new Byte[sizeMax]; ;
                 string fileName = dirVersiones + namefile;
+                long sizeBuffer = sizeMax;
+                var sizeFile = new FileInfo(fileName).Length;
+                if (sizeFile - posIni < sizeMax)
+                {
+                    sizeBuffer = sizeFile - posIni;
+                }
+                Byte[] buffer = new Byte[sizeBuffer];
                 log.WriteEntry(String.Format("Download archivo = {0}", fileName), EventLogEntryType.Information, 0);
                 int pos = 0;
                 int index = 0;
@@ -462,7 +480,7 @@ namespace ProcessMsg
                 FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
                 BinaryReader reader = new BinaryReader(stream);
 
-                while (letter != -1 && index < sizeMax)
+                while (letter != -1 && index < sizeBuffer)
                 {
                     letter = reader.ReadByte();
                     if (letter != -1 && pos >= posIni)

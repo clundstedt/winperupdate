@@ -7,6 +7,7 @@ namespace ProcessMsg.Model
 {
     public class AtributosArchivoBo
     {
+        public int idVersion { get; set; }
         public string Name { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime LastWrite { get; set; }

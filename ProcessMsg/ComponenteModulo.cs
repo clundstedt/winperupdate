@@ -148,7 +148,8 @@ namespace ProcessMsg
                         {
                             idTipoComponentes = int.Parse(reader["TipoComponentes"].ToString())
                         },
-                        Directorio = reader["Directorio"].ToString()
+                        Directorio = reader["Directorio"].ToString(),
+                        NomModulo = reader["NomModulo"].ToString()
                     });
                 }
                 return lista;
@@ -179,17 +180,14 @@ namespace ProcessMsg
         {
             try
             {
-                System.Data.DataTable dt = new System.Data.DataTable();
-                dt.Columns.Add("Nombre");
-                dt.Columns.Add("Descripcion");
-                dt.Columns.Add("Modulos");
-                dt.Columns.Add("TipoComponentes");
+                string xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><root>";
                 componentes.ForEach(x =>
                 {
-                    dt.Rows.Add(x.Nombre, x.Descripcion, x.Modulo, x.TipoComponentes.idTipoComponentes);
+                    xml += string.Format("<parametro Nombre=\"{0}\" Descripcion=\"{1}\" Modulos=\"{2}\" TipoComponentes=\"{3}\"/>", x.Nombre, x.Descripcion, x.Modulo, x.TipoComponentes.idTipoComponentes);
                 });
+                xml += "</root>";
                 object[] respuesta = new object[2];
-                var reader = new AddComponenteModulo().ExecuteComponenteModulo(dt);
+                var reader = new AddComponenteModulo().ExecuteComponenteModulo(xml);
                 while (reader.Read())
                 {
                     respuesta[0] = reader["coderr"].ToString();

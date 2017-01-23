@@ -102,3 +102,5 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.pdb
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.dll
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml

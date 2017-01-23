@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -145,6 +146,7 @@
     <Content Include="css\font-awesome.min.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Fuentes\Controladores\AccessDatabaseEngine.exe" />
     <Content Include="Global.asax" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
@@ -458,8 +460,9 @@
     <Folder Include="App_Data\" />
     <Folder Include="Fuentes\AmbientesXlSXClientes\" />
     <Folder Include="Fuentes\ModulosXLSX\" />
+    <Folder Include="Fuentes\PDF\Clientes\" />
     <Folder Include="Models\" />
-    <Folder Include="Uploads\" />
+    <Folder Include="Uploads\0\" />
     <Folder Include="VersionOficial\N+1\" />
     <Folder Include="VersionOficial\N\" />
   </ItemGroup>

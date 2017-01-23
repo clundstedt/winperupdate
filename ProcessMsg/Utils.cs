@@ -46,6 +46,38 @@ namespace ProcessMsg
             return builder.ToString();
         }
 
+        public static string GetPathSetting(string ServerMapPath)
+        {
+            if (ServerMapPath.Contains("Uploads"))
+            {
+                var u = ConfigurationManager.AppSettings["upload"];
+                if (u != null)
+                {
+                    if (!u.EndsWith("/")) u += "/";
+                    return u;
+                }
+            }
+            else if (ServerMapPath.Contains("VersionOficial"))
+            {
+                var vo = ConfigurationManager.AppSettings["voficial"];
+                if (vo != null)
+                {
+                    if (!vo.EndsWith("/")) vo += "/";
+                    return vo;
+                }
+            }
+            else if (ServerMapPath.Contains("Fuentes"))
+            {
+                var f = ConfigurationManager.AppSettings["fuentes"];
+                if (f != null)
+                {
+                    if (!f.EndsWith("/")) f += "/";
+                    return f;
+                }
+            }
+            return ServerMapPath;
+        }
+
         public static Boolean SendMail(String mensaje, String asunto, String mailctt)
         {
             string userMail = ConfigurationManager.AppSettings["userMail"];
