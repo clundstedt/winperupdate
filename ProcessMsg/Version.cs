@@ -296,7 +296,7 @@ namespace ProcessMsg
                     file.WriteLine(@"AppPublisherURL={#MyAppURL}");
                     file.WriteLine(@"AppSupportURL={#MyAppURL}");
                     file.WriteLine(@"AppUpdatesURL={#MyAppURL}");
-                    file.WriteLine(@"DefaultDirName={win}\Temp\{#MyAppName}\{#MyAppVersion}");
+                    file.WriteLine(@"DefaultDirName={localappdata}\WinperSetupUI\{#MyAppVersion}");
                     file.WriteLine(@"DisableDirPage=yes");
                     file.WriteLine(@"DefaultGroupName={#MyAppName}");
                     file.WriteLine(@"DisableProgramGroupPage=yes");

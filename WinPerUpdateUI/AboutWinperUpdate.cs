@@ -112,5 +112,10 @@ namespace WinPerUpdateUI
         {
             this.Close();
         }
+
+        private void AboutWinperUpdate_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

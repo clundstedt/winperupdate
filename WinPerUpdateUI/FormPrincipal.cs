@@ -132,7 +132,7 @@ namespace WinPerUpdateUI
                 key.Close();
             }
 
-            string regUI = Path.Combine(Directory.GetCurrentDirectory(), "regUI.bat");
+            string regUI = Path.Combine(Path.GetTempPath(), "regUI.bat");
             string exe = Path.Combine(Directory.GetCurrentDirectory(), "WinPerUpdateUI.exe");
             
             int intentos = 0;
@@ -141,13 +141,14 @@ namespace WinPerUpdateUI
             {
                 try
                 {
+                    if (File.Exists(regUI)) File.Delete(regUI);
                     if (!File.Exists(regUI))
                     {
                         File.WriteAllLines(regUI, new string[] {
                         "@echo off",
                         "cd %windir%\\system32",
-                        "REG ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v  WinperUpdate /t REG_SZ /d \"" +exe+"\"  /f >> regUI.log"
-                    });
+                        "REG ADD \"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v  WinperUpdate /t REG_SZ /d \"" +exe+"\"  /f >> regUI.log"
+                        });
                     }
                     var pas = Utils.ShowDialogInput(string.Format("Se procederá a configurar WinperUpdate en el arranque de Windows.\nEscriba la clave para el usuario {0}", Environment.UserName), "Clave de Usuario", true);
 
@@ -167,10 +168,10 @@ namespace WinPerUpdateUI
                         Process.Start(regUI, Environment.UserName, sec, Environment.UserDomainName);
                         inRun = "Si";
                         keyRun.SetValue("InRun", inRun);
-                        var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+                        var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
                         key.SetValue("WinperUpdate", exe);
                         key.Close();
-                        MessageBox.Show("WinperUpdate fue configurado al inicio de Windows correctamente", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("WinperUpdate fue configurado al inicio de Windows correctamente", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
@@ -206,13 +207,19 @@ namespace WinPerUpdateUI
                         ambientes = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
                         foreach (var ambiente in ambientes)
                         {
-                            addDevice.MenuItems.Add(new MenuItem(ambiente.Nombre, new EventHandler(this.Restaurar_Click)));
+                            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\"+ambiente.Nombre);
+                            string dirwp = key.GetValue("DirWinper") == null ? "" : key.GetValue("DirWinper").ToString();
+                            if (Directory.Exists(dirwp))
+                            {
+                                addDevice.MenuItems.Add(new MenuItem(ambiente.Nombre, new EventHandler(this.Restaurar_Click)));
+                            }
+                            key.Close();
                         }
 
                         /*Obtiene los modulos contratados del cliente con sus respectivos componentes*/
                         json = Utils.StrSendMsg(server, int.Parse(port), "modulos#" + cliente.Id + "#");
                         Utils.ModulosContratados = JsonConvert.DeserializeObject<List<ModuloBo>>(json);
-                        
+
                         ContextMenu1.MenuItems.Add(addDevice);
 
                         ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
@@ -231,8 +238,23 @@ namespace WinPerUpdateUI
                 }
                 catch (Exception ex)
                 {
-                    ContextMenu1.MenuItems[0].Enabled = false;
-                    ContextMenu1.MenuItems[1].Enabled = false;
+                    if (ContextMenu1.MenuItems.Count > 0)
+                    {
+                        ContextMenu1.MenuItems[0].Enabled = false;
+                        ContextMenu1.MenuItems[1].Enabled = false;
+                    }
+                    else
+                    {
+                        ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
+                        ContextMenu1.MenuItems[0].Enabled = false;
+
+                        ContextMenu1.MenuItems.Add("-");
+                        ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
+                        ContextMenu1.MenuItems[1].DefaultItem = true;
+
+                        ContextMenu1.MenuItems.Add("-");
+                        ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
+                    }
                     MessageBox.Show("Winper Update no tiene conexión con el servidor central");
                 }
             }            
