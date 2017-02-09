@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 
+
 namespace ConnectorDB
 {
     public class DbConnector
@@ -33,7 +34,7 @@ namespace ConnectorDB
             try
             {
                 ConnectionStr = DesEncriptar(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
-                
+               
                 if (!String.IsNullOrEmpty(ConnectionStr)) return;
                 throw new NullReferenceException(msg);
             }

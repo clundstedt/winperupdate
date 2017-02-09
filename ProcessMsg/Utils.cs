@@ -51,7 +51,7 @@ namespace ProcessMsg
             if (ServerMapPath.Contains("Uploads"))
             {
                 var u = ConfigurationManager.AppSettings["upload"];
-                if (u != null)
+                if (u != null && !u.Equals("default", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!u.EndsWith("/")) u += "/";
                     return u;
@@ -60,7 +60,7 @@ namespace ProcessMsg
             else if (ServerMapPath.Contains("VersionOficial"))
             {
                 var vo = ConfigurationManager.AppSettings["voficial"];
-                if (vo != null)
+                if (vo != null && !vo.Equals("default", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!vo.EndsWith("/")) vo += "/";
                     return vo;
@@ -69,7 +69,7 @@ namespace ProcessMsg
             else if (ServerMapPath.Contains("Fuentes"))
             {
                 var f = ConfigurationManager.AppSettings["fuentes"];
-                if (f != null)
+                if (f != null && !f.Equals("default", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!f.EndsWith("/")) f += "/";
                     return f;
@@ -84,7 +84,7 @@ namespace ProcessMsg
             string pwdMail = ConfigurationManager.AppSettings["pwdMail"];
             string fromMail = ConfigurationManager.AppSettings["fromMail"];
             string HostMail = ConfigurationManager.AppSettings["HostMail"];
-
+            
             var correo = new System.Net.Mail.MailMessage();
             correo.From = new System.Net.Mail.MailAddress(userMail, fromMail);
             correo.To.Add(new System.Net.Mail.MailAddress(mailctt));
@@ -137,10 +137,10 @@ namespace ProcessMsg
             return (0 == comparer.Compare(hashOfInput, hash));
         }
 
-        public static string GenerarLicencia(int NumFolio, int estmtc, string mesini, string nrotrbc
+        public static string GenerarLicencia(int NumFolio, string mescon, int correlativo, int estmtc, string mesini, string nrotrbc
                                             , string nrotrbh, string nrousr)
         {
-            string fStr = string.Format("{0}{1}{2}{3}{4}{5}", NumFolio, estmtc, mesini,nrotrbc,nrotrbh,nrousr);
+            string fStr = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}", NumFolio, mescon, correlativo, estmtc, mesini,nrotrbc,nrotrbh,nrousr);
             string hash = GetMd5Hash(fStr);
             string licencia = "";
             for (int i = 0; i < hash.Length; i++)

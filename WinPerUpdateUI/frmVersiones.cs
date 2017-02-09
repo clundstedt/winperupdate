@@ -57,6 +57,7 @@ namespace WinPerUpdateUI
                             MessageBox.Show(string.Format("Los siguientes procesos se deben cerrar para proceder con la actualización de Winper:\n\n{0}", ProcRun), "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             return;
                         }
+                        string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\WinperSetupUI\\" + version.Release;
                         var form = new Instalar();
                         string fileInstalador = dirTmp + version.Release + "\\" + version.Instalador;
                         if (File.Exists(fileInstalador))
@@ -69,7 +70,7 @@ namespace WinPerUpdateUI
 
                             Process myProcess = new Process();
                             myProcess.StartInfo.FileName = Command;
-                            myProcess.StartInfo.Arguments = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL";
+                            myProcess.StartInfo.Arguments = string.Format("/DIR=\"{0}\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL", dirComponentes);
                             myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
                             myProcess.StartInfo.RedirectStandardError = true;
                             myProcess.StartInfo.UseShellExecute = false;
@@ -79,7 +80,7 @@ namespace WinPerUpdateUI
 
                         }
                         form.Close();
-                        string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\WinperSetupUI\\" + version.Release;
+                        
                         var comps = new DirectoryInfo(dirComponentes).GetFiles().ToList();
                         int cont = 0;
                         foreach (var x in comps)

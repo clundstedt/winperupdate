@@ -18,6 +18,7 @@
             delVersion: delVersion,
             getVersion: getVersion,
             genVersion: genVersion,
+            getClientes: getClientes,
 
             getModulos: getModulos,
             getUltimaRelease: getUltimaRelease,
@@ -32,10 +33,48 @@
             delComponente: delComponente,
 
             addCliente: addCliente,
-            GenVersionInicial: GenVersionInicial
+            GenVersionInicial: GenVersionInicial,
+            addClientesToVersion: addClientesToVersion
         };
 
         return service;
+
+        function getClientes() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Clientes',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen clientes');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No existen clientes');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getComponentesByName(NomComponente) {
             var deferred = $q.defer();
@@ -582,6 +621,45 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status);
                     deferred.reject('No se pudo agregar la componente');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addClientesToVersion(id, listaClientes, tipoPub) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+
+            $.ajax({
+                url: '/api/Version/' + id + '/Clientes/TipoPub/'+tipoPub,
+                type: "POST",
+                dataType: 'text',
+                contentType: "application/json",
+                data: JSON.stringify(listaClientes),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la version al cliente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status);
+                    deferred.reject('No se pudo agregar la version al cliente');
                 }
             });
 

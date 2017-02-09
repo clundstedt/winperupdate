@@ -1,0 +1,61 @@
+﻿(function () {
+    'use strict';
+
+    angular
+        .module('app')
+        .controller('superUser', superUser);
+
+    superUser.$inject = ['$scope', '$routeParams', '$window', 'serviceSU'];
+
+    function superUser($scope, $routeParams, $window, serviceSU) {
+        $scope.title = 'Configuración General';
+
+        activate();
+
+        function activate() {
+            
+            $scope.lblButton = "Guardar";
+            $scope.formData = {};
+
+            serviceSU.LoadWebConf().success(function (data) {
+                $scope.formData.innosetup = data.pathGenSetup;
+                $scope.formData.smtpwu = data.hostMail;
+                $scope.formData.mailwu = data.userMail;
+                $scope.formData.passmailwu = data.pwdMail;
+                $scope.formData.rpassmailwu = data.pwdMail;
+                $scope.formData.aliasmailwu = data.fromMail;
+                $scope.formData.mailsoporte = data.correoSoporte;
+                $scope.formData.dirupload = data.upload;
+                $scope.formData.dirvoficial = data.voficial;
+                $scope.formData.dirfuentes = data.fuentes;
+            }).error(function (err) {
+                console.error(err);
+            });
+
+            $scope.GuardarConf = function (formData) {
+                $scope.lblButton = "Guardando";
+                serviceSU.Guardar(formData.innosetup, formData.smtpwu, formData.mailwu, formData.passmailwu, formData.aliasmailwu, formData.mailsoporte, formData.dirupload, formData.dirvoficial, formData.dirfuentes).success(function (data) {
+                    serviceSU.LoadWebConf().success(function (dataLoad) {
+                        $scope.formData.innosetup = dataLoad.pathGenSetup;
+                        $scope.formData.smtpwu = dataLoad.hostMail;
+                        $scope.formData.mailwu = dataLoad.userMail;
+                        $scope.formData.passmailwu = dataLoad.pwdMail;
+                        $scope.formData.rpassmailwu = dataLoad.pwdMail;
+                        $scope.formData.aliasmailwu = dataLoad.fromMail;
+                        $scope.formData.mailsoporte = dataLoad.correoSoporte;
+                        $scope.formData.dirupload = dataLoad.upload;
+                        $scope.formData.dirvoficial = dataLoad.voficial;
+                        $scope.formData.dirfuentes = dataLoad.fuentes;
+                        $scope.lblButton = "Guardar";
+                    }).error(function (err) {
+                        console.error(err);
+                        $scope.lblButton = "Guardar";
+                    });
+                }).error(function (err) {
+                    console.error(err);
+                    $scope.lblButton = "Guardar";
+                });
+            }
+        }
+    }
+})();

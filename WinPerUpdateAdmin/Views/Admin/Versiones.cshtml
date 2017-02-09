@@ -16,7 +16,7 @@
                         <button type="submit" class="btn btn-labeled btn-success" name="action" value="createchild">
                             <span class="btn-label"><span class="fa fa-tablet"></span></span> Crear Versi&oacute;n
                         </button>
-                        <button type="button" ng-click="GenerarVersionInicial()" class="btn btn-labeled btn-warning" name="action">
+                        <button type="button" data-toggle="modal" data-target="#inicial-modal" class="btn btn-labeled btn-warning" name="action">
                             <span class="btn-label"><span class="fa fa-tablet"></span></span> Crear Versión Inicial
                         </button>
                     </div>
@@ -76,14 +76,62 @@
                 <center>
                     <h1><i class="fa fa-spinner fa-pulse"></i></h1>
                     <br />
-                    <h4>Espere un momento...</h4>
+                    <h4>{{lblLoad}}</h4>
                 </center>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-show="btnLoadHabilitado" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
 
     </div>
 </div>
+<div id="inicial-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Generando Versión Inicial</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Release</label>
+                        <div class="form-group">
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon" title="Release de la version. Ej: 7.0.0"><i class="fa fa-link fa-fw"></i></span>
+                                <input class="form-control" type="text" name="release" placeholder="Release de la version. Ej: 7.0.0" ng-model="formData.release" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                            </div>
+                            <span class="error_ingreso" ng-show="frmMain.release.$error.required">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Descripción</label>
+                        <div class="form-group">
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon" title="Descripción"><i class="fa fa-comment-o fa-fw"></i></span>
+                                <textarea class="form-control" rows="5" name="descripcion" placeholder="Descripción" ng-model="formData.descripcion" ng-maxlength="2048" ng-model-options="{ updateOn: 'blur' }"></textarea>
+                            </div>
+                            <span class="error_ingreso" ng-show="frmMain.descripcion.$error.maxlength">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 2048 carácteres
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" ng-click="GenerarVersionInicial(formData)">Generar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 

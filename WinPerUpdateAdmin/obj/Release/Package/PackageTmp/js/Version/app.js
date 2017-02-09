@@ -5,7 +5,7 @@
         // Angular modules 
          'ngRoute'
         ,'angularFileUpload'
-
+        , 'smart-table'
         // Custom modules 
 
         // 3rd Party Modules

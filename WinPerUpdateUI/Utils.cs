@@ -11,6 +11,7 @@ namespace WinPerUpdateUI
     public class Utils
     {
         public static List<ProcessMsg.Model.ModuloBo> ModulosContratados = new List<ProcessMsg.Model.ModuloBo>();
+        public static bool isCentralizado = false;
 
         const int SIZEBUFFER = 524288;
         public static void RegistrarLog(string NombreLog, string Text)

@@ -1,0 +1,10 @@
+﻿@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Index";
+}
+@Scripts.Render("~/bundles/superuser")
+
+<div ng-view></div>
+
+<input type="hidden" id="idToken" value="@Session["token"]" />
+

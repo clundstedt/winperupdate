@@ -11,6 +11,18 @@ namespace ProcessMsg
     public class Modulo
     {
         #region Gets
+        public static List<Model.ModuloBo> GetModulosBySuite(int idSuite)
+        {
+            try
+            {
+                return GetModulos(null).Where(m => m.Suite == idSuite).ToList();
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.ModuloBo> GetModulos(EventLog log)
         {
             var lista = new List<Model.ModuloBo>();
@@ -27,7 +39,8 @@ namespace ProcessMsg
                         Descripcion = dr["Descripcion"].ToString(),
                         isCore = bool.Parse(dr["isCore"].ToString()),
                         Directorio = dr["Directorio"].ToString(),
-                        Estado = char.Parse(dr["Estado"].ToString())
+                        Estado = char.Parse(dr["Estado"].ToString()),
+                        Suite = int.Parse(dr["Suite"].ToString())
                     };
 
                     lista.Add(obj);
@@ -89,7 +102,8 @@ namespace ProcessMsg
                         Directorio = reader["Directorio"].ToString(),
                         NomModulo = reader["NomModulo"].ToString(),
                         isCore = bool.Parse(reader["isCore"].ToString()),
-                        Estado = char.Parse(reader["Estado"].ToString())
+                        Estado = char.Parse(reader["Estado"].ToString()),
+                        Suite = int.Parse(reader["Suite"].ToString())
                     };
                 }
                 return modulo;

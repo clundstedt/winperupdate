@@ -12,8 +12,23 @@ namespace WinPerUpdateAdmin.Controllers.Home
         // GET: Home
         public ActionResult Index()
         {
+            var strConn = System.Configuration.ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
+            if (string.IsNullOrEmpty(strConn))
+            {
+                return RedirectToAction("Install", "Home");
+            }
             ViewBag.Login = "Login";
             return View();
+        }
+
+        public ActionResult Install()
+        {
+            var strConn = System.Configuration.ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
+            if (string.IsNullOrEmpty(strConn))
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult AutorizarIngreso(string idUser)

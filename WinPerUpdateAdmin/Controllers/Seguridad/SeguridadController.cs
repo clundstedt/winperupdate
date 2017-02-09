@@ -28,5 +28,10 @@ namespace WinPerUpdateAdmin.Controllers.Seguridad
         {
             return PartialView();
         }
+
+        public PartialViewResult Configuracion()
+        {
+            return PartialView();
+        }
     }
 }

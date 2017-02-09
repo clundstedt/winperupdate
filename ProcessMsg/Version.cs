@@ -390,6 +390,32 @@ namespace ProcessMsg
             }
         }
 
+        public static object[] AddVersionCliente(int idVersion, List<int> idClientes)
+        {
+            try
+            {
+                string xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><root>";
+                idClientes.ForEach(x =>
+                {
+                    xml += string.Format("<parametro idVersion=\"{0}\" idClientes=\"{1}\"/>", idVersion, x);
+                });
+                xml += "</root>";
+                object[] respuesta = new object[2];
+                var reader = new AddVersionCliente().Execute(xml);
+                while (reader.Read())
+                {
+                    respuesta[0] = reader["coderr"].ToString();
+                    respuesta[1] = reader["msgerr"].ToString();
+                }
+                return respuesta;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         #region Modelo Antiguo
         public static List<Model.VersionBo> ListarVersiones(string miVersion, string dirVersiones, EventLog log)
         {

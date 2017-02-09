@@ -38,6 +38,8 @@ namespace ProcessMsg.Model
         public string NroTrbh { get; set; }
         public string NroUsr { get; set; }
 
+        public string MesCon { get; set; }
+        public int Correlativo { get; set; }
         public string EstMtcFmt
         {
             get

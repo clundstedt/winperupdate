@@ -21,6 +21,8 @@ namespace WinPerUpdateAdmin
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             BundleTable.EnableOptimizations = false;
+            //System.Net.ServicePointManager.Expect100Continue = false; //Evita el error HTTP 417
+            
         }
     }
 }

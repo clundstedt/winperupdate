@@ -12,7 +12,29 @@ namespace WinPerUpdateAdmin.Controllers.api
 {
     public class VersionController : ApiController
     {
+        #region Clases
+        public class ClienteToVersion
+        {
+            public bool check { get; set; }
+            public ProcessMsg.Model.ClienteBo cliente { get; set; }
+        }
+        #endregion
+
         #region get
+        [Route("api/ExisteVersionInicial/Cliente/{idCliente:int}")]
+        [HttpGet]
+        public Object GetExisteVersionInicial(int idCliente)
+        {
+            try
+            {
+                return ProcessMsg.Cliente.GetVersiones(idCliente, null).Exists(v => v.Release.StartsWith("I"));
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        
         [Route("api/Componentes/{NomComponente}/Comentario")]
         [HttpGet]
         public Object GetComponentesByName(string NomComponente)
@@ -88,7 +110,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                var lista = ProcessMsg.Version.GetVersiones(null);
+                int vr = 0;
+                var lista = ProcessMsg.Version.GetVersiones(null).Where(v => int.TryParse(v.Release.ElementAt(0).ToString(), out vr)).ToList();
                 var obj = (lista.Count == 0 ? null : lista.OrderByDescending(x => x.IdVersion).First());
                 if (obj == null)
                 {
@@ -456,6 +479,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    if (version.Release.Equals("I")) version.Release = string.Format("I{0:dd.MM.yyyy.HH.mm.ss}",DateTime.Now);
                     var obj = ProcessMsg.Version.AddVersion(version);
                     if (obj == null)
                     {
@@ -581,6 +605,26 @@ namespace WinPerUpdateAdmin.Controllers.api
                 return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
             }
             catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/{idVersion:int}/Clientes/TipoPub/{TipoPub:int}")]
+        [HttpPost]
+        public Object PostClientesToVersion(int idVersion, [FromBody] List<ClienteToVersion> listaClientes, int TipoPub)
+        {
+            try
+            {
+                var idClientes = TipoPub == 1 ? listaClientes.Where(y => y.check).Select(x => x.cliente.Id).ToList() : listaClientes.Select(x => x.cliente.Id).ToList();
+                var res = ProcessMsg.Version.AddVersionCliente(idVersion, idClientes);
+                if (res[0].ToString().Equals("0", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Content(HttpStatusCode.OK, res[1]);
+                }
+                return Content(HttpStatusCode.Created, res[1]);
+            }
+            catch(Exception ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }

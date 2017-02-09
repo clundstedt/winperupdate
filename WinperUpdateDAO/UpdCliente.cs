@@ -9,7 +9,7 @@ namespace WinperUpdateDAO
     public class UpdCliente : SpDao
     {
         public int Execute(int id, int rut, char dv, string nombre, string direccion, int idCmn
-                          ,string nrolicencia, int estmtc, string mesini, string nrotrbc, string nrotrbh, string nrousr)
+                          ,string nrolicencia, int estmtc, string mesini, string nrotrbc, string nrotrbh, string nrousr, string mescon, int corr)
         {
             SpName = @" update Clientes 
                            set Rut = @rut, 
@@ -22,7 +22,9 @@ namespace WinperUpdateDAO
                                MesIni = @mesini, 
                                NroTrbc = @nrotrbc, 
                                NroTrbh = @nrotrbh, 
-                               NroUsr = @nrousr 
+                               NroUsr = @nrousr,
+                               MesCon = @mescon,
+                               Correlativo = @corr 
                          where idClientes = @id";
             try
             {
@@ -38,6 +40,8 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@nrotrbc", nrotrbc);
                 ParmsDictionary.Add("@nrotrbh", nrotrbh);
                 ParmsDictionary.Add("@nrousr", nrousr);
+                ParmsDictionary.Add("@mescon", mescon);
+                ParmsDictionary.Add("@corr", corr);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

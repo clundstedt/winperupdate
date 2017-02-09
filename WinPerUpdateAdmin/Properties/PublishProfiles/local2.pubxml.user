@@ -13,7 +13,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:56</publishTime>
     </File>
     <File Include="bin/Connector.dll">
-      <publishTime>01/23/2017 17:59:52</publishTime>
+      <publishTime>02/07/2017 11:30:44</publishTime>
     </File>
     <File Include="bin/itextsharp.dll">
       <publishTime>10/10/2016 06:51:26</publishTime>
@@ -28,7 +28,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/ProcessMsg.dll">
-      <publishTime>01/23/2017 17:59:53</publishTime>
+      <publishTime>02/08/2017 17:27:06</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>11/29/2016 15:07:57</publishTime>
@@ -100,10 +100,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/WinPerUpdateAdmin.dll">
-      <publishTime>01/23/2017 17:59:59</publishTime>
+      <publishTime>02/08/2017 17:27:11</publishTime>
     </File>
     <File Include="bin/WinperUpdateDAO.dll">
-      <publishTime>01/23/2017 17:59:52</publishTime>
+      <publishTime>02/08/2017 17:27:05</publishTime>
     </File>
     <File Include="Content/bootstrap-datepicker.css">
       <publishTime>11/29/2016 15:07:54</publishTime>
@@ -490,7 +490,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="js/AdminClt/admin.js">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>12/27/2016 10:55:00</publishTime>
     </File>
     <File Include="js/AdminClt/app.js">
       <publishTime>12/26/2016 18:33:53</publishTime>
@@ -514,37 +514,37 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="js/Clientes/clientes.js">
-      <publishTime>12/26/2016 15:44:17</publishTime>
+      <publishTime>01/25/2017 18:22:30</publishTime>
     </File>
     <File Include="js/Clientes/inicio.js">
       <publishTime>12/26/2016 11:19:34</publishTime>
     </File>
     <File Include="js/Clientes/serviceClientes.js">
-      <publishTime>12/19/2016 09:48:31</publishTime>
+      <publishTime>01/27/2017 14:19:56</publishTime>
     </File>
     <File Include="js/Clientes/usuarios.js">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/27/2017 14:48:25</publishTime>
     </File>
     <File Include="js/Home/controllerHome.js">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>02/06/2017 14:21:19</publishTime>
     </File>
     <File Include="js/Home/factoryHome.js">
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="js/Login/app.js">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>02/06/2017 14:21:01</publishTime>
     </File>
     <File Include="js/Login/login.js">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>02/07/2017 10:24:48</publishTime>
     </File>
     <File Include="js/Login/serviceLogin.js">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>02/07/2017 09:32:08</publishTime>
     </File>
     <File Include="js/Modulos/app.js">
       <publishTime>11/29/2016 15:31:25</publishTime>
     </File>
     <File Include="js/Modulos/inicio.js">
-      <publishTime>02/12/2016 16:54:03</publishTime>
+      <publishTime>12/02/2016 16:54:03</publishTime>
     </File>
     <File Include="js/Modulos/modulos.js">
       <publishTime>12/21/2016 15:09:07</publishTime>
@@ -562,7 +562,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="js/Seguridad/app.js">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>02/03/2017 15:07:20</publishTime>
     </File>
     <File Include="js/Seguridad/mantenedor.js">
       <publishTime>11/29/2016 15:07:55</publishTime>
@@ -582,11 +582,20 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="js/SeguridadClt/serviceSeguridad.js">
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
+    <File Include="js/SuperUser/app.js">
+      <publishTime>02/03/2017 15:19:35</publishTime>
+    </File>
+    <File Include="js/SuperUser/serviceSU.js">
+      <publishTime>02/03/2017 18:03:11</publishTime>
+    </File>
+    <File Include="js/SuperUser/superUser.js">
+      <publishTime>02/03/2017 17:48:28</publishTime>
+    </File>
     <File Include="js/Version/admin.js">
-      <publishTime>01/03/2017 09:32:44</publishTime>
+      <publishTime>02/07/2017 16:01:01</publishTime>
     </File>
     <File Include="js/Version/app.js">
-      <publishTime>01/04/2017 07:52:21</publishTime>
+      <publishTime>02/08/2017 14:12:37</publishTime>
     </File>
     <File Include="js/Version/componente.js">
       <publishTime>12/27/2016 10:32:39</publishTime>
@@ -598,13 +607,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="js/Version/serviceAdmin.js">
-      <publishTime>01/04/2017 08:30:47</publishTime>
+      <publishTime>02/08/2017 17:02:14</publishTime>
     </File>
     <File Include="js/Version/version.js">
-      <publishTime>12/28/2016 12:53:07</publishTime>
+      <publishTime>02/08/2017 17:24:23</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>12/29/2016 12:11:37</publishTime>
+      <publishTime>02/03/2017 11:26:29</publishTime>
     </File>
     <File Include="Scripts/angular-file-upload.js">
       <publishTime>11/29/2016 15:07:54</publishTime>
@@ -904,7 +913,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>12/27/2016 10:32:39</publishTime>
     </File>
     <File Include="Views/Admin/CrearVersion.cshtml">
-      <publishTime>12/27/2016 12:21:34</publishTime>
+      <publishTime>02/08/2017 17:19:33</publishTime>
     </File>
     <File Include="Views/Admin/EditComponente.cshtml">
       <publishTime>01/04/2017 08:18:01</publishTime>
@@ -919,7 +928,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="Views/Admin/Versiones.cshtml">
-      <publishTime>01/03/2017 09:32:44</publishTime>
+      <publishTime>02/07/2017 15:27:17</publishTime>
     </File>
     <File Include="Views/AdminClt/Componentes.cshtml">
       <publishTime>12/27/2016 11:07:39</publishTime>
@@ -946,7 +955,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>12/20/2016 09:10:26</publishTime>
     </File>
     <File Include="Views/Clientes/Crear.cshtml">
-      <publishTime>01/04/2017 11:46:16</publishTime>
+      <publishTime>02/03/2017 09:38:52</publishTime>
     </File>
     <File Include="Views/Clientes/Index.cshtml">
       <publishTime>11/29/2016 15:07:55</publishTime>
@@ -955,13 +964,16 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>01/04/2017 11:46:16</publishTime>
     </File>
     <File Include="Views/Clientes/Usuario.cshtml">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/27/2017 14:45:37</publishTime>
     </File>
     <File Include="Views/Home/Cuenta.cshtml">
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>11/29/2016 15:07:55</publishTime>
+    </File>
+    <File Include="Views/Home/Install.cshtml">
+      <publishTime>02/07/2017 10:24:48</publishTime>
     </File>
     <File Include="Views/Home/Menus.cshtml">
       <publishTime>11/29/2016 15:07:55</publishTime>
@@ -985,7 +997,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="Views/Seguridad/Inicio.cshtml">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>02/02/2017 09:57:00</publishTime>
     </File>
     <File Include="Views/SeguridadClt/Index.cshtml">
       <publishTime>11/29/2016 15:07:55</publishTime>
@@ -997,7 +1009,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>12/21/2016 06:18:13</publishTime>
+      <publishTime>02/06/2017 12:03:39</publishTime>
+    </File>
+    <File Include="Views/SuperUser/Configuracion.cshtml">
+      <publishTime>02/06/2017 11:31:34</publishTime>
+    </File>
+    <File Include="Views/SuperUser/Index.cshtml">
+      <publishTime>02/03/2017 15:28:14</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>11/29/2016 15:07:55</publishTime>
@@ -1006,7 +1024,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:55</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/03/2017 14:48:29</publishTime>
+      <publishTime>02/08/2017 17:27:13</publishTime>
     </File>
   </ItemGroup>
 </Project>

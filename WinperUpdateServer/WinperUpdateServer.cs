@@ -30,6 +30,18 @@ namespace WinperUpdateServer
         public StringBuilder sb = new StringBuilder();
     }
 
+    public class DllFileUI
+    {
+        public string Nombre { get; set; }
+        public string VersionArchivo { get; set; }
+    }
+
+    public class UpdateUI
+    {
+        public long SetupLength { get; set; }
+        public List<DllFileUI> Lista { get; set; }
+    }
+
     public partial class WinperUpdateServer : ServiceBase
     {
         private int eventId = 0;
@@ -148,6 +160,7 @@ namespace WinperUpdateServer
 
                         string[] token = content.Split(new Char[] { '#' });
                         string dirVersiones = ConfigurationManager.AppSettings["dirVersiones"];
+                        var dirAchivosUI = ConfigurationManager.AppSettings["dirArchivosUI"];
                         dirVersiones += dirVersiones.EndsWith(@"\") ? "" : @"\";
 
                         switch (token[0])
@@ -277,8 +290,7 @@ namespace WinperUpdateServer
                                         }
                                         Send(handler, buffer);
                                     }
-                                }
-                                //handler.BeginSendFile()                                
+                                }                         
                                 break;
                             case "modulos":
                                 var modulosCliente = ProcessMsg.Modulo.GetModulosWithComponenteByCliente(int.Parse(token[1]));
@@ -286,7 +298,52 @@ namespace WinperUpdateServer
                                 json = JsonConvert.SerializeObject(modulosCliente);
                                 Send(handler, json);
                                 break;
+                            case "checkupui":
+                                var clt = ProcessMsg.Cliente.GetClienteByLicencia(token[1], null);
+                                if (clt != null)
+                                {
+                                    List<DllFileUI> listaDll = new List<DllFileUI>();
+                                    new DirectoryInfo(dirAchivosUI).GetFiles().ToList().ForEach(file =>
+                                    {
+                                        listaDll.Add(new DllFileUI
+                                        {
+                                            Nombre = file.Name,
+                                            VersionArchivo = (FileVersionInfo.GetVersionInfo(file.FullName) != null ? FileVersionInfo.GetVersionInfo(file.FullName).FileVersion : "S/I")
+                                        });
+                                    });
+                                    var setup = new FileInfo(Path.Combine(dirAchivosUI, "update", "SetUpdateUI.exe"));
+                                    if (setup != null  && setup.Exists) {
+                                        UpdateUI uui = new UpdateUI
+                                        {
+                                            Lista = listaDll,
+                                            SetupLength = setup.Length
+                                        };
 
+                                        json = JsonConvert.SerializeObject(uui);
+                                        Send(handler, json);
+                                    }
+                                    else { Send(handler, content); }
+                                }
+                                else { Send(handler, content); }
+                                break;
+                            case "downsetup":
+                                bool downsetupbok = false;
+                                int downsetupintentos = 0;
+                                while (!downsetupbok)
+                                {
+                                    downsetupintentos++;
+                                    var buffer = ProcessMsg.Version.DownloadFile("SetUpdateUI.exe", int.Parse(token[1]), int.Parse(token[2]), dirAchivosUI+"\\update\\", eventLog1);
+                                    if (buffer.Length == int.Parse(token[2]))
+                                    {
+                                        bok = true;
+                                        if (downsetupintentos > 1)
+                                        {
+                                            eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", downsetupintentos), EventLogEntryType.Information, ++eventId);
+                                        }
+                                        Send(handler, buffer);
+                                    }
+                                }
+                                break;
                             default:
                                 // Echo the data back to the client.
                                 Send(handler, content);

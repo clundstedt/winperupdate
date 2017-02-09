@@ -5,9 +5,9 @@
         .module('app')
         .controller('usuarios', usuarios);
 
-    usuarios.$inject = ['$scope', '$window', '$routeParams', 'serviceClientes', 'serviceSeguridad'];
+    usuarios.$inject = ['$scope', '$window', '$routeParams', 'serviceClientes', 'serviceSeguridad', '$timeout'];
 
-    function usuarios($scope, $window, $routeParams, serviceClientes, serviceSeguridad) {
+    function usuarios($scope, $window, $routeParams, serviceClientes, serviceSeguridad, $timeout) {
         $scope.title = 'usuarios';
 
         activate();
@@ -24,6 +24,9 @@
                                { CodPrf: 12, NomPrf: 'DBA' }];
 
             $scope.idCliente = $routeParams.idCliente;
+
+            $scope.lblStatUser = "";
+            $scope.AddUserOK = false;
 
             serviceClientes.getCliente($scope.idCliente).success(function (data) {
                 $scope.cliente = data;
@@ -50,27 +53,117 @@
                 });
 
             }
-
+            
             $scope.SaveUsuario = function (formData) {
-                console.debug("formData = " + JSON.stringify(formData));
+                $('#loading-modal').modal({ backdrop: 'static', keyboard: false })
                 if ($scope.idUsuario == 0) {
+                    $scope.lblStatUser += "Creando usuario...\n";
                     serviceClientes.addUsuario($scope.idCliente, formData.perfil, formData.apellido, formData.nombre, formData.mail, 'V').success(function (data) {
                         $scope.idUsuario = data.Id;
                         $scope.formData.estado = "V",
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
+                        $scope.lblStatUser += "Usuario creado con exito. Verificando versión inicial del cliente...\n";
+                        serviceClientes.ExisteVersionInicial($scope.idCliente).success(function (dataVer) {
+                            if (!dataVer) {
+                                $scope.lblStatUser += "Creando versión inicial del cliente...\n";
+                                serviceClientes.addVersionInicial('I', 'P', 'Versión inicial de WinPer').success(function (data) {
+                                    $scope.lblStatUser += "Generando instalador de la versión inicial...\n";
+                                    serviceClientes.GenVersionInicial(data.IdVersion).success(function (data1) {
+                                        $scope.lblStatUser += "Asignando versión al cliente...\n";
+                                        serviceClientes.addClienteToVersion(data1.IdVersion, $scope.idCliente).success(function (dataCTV) {
+                                            $scope.lblStatUser += "Versión inicial creada y publicada correctamente. Enviando E-Mail de bienvenida....\n";
+                                        }).error(function (errCTV) {
+                                            console.error(errCTV);
+                                            $scope.lblStatUser += "Ocurrió un error durante la asignacion de la version al cliente, verifique consola del navegador.\n";
+                                        });
+                                    }).error(function (err) {
+                                        console.error(err);
+                                        $scope.lblStatUser += "Ocurrió un error durante la generacion de la version inicial, verifique consola del navegador.\n";
+                                    });
+                                }).error(function (err) {
+                                    console.error(err);
+                                    $scope.lblStatUser += "Ocurrió un error durante la creacion del a version inicial, verifique consola del navegador.\n";
+                                });
+                            }
+                            serviceClientes.EnviarBienvenida(data.Id).success(function (dataEB) {
+                                if (dataEB.CodErr == 0) {
+                                    $scope.lblStatUser += "Se ha enviado el E-Mail de bienvenida correctamente\n";
+                                } else if (dataEB.CodErr == 1) {
+                                    $scope.lblStatUser += "No se pudo enviar el e-mail de bienvenida, verifique que los datos esten bien escritos.\n";
+                                } else if (dataEB.CodErr == 2) {
+                                    $scope.lblStatUser += "No existe el usuario.\n";
+                                } else if (dataEB.CodErr == 3) {
+                                    $scope.lblStatUser += "No existe el cliente del usuario.\n";
+                                }
+                                $timeout(function () {
+                                    $scope.AddUserOK = true;
+                                }, 3000);
+                            }).error(function (errEB) {
+                                console.error(errEB);
+                                $scope.lblStatUser += "Ocurrió un error durante el envio del correo de bienvenida, verifique consola del navegador.\n";
+                                $timeout(function () {
+                                    $scope.AddUserOK = true;
+                                }, 3000);
+                            });
+                        }).error(function (errorVer) {
+                            console.error(errorVer);
+                            $scope.lblStatUser += "Ocurrió un error durante la verificacion de la version inicial, verifique consola del navegador.\n";
+                            $timeout(function () {
+                                $scope.AddUserOK = true;
+                            }, 3000);
+                        });
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err);
+                        $scope.lblStatUser += "Ocurrió un error durante la creación, veirifique consola del navegador.\n";
+                        $timeout(function () {
+                            $scope.AddUserOK = true;
+                        },3000);
                     });
                 }
                 else {
+                    $scope.lblStatUser += "Modificando usuario...\n";
                     serviceClientes.updUsuario($scope.idCliente, $scope.idUsuario, formData.perfil, formData.idPersona, formData.apellido, formData.nombre, formData.mail, formData.estado).success(function (data) {
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
+                        $scope.lblStatUser += "Usuario Modificado\n";
+                        $timeout(function () {
+                            $scope.AddUserOK = true;
+                        }, 3000);
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err);
+                        $scope.lblStatUser += "Ocurrió un error, verifique consola del navegador\n";
+                        $timeout(function () {
+                            $scope.AddUserOK = true;
+                        }, 3000);
                     });
                 }
+            }
+
+            $scope.ReenviarMailBienvenida = function () {
+                $('#loading-modal').modal({ backdrop: 'static', keyboard: false })
+                $scope.AddUserOK = false;
+                $scope.lblStatUser = "Reenviando E-Mail de bienvenida...\n";
+                serviceClientes.EnviarBienvenida($scope.idUsuario).success(function (dataEB) {
+                    if (dataEB.CodErr == 0) {
+                        $scope.lblStatUser += "Se ha enviado el E-Mail de bienvenida correctamente\n";
+                    } else if (dataEB.CodErr == 1) {
+                        $scope.lblStatUser += "No se pudo enviar el e-mail de bienvenida, verifique que los datos esten bien escritos.\n";
+                    } else if (dataEB.CodErr == 2) {
+                        $scope.lblStatUser += "No existe el usuario.\n";
+                    } else if (dataEB.CodErr == 3) {
+                        $scope.lblStatUser += "No existe el cliente del usuario.\n";
+                    }
+                    $timeout(function () {
+                        $scope.AddUserOK = true;
+                    }, 3000);
+                }).error(function (errEB) {
+                    console.error(errEB);
+                    $scope.lblStatUser += "Ocurrió un error durante el envio del correo de bienvenida, verifique consola del navegador.\n";
+                    $timeout(function () {
+                        $scope.AddUserOK = true;
+                    }, 3000);
+                });
             }
 
             $scope.ShowConfirm = function () {
@@ -100,6 +193,9 @@
                 });
             }
 
+            $scope.CerrarLoadingModal = function () {
+                $("#loading-modal").modal('toggle');
+            }
 
         }
     }

@@ -19,6 +19,24 @@ namespace ProcessMsg
         #endregion
 
         #region Metodos GETs
+        public static int GetCorrelativo(int folio, string mescon)
+        {
+            try
+            {
+                int correlativo = 0;
+                var dr = new CnaClientes().ExecuteGenCorrelativo(folio, mescon);
+                while (dr.Read())
+                {
+                    correlativo = int.Parse(dr["correlativo"].ToString());
+                }
+                return correlativo + 1;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static System.Data.DataTable GetVersionToClientePDF(int idCliente)
         {
             try
@@ -345,7 +363,9 @@ namespace ProcessMsg
                         Mesini = dr["MesIni"].ToString(),
                         NroTrbc = dr["NroTrbc"].ToString(),
                         NroTrbh = dr["NroTrbh"].ToString(),
-                        NroUsr = dr["NroUsr"].ToString()
+                        NroUsr = dr["NroUsr"].ToString(),
+                        MesCon = dr["MesCon"].ToString(),
+                        Correlativo = int.Parse(dr["Correlativo"].ToString())
                     };
 
                     lista.Add(obj);
@@ -464,27 +484,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-        public static int GetFolioLicencia()
-        {
-            try
-            {
-                int numFolio = 0;
-                var dr = new CnaClientes().GetFolio("Licencia");
-                while (dr.Read())
-                {
-                    if (int.TryParse(dr[0].ToString(), out numFolio))
-                    {
-                        return numFolio + 1;
-                    }
-                }
-                return 1000;
-            }
-            catch (Exception ex)
-            {
-                var msg = "Excepcion Controlada: " + ex.Message;
-                throw new Exception(msg, ex);
-            }
-        }
         
         public static List<Model.UsuarioBo> GetUsuarios(int idCliente)
         {
@@ -537,7 +536,8 @@ namespace ProcessMsg
                         Descripcion = reader["Descripcion"].ToString(),
                         isCore = bool.Parse(reader["isCore"].ToString()),
                         Directorio = reader["Directorio"].ToString(),
-                        Estado = char.Parse(reader["Estado"].ToString())
+                        Estado = char.Parse(reader["Estado"].ToString()),
+                        Suite = int.Parse(reader["Suite"].ToString())
                     });
                 }
                 return lista;
@@ -553,34 +553,21 @@ namespace ProcessMsg
         #region Adds
         public static Model.ClienteBo Add(Model.ClienteBo cliente)
         {
-            int codError = 0;
-            string msgError = "";
             var query = new AddCliente();
             try
             {
-                var dr = query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
-                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh,cliente.NroUsr);
-                while (dr.Read())
-                {
-                    codError = int.Parse(dr["codErr"].ToString());
-                    msgError = dr["msgErr"].ToString();
-                    if (codError == 0)
-                    {
-                        return GetClientes().SingleOrDefault(x => x.Rut == cliente.Rut);
-                    }else
-                    {
-                        var msg = "Excepcion Controlada: " + msgError;
-                        throw new Exception(msg);
-                    }
-                }
+                var dr = (int)query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
+                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh,cliente.NroUsr, cliente.MesCon, cliente.Correlativo);
+
+
+                return GetClientes().SingleOrDefault(x => x.Id == dr);
             }
             catch (Exception ex)
             {
                 var msg = "Excepcion Controlada: " + ex.Message;
                 throw new Exception(msg, ex);
             }
-
-            return null;
+            
         }
         public static bool AddClientesHasModulos(int idCliente, int[] idModulos)
         {
@@ -616,7 +603,7 @@ namespace ProcessMsg
             try
             {
                 if (query.Execute(id, cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
-                                 ,cliente.NroLicencia, cliente.EstMtc, cliente.Mesini, cliente.NroTrbc, cliente.NroTrbh, cliente.NroUsr) > 0)
+                                 ,cliente.NroLicencia, cliente.EstMtc, cliente.Mesini, cliente.NroTrbc, cliente.NroTrbh, cliente.NroUsr, cliente.MesCon, cliente.Correlativo) > 0)
                 {
                     return GetClientes().SingleOrDefault(x => x.Id == id);
                 }

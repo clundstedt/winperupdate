@@ -28,6 +28,17 @@ namespace WinPerUpdateUI
         private List<AmbienteBo> ambientes = new List<AmbienteBo>();
         public string ambienteUpdate = "";
 
+        public class DllFileUI
+        {
+            public string Nombre { get; set; }
+            public string VersionArchivo { get; set; }
+        }
+
+        public class UpdateUI
+        {
+            public long SetupLength { get; set; }
+            public List<DllFileUI> Lista { get; set; }
+        }
         public FormPrincipal()
         {
             InitializeComponent();
@@ -90,6 +101,16 @@ namespace WinPerUpdateUI
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
+            Utils.isCentralizado = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "ProcessWPUI.exe"));
+            try
+            {
+                if (SvcWPUI.Status == System.ServiceProcess.ServiceControllerStatus.Running)
+                {
+                    SvcWPUI.Stop();
+                }
+            }
+            catch (Exception) { }
+            
             Utils.RegistrarLog("Load.log", "UI Iniciado");
             Utils.RegistrarLog("Load.log", "-----");
             ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
@@ -112,6 +133,7 @@ namespace WinPerUpdateUI
             string ambientecfg = "";
             string perfil = "";
             string inRun = "No";
+            string installDir = Directory.GetCurrentDirectory();
 
             try
             {
@@ -120,6 +142,7 @@ namespace WinPerUpdateUI
                 ambientecfg = key.GetValue("Ambientes").ToString();
                 inRun = key.GetValue("InRun").ToString();
                 perfil = key.GetValue("Perfil").ToString();
+                installDir = key.GetValue("InstallDir").ToString();
                 key.Close();
             }
             catch (Exception )
@@ -129,11 +152,12 @@ namespace WinPerUpdateUI
                 key.SetValue("Ambientes", ambientecfg);
                 key.SetValue("InRun", inRun);
                 key.SetValue("Perfil", perfil);
+                key.SetValue("InstallDir", installDir);
                 key.Close();
             }
 
             string regUI = Path.Combine(Path.GetTempPath(), "regUI.bat");
-            string exe = Path.Combine(Directory.GetCurrentDirectory(), "WinPerUpdateUI.exe");
+            string exe = Path.Combine(installDir, "WinPerUpdateUI.exe");
             
             int intentos = 0;
             var keyRun = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
@@ -215,11 +239,12 @@ namespace WinPerUpdateUI
                             }
                             key.Close();
                         }
+                        
 
                         /*Obtiene los modulos contratados del cliente con sus respectivos componentes*/
                         json = Utils.StrSendMsg(server, int.Parse(port), "modulos#" + cliente.Id + "#");
                         Utils.ModulosContratados = JsonConvert.DeserializeObject<List<ModuloBo>>(json);
-                        
+
                         ContextMenu1.MenuItems.Add(addDevice);
 
                         ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
@@ -234,12 +259,28 @@ namespace WinPerUpdateUI
 
                         notifyIcon2.ContextMenu = ContextMenu1;
                         timer1.Start();
+                        timerUI.Start();
                     }
                 }
                 catch (Exception ex)
                 {
-                    ContextMenu1.MenuItems[0].Enabled = false;
-                    ContextMenu1.MenuItems[1].Enabled = false;
+                    if (ContextMenu1.MenuItems.Count > 0)
+                    {
+                        ContextMenu1.MenuItems[0].Enabled = false;
+                        ContextMenu1.MenuItems[1].Enabled = false;
+                    }
+                    else
+                    {
+                        ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
+                        ContextMenu1.MenuItems[0].Enabled = false;
+
+                        ContextMenu1.MenuItems.Add("-");
+                        ContextMenu1.MenuItems.Add("&Acerca de...", new EventHandler(this.AcercaDe_Click));
+                        ContextMenu1.MenuItems[1].DefaultItem = true;
+
+                        ContextMenu1.MenuItems.Add("-");
+                        ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
+                    }
                     MessageBox.Show("Winper Update no tiene conexión con el servidor central");
                 }
             }            
@@ -449,7 +490,6 @@ namespace WinPerUpdateUI
             string ConnectionStr = string.Format("Database={0};Server={1};User={2};Password={3};Connect Timeout=200;Integrated Security=;", DataBase, Server, User, Password);
             string server = ConfigurationManager.AppSettings["server"];
             string port = ConfigurationManager.AppSettings["port"];
-
             SqlConnection conn = new SqlConnection();
             try
             {
@@ -597,7 +637,127 @@ namespace WinPerUpdateUI
             
         }
 
-        
-         
+        private void timerUI_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ServerInAccept)
+                {
+                    string nroLicencia = "";
+                    string Perfil = "";
+                    Microsoft.Win32.RegistryKey key = null;
+                    try
+                    {
+                        key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                        nroLicencia = key.GetValue("Licencia").ToString();
+                        Perfil = key.GetValue("Perfil").ToString();
+                    }
+                    catch (Exception)
+                    {
+                        key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                        key.SetValue("Licencia", nroLicencia);
+                        key.SetValue("Perfil", Perfil);
+                    }
+                    
+                    key.Close();
+                    if (!string.IsNullOrEmpty(nroLicencia) && Perfil.Equals("Administrador"))
+                    {
+                        var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
+                       
+                        string server = ConfigurationManager.AppSettings["server"];
+                        string port = ConfigurationManager.AppSettings["port"];
+
+                        string json = Utils.StrSendMsg(server, int.Parse(port), "checkupui#" + nroLicencia + "#");
+                        var uui = JsonConvert.DeserializeObject<UpdateUI>(json);
+                        bool FileOk = true;
+
+                        if (uui != null && uui.Lista.Count > 0)
+                        {
+                            foreach(FileInfo fl in new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles().ToList())
+                            {
+                                var exist = uui.Lista.Exists(f => f.Nombre.Equals(fl.Name));
+                                if (exist)
+                                {
+                                    var fil = uui.Lista.SingleOrDefault(x => x.Nombre.Equals(fl.Name));
+                                    var a = FileVersionInfo.GetVersionInfo(fl.FullName);
+                                    if (FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion != null)
+                                    {
+                                        if (!fil.VersionArchivo.Equals(FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion))
+                                        {
+                                            FileOk = false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (!FileOk)
+                            {
+                                ServerInAccept = false;
+                                
+                                long lengthInstalador = 0;
+                                FileStream stream = null;
+                                if (!File.Exists(nameIntalador))
+                                {
+                                    stream = new FileStream(nameIntalador, FileMode.CreateNew, FileAccess.Write);
+                                }
+                                else
+                                {
+                                    lengthInstalador = new FileInfo(nameIntalador).Length;
+                                    stream = new FileStream(nameIntalador, FileMode.Append, FileAccess.Write);
+                                }
+
+                                BinaryWriter writer = new BinaryWriter(stream);
+
+                                long nPosIni = lengthInstalador;//new
+                                while (nPosIni < uui.SetupLength)
+                                {
+                                    long largoMax = uui.SetupLength - nPosIni;
+                                    if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
+                                    string newmsg = string.Format("downsetup#{0}#{1}#", nPosIni, largoMax);
+                                    var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
+                                    writer.Write(buffer, 0, buffer.Length);
+                                    nPosIni += buffer.Length;
+                                }
+                                
+                                writer.Close();
+                                stream.Close();
+
+                                lengthInstalador = new FileInfo(nameIntalador).Length;
+                                if (uui.SetupLength == lengthInstalador)
+                                {
+                                    if (Utils.isCentralizado)
+                                    {
+                                        var argument = string.Format("/DIR=\"{0}\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL",Directory.GetCurrentDirectory());
+                                        SvcWPUI.Start(new string[] { nameIntalador, argument });
+                                    }
+                                    else
+                                    {
+                                        Process.Start(nameIntalador);
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                if (File.Exists(nameIntalador))
+                                {
+                                    File.Delete(nameIntalador);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                ServerInAccept = true;
+                Utils.RegistrarLog("UPUI_InvalidOperationException.log", ex.ToString());
+            }
+            catch(Exception ex)
+            {
+                ServerInAccept = true;
+                Utils.RegistrarLog("UPUI.log", ex.ToString());
+                MessageBox.Show("Ocurrió un error en timerUI_Tick, revise el log 'UPUI.log'", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

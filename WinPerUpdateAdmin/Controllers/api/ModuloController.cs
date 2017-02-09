@@ -12,6 +12,20 @@ namespace WinPerUpdateAdmin.Controllers.api
     public class ModuloController : ApiController
     {
         #region get
+        [Route("api/Modulos/Suite/{idSuite:int}")]
+        [HttpGet]
+        public Object GetModulosBySuite(int idSuite)
+        {
+            try
+            {
+                return ProcessMsg.Modulo.GetModulosBySuite(idSuite).Where(m => m.Estado == 'V').OrderBy(m => m.NomModulo);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Componentes/Sync")]
         [HttpGet]
         public Object SyncComponentes()

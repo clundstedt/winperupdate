@@ -15,17 +15,22 @@
                 <div class="btn-group" role="toolbar">
                     
 
-                    <button ng-click="ShowConfirmPublish()" ng-disabled="formData.estado=='C' || formData.estado=='P'" data-toggle="modal" class="btn btn-default" ng-hide="idversion==0">
+                    <!--button ng-click="ShowConfirmPublish()" ng-disabled="formData.estado=='C' || formData.estado=='P'" data-toggle="modal" class="btn btn-default" ng-hide="idversion==0">
+                        <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicar
+                    </!--button-->
+
+                    <button data-toggle="modal" data-target="#publica-modal" ng-disabled="formData.estado=='C' || formData.estado=='P'" class="btn btn-default" ng-hide="idversion==0">
                         <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicar
                     </button>
+
 
                     <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idversion==0">
                         <span class="fa fa-fw fa-trash-o"></span> Eliminar
                     </a>
 
-                    <button ng-click="PublicarParcial(idversion)" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
+                    <!--button ng-click="PublicarParcial(idversion)" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
                         <span class="fa fa-fw fa-bullhorn"></span> Publicar Parcialmente
-                    </button>
+                    </!--button-->
                 </div>
             </div>
 
@@ -259,6 +264,77 @@
         </div>
     </div>
 
+</div>
+
+<div id="publica-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Opciones de Publicación</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio">
+                            <label><input type="radio" name="radioPub" ng-model="radioPublicar" value="0">Publicar a TODOS</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="radio">
+                            <label><input type="radio" name="radioPub" ng-model="radioPublicar" value="1">Publicar Parcialmente</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" ng-hide="radioPublicar == 0">
+                        <div class="table-responsive" >
+                            <table st-table="displayClientes" st-safe-src="listaClientes" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nombre Cliente</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="clt in displayClientes" class="row-tabla" style="height: 20px;">
+                                        <td style="vertical-align: middle;">
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" ng-model="clt.check"></label>
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align: middle;">
+                                            {{clt.cliente.Nombre}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span style="color: red">{{lblMsgPublica}}</span>
+                <button type="button" ng-click="ShowConfirmPublish()" class="btn btn-info">Publicar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <input type="hidden" id="Version" value="{{idversion}}" />

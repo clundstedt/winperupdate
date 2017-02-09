@@ -70,6 +70,7 @@
     <Compile Include="CnaPerfiles.cs" />
     <Compile Include="CnaPersona.cs" />
     <Compile Include="CnaRegiones.cs" />
+    <Compile Include="CnaSuites.cs" />
     <Compile Include="CnaTareas.cs" />
     <Compile Include="CnaUsuario.cs" />
     <Compile Include="CnaUsuarioById.cs" />

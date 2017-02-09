@@ -9,6 +9,11 @@ namespace WinperUpdateDAO
 {
     public class CnaVersionesCliente : SpDao
     {
+        /// <summary>
+        /// Obtiene las versiones del cliente esten o no esten instaladas
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public SqlDataReader Execute(int id)
         {
             SpName = @" select a2.* 
@@ -54,7 +59,11 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
-
+        /// <summary>
+        /// Obtiene las versiones del cliente que estan INSTALADAS
+        /// </summary>
+        /// <param name="idClientes"></param>
+        /// <returns></returns>
         public SqlDataReader ExecuteVersionesCliente(int idClientes)
         {
             SpName = @"SELECT vca.idClientes
