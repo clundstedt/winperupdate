@@ -1,0 +1,1 @@
+Aplicacion encargada de realizar las descargas e instalaciones de los parches y actualizaciones de WinPer. Tambien ejecuta scripts SQL.

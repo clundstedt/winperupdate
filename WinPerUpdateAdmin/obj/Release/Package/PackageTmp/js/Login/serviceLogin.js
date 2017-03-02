@@ -19,7 +19,7 @@
 
         return service;
 
-        function CrearBD(userbd, passbd, svbd, nombrebd) {
+        function CrearBD(userbd, passbd, svbd, nombrebd, nombreuser, apellidouser, mailuser, passsu) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -27,7 +27,17 @@
                 "userbd": userbd,
                 "passbd": passbd,
                 "svbd": svbd,
-                "nombrebd": nombrebd
+                "nombrebd": nombrebd,
+                "Usuario": {
+                    "CodPrf": 5,
+                    "Clave": passsu,
+                    "Persona": {
+                        "Apellidos": apellidouser,
+                        "Nombres": nombreuser,
+                        "Mail": mailuser
+                    },
+                    "EstUsr": "V"
+                }
             };
 
             $.ajax({
@@ -45,7 +55,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('Usuario No existe');
                 }
 
@@ -93,7 +103,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('Usuario No existe');
                 }
 
@@ -143,7 +153,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe configuracion');
                 }
 
@@ -180,7 +190,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('Usuario No existe');
                 }
 
@@ -216,7 +226,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo enviar mail');
                 }
             });
@@ -272,7 +282,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo enviar mail');
                 }
             });

@@ -61,7 +61,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo EnviarBienvenida');
                 }
             });
@@ -96,7 +96,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo Verificar Version Inicial');
                 }
             });
@@ -119,8 +119,8 @@
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/VersionInicial/' + idVersion,
-                type: "POST",
+                url: '/api/VersionInicial/' + idVersion + '/Cliente',
+                type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
@@ -132,7 +132,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version');
                 }
             });
@@ -177,7 +177,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version');
                 }
             });
@@ -213,7 +213,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version al cliente');
                 }
             });
@@ -249,7 +249,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen Correlativo');
                 }
             });
@@ -285,7 +285,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen Años');
                 }
             });
@@ -321,7 +321,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen Suites');
                 }
             });
@@ -357,7 +357,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen TrabPlantas');
                 }
             });
@@ -393,7 +393,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen Honorarios');
                 }
             });
@@ -428,7 +428,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen versiones');
                 }
             });
@@ -464,7 +464,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen módulos');
                 }
             });
@@ -500,7 +500,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen módulos');
                 }
             });
@@ -538,7 +538,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen regiones');
                 }
 
@@ -575,7 +575,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen comunas asociadas a la región');
                 }
             });
@@ -611,7 +611,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen clientes');
                 }
 
@@ -648,7 +648,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe cliente');
                 }
 
@@ -684,7 +684,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe cliente');
                 }
 
@@ -721,7 +721,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen usuarios');
                 }
 
@@ -758,7 +758,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe el usuario');
                 }
 
@@ -797,7 +797,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('ERR:No se pudo agregar el cliente');
                 }
             });
@@ -854,7 +854,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('ERR:No se pudo agregar el cliente');
                 }
             });
@@ -902,7 +902,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar el usuario');
                 }
             });
@@ -959,7 +959,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('ERR: No se pudo modificar el cliente');
                 }
             });
@@ -1008,7 +1008,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo actualizar el usuario');
                 }
             });
@@ -1044,7 +1044,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo eliminar el cliente');
                 }
             });
@@ -1080,7 +1080,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen comunas asociadas a la región');
                 }
             });
@@ -1116,7 +1116,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen comunas asociadas a la región');
                 }
             });

@@ -72,6 +72,38 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        public static List<Model.ComponenteModuloBo> GetComponentesModulos()
+        {
+            try
+            {
+                List<Model.ComponenteModuloBo> lista = new List<Model.ComponenteModuloBo>();
+                var reader = new CnaComponenteModulo().ExecuteComponentesModulos();
+                while (reader.Read())
+                {
+                    lista.Add(new Model.ComponenteModuloBo
+                    {
+                        idComponentesModulos = int.Parse(reader["idComponentesModulos"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        Modulo = int.Parse(reader["Modulos"].ToString()),
+                        TipoComponentes = new Model.TipoComponenteBo
+                        {
+                            idTipoComponentes = int.Parse(reader["TipoComponentes"].ToString()),
+                            Nombre = reader["NombreTipo"].ToString(),
+                            isCompBD = bool.Parse(reader["isCompBD"].ToString()),
+                            isCompDLL = bool.Parse(reader["isCompDLL"].ToString()),
+                            Extensiones = reader["Extensiones"].ToString()
+                        }
+                    });
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.ComponenteModuloBo> GetComponentesModulos(int idModulo)
         {
             try
@@ -129,7 +161,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static List<Model.ComponenteModuloBo> GetComponentesConDirectorio()
         {
             List<Model.ComponenteModuloBo> lista = new List<Model.ComponenteModuloBo>();
@@ -246,6 +277,27 @@ namespace ProcessMsg
         #endregion
 
         #region Dels
+
+        public static bool DelAll()
+        {
+            try
+            {
+                if (GetComponentesModulos().Count > 0)
+                {
+                    if (new DelComponenteModulo().ExecuteAll() > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
 
         public static int DelComponentesModulos(int idComponentesModulos)
         {

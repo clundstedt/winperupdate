@@ -34,6 +34,12 @@
             
 
             if (!jQuery.isEmptyObject($routeParams)) {
+
+                serviceAdmin.getComponentesOficiales().success(function (data) {
+                    $scope.componentesOficiales = data;
+                }).error(function (err) {
+                    console.error(err);
+                });
                 $scope.idversion = $routeParams.idVersion;
                 $scope.titulo = "Modificar Versión";
                 $scope.labelcreate = "Modificar";
@@ -54,6 +60,13 @@
                     $scope.formData.release = data.Release;
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
+                    serviceAdmin.getComponentesVersion(data.IdVersion).success(function (dataCV) {
+                        $scope.componentes = dataCV;
+                    }).error(function (errCV) {
+                        console.error(errCV);
+                    });
+
+                    /*METODO DE VALIDACION DE COMPONENTE POR ANGULAR
                     for (var i = 0; i < data.Componentes.length; i++) {
                         var comp = {
                             isOK : "success",
@@ -66,17 +79,12 @@
                             $scope.ComponenteOkSegunVersion($scope.componentes[i]);
                         }
                         console.log($scope.componentes);
-                    }, 1500);
+                    }, 1500);*/
                     
                     $scope.formData.comentario = data.Comentario;
 
                     $scope.fechaini = data.FechaFmt;
 
-                    angular.forEach($scope.componentes, function (item) {
-                        if (item.componente.Tipo == 'exe') $scope.totales[0]++;
-                        else if (item.componente.Tipo == 'qrp') $scope.totales[1]++;
-                        else $scope.totales[2]++;
-                    });
 
                 }).error(function (data) {
                     console.error(data);
@@ -100,11 +108,6 @@
                 });
             }
 
-            serviceAdmin.getComponentesOficiales().success(function (data) {
-                $scope.componentesOficiales = data;
-            }).error(function (err) {
-                console.error(err);
-            });
 
             $scope.ComponenteOkSegunVersion = function (file) {
                 for (var i = 0; i < $scope.componentesOficiales.length; i++) {
@@ -217,7 +220,7 @@
                     } else {
                         $("#avisocomOk-modal").modal('show');
                     }
-                }else{
+                } else {
                     $scope.lblMsgPublica = "Debe seleccionar almenos un cliente.";
                 }
             }
@@ -240,6 +243,17 @@
 
                 }).error(function (data) {
                     console.debug(data);
+                });
+            }
+
+            $scope.UpdateEstado = function (estadoVersion) {
+                serviceAdmin.updEstadoVersion($scope.idversion, estadoVersion).success(function (data) {
+                    //$scope.formData.estado = estadoVersion;
+                    $window.setTimeout(function () {
+                        $window.location.href = "/Admin#/";
+                    }, 2000);
+                }).error(function (err) {
+                    console.error(err);
                 });
             }
 

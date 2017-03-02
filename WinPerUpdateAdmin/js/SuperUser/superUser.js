@@ -5,9 +5,9 @@
         .module('app')
         .controller('superUser', superUser);
 
-    superUser.$inject = ['$scope', '$routeParams', '$window', 'serviceSU'];
+    superUser.$inject = ['$scope', '$routeParams', '$window', 'serviceSU', '$timeout'];
 
-    function superUser($scope, $routeParams, $window, serviceSU) {
+    function superUser($scope, $routeParams, $window, serviceSU, $timeout) {
         $scope.title = 'Configuración General';
 
         activate();
@@ -32,6 +32,10 @@
                 console.error(err);
             });
 
+            $scope.ConfirmarSave = function () {
+                $("#confirmsave-modal").modal('show');
+            }
+
             $scope.GuardarConf = function (formData) {
                 $scope.lblButton = "Guardando";
                 serviceSU.Guardar(formData.innosetup, formData.smtpwu, formData.mailwu, formData.passmailwu, formData.aliasmailwu, formData.mailsoporte, formData.dirupload, formData.dirvoficial, formData.dirfuentes).success(function (data) {
@@ -47,6 +51,9 @@
                         $scope.formData.dirvoficial = dataLoad.voficial;
                         $scope.formData.dirfuentes = dataLoad.fuentes;
                         $scope.lblButton = "Guardar";
+                        $timeout(function () {
+                            $window.location.href = "/Home/Logout/";
+                        },1500);
                     }).error(function (err) {
                         console.error(err);
                         $scope.lblButton = "Guardar";

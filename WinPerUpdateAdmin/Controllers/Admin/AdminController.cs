@@ -31,6 +31,15 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             return View();
         }
 
+        public ActionResult Descargas()
+        {
+            if (Session["token"] == null)
+            {
+                return RedirectToAction("Logout", "Home");
+            }
+            return View();
+        }
+
         public PartialViewResult Versiones()
         {
             return PartialView();
@@ -118,7 +127,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             {
                 int idVersion = int.Parse(form["idVersion"]);
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
-                if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", Output = "" });
+                if (version == null) return Json(new { Version = idVersion, CodErr = 2, MsgErr = "Version no existe", Output = "" });
 
                 string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Uploads/")) + version.Release;
                 if (!sRuta.EndsWith("\\")) sRuta += @"\";
@@ -159,20 +168,24 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                         if (comp.ElementAt(0) != null)
                         {
                             var oPath = Path.Combine(dirN1, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
+                            if (!System.IO.File.Exists(oPath))
+                            {
+                                x.CopyTo(oPath, true);
+                            }
                             var dPath = Path.Combine(dirN, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
                             new FileInfo(oPath).CopyTo(dPath, true);
                             x.CopyTo(oPath, true);
                         }
                     }
 
-                    return Json(new { CodErr = 0, MsgErr = result, Output = sFile + ".exe" });
+                    return Json(new { Version = idVersion, CodErr = 0, MsgErr = result, Output = sFile + ".exe" });
                 }
-                return Json(new { CodErr = 1, MsgErr = "No pudo generar archivo script de setup", Output = "" });
+                return Json(new { Version = idVersion, CodErr = 1, MsgErr = "No pudo generar archivo script de setup", Output = "" });
 
             }
             catch (Exception ex)
             {
-                return Json(new { CodErr = 3, MsgErr = ex.Message, Output = "" });
+                return Json(new { Version = 0, CodErr = 3, MsgErr = ex.Message, Output = "" });
             }
         }
         

@@ -10,6 +10,44 @@ namespace WinperUpdateDAO
     public class CnaVersionesCliente : SpDao
     {
         /// <summary>
+        /// Checkea si la penultima version liberada el cliente, esta instalada en el ambiente especificado
+        /// </summary>
+        /// <param name="idVersion">Version a partir</param>
+        /// <param name="idCliente">Cliente que se desea checkear</param>
+        /// <param name="idAmbiente">Ambiente donde debiera estar instalada la version</param>
+        /// <returns></returns>
+        public SqlDataReader CheckVersionAnteriorInstalada(int idVersion, int idCliente, int idAmbiente)
+        {
+            SpName = @"SELECT * FROM Versiones_has_Clientes_has_Ambientes
+                                    WHERE idVersion = (
+                                                        select vc.idVersion from Versiones_has_Clientes vc INNER JOIN Versiones v
+                                                        ON vc.idVersion = v.idVersion
+                                                        where vc.idClientes = @idCltVC
+                                                        and vc.idVersion <= @idVersion
+                                                        and v.Estado = 'P'
+                                                        order by vc.idVersion desc
+                                                        offset 1 rows
+                                                        FETCH NEXT 1 ROWS ONLY
+                                                      )
+                                    AND idAmbientes = @idAmbiente
+                                    AND idClientes = @idCltVCA";
+            try
+            {
+                ParmsDictionary.Add("@idVersion", idVersion);
+                ParmsDictionary.Add("@idCltVC",idCliente);
+                ParmsDictionary.Add("@idAmbiente",idAmbiente);
+                ParmsDictionary.Add("@idCltVCA",idCliente);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        /// <summary>
         /// Obtiene las versiones del cliente esten o no esten instaladas
         /// </summary>
         /// <param name="id"></param>
@@ -45,6 +83,7 @@ namespace WinperUpdateDAO
                         and    a3.idClientes = a1.idClientes
                         and    a3.idVersion  = a1.idVersion
                         and    a3.idAmbientes = @idAmbiente
+                        and    a3.Estado = 'V'
                         ";
             try
             {

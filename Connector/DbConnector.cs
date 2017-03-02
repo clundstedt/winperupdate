@@ -443,6 +443,24 @@ namespace ConnectorDB
             }
         }
 
+        public string Ping()
+        {
+            string isConnected = string.Empty;
+            ReadParameters();
+            var con = new SqlConnection(ConnectionStr);
+            try
+            {
+                con.Open();
+                isConnected = "OK";
+            }
+            catch(Exception ex)
+            {
+                isConnected = ex.Message;
+            }
+            if (isConnected.Equals("OK")) con.Close();
+            return isConnected;
+        }
+
         private string DesEncriptar(string _cadenaAdesencriptar)
         {
             string result = string.Empty;

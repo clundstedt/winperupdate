@@ -24,13 +24,13 @@
                     </button>
 
 
-                    <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idversion==0">
-                        <span class="fa fa-fw fa-trash-o"></span> Eliminar
-                    </a>
+                    <button ng-click="UpdateEstado('C')" class="btn btn-danger" ng-hide="idversion==0" ng-disabled="formData.estado=='C'">
+                        <span class="fa fa-fw fa-trash-o"></span> Caducar
+                    </button>
 
-                    <!--button ng-click="PublicarParcial(idversion)" class="btn btn-info" ng-hide="idversion==0 || formData.estado!='N'">
-                        <span class="fa fa-fw fa-bullhorn"></span> Publicar Parcialmente
-                    </!--button-->
+                    <button ng-click="UpdateEstado('P')" class="btn btn-success" ng-hide="idversion==0 || formData.estado == 'N'" ng-disabled="formData.estado=='P'">
+                        <span class="fa fa-fw fa-bullhorn"></span> Vigente
+                    </button>
                 </div>
             </div>
 

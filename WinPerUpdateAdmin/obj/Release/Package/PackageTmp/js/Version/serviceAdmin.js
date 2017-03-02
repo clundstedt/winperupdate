@@ -15,10 +15,10 @@
             addVersion: addVersion,
             addVersionInicial: addVersionInicial,
             updVersion: updVersion,
-            delVersion: delVersion,
             getVersion: getVersion,
             genVersion: genVersion,
             getClientes: getClientes,
+            updEstadoVersion: updEstadoVersion,
 
             getModulos: getModulos,
             getUltimaRelease: getUltimaRelease,
@@ -26,6 +26,7 @@
             getTiposComponentes: getTiposComponentes,
             existeComponente: existeComponente,
             getComponentesByName: getComponentesByName,
+            getComponentesVersion: getComponentesVersion,
 
             getComponente: getComponente,
             addComponente: addComponente,
@@ -38,6 +39,43 @@
         };
 
         return service;
+
+        function getComponentesVersion(idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/ComponenteOkSegunVersion/' + idVersion,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen componentesOk');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
+                    deferred.reject('No existen componentesOk');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getClientes() {
             var deferred = $q.defer();
@@ -57,7 +95,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No existen clientes');
                 }
 
@@ -94,7 +132,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No tiene Componentes creadas');
                 }
             });
@@ -130,7 +168,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No tiene TipoComponentes creadas');
                 }
             });
@@ -166,7 +204,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No tiene componentes creadas');
                 }
             });
@@ -202,7 +240,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No tiene componentes creadas');
                 }
             });
@@ -238,7 +276,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No tiene versiones creadas');
                 }
             });
@@ -274,7 +312,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No tiene versiones creadas');
                 }
             });
@@ -311,8 +349,44 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function updEstadoVersion(idVersion, estado) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/'+idVersion+'/Estado/'+estado+'/Upd',
+                type: "PUT",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo cambiar el estado de la version');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
+                    deferred.reject('No se pudo cambiar el estado de la version');
                 }
             });
 
@@ -356,7 +430,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version');
                 }
             });
@@ -404,7 +478,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version');
                 }
             });
@@ -456,7 +530,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo modificar la version');
                 }
             });
@@ -492,49 +566,8 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No existe la version');
-                }
-            });
-
-            promise.success = function (fn) {
-                promise.then(fn);
-                return promise;
-            }
-
-            promise.error = function (fn) {
-                promise.then(null, fn);
-                return promise;
-            }
-
-            return promise;
-        }
-
-        function delVersion(id) {
-            var deferred = $q.defer();
-            var promise = deferred.promise;
-
-            var componente = {
-                "Name": name
-            };
-
-            $.ajax({
-                url: '/api/Version/' + id,
-                type: "DELETE",
-                dataType: 'Json',
-                data: componente,
-                success: function (data, textStatus, jqXHR) {
-                    if (jqXHR.status == 201) {
-                        //console.log(JSON.stringify(data));
-                        deferred.resolve(data);
-                    }
-                    else {
-                        deferred.reject('No se pudo eliminar la version');
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
-                    deferred.reject('No se pudo eliminar la version');
                 }
             });
 
@@ -575,7 +608,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo generar la version');
                 }
             });
@@ -619,7 +652,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo agregar la componente');
                 }
             });
@@ -643,7 +676,7 @@
 
 
             $.ajax({
-                url: '/api/Version/' + id + '/Clientes/TipoPub/'+tipoPub,
+                url: '/api/Version/' + id + '/Clientes/TipoPub/' + tipoPub,
                 type: "POST",
                 dataType: 'text',
                 contentType: "application/json",
@@ -658,7 +691,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version al cliente');
                 }
             });
@@ -694,7 +727,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo agregar la version al cliente');
                 }
             });
@@ -737,7 +770,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo modificar la componente');
                 }
             });
@@ -778,7 +811,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No se pudo eliminar la componente');
                 }
             });
@@ -814,7 +847,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No existen módulos');
                 }
             });
@@ -851,7 +884,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
                     deferred.reject('No existe la componente');
                 }
             });

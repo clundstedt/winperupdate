@@ -11,6 +11,10 @@ namespace WinPerUpdateAdmin.Controllers.SuperUser
         // GET: SuperUser
         public ActionResult Index()
         {
+            if (Session["token"] == null)
+            {
+                return RedirectToAction("Logout", "Home");
+            }
             return View();
         }
 

@@ -39,5 +39,20 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public int ExecuteAll()
+        {
+            try
+            {
+                SpName = @"DELETE FROM ComponentesModulos";
+
+                return Connector.ExecuteQueryNoResult(SpName, null);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteAll", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

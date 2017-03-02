@@ -8,7 +8,7 @@
         <h1>Instalación WinperUpdateAdmin</h1>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-controller="login">
     <div class="col-md-12">
         <div class="panel-group">
             <div class="panel panel-info">
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-body"  ng-controller="login">
+                <div class="panel-body"  >
                     <form name="frmMain">
                         <div class="row">
                             <div class="col-md-12">
@@ -60,6 +60,35 @@
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.mailuser.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Password</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Password"><i class="fa fa-key fa-fw"></i></span>
+                                        <input class="form-control" type="password" name="passsu" placeholder="Password" ng-model="formData.passsu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.passsu.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Repita Password</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Repita Password"><i class="fa fa-key fa-fw"></i></span>
+                                        <input class="form-control" type="password" name="rpasssu" placeholder="Repita Password" ng-model="formData.rpasssu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.rpasssu.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                    <span class="error_ingreso" ng-show="formData.passsu != formData.rpasssu">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Las passwords no coinciden.
                                     </span>
                                 </div>
                             </div>
@@ -125,183 +154,37 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Configuración Web</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Ruta de InnoSetup</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Ruta de InnoSetup"><i class="fa fa-link fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="innosetup" placeholder="Ruta absoluta de InnoSetup" ng-model="formData.innosetup" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.innosetup.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Servidor SMTP de WinperUpdate</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Servidor SMTP de WinperUpdate"><i class="fa fa-server fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="smtpwu" placeholder="Servidor SMTP de WinperUpdate" ng-model="formData.smtpwu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.smtpwu.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Mail de WinperUpdate</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Mail de WinperUpdate"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="mailwu" placeholder="E-Mail de WinperUpdate" ng-model="formData.mailwu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.mailwu.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Password de Mail WinperUpdate</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Password de Mail WinperUpdate"><i class="fa fa-key fa-fw"></i></span>
-                                        <input class="form-control" type="password" name="passmailwu" placeholder="Password de Mail WinperUpdate" ng-model="formData.passmailwu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.passmailwu.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Repita Password de Mail WinperUpdate</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Repita Password de Mail WinperUpdate"><i class="fa fa-key fa-fw"></i></span>
-                                        <input class="form-control" type="password" name="rpassmailwu" placeholder="Repita Password de Mail WinperUpdate" ng-model="formData.rpassmailwu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.rpassmailwu.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                    <span class="error_ingreso" ng-show="formData.passmailwu != formData.rpassmailwu">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Las passwords no coinciden.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Alias de Mail WinperUpdate</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Alias de Mail WinperUpdate"><i class="fa fa-user fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="aliasmailwu" placeholder="Alias de Mail WinperUpdate" ng-model="formData.aliasmailwu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.aliasmailwu.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Mail de Soporte</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Mail de Soporte"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="mailsoporte" placeholder="Mail de Soporte" ng-model="formData.mailsoporte" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.mailsoporte.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Directorio Upload</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Directorio Upload (Donde se guardaran las versiones que se iran creando.)"><i class="fa fa-link fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="dirupload" placeholder="Directorio Upload (Donde se guardaran las versiones que se iran creando.)" ng-model="formData.dirupload" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.dirupload.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Directorio de la version oficial</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Directorio donde se encontrara la version oficial."><i class="fa fa-link fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="dirvoficial" placeholder="Directorio donde se encontrara la version oficial." ng-model="formData.dirvoficial" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.dirvoficial.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Directorio Fuentes</label>
-                                <div class="form-group">
-                                    <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Directorio Fuentes (Directorio donde se guardan plantillas, informes y archivos que puede descargar el usuario)"><i class="fa fa-link fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="dirfuentes" placeholder="Directorio Fuentes (Directorio donde se guardan plantillas, informes y archivos que puede descargar el usuario)" ng-model="formData.dirfuentes" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                                    </div>
-                                    <span class="error_ingreso" ng-show="frmMain.dirfuentes.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && formData.passuser == formData.rpassuser && formData.passmailwu == formData.rpassmailwu && Instalar(formData)" ng-disabled="lblButton != 'Instalar'">
+                                <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && formData.passsu == formData.rpasssu && Instalar(formData)" ng-disabled="lblButton != 'Instalar'">
                                     <span class="fa fa-check" ng-show="lblButton != 'Instalar'"></span>
                                     <span class="fa fa-circle-o-notch fa-spin" ng-hide="lblButton == 'Instalar'"></span> {{lblButton}}
                                 </button>
                             </div>
                         </div>
                     </form>
+                    <div id="load" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                </div>
+                                <div class="modal-body">
+                                    <center>
+                                        <h1><i class="fa fa-spinner fa-pulse"></i></h1>
+                                        <br />
+                                        <h4>{{lblLoad}}</h4>
+                                    </center>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="load" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-            </div>
-            <div class="modal-body">
-                <center>
-                    <h1><i class="fa fa-spinner fa-pulse"></i></h1>
-                    <br />
-                    <h4>{{lblLoad}}</h4>
-                </center>
-            </div>
-            <div class="modal-footer">
-                
-            </div>
-        </div>
-
-    </div>
-</div>

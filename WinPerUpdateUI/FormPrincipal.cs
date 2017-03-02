@@ -361,12 +361,18 @@ namespace WinPerUpdateUI
                     string server = ConfigurationManager.AppSettings["server"];
                     string port = ConfigurationManager.AppSettings["port"];
                     string dirTmp = Path.GetTempPath();
-
+                    string json = Utils.StrSendMsg(server, int.Parse(port), "modulos#" + cliente.Id + "#");
+                    Utils.ModulosContratados = JsonConvert.DeserializeObject<List<ModuloBo>>(json);
+                    if (Utils.ModulosContratados.Count == 0)
+                    {
+                        Utils.RegistrarLog("Modulos.log", "Usted no tiene modulos contratados o ocurrió un error al solicitar sus modulos");
+                        return;
+                    }
                     // 1.- Verificamos versiones
                     foreach (var item in ambientes)
                     {
                         var versiones = new List<VersionBo>();
-                        string json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#" + item.idAmbientes.ToString() + "#");
+                        json = Utils.StrSendMsg(server, int.Parse(port), "getversiones#" + cliente.Id.ToString() + "#" + item.idAmbientes.ToString() + "#");
                         versiones = JsonConvert.DeserializeObject<List<VersionBo>>(json);
                         if (versiones != null)
                         {
@@ -423,7 +429,7 @@ namespace WinPerUpdateUI
                     string ambiente = key2.GetValue("Ambientes").ToString();
                     key2.Close();
 
-                    if (perfil.Equals("Administrador") || perfil.Equals("DBA"))
+                    if ((perfil.Equals("Administrador") && bool.Parse(ConfigurationManager.AppSettings["sql"])) || perfil.Equals("DBA"))
                     {
                         int idPerfil = perfil.Equals("Administrador") ? 11 : 12;
                         var tareas = new List<TareaBo>();
@@ -658,89 +664,93 @@ namespace WinPerUpdateUI
                         key.SetValue("Licencia", nroLicencia);
                         key.SetValue("Perfil", Perfil);
                     }
-                    
+
                     key.Close();
                     if (!string.IsNullOrEmpty(nroLicencia) && Perfil.Equals("Administrador"))
                     {
                         var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
-                       
+
                         string server = ConfigurationManager.AppSettings["server"];
                         string port = ConfigurationManager.AppSettings["port"];
 
                         string json = Utils.StrSendMsg(server, int.Parse(port), "checkupui#" + nroLicencia + "#");
-                        var uui = JsonConvert.DeserializeObject<UpdateUI>(json);
-                        bool FileOk = true;
 
-                        if (uui != null && uui.Lista.Count > 0)
+                        
+                        bool FileOk = true;
+                        if (!json.Equals("0"))
                         {
-                            foreach(FileInfo fl in new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles().ToList())
+                            var uui = JsonConvert.DeserializeObject<UpdateUI>(json);
+                            if (uui != null && uui.Lista.Count > 0)
                             {
-                                var exist = uui.Lista.Exists(f => f.Nombre.Equals(fl.Name));
-                                if (exist)
+                                foreach (FileInfo fl in new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles().ToList())
                                 {
-                                    var fil = uui.Lista.SingleOrDefault(x => x.Nombre.Equals(fl.Name));
-                                    var a = FileVersionInfo.GetVersionInfo(fl.FullName);
-                                    if (FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion != null)
+                                    var exist = uui.Lista.Exists(f => f.Nombre.Equals(fl.Name));
+                                    if (exist)
                                     {
-                                        if (!fil.VersionArchivo.Equals(FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion))
+                                        var fil = uui.Lista.SingleOrDefault(x => x.Nombre.Equals(fl.Name));
+                                        var a = FileVersionInfo.GetVersionInfo(fl.FullName);
+                                        if (FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion != null)
                                         {
-                                            FileOk = false;
+                                            if (!fil.VersionArchivo.Equals(FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion))
+                                            {
+                                                FileOk = false;
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            if (!FileOk)
-                            {
-                                ServerInAccept = false;
-                                
-                                long lengthInstalador = 0;
-                                FileStream stream = null;
-                                if (!File.Exists(nameIntalador))
+                                if (!FileOk)
                                 {
-                                    stream = new FileStream(nameIntalador, FileMode.CreateNew, FileAccess.Write);
-                                }
-                                else
-                                {
-                                    lengthInstalador = new FileInfo(nameIntalador).Length;
-                                    stream = new FileStream(nameIntalador, FileMode.Append, FileAccess.Write);
-                                }
+                                    ServerInAccept = false;
 
-                                BinaryWriter writer = new BinaryWriter(stream);
-
-                                long nPosIni = lengthInstalador;//new
-                                while (nPosIni < uui.SetupLength)
-                                {
-                                    long largoMax = uui.SetupLength - nPosIni;
-                                    if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
-                                    string newmsg = string.Format("downsetup#{0}#{1}#", nPosIni, largoMax);
-                                    var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
-                                    writer.Write(buffer, 0, buffer.Length);
-                                    nPosIni += buffer.Length;
-                                }
-                                
-                                writer.Close();
-                                stream.Close();
-
-                                lengthInstalador = new FileInfo(nameIntalador).Length;
-                                if (uui.SetupLength == lengthInstalador)
-                                {
-                                    if (Utils.isCentralizado)
+                                    long lengthInstalador = 0;
+                                    FileStream stream = null;
+                                    if (!File.Exists(nameIntalador))
                                     {
-                                        var argument = string.Format("/DIR=\"{0}\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL",Directory.GetCurrentDirectory());
-                                        SvcWPUI.Start(new string[] { nameIntalador, argument });
+                                        stream = new FileStream(nameIntalador, FileMode.CreateNew, FileAccess.Write);
                                     }
                                     else
                                     {
-                                        Process.Start(nameIntalador);
+                                        lengthInstalador = new FileInfo(nameIntalador).Length;
+                                        stream = new FileStream(nameIntalador, FileMode.Append, FileAccess.Write);
                                     }
-                                }
 
-                            }
-                            else
-                            {
-                                if (File.Exists(nameIntalador))
+                                    BinaryWriter writer = new BinaryWriter(stream);
+
+                                    long nPosIni = lengthInstalador;//new
+                                    while (nPosIni < uui.SetupLength)
+                                    {
+                                        long largoMax = uui.SetupLength - nPosIni;
+                                        if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
+                                        string newmsg = string.Format("downsetup#{0}#{1}#", nPosIni, largoMax);
+                                        var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
+                                        writer.Write(buffer, 0, buffer.Length);
+                                        nPosIni += buffer.Length;
+                                    }
+
+                                    writer.Close();
+                                    stream.Close();
+
+                                    lengthInstalador = new FileInfo(nameIntalador).Length;
+                                    if (uui.SetupLength == lengthInstalador)
+                                    {
+                                        if (Utils.isCentralizado)
+                                        {
+                                            var argument = string.Format("/DIR=\"{0}\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL", Directory.GetCurrentDirectory());
+                                            SvcWPUI.Start(new string[] { nameIntalador, argument });
+                                        }
+                                        else
+                                        {
+                                            Process.Start(nameIntalador, string.Format("/DIR=\"{0}\"", Directory.GetCurrentDirectory()));
+                                        }
+                                    }
+
+                                }
+                                else
                                 {
-                                    File.Delete(nameIntalador);
+                                    if (File.Exists(nameIntalador))
+                                    {
+                                        File.Delete(nameIntalador);
+                                    }
                                 }
                             }
                         }
@@ -752,7 +762,7 @@ namespace WinPerUpdateUI
                 ServerInAccept = true;
                 Utils.RegistrarLog("UPUI_InvalidOperationException.log", ex.ToString());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ServerInAccept = true;
                 Utils.RegistrarLog("UPUI.log", ex.ToString());

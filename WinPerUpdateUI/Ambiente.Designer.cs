@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.txtNroLicencia = new System.Windows.Forms.TextBox();
@@ -41,6 +41,7 @@
             this.CodAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NomAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DirAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chkPermitirSQL = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgAmbientes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +56,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(368, 263);
+            this.btnAceptar.Location = new System.Drawing.Point(368, 297);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(100, 23);
             this.btnAceptar.TabIndex = 2;
@@ -101,6 +102,7 @@
             this.cmbPerfil.Name = "cmbPerfil";
             this.cmbPerfil.Size = new System.Drawing.Size(451, 21);
             this.cmbPerfil.TabIndex = 6;
+            this.cmbPerfil.SelectedIndexChanged += new System.EventHandler(this.cmbPerfil_SelectedIndexChanged);
             // 
             // dgAmbientes
             // 
@@ -119,22 +121,22 @@
             this.dgAmbientes.Location = new System.Drawing.Point(17, 76);
             this.dgAmbientes.Name = "dgAmbientes";
             this.dgAmbientes.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgAmbientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgAmbientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgAmbientes.Size = new System.Drawing.Size(451, 125);
             this.dgAmbientes.TabIndex = 7;
             this.dgAmbientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // CodAmbiente
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.CodAmbiente.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.CodAmbiente.DefaultCellStyle = dataGridViewCellStyle4;
             this.CodAmbiente.HeaderText = "Codigo";
             this.CodAmbiente.Name = "CodAmbiente";
             this.CodAmbiente.ReadOnly = true;
@@ -142,8 +144,8 @@
             // 
             // NomAmbiente
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.NomAmbiente.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.NomAmbiente.DefaultCellStyle = dataGridViewCellStyle5;
             this.NomAmbiente.HeaderText = "Ambiente";
             this.NomAmbiente.Name = "NomAmbiente";
             this.NomAmbiente.ReadOnly = true;
@@ -153,11 +155,23 @@
             this.DirAmbiente.HeaderText = "Directorio";
             this.DirAmbiente.Name = "DirAmbiente";
             // 
+            // chkPermitirSQL
+            // 
+            this.chkPermitirSQL.AutoSize = true;
+            this.chkPermitirSQL.Location = new System.Drawing.Point(17, 264);
+            this.chkPermitirSQL.Name = "chkPermitirSQL";
+            this.chkPermitirSQL.Size = new System.Drawing.Size(238, 17);
+            this.chkPermitirSQL.TabIndex = 8;
+            this.chkPermitirSQL.Text = "Permitir al Administrador ejecutar scripts SQL.";
+            this.chkPermitirSQL.UseVisualStyleBackColor = true;
+            this.chkPermitirSQL.Visible = false;
+            // 
             // Ambiente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 298);
+            this.ClientSize = new System.Drawing.Size(480, 326);
+            this.Controls.Add(this.chkPermitirSQL);
             this.Controls.Add(this.dgAmbientes);
             this.Controls.Add(this.cmbPerfil);
             this.Controls.Add(this.label3);
@@ -188,5 +202,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CodAmbiente;
         private System.Windows.Forms.DataGridViewTextBoxColumn NomAmbiente;
         private System.Windows.Forms.DataGridViewTextBoxColumn DirAmbiente;
+        private System.Windows.Forms.CheckBox chkPermitirSQL;
     }
 }

@@ -23,7 +23,9 @@ namespace WinPerUpdateAdmin.Controllers.api
             public string svbd { get; set; }
             public string nombrebd { get; set; }
             //---
-            public string pathGenSetup { get; set; }
+            public ProcessMsg.Model.UsuarioBo Usuario { get; set; }
+            //--
+            public string pathGenSetup  { get; set; }
             public string hostMail { get; set; }
             public string userMail { get; set; }
             public string pwdMail { get; set; }
@@ -152,6 +154,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                webConfig.Usuario.Clave = Utils.Encriptar(webConfig.Usuario.Clave);
+
                 var strConn = string.Format(@"Database={0};Server={1};User={2};Password={3};Connect Timeout=200;Integrated Security=;", webConfig.nombrebd, webConfig.svbd, webConfig.userbd, webConfig.passbd);
                 SqlConnection conn = new SqlConnection();
 
@@ -176,11 +180,25 @@ namespace WinPerUpdateAdmin.Controllers.api
                         }
                     }
                 }
+
+                SqlCommand cmd = new SqlCommand("insert into Personas (Nombres, Apellidos, Mail) output INSERTED.idPersonas values(@nombre, @apellido, @mail)", conn);
+                cmd.Parameters.AddWithValue("@nombre",webConfig.Usuario.Persona.Nombres);
+                cmd.Parameters.AddWithValue("@apellido", webConfig.Usuario.Persona.Apellidos);
+                cmd.Parameters.AddWithValue("@mail", webConfig.Usuario.Persona.Mail);
+                webConfig.Usuario.Persona.Id = (int)cmd.ExecuteScalar();
+                cmd = new SqlCommand("insert into Usuarios (idPersonas, CodPrf, Clave, EstUsr) values(@idPersona, @codPrf, @clave, @estado)", conn);
+                cmd.Parameters.AddWithValue("@idPersona", webConfig.Usuario.Persona.Id);
+                cmd.Parameters.AddWithValue("@codPrf", webConfig.Usuario.CodPrf);
+                cmd.Parameters.AddWithValue("@clave",webConfig.Usuario.Clave);
+                cmd.Parameters.AddWithValue("@estado",webConfig.Usuario.EstUsr);
+                cmd.ExecuteNonQuery();
+
                 conn.Close();
                 Configuration cfg = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
                 cfg.ConnectionStrings.ConnectionStrings["ApplicationServices"].ConnectionString = Utils.Encriptar(strConn);
                 cfg.Save();
 
+                
                 return Content(HttpStatusCode.OK, true);
             }
             catch (Exception ex)

@@ -27,10 +27,48 @@
             getTiposComponentes: getTiposComponentes,
 
             addVersion: addVersion,
-            addTarea: addTarea
+            addTarea: addTarea,
+            getCheckInstall: getCheckInstall
         };
 
         return service;
+
+        function getCheckInstall(idVersion, idUsuario, idAmbiente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/CheckInstall/Version/' + idVersion + '/Usuario/' + idUsuario + '/Ambiente/' + idAmbiente,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen CheckInstall');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('No existen CheckInstall');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getTiposComponentes(idVersion) {
             var deferred = $q.defer();
@@ -50,7 +88,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene TipoComponentes creadas');
                 }
             });
@@ -93,7 +131,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo reportar la tarea');
                 }
             });
@@ -149,7 +187,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudieron reportar las tareas');
                 }
             });
@@ -199,7 +237,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo reportar la tarea');
                 }
             });
@@ -234,7 +272,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene tareas SQL');
                 }
             });
@@ -269,7 +307,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene tareas SQL');
                 }
             });
@@ -304,7 +342,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen ambientes');
                 }
 
@@ -342,7 +380,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene componente SQL');
                 }
             });
@@ -378,7 +416,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene componente SQL');
                 }
             });
@@ -415,7 +453,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene versiones creadas');
                 }
             });
@@ -452,7 +490,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene cliente asignado');
                 }
             });
@@ -489,7 +527,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe la version');
                 }
             });
@@ -525,7 +563,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe la version');
                 }
             });
@@ -561,7 +599,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen ambientes');
                 }
 
@@ -605,7 +643,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar la versión al cliente');
                 }
             });
@@ -654,7 +692,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar la tarea');
                 }
             });
@@ -690,7 +728,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe la tarea');
                 }
             });

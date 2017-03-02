@@ -9,6 +9,22 @@ namespace WinperUpdateDAO
 {
     public class CnaComponenteModulo : SpDao
     {
+        public SqlDataReader ExecuteComponentesModulos()
+        {
+            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones
+                                                      FROM ComponentesModulos cm
+                                                INNER JOIN TipoComponentes tc
+                                                        ON cm.TipoComponentes = tc.idTipoComponentes";
+            try
+            {
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteComponentesModulos", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
         public SqlDataReader ExecuteComponentesModulos(int idModulo)
         {
             SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones

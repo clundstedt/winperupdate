@@ -167,6 +167,9 @@
     <Content Include="js\Clientes\inicio.js" />
     <Content Include="js\Clientes\serviceClientes.js" />
     <Content Include="js\Clientes\usuarios.js" />
+    <Content Include="js\Descargas\app.js" />
+    <Content Include="js\Descargas\descargas.js" />
+    <Content Include="js\Descargas\serviceDescargas.js" />
     <Content Include="js\Home\controllerHome.js" />
     <Content Include="js\Home\factoryHome.js" />
     <Content Include="js\Modulos\app.js" />
@@ -202,10 +205,6 @@
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular-rut.js" />
     <Content Include="Scripts\angular-rut.min.js" />
-    <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -301,9 +300,17 @@
     <Content Include="Scripts\angular-file-upload.js.map" />
     <Content Include="Fuentes\PlanillaAmbientes.xlsx" />
     <Content Include="Fuentes\PlanillaModulos.xlsx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\local2.pubxml" />
     <None Include="Properties\PublishProfiles\Servidor.pubxml" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <None Include="Properties\PublishProfiles\ServidorWinperUpdate.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
@@ -388,15 +395,21 @@
     <Content Include="Scripts\select.js" />
     <Content Include="Scripts\smart-table.js" />
     <Content Include="Scripts\smart-table.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Views\Descargas\Index.cshtml" />
+    <Content Include="Views\Descargas\Descargas.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\api\AmbientesController.cs" />
+    <Compile Include="Controllers\api\DescargasController.cs" />
     <Compile Include="Controllers\api\SuitesController.cs" />
     <Compile Include="Controllers\Clientes\AdminCltController.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
@@ -406,6 +419,7 @@
     <Compile Include="Controllers\api\VersionController.cs" />
     <Compile Include="Controllers\Clientes\AmbientesCltController.cs" />
     <Compile Include="Controllers\Clientes\ClientesController.cs" />
+    <Compile Include="Controllers\Descargas\DescargasController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Clientes\SeguridadCltController.cs" />
     <Compile Include="Controllers\Modulos\ModulosController.cs" />
@@ -458,16 +472,11 @@
     <Content Include="Views\SuperUser\Index.cshtml" />
     <Content Include="Views\SuperUser\Configuracion.cshtml" />
     <Content Include="Views\Home\Install.cshtml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Fuentes\AmbientesXlSXClientes\" />
+    <Folder Include="Fuentes\Descargas\" />
     <Folder Include="Fuentes\ModulosXLSX\" />
     <Folder Include="Fuentes\PDF\Clientes\" />
     <Folder Include="Models\" />

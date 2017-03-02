@@ -11,7 +11,73 @@ namespace WinPerUpdateAdmin.Controllers.api
 {
     public class ModuloController : ApiController
     {
+        #region Clases
+        public class ComponenteDir
+        {
+            public bool check { get; set; }
+            public ProcessMsg.Model.ComponenteModuloBo componente { get; set; }
+        }
+        #endregion
+
         #region get
+        /// <summary>
+        /// Retorna la lista de componentes actuales que existen en el directorio del modulo especificado.
+        /// </summary>
+        /// <param name="idModulo"></param>
+        /// <returns></returns>
+        [Route("api/Modulo/{idModulo:int}/ComponentesDir")]
+        [HttpGet]
+        public Object GetComponentesDirectorio(int idModulo)
+        {
+            try
+            {
+                List<ProcessMsg.Model.ComponenteModuloBo> lista = new List<ProcessMsg.Model.ComponenteModuloBo>();
+                var tipos = ProcessMsg.ComponenteModulo.GetTipoComponentes();
+                var mod = ProcessMsg.Modulo.GetModulo(idModulo);
+                if (mod != null)
+                {
+                    var compsDir = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", mod.Directorio)).GetFiles().ToList();
+                    var comps = ProcessMsg.ComponenteModulo.GetComponentesModulos(idModulo);
+                    compsDir.ForEach(cd =>
+                    {
+                        if ((cd.Attributes & FileAttributes.System) != FileAttributes.System)
+                        {
+                            if (!comps.Exists(x => x.Nombre.Equals(cd.Name, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                lista.Add(new ProcessMsg.Model.ComponenteModuloBo
+                                {
+                                    Nombre = cd.Name,
+                                    TipoComponentes = tipos.SingleOrDefault(x => x.Extensiones.Contains(cd.Extension)),
+                                    Modulo = idModulo
+                                });
+                            }
+                        }
+                    });
+                    return Content(HttpStatusCode.OK, lista);
+                }
+                return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.ComponenteModuloBo)null);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/ExistDir/{Directorio}/Modulo")]
+        [HttpGet]
+        public Object GetExisteDirModulo(string Directorio)
+        {
+            try
+            {
+                var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")),"N+1",Directorio);
+                return Directory.Exists(path);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Modulos/Suite/{idSuite:int}")]
         [HttpGet]
         public Object GetModulosBySuite(int idSuite)
@@ -33,46 +99,57 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 string log = "OK.\n\n";
-                bool hasTipoNull = false;
-                List<ProcessMsg.Model.ComponenteModuloBo> componentesModulos = new List<ProcessMsg.Model.ComponenteModuloBo>();
-                var Modulos = ProcessMsg.Modulo.GetModulos(null);
-                var TipoComponentes = ProcessMsg.ComponenteModulo.GetTipoComponentes();
-                foreach (var m in Modulos)
+                if (ProcessMsg.ComponenteModulo.DelAll())
                 {
-                    DirectoryInfo di = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")) , "N+1", @m.Directorio));
-                    di.GetFiles().ToList().ForEach(file =>
+                    bool hasTipoNull = false;
+                    List<ProcessMsg.Model.ComponenteModuloBo> componentesModulos = new List<ProcessMsg.Model.ComponenteModuloBo>();
+                    var Modulos = ProcessMsg.Modulo.GetModulos(null);
+                    var TipoComponentes = ProcessMsg.ComponenteModulo.GetTipoComponentes();
+                    foreach (var m in Modulos)
                     {
-                        
-                        if ((file.Attributes & FileAttributes.System) != FileAttributes.System)
+                        DirectoryInfo di = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")), "N+1", @m.Directorio));
+                        di.GetFiles().ToList().ForEach(file =>
                         {
-                            componentesModulos.Add(new ProcessMsg.Model.ComponenteModuloBo
-                            {
-                                Modulo = m.idModulo,
-                                Nombre = file.Name,
-                                TipoComponentes = TipoComponentes.Find(x => x.Extensiones.Contains(file.Extension.ToLower()))
-                            });
-                        }
-                    });
-                    di.GetDirectories().ToList().ForEach(dir =>
-                    {
-                        log += string.Format("{0} es un directorio.\n", dir.Name);
-                    });
-                    componentesModulos.Where(c => c.TipoComponentes == null).ToList().ForEach(c =>
-                    {
-                        hasTipoNull = true;
-                        log += string.Format("{0} No contiene un tipo de componente valido.\n", c.Nombre);
-                    });
 
-                }
-                if (!hasTipoNull)
-                {
-                    var r = ProcessMsg.ComponenteModulo.AddComponentesModulos(componentesModulos);
-                    if (int.Parse(r[0].ToString()) == 0)
-                    {
-                        log += "\nComponentes sincronizados con exito!";
-                        return log;
+                            if ((file.Attributes & FileAttributes.System) != FileAttributes.System)
+                            {
+                                componentesModulos.Add(new ProcessMsg.Model.ComponenteModuloBo
+                                {
+                                    Modulo = m.idModulo,
+                                    Nombre = file.Name,
+                                    TipoComponentes = TipoComponentes.Find(x => x.Extensiones.Contains(file.Extension.ToLower()))
+                                });
+                            }
+                        });
+                        di.GetDirectories().ToList().ForEach(dir =>
+                        {
+                            log += string.Format("{0} es un directorio.\n", dir.Name);
+                        });
+                        componentesModulos.Where(c => c.TipoComponentes == null).ToList().ForEach(c =>
+                        {
+                            hasTipoNull = true;
+                            log += string.Format("{0} No contiene un tipo de componente valido.\n", c.Nombre);
+                        });
+
                     }
-                    log += "\nERROR SQL: " + r[1] + "(" + r[0] + ")";
+                    if (!hasTipoNull)
+                    {
+                        var r = ProcessMsg.ComponenteModulo.AddComponentesModulos(componentesModulos);
+                        if (int.Parse(r[0].ToString()) == 0)
+                        {
+                            log += "\nComponentes sincronizados con exito!";
+                            return log;
+                        }
+                        log += "\nERROR SQL: " + r[1] + "(" + r[0] + ")";
+                    }
+                    else
+                    {
+                        log += "Sincronización fallida, existen componentes cuyo tipo no existe.";
+                    }
+                }
+                else
+                {
+                    log += "ERROR: No se pudieron eliminar los componentes actuales.";
                 }
                 return log;
             }
@@ -197,6 +274,30 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region post
+
+        [Route("api/Modulo/ComponentesDir")]
+        [HttpPost]
+        public Object PostComponentesDir([FromBody] List<ComponenteDir> ComponentesDir)
+        {
+            try
+            {
+                var comps = ComponentesDir.Where(x => x.check).Select(x => x.componente).ToList();
+                if (comps != null)
+                {
+                    var res = ProcessMsg.ComponenteModulo.AddComponentesModulos(comps);
+                    if (res[0].ToString().Equals("0"))
+                    {
+                        return Content(HttpStatusCode.OK, res[1]);
+                    }
+                    return Content(HttpStatusCode.Created, res[1]);
+                }
+                return Content(HttpStatusCode.Accepted, "Error: ComponentesDir NULL");
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
 
         [Route("api/TipoComponentes")]
         [HttpPost]

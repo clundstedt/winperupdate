@@ -68,6 +68,21 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Suite"><i class="fa fa-comment-o fa-fw"></i></span>
+                                        <select class="form-control" name="suite" ng-model="formData.suite" required ng-options="suite.idSuite as suite.Nombre for suite in suites | orderBy:Nombre">
+                                            <option value="">Suite</option>
+                                        </select>
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmModulo.suite.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Comentario"><i class="fa fa-comment-o fa-fw"></i></span>
                                         <textarea class="form-control" rows="5" ng-model="formData.descripcion" placeholder="Descripción"></textarea>
                                     </div>
@@ -112,6 +127,10 @@
                 <button type="button" class="btn btn-success btn-labeled" ng-show="accion == 'Modificar'" ng-click="LimpiarManComp()" data-toggle="modal" data-target="#mancom-modal" data-backdrop="static" data-keyboard="false">
                     <span class="btn-label"><span class="fa fa-plus"></span></span>
                     Crear un componente
+                </button>
+                <button type="button" class="btn btn-info btn-labeled" ng-show="accion == 'Modificar'" ng-click="LoadCompDetect()" data-toggle="modal" data-target="#compdetect-modal">
+                    <span class="btn-label"><span class="fa fa-search"></span></span>
+                    Detectar componentes
                 </button>
                 <button type="button" class="btn btn-primary btn-labeled" ng-click="LimpiarManTipCom()" data-toggle="modal" data-target="#mantipcom-modal" data-backdrop="static" data-keyboard="false">
                     <span class="btn-label"><span class="fa fa-plus"></span></span>
@@ -432,6 +451,78 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="CrearComponentesModulos(formComp)">Crear</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="aviso-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Aviso WinperUpdate</h4>
+            </div>
+            <div class="modal-body">
+                {{lblAvisoWinper}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="compdetect-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Componentes Detectados</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" ng-show="listaCompsDetect.length == 0">
+                    <strong>!</strong> No existen componentes en el directorio de este módulo.
+                </div>
+                <div class="table-responsive" ng-hide="listaCompsDetect.length == 0">
+                    <table st-table="displayCompDir" st-safe-src="listaCompsDetect" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="3"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
+                            </tr>
+                            <tr>
+                                <th><input type="checkbox" ng-model="SelAll" ng-change="SelectAllCompDir(SelAll)" /></th>
+                                <th>Nombre</th>
+                                <th>Tipo de Componente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="compDir in displayCompDir" class="row-tabla" style="height: 20px;">
+                                <td style="vertical-align: middle;">
+                                    <input type="checkbox" ng-model="compDir.check" />
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{compDir.componente.Nombre}}
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{compDir.componente.TipoComponentes.Nombre}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span style="color: red">{{lblAddComponentesDir}}</span>
+                <button type="button" class="btn btn-primary" ng-click="AgregarCompsDir()" ng-hide="listaCompsDetect.length == 0">
+                    Agregar
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

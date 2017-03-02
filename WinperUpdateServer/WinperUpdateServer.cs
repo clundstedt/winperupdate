@@ -322,9 +322,9 @@ namespace WinperUpdateServer
                                         json = JsonConvert.SerializeObject(uui);
                                         Send(handler, json);
                                     }
-                                    else { Send(handler, content); }
+                                    else { Send(handler, "0"); }
                                 }
-                                else { Send(handler, content); }
+                                else { Send(handler, "0"); }
                                 break;
                             case "downsetup":
                                 bool downsetupbok = false;

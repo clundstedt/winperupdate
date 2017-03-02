@@ -26,6 +26,7 @@
             });
 
             $scope.GenerarVersionInicial = function (formData) {
+                $("#inicial-modal").modal('toggle');
                 $('#loading-modal').modal({ backdrop: 'static', keyboard: false })
                 $scope.lblLoad = "Creando versión inicial.";
                 $scope.btnLoadHabilitado = false;

@@ -16,8 +16,8 @@
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <button ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion, true)" ng-disabled="ambiente.Estado=='V'" data-toggle="modal" class="btn btn-default">
-                        <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V'"></span> Publicar en {{ambiente.Nombre}}
+                    <button ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion, true)" ng-disabled="ambiente.Estado=='V' || ambiente.Estado=='I'" data-toggle="modal" class="btn btn-default">
+                        <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V' || ambiente.Estado=='I'"></span> Publicar en {{ambiente.Nombre}}
                     </button>
                 </div>
             </div>
@@ -87,13 +87,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a ng-click="ShowDetalle(version.IdVersion, ejecutable.Name)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                    <a ng-click="ShowDetalle(ejecutable.Comentario)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
                                         <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="avisocaduca-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                </div>
+                <div class="modal-body">
+                    Esta versión se encuentra caducada. WinperUpdate no permitirá publicarla en este ambiente.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -115,6 +132,41 @@
                 <div class="modal-footer">
                     <span style="color: red">{{mensaje}}</span>
                     <button class="btn btn-danger" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkins-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                </div>
+                <div class="modal-body">
+                    WinperUpdate ha detectado que en este ambiente <b>NO</b> se encuentra instalada la versión anterior. Primero debe 
+                    liberar la versión anterior a esta para continuar.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detallecomp-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Detalle de Cambios</h4>
+                </div>
+                <div class="modal-body">
+                    {{DetalleCambio}}
+                </div>
+                <div class="modal-footer">
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

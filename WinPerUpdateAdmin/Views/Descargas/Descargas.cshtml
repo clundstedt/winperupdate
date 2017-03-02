@@ -1,0 +1,23 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <h1>Descargas</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-warning" ng-show="descargas.length == 0">
+            <strong>!</strong> No existen elementos para descargar.
+        </div>
+        <div class="panel panel-primary" ng-repeat="descarga in descargas">
+            <div class="panel-heading">{{descarga.Nombre}}</div>
+            <div class="panel-body">{{descarga.Descripcion}}</div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-success" ng-click="Descargar(descarga)">
+                    <span class="fa fa-arrow-circle-o-down" ></span>
+                    Descargar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

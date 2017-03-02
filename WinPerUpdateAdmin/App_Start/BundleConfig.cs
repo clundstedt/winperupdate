@@ -138,6 +138,15 @@ namespace WinPerUpdateAdmin
                       , "~/js/SuperUser/superUser.js"
                       , "~/js/SuperUser/serviceSU.js"
                       ));
+            bundles.Add(new ScriptBundle("~/bundles/descargas").Include(
+                        "~/Scripts/angular-file-upload.min.js"
+                        , "~/Scripts/smart-table.min.js"
+                        , "~/js/Descargas/app.js"
+                        , "~/js/Home/controllerHome.js"
+                        , "~/js/Home/factoryHome.js"
+                        , "~/js/Descargas/descargas.js"
+                        , "~/js/Descargas/serviceDescargas.js"
+                      ));
         }
     }
 }
