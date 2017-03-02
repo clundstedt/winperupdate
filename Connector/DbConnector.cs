@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 
+
 namespace ConnectorDB
 {
     public class DbConnector
@@ -33,7 +34,7 @@ namespace ConnectorDB
             try
             {
                 ConnectionStr = DesEncriptar(ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString);
-                
+               
                 if (!String.IsNullOrEmpty(ConnectionStr)) return;
                 throw new NullReferenceException(msg);
             }
@@ -440,6 +441,24 @@ namespace ConnectorDB
                 // Todo Implementar tipo correcto de excepción.
                 throw new Exception(msg, ex);
             }
+        }
+
+        public string Ping()
+        {
+            string isConnected = string.Empty;
+            ReadParameters();
+            var con = new SqlConnection(ConnectionStr);
+            try
+            {
+                con.Open();
+                isConnected = "OK";
+            }
+            catch(Exception ex)
+            {
+                isConnected = ex.Message;
+            }
+            if (isConnected.Equals("OK")) con.Close();
+            return isConnected;
         }
 
         private string DesEncriptar(string _cadenaAdesencriptar)

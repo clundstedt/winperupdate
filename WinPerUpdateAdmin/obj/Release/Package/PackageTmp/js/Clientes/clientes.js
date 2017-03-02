@@ -29,7 +29,8 @@
             $scope.totales = [0, 0];
             $scope.usuarios = [];
             $scope.estadosMantencion = [{ valor: 7, nomest: "Activo" }, { valor: 9, nomest: "No Activo" }];
-            $scope.mesesInicioMantencion = [{ valor: "01", nommes: "Enero" },
+            $scope.mesesInicioMantencion = [
+            { valor: "01", nommes: "Enero" },
             { valor: "02", nommes: "Febrero" },
             { valor: "03", nommes: "Marzo" },
             { valor: "04", nommes: "Abril" },
@@ -41,10 +42,22 @@
             { valor: "10", nommes: "Octubre" },
             { valor: "11", nommes: "Noviembre" },
             { valor: "12", nommes: "Diciembre" }, ];
+
+            $scope.aniosInicioContrato = [];
+
+
             $scope.versionesCliente = [];
 
             $scope.trabPlantas = [];
             $scope.trabHonorarios = [];
+
+            $scope.suites = [];
+
+            serviceClientes.getAnios().success(function (data) {
+                $scope.aniosInicioContrato = data;
+            }).error(function (err) {
+                console.log(err);
+            });
             
             serviceClientes.getRegiones().success(function (regiones) {
                 $scope.regiones = regiones;
@@ -56,15 +69,44 @@
                 $window.location.href = '/api/Clientes/'+idCliente+'/PDF';
             }
 
-            serviceClientes.getModulos().success(function (modulos) {
-                for (var i = 0; i < modulos.length; i++) {
-                    if(modulos[i].Estado == 'V'){
-                        $scope.modulosWinper.push(modulos[i]);
+
+            //se debe llamar una vez que se seleccione una suite y hay que hacer la busqueda por de modulo by suite
+            $scope.CargarModulosBySuite = function (formData) {
+                serviceClientes.getModulosBySuite(formData.suite).success(function (modulos) {
+                    $scope.modulosWinper = modulos; 
+                }).error(function (err) {
+                    console.error(err);
+                });
+            }
+            
+            $scope.SeleccionarTodosModulos = function () {
+                for (var i = 0; i < $scope.modulosWinper.length; i++) {
+                    if (!$scope.isSelected($scope.modulosWinper[i].idModulo)) {
+                        $scope.formData.modulos.push($scope.modulosWinper[i]);
                     }
                 }
-            }).error(function (err) {
-                console.error(err);
-            });
+                console.log($scope.modulosWinper);
+            }
+
+            $scope.LimpiarSeleccionados = function (formData) {
+                $scope.tmpModulos = [];
+                for (var i = 0; i < $scope.formData.modulos.length; i++) {
+                    if($scope.formData.modulos[i].Suite != formData.suite){
+                        $scope.tmpModulos.push($scope.formData.modulos[i]);
+                    }
+                }
+                $scope.formData.modulos = $scope.tmpModulos;
+               
+            }
+
+            $scope.isSelected = function (idModulo) {
+                for (var i = 0; i < $scope.formData.modulos.length; i++) {
+                    if ($scope.formData.modulos[i].idModulo == idModulo) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             serviceClientes.getTrabPlantas().success(function (data) {
                 $scope.trabPlantas = data;
@@ -76,6 +118,12 @@
                 $scope.trabHonorarios = data;
             }).error(function (err) {
                 console.log(err)
+            });
+
+            serviceClientes.getSuites().success(function (data) {
+                $scope.suites = data;
+            }).error(function (err) {
+                console.log(err);
             });
             
 
@@ -91,11 +139,13 @@
                     $scope.formData.region = data.Comuna.Region.idRgn;
                     $scope.formData.licencia = data.NroLicencia;
                     $scope.formData.folio = data.NumFolio;
+                    $scope.formData.mescon = data.MesCon;
                     $scope.formData.estmtc = data.EstMtc;
                     $scope.formData.mesini = data.Mesini;
                     $scope.formData.nrotrbc = data.NroTrbc;
                     $scope.formData.nrotrbh = data.NroTrbh;
                     $scope.formData.nrousr = data.NroUsr;
+                    $scope.formData.correlativo = data.Correlativo;
 
                     $scope.CargarModulosCliente($scope.idCliente);
 
@@ -127,19 +177,7 @@
                 });
 
 
-            } else {
-                serviceClientes.getFolio().success(function (data) {
-                    $scope.formData.folio = data;
-                }).error(function (err) {
-                    console.log(err);
-                });
-            }
-
-            $scope.seleccionTodosModulo = function () {
-                for (var i = 0; i < $scope.modulosWinper.length; i++) {
-                    $scope.formData.modulos.push($scope.modulosWinper[i].NomModulo);
-                }
-            }
+            } 
 
             $scope.Comunas = function (formData) {
                 serviceClientes.getComunas(formData.region).success(function (data) {
@@ -178,7 +216,7 @@
                 $scope.labelcreate = "Enviando";
 
                 if ($scope.idCliente == 0) {
-                    serviceClientes.addCliente(arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
+                    serviceClientes.addCliente(arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
                         $scope.idCliente = data.Id;
@@ -192,7 +230,7 @@
                     });
                 }
                 else {
-                    serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
+                    serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.mescon, formData.correlativo).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
                         serviceClientes.addModuloCliente($scope.idCliente, $scope.formData.modulos).success(function (data) {
@@ -209,6 +247,7 @@
             $scope.CargarModulosCliente = function (idCliente) {
                 serviceClientes.getModulosCliente(idCliente).success(function (data) {
                     $scope.formData.modulos = data;
+                    $scope.modulosWinper = $scope.formData.modulos;
                 }).error(function (err) {
                     console.log(err);
                 });
@@ -229,7 +268,7 @@
 
             $scope.GenKey = function (formOK, formData) {
                 if (formOK) {
-                    serviceClientes.getKey(formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
+                    serviceClientes.getKey(formData.folio.toString().charAt(3), formData.mescon, formData.correlativo, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr).success(function (data) {
                         formData.licencia = data;
                     }).error(function (err) {
                         console.log(err);
@@ -238,6 +277,22 @@
                     $("#genkey-modal").modal('show');
                 }
             }
+
+            $scope.GenCorrelativo = function () {
+                if (!(typeof $scope.formData.mescon === "undefined") && !(typeof $scope.formData.folio === "undefined"))
+                {
+                    serviceClientes.GenCorrelativo($scope.formData.folio, $scope.formData.mescon).success(function (data) {
+                        $scope.formData.correlativo = data;
+                    }).error(function (err) {
+                        console.error(err);
+                    });
+                }
+                else
+                {
+                    $scope.formData.correlativo = null;
+                }
+            }
+
 
         }
 

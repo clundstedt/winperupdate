@@ -16,6 +16,8 @@
         $scope.usuario = $("#idToken").val();
         $scope.loading = false;
 
+        $scope.lblAvisoWinper = "";
+
         $scope.tipoalert = "";
         $scope.msgalert = "";
 
@@ -25,9 +27,13 @@
         $scope.componentes = [];
         $scope.tipocomponentes = [];
         $scope.CreandoComponentesModulos = false;
+        $scope.listaCompsDetect = [];
+        $scope.lblAddComponentesDir = "";
 
         $scope.ModificarTipo = 0;
         $scope.lblModificarTipoComponente = "Modificar";
+
+        $scope.suites = [];
 
 
         activate();
@@ -43,6 +49,7 @@
                     $scope.formData.iscore = data.isCore;
                     $scope.formData.directorio = data.Directorio;
                     $scope.formData.estado = data.Estado;
+                    $scope.formData.suite = data.Suite;
                     $scope.accion = "Modificar";
                     serviceModulos.getComponentesModulo($scope.idModulo).success(function (data) {
                         $scope.componentes = data;
@@ -53,6 +60,12 @@
                     console.error(err);
                 });
             }
+
+            serviceModulos.getSuites().success(function (data) {
+                $scope.suites = data;
+            }).error(function (err) {
+                console.log(err);
+            });
 
             serviceModulos.getTipoComponentes().success(function (data) {
                 $scope.tipocomponentes = data;
@@ -149,18 +162,71 @@
                 }
             }
 
+            $scope.AgregarCompsDir = function () {
+                if ($scope.listaCompsDetect.length > 0) {
+                    serviceModulos.addComponentesDir($scope.listaCompsDetect).success(function (data) {
+                        serviceModulos.GetComponentesDirectorio($scope.idModulo).success(function (data) {
+                            $scope.listaCompsDetect = [];
+                            for (var i = 0; i < data.length; i++) {
+                                var compD = {
+                                    check: false,
+                                    componente: data[i]
+                                }
+                                $scope.listaCompsDetect.push(compD);
+                            }
+                            $scope.lblAddComponentesDir = "Componentes agregados correctamente.";
+                        }).error(function (err) {
+                            console.error(err);
+                            $scope.lblAddComponentesDir = "Ocurrió un error durante la recarga de componentes, verifique consola del navegador.";
+                        });
+                    }).error(function (err) {
+                        console.error(err);
+                        $scope.lblAddComponentesDir = "Ocurrió un error, verifique consola del navegador.";
+                    });
+                }
+            }
+
+            $scope.SelectAllCompDir = function (SellAll) {
+                for (var i = 0; i < $scope.listaCompsDetect.length; i++) {
+                    $scope.listaCompsDetect[i].check = SellAll;
+                }
+            }
+
+            $scope.LoadCompDetect = function () {
+                serviceModulos.GetComponentesDirectorio($scope.idModulo).success(function (data) {
+                    $scope.listaCompsDetect = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var compD = {
+                            check: false,
+                            componente: data[i]
+                        }
+                        $scope.listaCompsDetect.push(compD);
+                    }
+                }).error(function (err) {
+                    console.error(err);
+                });
+            }
 
             $scope.Accion = function (formData) {
-                if ($scope.accion == "Crear") {
-                    $scope.Crear(formData);
-                } else if ($scope.accion == "Modificar") {
-                    $scope.Modificar(formData);
-                }
+                serviceModulos.ExistDirModulo(formData.directorio).success(function (data) {
+                    if (data) {
+                        if ($scope.accion == "Crear") {
+                            $scope.Crear(formData);
+                        } else if ($scope.accion == "Modificar") {
+                            $scope.Modificar(formData);
+                        }
+                    } else {
+                        $scope.lblAvisoWinper = "El directorio del módulo no existe.";
+                        $("#aviso-modal").modal('show');
+                    }
+                }).error(function (err) {
+                    console.error(err);
+                });
             }
 
             $scope.Crear = function (formData) {
                 $scope.loading = true;
-                serviceModulos.addModulo(formData.nombre, formData.descripcion, formData.iscore, formData.directorio).success(function (data) {
+                serviceModulos.addModulo(formData.nombre, formData.descripcion, formData.iscore, formData.directorio, formData.suite).success(function (data) {
                     $scope.accion = "Modificar";
                     $scope.tipoalert = "success";
                     $scope.msgalert = "Módulo creado exitosamente!.";
@@ -179,7 +245,7 @@
 
             $scope.Modificar = function (formData) {
                 $scope.loading = true;
-                serviceModulos.updModulo($scope.idModulo, formData.nombre, formData.descripcion, formData.iscore, formData.directorio).success(function (data) {
+                serviceModulos.updModulo($scope.idModulo, formData.nombre, formData.descripcion, formData.iscore, formData.directorio, formData.suite).success(function (data) {
                     $scope.tipoalert = "success";
                     $scope.msgalert = "Módulo modificado exitosamente!."
                 }).error(function (err) {

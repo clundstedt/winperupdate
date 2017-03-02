@@ -111,5 +111,23 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public SqlDataReader ExecuteGenCorrelativo(int folio, string mescon)
+        {
+            try
+            {
+                SpName = @"SELECT count(*) as correlativo FROM clientes WHERE folio = @folio AND mescon = @mescon";
+
+                ParmsDictionary.Add("@folio", folio);
+                ParmsDictionary.Add("@mescon", mescon);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "GetTrabHonorarios", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

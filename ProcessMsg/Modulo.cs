@@ -11,6 +11,18 @@ namespace ProcessMsg
     public class Modulo
     {
         #region Gets
+        public static List<Model.ModuloBo> GetModulosBySuite(int idSuite)
+        {
+            try
+            {
+                return GetModulos(null).Where(m => m.Suite == idSuite).ToList();
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.ModuloBo> GetModulos(EventLog log)
         {
             var lista = new List<Model.ModuloBo>();
@@ -27,7 +39,8 @@ namespace ProcessMsg
                         Descripcion = dr["Descripcion"].ToString(),
                         isCore = bool.Parse(dr["isCore"].ToString()),
                         Directorio = dr["Directorio"].ToString(),
-                        Estado = char.Parse(dr["Estado"].ToString())
+                        Estado = char.Parse(dr["Estado"].ToString()),
+                        Suite = int.Parse(dr["Suite"].ToString())
                     };
 
                     lista.Add(obj);
@@ -89,7 +102,8 @@ namespace ProcessMsg
                         Directorio = reader["Directorio"].ToString(),
                         NomModulo = reader["NomModulo"].ToString(),
                         isCore = bool.Parse(reader["isCore"].ToString()),
-                        Estado = char.Parse(reader["Estado"].ToString())
+                        Estado = char.Parse(reader["Estado"].ToString()),
+                        Suite = int.Parse(reader["Suite"].ToString())
                     };
                 }
                 return modulo;
@@ -125,7 +139,7 @@ namespace ProcessMsg
         {
             try
             {
-                var lastInsert = new AddModulo().Execute(modulo.NomModulo, modulo.Descripcion, modulo.isCore, modulo.Directorio);
+                var lastInsert = new AddModulo().Execute(modulo.NomModulo, modulo.Descripcion, modulo.isCore, modulo.Directorio, modulo.Suite);
                 return GetModulo(lastInsert);
             }
             catch(Exception ex)
@@ -159,7 +173,7 @@ namespace ProcessMsg
         {
             try
             {
-                return new UpdModulo().Execute(modulo.idModulo, modulo.NomModulo, modulo.Descripcion, modulo.isCore, modulo.Directorio);
+                return new UpdModulo().Execute(modulo.idModulo, modulo.NomModulo, modulo.Descripcion, modulo.isCore, modulo.Directorio, modulo.Suite);
             }
             catch(Exception ex)
             {
@@ -209,8 +223,10 @@ namespace ProcessMsg
             dtModulos.Columns.Add("EstadoRegistro");
             dtModulos.Columns.Add("ErrorRegistro");
             dtModulos.Columns.Add("idUsuario");
+            dtModulos.Columns.Add("Suite");
             string ErrorRegistro = "";
             bool sisp;
+            int a = 0;
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ProcessMsg.Model.ModuloXLSXBo modulo;
@@ -232,6 +248,14 @@ namespace ProcessMsg
                 {
                     ErrorRegistro += "Error en la columna 'Directorio', está vacía o sobre pasa el límite de caracteres (100) || ";
                 }
+                if (string.IsNullOrEmpty(dt.Rows[i][4].ToString()) || !int.TryParse(dt.Rows[i][4].ToString(), out a))
+                {
+                    ErrorRegistro += "Error en la columna 'Suite', está vacía o no es un valor numerico. || ";
+                }
+                if (!CheckSuite(int.Parse(dt.Rows[i][4].ToString())))
+                {
+                    ErrorRegistro += "Error, no existe la Suite en la base de datos, verifique las IDs existentes.";
+                }
 
                 modulo = new Model.ModuloXLSXBo
                 {
@@ -241,13 +265,26 @@ namespace ProcessMsg
                     Directorio = dt.Rows[i][3].ToString(),
                     ErrorRegistro = ErrorRegistro,
                     EstadoRegistro = (string.IsNullOrEmpty(ErrorRegistro) ? 0 : 1),
-                    idUsuario = idUsuario
+                    idUsuario = idUsuario,
+                    Suite = int.Parse(dt.Rows[i][4].ToString())
                 };
                 dtModulos.Rows.Add(modulo.NomModulo, modulo.Descripcion, modulo.isCore, modulo.Directorio
-                    , modulo.EstadoRegistro, modulo.ErrorRegistro, modulo.idUsuario);
+                    , modulo.EstadoRegistro, modulo.ErrorRegistro, modulo.idUsuario, modulo.Suite);
 
             }
             return dtModulos;
+        }
+        
+        private static bool CheckSuite(int idSuite)
+        {
+            try
+            {
+                return Suites.GetSuites().Exists(s => s.idSuite == idSuite);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("ERROR CHECKSUITE: " + ex.Message);
+            }
         } 
         #endregion
     }

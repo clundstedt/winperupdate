@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,232 @@ namespace WinPerUpdateAdmin.Controllers.api
 {
     public class VersionController : ApiController
     {
+        #region Clases
+        public class ClienteToVersion
+        {
+            public bool check { get; set; }
+            public ProcessMsg.Model.ClienteBo cliente { get; set; }
+        }
+
+        public class ComponenteOk
+        {
+            public string isOk { get; set; }
+            public ProcessMsg.Model.AtributosArchivoBo componente { get; set; }
+        }
+        #endregion
+
         #region get
+        
+        [Route("api/ComponenteOkSegunVersion/{idVersion:int}")]
+        [HttpGet]
+        public Object ComponenteOkSegunVersion(int idVersion)
+        {
+            try
+            {
+                var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                if (version == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (Object)null);
+                }
+                List<ComponenteOk> componentesOk = new List<ComponenteOk>();
+                var componentesOficiales = ProcessMsg.Componente.GetComponentesOficiales(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/"))+ "N+1");
+                foreach (var comp in version.Componentes)
+                {
+                    ComponenteOk cOk = new ComponenteOk();
+                    cOk.componente = comp;
+                    cOk.isOk = "success";
+                    foreach (var compOficial in componentesOficiales)
+                    {
+                        if (comp.Name.Equals(compOficial.Name))
+                        {
+                            var versionBase = ProcessMsg.Utils.GenerarVersionSiguiente(compOficial.Version);
+                            var versionOtra = comp.Version;
+                            var comparacion = ProcessMsg.Utils.ComparaVersion(versionBase, versionOtra);
+                            if (comparacion == 0)
+                            {
+                                cOk.isOk = "success";
+                            }
+                            else if (comparacion == 1)
+                            {
+                                cOk.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente es " + cOk.componente.Version + " y debiera ser " + versionBase + ", ya que la versión oficial es " + compOficial.Version;
+                                cOk.isOk = "warning";
+                            }
+                            else
+                            {
+                                cOk.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente (" + cOk.componente.Version + ") debiera ser " + versionBase + ".";
+                                cOk.isOk = "danger";
+                            }
+                            
+                        }
+                    }
+                    componentesOk.Add(cOk);
+                }
+                return Content(HttpStatusCode.OK, componentesOk);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/VersionInicial/{idVersion:int}/Cliente")]
+        [HttpGet]
+        public Object PostVersionInicialCliente(int idVersion)
+        {
+            try
+            {
+                var obj = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                if (obj != null)
+                {
+                    var upload = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Uploads"));
+                    var incial = Path.Combine(upload, obj.Release);
+                    if (!Directory.Exists(incial))
+                    {
+                        Directory.CreateDirectory(incial);
+                    }
+                    else
+                    {
+                        Directory.Delete(incial, true);
+                        Directory.CreateDirectory(incial);
+                    }
+                    var comps = new List<ProcessMsg.Model.AtributosArchivoBo>();
+                    var CompModulo = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
+                    DirectoryInfo di = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")), "N+1"));
+                    di.GetDirectories().ToList().ForEach(dir =>
+                    {
+                        dir.GetFiles().ToList().ForEach(file =>
+                        {
+
+                            if ((file.Attributes & FileAttributes.System) != FileAttributes.System)
+                            {
+                                foreach (var c in CompModulo)
+                                {
+                                    if (c.Nombre.Equals(file.Name) && !comps.Exists(x => x.Name.ToUpper().Equals(file.Name.ToUpper())))
+                                    {
+                                        file.CopyTo(Path.Combine(incial, file.Name), true);
+                                        comps.Add(new ProcessMsg.Model.AtributosArchivoBo
+                                        {
+                                            Name = file.Name,
+                                            Modulo = c.NomModulo,
+                                            DateCreate = file.CreationTime,
+                                            LastWrite = file.LastWriteTime
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    var respuesta = ProcessMsg.Componente.AddComponentes(obj.IdVersion, comps);
+                    if (respuesta[0].Equals("0"))
+                    {
+                        bool okInstall = false;
+
+                        string sRuta = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Uploads/")) + obj.Release;
+                        if (!sRuta.EndsWith("\\")) sRuta += @"\";
+                        string sFile = "WP" + obj.Release.Replace(".", "") + string.Format("{0:yyyyMMddhhhhmmss}", DateTime.Now);
+
+                        if (ProcessMsg.Version.GenerarInstalador(idVersion, sFile, sRuta) > 0)
+                        {
+                            string Command = ConfigurationManager.AppSettings["pathGenSetup"];
+                            string argument = "\"" + sRuta + sFile + ".iss\"";
+
+                            System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo(Command, argument);
+
+                            // Indicamos que la salida del proceso se redireccione en un Stream
+                            procStartInfo.RedirectStandardOutput = true;
+                            procStartInfo.UseShellExecute = false;
+
+                            //Indica que el proceso no despliegue una pantalla negra (El proceso se ejecuta en background)
+                            procStartInfo.CreateNoWindow = false;
+
+                            //Inicializa el proceso
+                            System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                            proc.StartInfo = procStartInfo;
+                            proc.Start();
+
+
+                            //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
+                            string result = proc.StandardOutput.ReadToEnd();
+                            //Proceso de copia de N+1 a N
+                            string dirN1 = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")) + "N+1";
+                            string dirN = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")) + "N";
+                            var componentesModulos = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
+
+                            var files = new DirectoryInfo(sRuta).GetFiles().ToList();
+                            foreach (var x in files)
+                            {
+                                var comp = componentesModulos.Where(y => y.Nombre.Equals(x.Name)).ToList();
+                                if (comp.Count == 0) continue;
+                                if (comp.ElementAt(0) != null)
+                                {
+                                    var oPath = Path.Combine(dirN1, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
+                                    var dPath = Path.Combine(dirN, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
+                                    new FileInfo(oPath).CopyTo(dPath, true);
+                                    x.CopyTo(oPath, true);
+                                }
+                            }
+                            okInstall = true;
+                        }
+                        if (okInstall)
+                        {
+                            obj.Estado = 'P';
+                            obj.Instalador = sFile + ".exe";
+                            return Content(HttpStatusCode.OK, ProcessMsg.Version.UpdVersion(obj.IdVersion, obj));
+                        }
+                    }
+                    return Content(HttpStatusCode.Created, respuesta[1]);
+                }
+                return Content(HttpStatusCode.Created, obj);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/CheckInstall/Version/{idVersion:int}/Usuario/{idUsuario:int}/Ambiente/{idAmbiente:int}")]
+        [HttpGet]
+        public Object GetCheckInstall(int idVersion, int idUsuario, int idAmbiente)
+        {
+            try
+            {
+                var clt = ProcessMsg.Cliente.GetClienteUsuario(idUsuario);
+                if (clt == null)
+                {
+                    return Content(HttpStatusCode.Accepted, false);
+                }
+                
+                var idVersiones = ProcessMsg.Cliente.GetVersiones(clt.Id, null).OrderBy(x => x.IdVersion).Where(x => x.Estado == 'P').Select(x => x.IdVersion);
+                if (idVersiones != null)
+                {
+                    if (idVersion == idVersiones.ElementAt(0))
+                    {
+                        return true;
+                    }
+                }
+                var obj = ProcessMsg.Version.CheckVersionAnteriorInstalada(idVersion, clt.Id, idAmbiente);
+                return (obj != null);
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/ExisteVersionInicial/Cliente/{idCliente:int}")]
+        [HttpGet]
+        public Object GetExisteVersionInicial(int idCliente)
+        {
+            try
+            {
+                return ProcessMsg.Cliente.GetVersiones(idCliente, null).Exists(v => v.Release.StartsWith("I"));
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        
         [Route("api/Componentes/{NomComponente}/Comentario")]
         [HttpGet]
         public Object GetComponentesByName(string NomComponente)
@@ -88,7 +314,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                var lista = ProcessMsg.Version.GetVersiones(null);
+                int vr = 0;
+                var lista = ProcessMsg.Version.GetVersiones(null).Where(v => int.TryParse(v.Release.ElementAt(0).ToString(), out vr)).ToList();
                 var obj = (lista.Count == 0 ? null : lista.OrderByDescending(x => x.IdVersion).First());
                 if (obj == null)
                 {
@@ -456,6 +683,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    if (version.Release.Equals("I")) version.Release = string.Format("I{0:dd.MM.yyyy.HH.mm.ss}",DateTime.Now);
                     var obj = ProcessMsg.Version.AddVersion(version);
                     if (obj == null)
                     {
@@ -485,7 +713,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 if (obj != null)
                 {
                     var upload = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Uploads"));
-                    var incial = upload + "\\" + obj.Release;
+                    var incial = Path.Combine(upload, obj.Release);
                     if (!Directory.Exists(incial))
                     {
                         Directory.CreateDirectory(incial);
@@ -536,7 +764,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
+        
         [Route("api/Version/{idVersion:int}/Componentes")]
         [HttpPost]
         public Object PostComponentes(int idVersion, [FromBody]ProcessMsg.Model.AtributosArchivoBo archivo)
@@ -581,6 +809,26 @@ namespace WinPerUpdateAdmin.Controllers.api
                 return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
             }
             catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/Version/{idVersion:int}/Clientes/TipoPub/{TipoPub:int}")]
+        [HttpPost]
+        public Object PostClientesToVersion(int idVersion, [FromBody] List<ClienteToVersion> listaClientes, int TipoPub)
+        {
+            try
+            {
+                var idClientes = TipoPub == 1 ? listaClientes.Where(y => y.check).Select(x => x.cliente.Id).ToList() : listaClientes.Select(x => x.cliente.Id).ToList();
+                var res = ProcessMsg.Version.AddVersionCliente(idVersion, idClientes);
+                if (res[0].ToString().Equals("0", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Content(HttpStatusCode.OK, res[1]);
+                }
+                return Content(HttpStatusCode.Created, res[1]);
+            }
+            catch(Exception ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
@@ -676,6 +924,26 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region put
+        [Route("api/Version/{idVersion:int}/Estado/{Estado}/Upd")]
+        [HttpPut]
+        public Object UpdEstadoVersion(int idVersion, char Estado)
+        {
+            try
+            {
+                var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(v => v.IdVersion == idVersion);
+                if (version == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
+                }
+                version.Estado = Estado;
+                return Content(HttpStatusCode.OK, ProcessMsg.Version.UpdEstadoVersion(idVersion, version));
+            }
+            catch(Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/ReportarTareaManual")]
         [HttpPut]
         public Object ReportarTareaManual([FromBody]ProcessMsg.Model.TareaBo tarea)

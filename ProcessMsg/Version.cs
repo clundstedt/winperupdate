@@ -13,6 +13,30 @@ namespace ProcessMsg
 {
     public class Version
     {
+        public static Model.VersionToClienteBo CheckVersionAnteriorInstalada(int idVersion, int idCliente, int idAmbiente)
+        {
+            try
+            {
+                var res = new CnaVersionesCliente().CheckVersionAnteriorInstalada(idVersion, idCliente, idAmbiente);
+                while (res.Read())
+                {
+                    return new Model.VersionToClienteBo
+                    {
+                        Cliente = new Model.ClienteBo { Id = int.Parse(res["idClientes"].ToString()) },
+                        Version = new Model.VersionBo { IdVersion = int.Parse(res["idVersion"].ToString())},
+                        Ambiente = new Model.AmbienteBo { idAmbientes = int.Parse(res["idAmbientes"].ToString()) },
+                        Estado = char.Parse(res["Estado"].ToString()),
+                        FechaInstalacion = Convert.ToDateTime(res["FechaInstalacion"].ToString())
+                    };
+                }
+                return null;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<Model.VersionToClienteBo> GetVersionesToCliente(int idCliente)
         {
             try
@@ -71,11 +95,13 @@ namespace ProcessMsg
                     {
                         foreach (var componente in Componente.GetComponentes(obj.IdVersion, modulo, null))
                         {
-                            obj.Componentes.Add(new Model.AtributosArchivoBo {
+                            obj.Componentes.Add(new Model.AtributosArchivoBo
+                            {
                                 Name = componente.Name,
                                 DateCreate = componente.DateCreate,
                                 Version = componente.Version,
-                                Modulo = componente.Modulo
+                                Modulo = componente.Modulo,
+                                Comentario = componente.Comentario
                             });
                         }
                     };
@@ -384,6 +410,32 @@ namespace ProcessMsg
                 return query.Execute(idVersion, idClientes);
             }
             catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static object[] AddVersionCliente(int idVersion, List<int> idClientes)
+        {
+            try
+            {
+                string xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><root>";
+                idClientes.ForEach(x =>
+                {
+                    xml += string.Format("<parametro idVersion=\"{0}\" idClientes=\"{1}\"/>", idVersion, x);
+                });
+                xml += "</root>";
+                object[] respuesta = new object[2];
+                var reader = new AddVersionCliente().Execute(xml);
+                while (reader.Read())
+                {
+                    respuesta[0] = reader["coderr"].ToString();
+                    respuesta[1] = reader["msgerr"].ToString();
+                }
+                return respuesta;
+            }
+            catch(Exception ex)
             {
                 var msg = "Excepcion Controlada: " + ex.Message;
                 throw new Exception(msg, ex);

@@ -100,13 +100,39 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Nro Cliente / Folio"><i class="fa fa-list fa-fw"></i></span>
-                                        <input class="form-control" type="text" name="folio" required ng-model="formData.folio" placeholder="Nro Folio" />
+                                        <span class="input-group-addon" title="Año de contrato"><i class="fa fa-list fa-fw"></i></span>
+                                        <select class="form-control" ng-change="GenCorrelativo()" name="folio" required ng-model="formData.folio" ng-options="a.Ano as a.Ano for a in aniosInicioContrato">
+                                            <option value="">-- Año de contrato --</option>
+                                        </select><br>
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.folio.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Mes de firma de contrato"><i class="fa fa-list fa-fw"></i></span>
+                                        <select class="form-control" ng-change="GenCorrelativo()" name="mescon" required ng-model="formData.mescon" ng-options="mesman.valor as mesman.nommes for mesman in mesesInicioMantencion">
+                                            <option value="">-- Mes de firma de contrato --</option>
+                                        </select><br>
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.mescon.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Correlativo"><i class="fa fa-list fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="correlativo" required ng-model="formData.correlativo" placeholder="Correlativo" /><br>
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.correlativo.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
                                     </span>
                                 </div>
@@ -178,6 +204,16 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Suite"><i class="fa fa-suitcase fa-fw"></i></span>
+                                        <select class="form-control" name="suite" ng-change="CargarModulosBySuite(formData)" ng-model="formData.suite" ng-options="suite.idSuite as suite.Nombre for suite in suites | orderBy:Nombre">
+                                            <option value="">-- Suite --</option> 
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-9">
@@ -197,10 +233,10 @@
                                     <div class="input-group-sm margin-bottom-sm">
                                         <div class="btn-toolbar hidden-xs">
                                             <div class="btn-group btn-group-sm" role="toolbar">
-                                                <button type="button" class="btn btn-info" ng-click="formData.modulos = modulosWinper">
+                                                <button type="button" ng-disabled="modulosWinper.length == 0" class="btn btn-info" ng-click="SeleccionarTodosModulos()">
                                                     Seleccionar  Todo
                                                 </button>
-                                                <button type="button" class="btn btn-default" ng-click="formData.modulos = []">
+                                                <button type="button" ng-disabled="modulosWinper.length == 0" class="btn btn-default" ng-click="LimpiarSeleccionados(formData)">
                                                     Limpiar  Selección
                                                 </button>
                                             </div>
@@ -213,7 +249,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
-                                        <label>N° de Licencia: {{formData.folio + '' + formData.estmtc + '' + formData.mesini + '' + formData.nrotrbc + '' + formData.nrotrbh + '' + formData.nrousr}}</label>
+                                        <label>N° de Licencia del Producto: {{formData.folio.toString().charAt(3) + '' + formData.mescon + '' + formData.correlativo + '' + formData.estmtc + '' + formData.mesini + '' + formData.nrotrbc + '' + formData.nrotrbh + '' + formData.nrousr}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +267,7 @@
                                 <div class="form-group">
                                     <div class="input-group-sm">
                                         <button type="button" class="btn btn-warning btn-block" ng-click="GenKey((frmMain.$valid && rutok),formData)">
-                                            Generar
+                                            Generar Licencia MD5
                                         </button>
                                     </div>
                                 </div>

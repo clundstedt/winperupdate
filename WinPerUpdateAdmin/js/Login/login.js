@@ -5,9 +5,9 @@
         .module('app')
         .controller('login', login);
 
-    login.$inject = ['$scope','$window', 'serviceLogin']; 
+    login.$inject = ['$scope','$window', 'serviceLogin', '$timeout']; 
 
-    function login($scope, $window, serviceLogin) {
+    function login($scope, $window, serviceLogin, $timeout) {
         $scope.title = 'login';
         $scope.formData = {};
 
@@ -19,6 +19,8 @@
             $scope.labellogin = "Ingresar";
             $scope.labelloginsendclave = "Enviar Clave";
             $scope.msgerror = "";
+            $scope.lblButton = "Instalar";
+            $scope.lblLoad = "";
 
             $scope.KeyUpEvent = function (KeyCode, formData) {
                 if (KeyCode == 13) {
@@ -80,6 +82,20 @@
                     $scope.msgerr = data;
                     $scope.showerror = true;
                     $scope.showenviando = false;
+                });
+            }
+
+            $scope.Instalar = function (formData) {
+                $('#load').modal({ backdrop: 'static', keyboard: false })
+                $scope.lblLoad = "Creando base de datos del sistema y Super Usuario...";
+                serviceLogin.CrearBD(formData.userbd, formData.passbd, formData.svbd, formData.nombrebd, formData.nombreuser, formData.apellidouser, formData.mailuser, formData.passsu).success(function (dataCrearBD) {
+                    $scope.lblLoad = "Redireccionando...";
+                    $timeout(function () {
+                        $window.location.href = "/Home";
+                    }, 3000);
+                }).error(function (err) {
+                    console.error(err);
+                    $scope.lblLoad = "Ocurrió un error al intentar crear la base de datos, verifique consola del navegador.";
                 });
             }
 

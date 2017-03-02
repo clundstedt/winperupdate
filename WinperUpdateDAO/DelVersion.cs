@@ -10,7 +10,7 @@ namespace WinperUpdateDAO
     {
         public int Execute(int idVersion)
         {
-            SpName = @" delete Versiones where idVersion = @idVersion;";
+            SpName = @" DELETE FROM Versiones where idVersion = @idVersion;";
             try
             {
                 ParmsDictionary.Add("@idVersion", idVersion);

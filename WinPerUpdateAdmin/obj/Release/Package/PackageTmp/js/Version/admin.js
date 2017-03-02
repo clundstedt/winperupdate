@@ -9,6 +9,8 @@
 
     function admin($scope, serviceAdmin) {
         $scope.title = 'admin';
+        $scope.lblLoad = "";
+        $scope.btnLoadHabilitado = false;
 
         activate();
 
@@ -23,22 +25,33 @@
                 console.error(data);
             });
 
-            $scope.GenerarVersionInicial = function () {
+            $scope.GenerarVersionInicial = function (formData) {
+                $("#inicial-modal").modal('toggle');
                 $('#loading-modal').modal({ backdrop: 'static', keyboard: false })
-                serviceAdmin.addVersionInicial('7.0.1', 'N', 'Versión inicial de WinPer').success(function (data) {
-                    console.log(data);
+                $scope.lblLoad = "Creando versión inicial.";
+                $scope.btnLoadHabilitado = false;
+                serviceAdmin.addVersionInicial(formData.release, 'N', formData.descripcion).success(function (data) {
+                    $scope.lblLoad = "Agregando componentes de versión inicial.";
                     serviceAdmin.GenVersionInicial(data.IdVersion).success(function (data1) {
+                        $scope.lblLoad = "Obteniendo información de la version inicial.";
                         serviceAdmin.getVersiones().success(function (data) {
                             $scope.versiones = data;
+                            $scope.btnLoadHabilitado = true;
                             $('#loading-modal').modal('toggle');
-                        }).error(function (data) {
-                            console.error(data);
+                        }).error(function (err) {
+                            console.error(err);
+                            $scope.lblLoad = "Ocurrió un error al obtener la información de la versión inicial. Verifique la consola del navegador.";
+                            $scope.btnLoadHabilitado = true;
                         });
-                    }).error(function (err1) {
-                        console.error(err1);
+                    }).error(function (err) {
+                        console.error(err);
+                        $scope.lblLoad = "Ocurrió un error al agregar los componentes de la versión inicial. Verifique la consola del navegador.";
+                        $scope.btnLoadHabilitado = true;
                     });
                 }).error(function (err) {
                     console.error(err);
+                    $scope.lblLoad = "Ocurrió un error al crear la versión inicial. Verifique la consola del navegador.";
+                    $scope.btnLoadHabilitado = true;
                 });
             }
         }

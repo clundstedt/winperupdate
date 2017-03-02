@@ -55,6 +55,15 @@ namespace ProcessMsg.Model
             }
         }
 
+        public string DateCreateXml
+        {
+            get
+            {
+                return string.Format("{0:yyyy-MM-ddThhhh:mm:ss}", DateCreate);
+            }
+        }
+
+
         public string LastWriteFmt
         {
             get

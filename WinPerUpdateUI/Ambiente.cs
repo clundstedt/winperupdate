@@ -94,7 +94,7 @@ namespace WinPerUpdateUI
                     string version = keya.GetValue("Version").ToString();
                     keya.SetValue("DirWinper", directorio);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     keya.SetValue("Version", "");
                     keya.SetValue("DirWinper", directorio);
@@ -105,7 +105,7 @@ namespace WinPerUpdateUI
                 {
                     string estado = keya.GetValue("Status").ToString();
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     keya.SetValue("Status", "");
                 }
@@ -114,7 +114,7 @@ namespace WinPerUpdateUI
                 {
                     var ins = keya.GetValue("Instalacion");
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     keya.SetValue("Instalacion", 0);
                 }
@@ -124,6 +124,13 @@ namespace WinPerUpdateUI
             key.SetValue("Ambientes", ambientes);
             key.Close();
 
+            if (cmbPerfil.SelectedIndex == 0)
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["sql"].Value = chkPermitirSQL.Checked.ToString();
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+            
             this.Close();
             MessageBox.Show("WinperUpdate se reiniciará para conservar los cambios.", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.Restart();
@@ -179,7 +186,16 @@ namespace WinPerUpdateUI
 
         private void Ambiente_Load(object sender, EventArgs e)
         {
+            var chek = ConfigurationManager.AppSettings["sql"];
+            if (chek != null)
+            {
+                chkPermitirSQL.Checked = bool.Parse(chek);
+            }
+        }
 
+        private void cmbPerfil_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            chkPermitirSQL.Visible = (cmbPerfil.SelectedIndex == 0);
         }
     }
 }

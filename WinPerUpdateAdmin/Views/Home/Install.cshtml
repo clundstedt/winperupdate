@@ -1,0 +1,190 @@
+﻿@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Index";
+}
+@Scripts.Render("~/bundles/login")
+<div class="row">
+    <div class="col-md-12">
+        <h1>Instalación WinperUpdateAdmin</h1>
+    </div>
+</div>
+<div class="row" ng-controller="login">
+    <div class="col-md-12">
+        <div class="panel-group">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Configuración General
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body"  >
+                    <form name="frmMain">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Datos Super Usuario</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Nombre</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="nombreuser"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="nombreuser" placeholder="" ng-model="formData.nombreuser" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.nombreuser.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Apellido</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="apellidouser"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="apellidouser" placeholder="" ng-model="formData.apellidouser" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.apellidouser.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>E-Mail</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="mailuser"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="mailuser" placeholder="" ng-model="formData.mailuser" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.mailuser.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Password</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Password"><i class="fa fa-key fa-fw"></i></span>
+                                        <input class="form-control" type="password" name="passsu" placeholder="Password" ng-model="formData.passsu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.passsu.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Repita Password</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Repita Password"><i class="fa fa-key fa-fw"></i></span>
+                                        <input class="form-control" type="password" name="rpasssu" placeholder="Repita Password" ng-model="formData.rpasssu" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.rpasssu.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                    <span class="error_ingreso" ng-show="formData.passsu != formData.rpasssu">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Las passwords no coinciden.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Base de Datos</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Usuario Base de Datos</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="userbd"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="userbd" placeholder="" ng-model="formData.userbd" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.userbd.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Password Usuario</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="passbd"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="passbd" placeholder="" ng-model="formData.passbd" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.passbd.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Servidor</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="svbd"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="svbd" placeholder="" ng-model="formData.svbd" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.svbd.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Nombre Base de Datos</label>
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="nombrebd"><i class="fa fa-link fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="nombrebd" placeholder="" ng-model="formData.nombrebd" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.nombrebd.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && formData.passsu == formData.rpasssu && Instalar(formData)" ng-disabled="lblButton != 'Instalar'">
+                                    <span class="fa fa-check" ng-show="lblButton != 'Instalar'"></span>
+                                    <span class="fa fa-circle-o-notch fa-spin" ng-hide="lblButton == 'Instalar'"></span> {{lblButton}}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="load" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                </div>
+                                <div class="modal-body">
+                                    <center>
+                                        <h1><i class="fa fa-spinner fa-pulse"></i></h1>
+                                        <br />
+                                        <h4>{{lblLoad}}</h4>
+                                    </center>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

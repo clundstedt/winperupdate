@@ -51,27 +51,27 @@ namespace ProcessMsg
             if (ServerMapPath.Contains("Uploads"))
             {
                 var u = ConfigurationManager.AppSettings["upload"];
-                if (u != null)
+                if (u != null && !u.Equals("default", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!u.EndsWith("/")) u += "/";
+                    if (!u.EndsWith("\\")) u += "\\";
                     return u;
                 }
             }
             else if (ServerMapPath.Contains("VersionOficial"))
             {
                 var vo = ConfigurationManager.AppSettings["voficial"];
-                if (vo != null)
+                if (vo != null && !vo.Equals("default", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!vo.EndsWith("/")) vo += "/";
+                    if (!vo.EndsWith("\\")) vo += "\\";
                     return vo;
                 }
             }
             else if (ServerMapPath.Contains("Fuentes"))
             {
                 var f = ConfigurationManager.AppSettings["fuentes"];
-                if (f != null)
+                if (f != null && !f.Equals("default", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!f.EndsWith("/")) f += "/";
+                    if (!f.EndsWith("\\")) f += "\\";
                     return f;
                 }
             }
@@ -84,7 +84,7 @@ namespace ProcessMsg
             string pwdMail = ConfigurationManager.AppSettings["pwdMail"];
             string fromMail = ConfigurationManager.AppSettings["fromMail"];
             string HostMail = ConfigurationManager.AppSettings["HostMail"];
-
+            
             var correo = new System.Net.Mail.MailMessage();
             correo.From = new System.Net.Mail.MailAddress(userMail, fromMail);
             correo.To.Add(new System.Net.Mail.MailAddress(mailctt));
@@ -137,10 +137,10 @@ namespace ProcessMsg
             return (0 == comparer.Compare(hashOfInput, hash));
         }
 
-        public static string GenerarLicencia(int NumFolio, int estmtc, string mesini, string nrotrbc
+        public static string GenerarLicencia(int NumFolio, string mescon, int correlativo, int estmtc, string mesini, string nrotrbc
                                             , string nrotrbh, string nrousr)
         {
-            string fStr = string.Format("{0}{1}{2}{3}{4}{5}", NumFolio, estmtc, mesini,nrotrbc,nrotrbh,nrousr);
+            string fStr = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}", NumFolio, mescon, correlativo, estmtc, mesini,nrotrbc,nrotrbh,nrousr);
             string hash = GetMd5Hash(fStr);
             string licencia = "";
             for (int i = 0; i < hash.Length; i++)
@@ -180,41 +180,56 @@ namespace ProcessMsg
             }
             return tbl;
         }
-
+        
         /// <summary>
         /// Genera la version siguiente de la especificada en el parametro
         /// </summary>
         /// <param name="VersionActual"></param>
         /// <returns>Version siguiente</returns>
-        /*
+        /// 
+        
         public static string GenerarVersionSiguiente(string VersionActual)
         {
-            int vInt = 0;
-            if (int.TryParse(VersionActual.Replace(".", ""), out vInt))
+            var nVersion = "";
+            var parts = VersionActual.Split('.');
+            parts[parts.Length - 1] = (int.Parse(parts[parts.Length - 1]) + 1).ToString();
+            for (var i = 0; i < parts.Length; i++)
             {
-                string versionSgt = "";
-                string versionFmt = "";
-                int contPto = 1;
-                var p = VersionActual.Split('.');
-                string num = (vInt + 1).ToString();
-                for (int i = num.Length - 1; i >= 0; i--)
-                {
-                    if (contPto <= p.Length - 1)
-                    {
-                        versionSgt += num.ElementAt(i) + ".";
-                        num = num.Remove(i);
-                        contPto++;
-                    }
-                }
-                versionSgt.Reverse().ToList().ForEach(x =>
-                {
-                    versionFmt += x;
-                });
-                return num + versionFmt;
-            }else
-            {
-                return "Formato de la versión incorrecto";
+                nVersion += parts[i] + (i != parts.Length - 1 ? "." : "");
             }
-        }*/
+            return nVersion;
+        }
+        
+        /*
+            Retorna -1 Si VersionOtra es menor
+            Retorna 0 Si las versiones son iguales
+            Retorna 1 Si la VersionOtra es mayor
+        */
+        
+        public static int ComparaVersion(string versionBase, string versionOtra)
+        {
+            try
+            {
+                var arrVB = versionBase.Split('.');
+                var arrVO = versionOtra.Split('.');
+                do
+                {
+                    if (arrVB.Length < arrVO.Length) versionBase += ".0";
+                    else if (arrVO.Length < arrVB.Length) versionOtra += ".0";
+                    arrVB = versionBase.Split('.');
+                    arrVO = versionOtra.Split('.');
+                } while (arrVB.Length != arrVO.Length);
+                for (var i = 0; i < arrVB.Length; i++)
+                {
+                    if (int.Parse(arrVB[i]) > int.Parse(arrVO[i])) return -1;
+                    else if (int.Parse(arrVO[i]) > int.Parse(arrVB[i])) return 1;
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
     }
 }

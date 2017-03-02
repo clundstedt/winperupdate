@@ -20,6 +20,9 @@
                     <a ng-click="ShowConfirm()" ng-hide="formData.estado=='V' || idUsuario==0" data-toggle="modal" class="btn btn-success">
                         <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
                     </a>
+                    <a ng-click="ReenviarMailBienvenida()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-warning">
+                        <span class="fa fa-fw fa-envelope"></span> Re-enviar E-Mail de Bienvenida
+                    </a>
                 </div>
             </div>
 
@@ -105,6 +108,28 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="loading-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <h1><i ng-hide="AddUserOK" class="fa fa-spinner fa-pulse"></i></h1>
+                        <br />
+                    </center>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" ng-model="lblStatUser"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-disabled="!AddUserOK" ng-click="CerrarLoadingModal()">OK</button>
+                </div>
+            </div>
+
         </div>
     </div>
 

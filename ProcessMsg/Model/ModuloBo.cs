@@ -29,7 +29,7 @@ namespace ProcessMsg.Model
                 return Estado == 'C' ? "Caducado" : "Vigente";
             }
         }
-
+        public int Suite { get; set; }
         public List<ComponenteModuloBo> ComponentesModulo { get; set; }
     }
 }

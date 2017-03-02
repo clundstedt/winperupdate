@@ -9,28 +9,56 @@ namespace WinperUpdateDAO
 {
     public class AddCliente : SpDao
     {
-        public System.Data.SqlClient.SqlDataReader Execute(int rut, char dv, string nombre, string direccion, int idCmn
-            , string nrolicencia, int numfolio, int estmtc, string mesini, string nrotrbc, string nrotrbh, string nrousr)
+        public object Execute(int rut, char dv, string nombre, string direccion, int idCmn
+            , string nrolicencia, int numfolio, int estmtc, string mesini, string nrotrbc, string nrotrbh, string nrousr, string mescon, int corr)
         {
-            SpName = @"EXEC sp_ins_cliente @idCmn, @rut, @dv, @nombre, @direccion
-                                          ,@nrolicencia, @numfolio, @estmtc, @mesini
-                                          ,@nrotrbc, @nrotrbh, @nrousr";
+            SpName = @"INSERT INTO clientes(idCmn
+						,Rut
+						,Dv
+						,RazonSocial
+						,Direccion
+						,NroLicencia
+						,Folio
+						,EstMtc
+						,MesIni
+						,NroTrbc
+						,NroTrbh
+						,NroUsr
+                        ,MesCon
+                        ,Correlativo)
+                output INSERTED.idClientes
+				VALUES(@idCmn
+					  ,@Rut
+					  ,@Dv
+					  ,@RazonSocial
+					  ,@Direccion
+					  ,@NroLicencia
+					  ,@NumFolio
+					  ,@EstMtc
+					  ,@MesIni
+					  ,@NroTrbc
+					  ,@NroTrbh
+					  ,@NroUsr
+                      ,@MesCon
+                      ,@Corr)";
             try
             {
-                ParmsDictionary.Add("@rut", rut);
-                ParmsDictionary.Add("@dv", dv);
-                ParmsDictionary.Add("@nombre", nombre);
-                ParmsDictionary.Add("@direccion", direccion);
+                ParmsDictionary.Add("@Rut", rut);
+                ParmsDictionary.Add("@Dv", dv);
+                ParmsDictionary.Add("@RazonSocial", nombre);
+                ParmsDictionary.Add("@Direccion", direccion);
                 ParmsDictionary.Add("@idCmn", idCmn);
-                ParmsDictionary.Add("@nrolicencia", nrolicencia);
-                ParmsDictionary.Add("@numfolio", numfolio);
-                ParmsDictionary.Add("@estmtc", estmtc);
-                ParmsDictionary.Add("@mesini", mesini);
-                ParmsDictionary.Add("@nrotrbc", nrotrbc);
-                ParmsDictionary.Add("@nrotrbh", nrotrbh);
-                ParmsDictionary.Add("@nrousr", nrousr);
+                ParmsDictionary.Add("@NroLicencia", nrolicencia);
+                ParmsDictionary.Add("@NumFolio", numfolio);
+                ParmsDictionary.Add("@EstMtc", estmtc);
+                ParmsDictionary.Add("@MesIni", mesini);
+                ParmsDictionary.Add("@NroTrbc", nrotrbc);
+                ParmsDictionary.Add("@NroTrbh", nrotrbh);
+                ParmsDictionary.Add("@NroUsr", nrousr);
+                ParmsDictionary.Add("@MesCon", mescon);
+                ParmsDictionary.Add("@Corr", corr);
 
-                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+                return Connector.ExecuteQueryScalar(SpName, ParmsDictionary);
             }
             catch (Exception ex)
             {

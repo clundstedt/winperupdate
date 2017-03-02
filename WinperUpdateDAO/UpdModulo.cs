@@ -8,12 +8,13 @@ namespace WinperUpdateDAO
 {
     public class UpdModulo : SpDao
     {
-        public int Execute(int idModulo, string NomModulo, string Descripcion, bool isCore, string Directorio)
+        public int Execute(int idModulo, string NomModulo, string Descripcion, bool isCore, string Directorio, int Suite)
         {
             SpName = @"UPDATE modulos SET NomModulo = @NomModulo
                                          ,Descripcion = @Descripcion
                                          ,isCore = @isCore
                                          ,Directorio = @Directorio
+                                         ,Suite = @Suite
                                     WHERE idModulo = @idModulo";
             try
             {
@@ -22,6 +23,7 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@isCore", isCore);
                 ParmsDictionary.Add("@Directorio", Directorio);
                 ParmsDictionary.Add("@idModulo", idModulo);
+                ParmsDictionary.Add("@Suite", Suite);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

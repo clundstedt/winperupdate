@@ -27,17 +27,46 @@
             $scope.btnBlock = true;
             $scope.componentesOficiales = [];
             $scope.TipoComponentes = [];
+
+            $scope.radioPublicar = 0;
+            $scope.listaClientes = [];
+            $scope.lblMsgPublica = "";
             
 
             if (!jQuery.isEmptyObject($routeParams)) {
+
+                serviceAdmin.getComponentesOficiales().success(function (data) {
+                    $scope.componentesOficiales = data;
+                }).error(function (err) {
+                    console.error(err);
+                });
                 $scope.idversion = $routeParams.idVersion;
                 $scope.titulo = "Modificar Versión";
                 $scope.labelcreate = "Modificar";
+
+                serviceAdmin.getClientes().success(function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var cl = {
+                            check: false,
+                            cliente: data[i]
+                        };
+                        $scope.listaClientes.push(cl);
+                    }
+                }).error(function (err) {
+                    console.error(err);
+                });
 
                 serviceAdmin.getVersion($scope.idversion).success(function (data) {
                     $scope.formData.release = data.Release;
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
+                    serviceAdmin.getComponentesVersion(data.IdVersion).success(function (dataCV) {
+                        $scope.componentes = dataCV;
+                    }).error(function (errCV) {
+                        console.error(errCV);
+                    });
+
+                    /*METODO DE VALIDACION DE COMPONENTE POR ANGULAR
                     for (var i = 0; i < data.Componentes.length; i++) {
                         var comp = {
                             isOK : "success",
@@ -50,17 +79,12 @@
                             $scope.ComponenteOkSegunVersion($scope.componentes[i]);
                         }
                         console.log($scope.componentes);
-                    }, 1500);
+                    }, 1500);*/
                     
                     $scope.formData.comentario = data.Comentario;
 
                     $scope.fechaini = data.FechaFmt;
 
-                    angular.forEach($scope.componentes, function (item) {
-                        if (item.componente.Tipo == 'exe') $scope.totales[0]++;
-                        else if (item.componente.Tipo == 'qrp') $scope.totales[1]++;
-                        else $scope.totales[2]++;
-                    });
 
                 }).error(function (data) {
                     console.error(data);
@@ -84,11 +108,6 @@
                 });
             }
 
-            serviceAdmin.getComponentesOficiales().success(function (data) {
-                $scope.componentesOficiales = data;
-            }).error(function (err) {
-                console.error(err);
-            });
 
             $scope.ComponenteOkSegunVersion = function (file) {
                 for (var i = 0; i < $scope.componentesOficiales.length; i++) {
@@ -194,12 +213,16 @@
             }
 
             $scope.ShowConfirmPublish = function () {
-                if ($scope.ComponentesOkSegunVersion()) {
-                    $("#publish-modal").modal('show');
+                if ($scope.VerificaSeleccionCliente()) {
+                    $("#publica-modal").modal('toggle');
+                    if ($scope.ComponentesOkSegunVersion()) {
+                        $("#publish-modal").modal('show');
+                    } else {
+                        $("#avisocomOk-modal").modal('show');
+                    }
                 } else {
-                    $("#avisocomOk-modal").modal('show');
+                    $scope.lblMsgPublica = "Debe seleccionar almenos un cliente.";
                 }
-
             }
 
             $scope.PublicarParcial = function (version) {                                                                     
@@ -223,6 +246,17 @@
                 });
             }
 
+            $scope.UpdateEstado = function (estadoVersion) {
+                serviceAdmin.updEstadoVersion($scope.idversion, estadoVersion).success(function (data) {
+                    //$scope.formData.estado = estadoVersion;
+                    $window.setTimeout(function () {
+                        $window.location.href = "/Admin#/";
+                    }, 2000);
+                }).error(function (err) {
+                    console.error(err);
+                });
+            }
+
             $scope.SaveVersion = function (formData) {
                 if ($scope.idversion == 0) {
                     serviceAdmin.addVersion(formData.release, formData.fecha, 'N', formData.comentario, '').success(function (data) {
@@ -241,32 +275,51 @@
                 }
             };
 
+            $scope.VerificaSeleccionCliente = function () {
+                if ($scope.radioPublicar == 0) return true;
+                for (var i = 0; i < $scope.listaClientes.length; i++) {
+                    if($scope.listaClientes[i].check){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             $scope.Publicar = function () {
                 $scope.mensaje = "Generando Instalador ...";
                 serviceAdmin.genVersion($scope.idversion).success(function (data) {
                     $scope.mensaje = "Publicando Versión ...";
-                    serviceAdmin.getVersion($scope.idversion).success(function (data1) {
-                        data1.Estado = 'P';
-                        data1.Instalador = data.Output;
-                        console.log(data1.Instalador);
-                        if (data.CodErr == 0) {
-                            serviceAdmin.updVersion($scope.idversion, data1.Release, data1.FechaFmt, data1.Estado, data1.Comentario, $scope.idUsuario, data1.Instalador).success(function (data2) {
-                                $scope.mensaje = "Versión Publicada exitosamente ";
-                                console.debug($scope.mensaje);
-                                $scope.formData.estado = data2.Estado;
-                            }).error(function (data) {
-                                $scope.mensaje = "Hubo errores al publicar. Ver el Log";
-                                console.error(data);
-                            });
-                        } else {
-                            $scope.mensaje = "Hubo errores al publicar. Ver consola del navegador";
-                            console.error("CodErr: " + data.CodErr + ". MsgErr: " + data.MsgErr);
-                        }
-                    }).error(function (data) {
-                        $scope.mensaje = "Hubo errores al publicar. Ver el Log";
-                        console.error(data);
+                    serviceAdmin.addClientesToVersion($scope.idversion, $scope.listaClientes, $scope.radioPublicar).success(function (dataAddCTV) {
+                        serviceAdmin.getVersion($scope.idversion).success(function (data1) {
+                            data1.Estado = 'P';
+                            data1.Instalador = data.Output;
+                            console.log(data1.Instalador);
+                            if (data.CodErr == 0) {
+                                serviceAdmin.updVersion($scope.idversion, data1.Release, data1.FechaFmt, data1.Estado, data1.Comentario, $scope.idUsuario, data1.Instalador).success(function (data2) {
+                                    $scope.mensaje = "Versión Publicada exitosamente ";
+                                    console.debug($scope.mensaje);
+                                    $scope.formData.estado = data2.Estado;
+                                }).error(function (data) {
+                                    $scope.mensaje = "Hubo errores al actualizar los datos de la version. Ver consola del navegador.";
+                                    console.error(data);
+                                });
+                            } else {
+                                $scope.mensaje = "Hubo errores al publicar. Ver consola del navegador";
+                                console.error("CodErr: " + data.CodErr + ". MsgErr: " + data.MsgErr);
+                            }
+                        }).error(function (data) {
+                            $scope.mensaje = "Hubo errores al obtener la información de la versión. Ver consola del navegador";
+                            console.error(data);
+                        });
+                    }).error(function (errAddCTV) {
+                        $scope.mensaje = "Hubo errores al publicar. Ver consola del navegador";
+                        console.error(errAddCTV);
                     });
+                }).error(function (err) {
+                    console.error(err);
+                    $scope.mensaje = "Hubo errores al generar instalador. Ver consola del navegador";
                 });
+
             }
         }
 

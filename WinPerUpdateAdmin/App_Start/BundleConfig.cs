@@ -47,6 +47,7 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
                         "~/Scripts/angular-file-upload.min.js"
+                      , "~/Scripts/smart-table.min.js"
                       , "~/js/Version/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
@@ -129,6 +130,22 @@ namespace WinPerUpdateAdmin
                       , "~/js/Home/factoryHome.js"
                       , "~/js/Perfil/perfil.js"
                       , "~/js/Seguridad/serviceSeguridad.js"
+                      ));
+            bundles.Add(new ScriptBundle("~/bundles/superuser").Include(
+                        "~/js/SuperUser/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
+                      , "~/js/SuperUser/superUser.js"
+                      , "~/js/SuperUser/serviceSU.js"
+                      ));
+            bundles.Add(new ScriptBundle("~/bundles/descargas").Include(
+                        "~/Scripts/angular-file-upload.min.js"
+                        , "~/Scripts/smart-table.min.js"
+                        , "~/js/Descargas/app.js"
+                        , "~/js/Home/controllerHome.js"
+                        , "~/js/Home/factoryHome.js"
+                        , "~/js/Descargas/descargas.js"
+                        , "~/js/Descargas/serviceDescargas.js"
                       ));
         }
     }

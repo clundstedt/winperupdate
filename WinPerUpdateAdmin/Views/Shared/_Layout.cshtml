@@ -35,11 +35,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @{Html.RenderAction("Menus", "Home");}
+                    @{try { if (Session["token"] != null) { Html.RenderAction("Menus", "Home"); } } catch (Exception) { }
+                    }
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right"  ng-controller="controllerHome">
-                    @{Html.RenderAction("Cuenta", "Home");}
+                    @{try { if (Session["token"] != null) { Html.RenderAction("Cuenta", "Home"); } } catch (Exception) { }
+                    }
                 </ul>
             </div>
         </div>
@@ -49,7 +51,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Sistema para el Control de Versiones Winper</p>
+            <p>&copy; @DateTime.Now.Year  - Sistema para el Control de Versiones Winper </p>
         </footer>
     </div>
 

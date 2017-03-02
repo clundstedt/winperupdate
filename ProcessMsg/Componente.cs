@@ -86,7 +86,8 @@ namespace ProcessMsg
                         Name = dr["NameFile"].ToString(),
                         DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
                         Version = dr["VersionFile"].ToString(),
-                        Modulo = dr["Modulo"].ToString().Trim()
+                        Modulo = dr["Modulo"].ToString().Trim(),
+                        Comentario = dr["Comentario"].ToString()
                     };
 
                     lista.Add(obj);
@@ -201,7 +202,7 @@ namespace ProcessMsg
                 string xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><root>";
                 componentes.ForEach(c =>
                 {
-                    xml += string.Format("<parametro Modulo=\"{0}\" idVersion=\"{1}\" NameFile=\"{2}\" FechaFile=\"{3}\"/>", c.Modulo, idVersion, c.Name, c.DateCreate);
+                    xml += string.Format("<parametro Modulo=\"{0}\" idVersion=\"{1}\" NameFile=\"{2}\" FechaFile=\"{3}\"/>", c.Modulo, idVersion, c.Name, c.DateCreateXml);
                 });
                 xml += "</root>";
                 object[] respuesta = new object[2];

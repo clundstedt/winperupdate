@@ -28,10 +28,160 @@
             delComponentesModulos: delComponentesModulos,
             updComponentesModulos: updComponentesModulos,
 
-            updTipoComponente: updTipoComponente
+            updTipoComponente: updTipoComponente,
+            getSuites: getSuites,
+            ExistDirModulo: ExistDirModulo,
+            GetComponentesDirectorio: GetComponentesDirectorio,
+            addComponentesDir: addComponentesDir
         };
 
         return service;
+
+        function addComponentesDir(lista) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Modulo/ComponentesDir',
+                type: "POST",
+                dataType: 'text',
+                contentType: "application/json",
+                data: JSON.stringify(lista),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar el ComponentesDir');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('ERR:No se pudo agregar el ComponentesDir');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function GetComponentesDirectorio(idModulo) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Modulo/'+idModulo+'/ComponentesDir',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen ComponentesDirectorio');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('No existen ComponentesDirectorio');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function ExistDirModulo(directorio) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/ExistDir/'+directorio+'/Modulo',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen Directorio');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('No existen Directorio');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getSuites() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Suites',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No existen Suites');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('No existen Suites');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function syncComponentes() {
             var deferred = $q.defer();
@@ -51,7 +201,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No tiene error de sincronizacion');
                 }
             });
@@ -92,7 +242,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe TipoComponente');
                 }
             });
@@ -127,7 +277,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe modulos');
                 }
             });
@@ -162,7 +312,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe Tipo Componentes');
                 }
             });
@@ -197,7 +347,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe Componentes');
                 }
             });
@@ -241,7 +391,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe ComponentesModulos');
                 }
             });
@@ -276,7 +426,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe ComponentesModulos');
                 }
             });
@@ -319,7 +469,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe ComponentesModulos');
                 }
             });
@@ -360,7 +510,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe TipoComponentes');
                 }
             });
@@ -395,7 +545,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe TipoComponentes');
                 }
             });
@@ -430,7 +580,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existe modulos');
                 }
             });
@@ -465,7 +615,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen modulos');
                 }
             });
@@ -500,7 +650,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen modulos');
                 }
             });
@@ -518,14 +668,15 @@
             return promise;
         }
 
-        function addModulo(nombre, descripcion, iscore, directorio) {
+        function addModulo(nombre, descripcion, iscore, directorio, suite) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             var modulo = {
                 "NomModulo": nombre,
                 "Descripcion": descripcion,
                 "isCore": iscore,
-                "Directorio": directorio
+                "Directorio": directorio,
+                "Suite": suite
             }
 
             $.ajax({
@@ -542,7 +693,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen modulos');
                 }
             });
@@ -560,14 +711,15 @@
             return promise;
         }
 
-        function updModulo(id, nombre, descripcion, iscore, directorio) {
+        function updModulo(id, nombre, descripcion, iscore, directorio, suite) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             var modulo = {
                 "NomModulo": nombre,
                 "Descripcion": descripcion,
                 "isCore": iscore,
-                "Directorio": directorio
+                "Directorio": directorio,
+                "Suite": suite
             }
 
             $.ajax({
@@ -584,7 +736,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen modulos');
                 }
             });
@@ -619,7 +771,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen modulos');
                 }
             });

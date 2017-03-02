@@ -33,6 +33,8 @@
             this.notifyIcon2 = new System.Windows.Forms.NotifyIcon(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.worker = new System.ComponentModel.BackgroundWorker();
+            this.timerUI = new System.Windows.Forms.Timer(this.components);
+            this.SvcWPUI = new System.ServiceProcess.ServiceController();
             this.SuspendLayout();
             // 
             // notifyIcon2
@@ -55,10 +57,20 @@
             this.worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.worker_ProgressChanged);
             this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.worker_RunWorkerCompleted);
             // 
+            // timerUI
+            // 
+            this.timerUI.Interval = 30000;
+            this.timerUI.Tick += new System.EventHandler(this.timerUI_Tick);
+            // 
+            // SvcWPUI
+            // 
+            this.SvcWPUI.ServiceName = "WPUISVC";
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(863, 487);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
@@ -78,6 +90,8 @@
         private System.Windows.Forms.NotifyIcon notifyIcon2;
         private System.Windows.Forms.Timer timer1;
         private System.ComponentModel.BackgroundWorker worker;
+        private System.Windows.Forms.Timer timerUI;
+        private System.ServiceProcess.ServiceController SvcWPUI;
     }
 }
 

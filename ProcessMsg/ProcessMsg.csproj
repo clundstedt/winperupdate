@@ -58,6 +58,7 @@
     <Compile Include="Model\MenusBo.cs" />
     <Compile Include="Model\ModuloXLSXBo.cs" />
     <Compile Include="Model\PerfilesBo.cs" />
+    <Compile Include="Model\SuiteBo.cs" />
     <Compile Include="Model\TareaBo.cs" />
     <Compile Include="Model\TipoComponenteBo.cs" />
     <Compile Include="Model\UsuarioBo.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Modulo.cs" />
     <Compile Include="Perfiles.cs" />
     <Compile Include="Seguridad.cs" />
+    <Compile Include="Suites.cs" />
     <Compile Include="Tareas.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Version.cs" />

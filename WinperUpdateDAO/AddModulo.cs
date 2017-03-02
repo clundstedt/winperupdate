@@ -8,23 +8,26 @@ namespace WinperUpdateDAO
 {
     public class AddModulo : SpDao
     {
-        public int Execute(string NomModulo, string Descripcion, bool iscore, string Directorio)
+        public int Execute(string NomModulo, string Descripcion, bool iscore, string Directorio, int Suite)
         {
             SpName = @"INSERT INTO modulos (NomModulo
                                            ,Descripcion
                                            ,isCore
-                                           ,Directorio)
+                                           ,Directorio
+                                           ,Suite)
                                     output INSERTED.idModulo
                                     VALUES (@NomModulo
                                            ,@Descripcion
                                            ,@isCore
-                                           ,@Directorio)";
+                                           ,@Directorio
+                                           ,@Suite)";
             try
             {
                 ParmsDictionary.Add("@NomModulo", NomModulo);
                 ParmsDictionary.Add("@Descripcion", Descripcion);
                 ParmsDictionary.Add("@isCore", iscore);
                 ParmsDictionary.Add("@Directorio", Directorio);
+                ParmsDictionary.Add("@Suite", Suite);
 
                 return (int)Connector.ExecuteQueryScalar(SpName, ParmsDictionary);
             }
@@ -44,7 +47,8 @@ namespace WinperUpdateDAO
                                                ,FechaRegistro
                                                ,EstadoRegistro
                                                ,ErrorRegistro
-                                               ,Usuario)
+                                               ,Usuario
+                                               ,Suite)
                                         VALUES ({0}
                                                ,{1}
                                                ,{2}
@@ -52,7 +56,8 @@ namespace WinperUpdateDAO
                                                ,{4}
                                                ,{5}
                                                ,{6}
-                                               ,{7})";
+                                               ,{7}
+                                               ,{8})";
             string sqlDel = @"DELETE FROM modulosxlsx WHERE idUsuario = @idUsuarioDel";
             try
             {
@@ -70,6 +75,7 @@ namespace WinperUpdateDAO
                         "@EstadoRegistro"+i,
                         "@ErrorRegistro"+i,
                         "@idUsuario"+i,
+                        "@Suite"+i
                     };
                     var parm = new ConnectorDB.ThDictionary();
                     parm.Add(data[0], dt.Rows[i][0]);
@@ -80,7 +86,8 @@ namespace WinperUpdateDAO
                     parm.Add(data[5], dt.Rows[i][5]);
                     parm.Add(data[6], dt.Rows[i][6]);
                     parm.Add(data[7], idUsuario);
-                    obj[i+1, 0] = string.Format(SpName, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+                    parm.Add(data[8], dt.Rows[i][7]);
+                    obj[i+1, 0] = string.Format(SpName, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]);
                     obj[i+1, 1] = parm;
                 }
                 ParmsDictionary.Add("@idUsuarioDel", idUsuario);

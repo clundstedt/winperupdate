@@ -15,7 +15,6 @@
         $scope.blockBoton = false;
         $scope.tipoAlerta = "alert-success";
         $scope.msgAlerta = "Clave cambiadas exitosamente!";
-
         
         
         activate();

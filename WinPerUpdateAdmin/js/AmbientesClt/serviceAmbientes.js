@@ -38,7 +38,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen ambientes');
                 }
 
@@ -75,7 +75,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen ambientes');
                 }
 
@@ -113,7 +113,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen ambientes');
                 }
 
@@ -162,7 +162,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar el cliente');
                 }
             });
@@ -209,7 +209,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo agregar el cliente');
                 }
             });
@@ -245,7 +245,7 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status);
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No se pudo eliminar el cliente');
                 }
             });

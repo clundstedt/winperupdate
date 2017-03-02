@@ -13,8 +13,111 @@ namespace WinPerUpdateAdmin.Controllers.api
 {
     public class ClientesController : ApiController
     {
-        
+        #region structs
+        struct anio
+        {
+            public int UltimoDigito { get; set; }
+            public int Ano { get; set; }
+        }
+
+        struct JsonDataUsuario
+        {
+            public int CodErr { get; set; }
+            public ProcessMsg.Model.UsuarioBo Usuario { get; set; }
+        }
+        #endregion
+
         #region get
+        [Route("api/Bienvenida/Usuario/{idUsuario:int}")]
+        [HttpGet]
+        public Object EnviarBienvenidaUsuario(int idUsuario)
+        {
+            try
+            {
+                var obj = ProcessMsg.Seguridad.GetUsuario(idUsuario);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.Created, new JsonDataUsuario { CodErr = 2, Usuario = null });//No existe el usuario
+                }
+                obj = ProcessMsg.Seguridad.GetUsuario(obj.Persona.Mail);
+                if (obj == null)
+                {
+                    return Content(HttpStatusCode.Created, new JsonDataUsuario { CodErr = 2, Usuario = null });//No existe el usuario
+                }
+                var clt = ProcessMsg.Cliente.GetClienteUsuario(obj.Id);
+                if (clt != null)
+                {
+                    var baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/";
+                    var htmlMailer = File.ReadAllText(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes")), "Mailer", "mailer.html"));
+                    var uriImg = string.Format("{0}/{1}/{2}/{3}", baseUrl, ProcessMsg.Utils.GetPathSetting("Fuentes"), "Mailer", "images");
+                    var Fecha = DateTime.Now.ToLongDateString();
+                    var Nombre = obj.Persona.Nombres + " " + obj.Persona.Apellidos;
+                    var Link = "";
+                    var Correo = obj.Persona.Mail;
+                    var Password = ProcessMsg.Utils.DesEncriptar(obj.Clave);
+                    var Licencia = clt.NroLicencia;
+
+                    htmlMailer = htmlMailer.Replace("@uriImg", uriImg);
+                    htmlMailer = htmlMailer.Replace("@Fecha", Fecha);
+                    htmlMailer = htmlMailer.Replace("@Nombre", Nombre);
+                    htmlMailer = htmlMailer.Replace("@Link", Link);
+                    htmlMailer = htmlMailer.Replace("@Correo", Correo);
+                    htmlMailer = htmlMailer.Replace("@Password", Password);
+                    htmlMailer = htmlMailer.Replace("@Licencia", Licencia);
+
+
+
+                    if (ProcessMsg.Utils.SendMail(htmlMailer, "Activación cuenta WinperUpdate", obj.Persona.Mail))
+                    {
+                        return Content(HttpStatusCode.Created, new JsonDataUsuario { CodErr = 0, Usuario = obj });//Se envio el correo
+                    }
+
+                    return Content(HttpStatusCode.Created, new JsonDataUsuario { CodErr = 1, Usuario = obj });//No se pudo enviar el correo
+                }
+                return Content(HttpStatusCode.Created, new JsonDataUsuario { CodErr = 3, Usuario = null });//No existe el cliente para el usuario
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/GenCorrelativo/{MesCon}/{Folio:int}")]
+        [HttpGet]
+        public Object GenCorrelativo(int Folio, string MesCon)
+        {
+            try
+            {
+                return ProcessMsg.Cliente.GetCorrelativo(Folio, MesCon);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+        [Route("api/GetAnios")]
+        [HttpGet]
+        public Object GetAnios()
+        {
+            try
+            {
+                List<anio> lista = new List<anio>();
+                for (int i = 1990; i <= DateTime.Now.Year; i++)
+                {
+                    lista.Add(new anio
+                    {
+                        UltimoDigito = int.Parse(i.ToString().Last().ToString()),
+                        Ano = i
+                    });
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
         [Route("api/Clientes/{idCliente:int}/PDF")]
         [HttpGet]
         public Object GetInformeClientes(int idCliente)
@@ -403,13 +506,13 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
-        [Route("api/Key/{Folio:int}/{EstMtc:int}/{MesIni}/{NroTrbc}/{NroTrbh}/{NroUsr}")]
+        [Route("api/Key/{Folio:int}/{MesCon}/{Correlativo:int}/{EstMtc:int}/{MesIni}/{NroTrbc}/{NroTrbh}/{NroUsr}")]
         [HttpGet]
-        public Object GetKeyCliente(int Folio, int EstMtc, string MesIni, string NroTrbc, string NroTrbh, string NroUsr)
+        public Object GetKeyCliente(int Folio, string MesCon, int Correlativo, int EstMtc, string MesIni, string NroTrbc, string NroTrbh, string NroUsr)
         {
             try
             {
-                var key = ProcessMsg.Utils.GenerarLicencia(Folio, EstMtc, MesIni, NroTrbc, NroTrbh, NroUsr);
+                var key = ProcessMsg.Utils.GenerarLicencia(Folio, MesCon, Correlativo, EstMtc, MesIni, NroTrbc, NroTrbh, NroUsr);
                 return Content(HttpStatusCode.OK, key); ;
             }
             catch (Exception ex)
@@ -417,22 +520,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
-        [Route("api/Clientes/Key")]
-        [HttpGet]
-        public Object GetFolio()
-        {
-            try
-            {
-                int folio = ProcessMsg.Cliente.GetFolioLicencia();
-                return folio;
-            }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
-            }
-        }
-
+        
         #endregion
 
         #region post
@@ -499,7 +587,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
+        
         [Route("api/Clientes/{idCliente:int}/Usuarios")]
         [HttpPost]
         public Object PostUsuario(int idCliente, [FromBody]ProcessMsg.Model.UsuarioBo usuario)
@@ -529,19 +617,20 @@ namespace WinPerUpdateAdmin.Controllers.api
                         var obj = ProcessMsg.Seguridad.AddUsuarioCliente(usuario);
                         if (obj == null)
                         {
-                            response.StatusCode = HttpStatusCode.Accepted;
+                            return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
                         }
 
-                        if (ProcessMsg.Cliente.AddUsuario(idCliente, obj.Id) == 0)
+                        var res = ProcessMsg.Cliente.AddUsuario(idCliente, obj.Id);
+                        if (res == 0)
                         {
-                            response.StatusCode = HttpStatusCode.Accepted;
+                            return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
                         }
 
                         return Content(HttpStatusCode.Created, obj);
                     }
                 }
 
-                return Content(response.StatusCode, (ProcessMsg.Model.VersionBo)null);
+                return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
             }
             catch (Exception ex)
             {
