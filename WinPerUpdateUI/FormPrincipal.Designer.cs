@@ -42,7 +42,7 @@
             this.notifyIcon2.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon2.Icon")));
             this.notifyIcon2.Text = "Winper Update";
             this.notifyIcon2.Visible = true;
-            this.notifyIcon2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon2_MouseDoubleClick);
+            this.notifyIcon2.BalloonTipClicked += new System.EventHandler(this.notifyIcon2_BalloonTipClicked);
             // 
             // timer1
             // 

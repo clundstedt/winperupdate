@@ -63,8 +63,7 @@
 
                     serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (data) {
                         $scope.version = data;
-                        $scope.version.Estado = 'N';
-                        console.log($scope.version.Componentes);
+                        console.log($scope.version);
 
                     }).error(function (err) {
                         console.error(err);

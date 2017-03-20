@@ -240,34 +240,38 @@
             }
 
             $scope.ShowConfirmPublish = function (id, nombre, idVersion, paso) {
-                serviceAdmin.getCheckInstall(idVersion, $scope.idUsuario, id).success(function (dataCheck) {
-                    if (dataCheck) {
-                        if ($scope.EjecutadoEnPruebas(id, paso)) {
-                            serviceAdmin.ambienteOK(id, idVersion).success(function (data) {
-                                if (data) {
-                                    $scope.nombreambiente = nombre;
-                                    $scope.idAmbiente = id;
-                                    $scope.estaVigente = false;
-                                    $("#publish-modal").modal('show');
-                                } else {
-                                    $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
-                                    $("#avisoexsql-modal").modal('show');
-                                }
-                            }).error(function (err) {
-                                console.log(err);
-                            });
+                if ($scope.version.Estado == 'P') {
+                    serviceAdmin.getCheckInstall(idVersion, $scope.idUsuario, id).success(function (dataCheck) {
+                        if (dataCheck) {
+                            if ($scope.EjecutadoEnPruebas(id, paso)) {
+                                serviceAdmin.ambienteOK(id, idVersion).success(function (data) {
+                                    if (data) {
+                                        $scope.nombreambiente = nombre;
+                                        $scope.idAmbiente = id;
+                                        $scope.estaVigente = false;
+                                        $("#publish-modal").modal('show');
+                                    } else {
+                                        $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
+                                        $("#avisoexsql-modal").modal('show');
+                                    }
+                                }).error(function (err) {
+                                    console.log(err);
+                                });
+                            } else {
+                                $scope.nombreambiente = nombre;
+                                $scope.idAmbiente = id;
+                                $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinperUpdate debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
+                                $("#confpub-modal").modal('show');
+                            }
                         } else {
-                            $scope.nombreambiente = nombre;
-                            $scope.idAmbiente = id;
-                            $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinperUpdate debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
-                            $("#confpub-modal").modal('show');
+                            $("#checkins-modal").modal('show');
                         }
-                    } else {
-                        $("#checkins-modal").modal('show');
-                    }
-                }).error(function (err) {
-                    console.error(err);
-                });
+                    }).error(function (err) {
+                        console.error(err);
+                    });
+                } else {
+                    $("#avisocaduca-modal").modal('show');
+                }
             }
 
             $scope.ShowConfirmEjecSQL = function (id, nombre,modulo,  nombrearch, idClt, CodPrf) {

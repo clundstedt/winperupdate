@@ -51,6 +51,11 @@ namespace WinPerUpdateAdmin.Controllers.Home
             return RedirectToAction("Index");
         }
 
+        public ActionResult Error()
+        {
+            return View();
+        }
+
         public ActionResult Logout()
         {
             Session.RemoveAll();

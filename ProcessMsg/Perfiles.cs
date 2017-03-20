@@ -35,5 +35,42 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
+        public static List<Model.PerfilesBo> GetPerfiles()
+        {
+            try
+            {
+                List<Model.PerfilesBo> lista = new List<Model.PerfilesBo>();
+                var res = new CnaPerfiles().Execute();
+                while (res.Read())
+                {
+                    lista.Add(new Model.PerfilesBo
+                    {
+                        CodPrf = int.Parse(res["CodPrf"].ToString()),
+                        Nombre = res["Nombre"].ToString(),
+                        Tipo = char.Parse(res["Tipo"].ToString())
+                    });
+                }
+                return lista;
+            }
+            catch( Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static Model.PerfilesBo GetPerfil(int CodPrf)
+        {
+            try
+            {
+                return GetPerfiles().SingleOrDefault(x => x.CodPrf == CodPrf);
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

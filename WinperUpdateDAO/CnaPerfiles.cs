@@ -21,7 +21,23 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@idUsuarios", idUsuarios);
 
                 return Connector.ExecuteQuery(SpName, ParmsDictionary);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Execute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public new SqlDataReader Execute()
+        {
+            try
+            {
+                SpName = @"SELECT * FROM Perfiles";
+
+                return Connector.ExecuteQuery(SpName, null);
+            }
+            catch(Exception ex)
             {
                 var msg = string.Format("Error al ejecutar {0}: {1}", "Execute", ex.Message);
                 throw new Exception(msg, ex);

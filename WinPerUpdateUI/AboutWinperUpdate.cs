@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -110,12 +111,37 @@ namespace WinPerUpdateUI
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
+            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+            string statUI = key.GetValue("statUI").ToString();
+            key.Close();
+            if (!statUI.Equals("updated") && System.IO.File.Exists(nameIntalador))
+            {
+                key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                key.SetValue("statUI", "updated");
+                key.Close();
+                if (Utils.isCentralizado)
+                {
+                    var argument = string.Format("/DIR=\"{0}\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL", Directory.GetCurrentDirectory());
+                    SvcWPUI.Start(new string[] { nameIntalador, argument });
+                }
+                else
+                {
+                    Process.Start(nameIntalador, string.Format("/DIR=\"{0}\"", Directory.GetCurrentDirectory()));
+                }
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
         private void AboutWinperUpdate_Load(object sender, EventArgs e)
         {
-
+            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+            string statUI = key.GetValue("statUI").ToString();
+            key.Close();
+            okButton.Text = statUI.Equals("updated") ? "OK" : "Actualizar";
         }
 
         private void labelVersion_Click(object sender, EventArgs e)

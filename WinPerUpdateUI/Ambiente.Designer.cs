@@ -194,7 +194,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnAceptar;
-        private System.Windows.Forms.TextBox txtNroLicencia;
+        public System.Windows.Forms.TextBox txtNroLicencia;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbPerfil;

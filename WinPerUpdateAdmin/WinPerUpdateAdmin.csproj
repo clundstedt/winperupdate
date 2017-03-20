@@ -134,6 +134,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\html\recuperar.htm" />
+    <Content Include="Content\Images\http_caution.png" />
     <Content Include="Content\Images\Printer.png" />
     <Content Include="Content\Images\Program.png" />
     <Content Include="Content\Images\Run.png" />
@@ -397,6 +398,7 @@
     <Content Include="Scripts\smart-table.min.js" />
     <Content Include="Views\Descargas\Index.cshtml" />
     <Content Include="Views\Descargas\Descargas.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

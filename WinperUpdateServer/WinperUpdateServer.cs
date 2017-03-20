@@ -344,6 +344,35 @@ namespace WinperUpdateServer
                                     }
                                 }
                                 break;
+                            case "checkadmin":
+                                var mail = token[1];
+                                var pass = token[2];
+                                var licencia = token[3];
+                                var res = ProcessMsg.Seguridad.GetUsuario(mail);
+                                if (res != null)
+                                {
+                                    var cltAdm = ProcessMsg.Cliente.GetClienteUsuario(res.Id);
+                                    if (cltAdm != null)
+                                    {
+                                        if (pass.Equals(Utils.GetMd5Hash(Utils.DesEncriptar(res.Clave))) && res.CodPrf == 11 && cltAdm.NroLicencia.Equals(licencia))
+                                        {
+                                            Send(handler, "1");
+                                        }
+                                        else
+                                        {
+                                            Send(handler, "0");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Send(handler, "0");
+                                    }
+                                }
+                                else
+                                {
+                                    Send(handler, "0");
+                                }
+                                break;
                             default:
                                 // Echo the data back to the client.
                                 Send(handler, content);

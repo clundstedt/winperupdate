@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,14 +15,35 @@ namespace WinPerUpdateUI
         public static bool isCentralizado = false;
 
         const int SIZEBUFFER = 524288;
+
+        public static string GetMd5Hash(string input)
+        {
+            byte[] data = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+            return sBuilder.ToString();
+        }
         public static void RegistrarLog(string NombreLog, string Text)
         {
             var dirTempUser = Path.Combine(Path.GetTempPath(), "WinperUI");
-            if (!System.IO.Directory.Exists(dirTempUser))
+            if (!Directory.Exists(dirTempUser))
             {
-                System.IO.Directory.CreateDirectory(dirTempUser);
+                Directory.CreateDirectory(dirTempUser);
             }
-            var log = Path.Combine(dirTempUser, string.Format("{0:ddMMyyyy}{1}",DateTime.Now,NombreLog));
+            string dir = Path.Combine(dirTempUser, string.Format("{0:ddMMyyyy}", DateTime.Now));
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            var dirLog = Path.Combine(dir, NombreLog.Replace(".log", ""));
+            if (!Directory.Exists(dirLog))
+            {
+                Directory.CreateDirectory(dirLog);
+            }
+            var log = Path.Combine(dirLog, string.Format("{0}",NombreLog));
             StreamWriter writer = new StreamWriter(log, true);
             writer.WriteLine(string.Format("{0:dd/MM/yyyy HH:mm:ss} | {1}", DateTime.Now, Text));
             writer.Close();

@@ -16,6 +16,7 @@ using System.Diagnostics;
 
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace WinPerUpdateUI
 {
@@ -27,6 +28,7 @@ namespace WinPerUpdateUI
         private ClienteBo cliente = new ClienteBo();
         private List<AmbienteBo> ambientes = new List<AmbienteBo>();
         public string ambienteUpdate = "";
+        private int TipoVentana;
 
         public class DllFileUI
         {
@@ -86,18 +88,7 @@ namespace WinPerUpdateUI
         private void FormPrincipal_Activated(object sender, EventArgs e)
         {
         }
-
-        private void notifyIcon2_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            /*
-            //ShowInTaskbar = true;
-            //WindowState = FormWindowState.Normal;
-            var form = new frmVersiones();
-            form.ambiente = ambienteUpdate;
-            form.ShowDialog();
-            */
-
-        }
+        
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
@@ -134,6 +125,7 @@ namespace WinPerUpdateUI
             string perfil = "";
             string inRun = "No";
             string installDir = Directory.GetCurrentDirectory();
+            string statUI = "updated";
 
             try
             {
@@ -143,7 +135,9 @@ namespace WinPerUpdateUI
                 inRun = key.GetValue("InRun").ToString();
                 perfil = key.GetValue("Perfil").ToString();
                 installDir = key.GetValue("InstallDir").ToString();
+                statUI = key.GetValue("StatUI").ToString();
                 key.Close();
+
             }
             catch (Exception )
             {
@@ -153,6 +147,7 @@ namespace WinPerUpdateUI
                 key.SetValue("InRun", inRun);
                 key.SetValue("Perfil", perfil);
                 key.SetValue("InstallDir", installDir);
+                key.SetValue("StatUI", statUI);
                 key.Close();
             }
 
@@ -231,13 +226,17 @@ namespace WinPerUpdateUI
                         ambientes = JsonConvert.DeserializeObject<List<AmbienteBo>>(json);
                         foreach (var ambiente in ambientes)
                         {
-                            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\"+ambiente.Nombre);
-                            string dirwp = key.GetValue("DirWinper") == null ? "" : key.GetValue("DirWinper").ToString();
-                            if (Directory.Exists(dirwp))
+                            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\" + ambiente.Nombre);
+                            if (key != null)
                             {
-                                addDevice.MenuItems.Add(new MenuItem(ambiente.Nombre, new EventHandler(this.Restaurar_Click)));
+                                string dirwp = key.GetValue("DirWinper") == null ? "" : key.GetValue("DirWinper").ToString();
+                                if (Directory.Exists(dirwp))
+                                {
+                                    addDevice.MenuItems.Add(new MenuItem(ambiente.Nombre, new EventHandler(this.Restaurar_Click)));
+                                }
+                                key.Close();
                             }
-                            key.Close();
+                            
                         }
                         
 
@@ -260,6 +259,12 @@ namespace WinPerUpdateUI
                         notifyIcon2.ContextMenu = ContextMenu1;
                         timer1.Start();
                         timerUI.Start();
+
+                        TipoVentana = -1;
+                        notifyIcon2.BalloonTipIcon = ToolTipIcon.None;
+                        notifyIcon2.BalloonTipTitle = "WinperUpdateUI";
+                        notifyIcon2.BalloonTipText = "Acá se encuentra WinperUpdate!";
+                        notifyIcon2.ShowBalloonTip(5000);
                     }
                 }
                 catch (Exception ex)
@@ -281,7 +286,8 @@ namespace WinPerUpdateUI
                         ContextMenu1.MenuItems.Add("-");
                         ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
                     }
-                    MessageBox.Show("Winper Update no tiene conexión con el servidor central");
+                    MessageBox.Show("Winper Update no pudo iniciarce correctamente, puede revisar el log 'Load.log'");
+                    Utils.RegistrarLog("Load.log", ex.ToString());
                 }
             }            
         }
@@ -605,6 +611,7 @@ namespace WinPerUpdateUI
                 if (!nroVersion.Equals(release.Release))
                 {
                     // Avisamos llegada de nueva versión
+                    TipoVentana = 1;
                     ambienteUpdate = item.Nombre;
                     notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
                     notifyIcon2.BalloonTipText = "Existe una nueva versión de winper para el ambiente " + item.Nombre;
@@ -647,109 +654,118 @@ namespace WinPerUpdateUI
         {
             try
             {
-                if (ServerInAccept)
-                {
-                    string nroLicencia = "";
-                    string Perfil = "";
-                    Microsoft.Win32.RegistryKey key = null;
-                    try
+                Microsoft.Win32.RegistryKey key = null;
+                key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                string statUI = key.GetValue("statUI").ToString();
+                key.Close();
+                if (statUI.Equals("updated")) {
+                    if (ServerInAccept)
                     {
-                        key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
-                        nroLicencia = key.GetValue("Licencia").ToString();
-                        Perfil = key.GetValue("Perfil").ToString();
-                    }
-                    catch (Exception)
-                    {
-                        key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
-                        key.SetValue("Licencia", nroLicencia);
-                        key.SetValue("Perfil", Perfil);
-                    }
+                        string nroLicencia = "";
+                        string Perfil = "";
 
-                    key.Close();
-                    if (!string.IsNullOrEmpty(nroLicencia) && Perfil.Equals("Administrador"))
-                    {
-                        var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
-
-                        string server = ConfigurationManager.AppSettings["server"];
-                        string port = ConfigurationManager.AppSettings["port"];
-
-                        string json = Utils.StrSendMsg(server, int.Parse(port), "checkupui#" + nroLicencia + "#");
-
-                        
-                        bool FileOk = true;
-                        if (!json.Equals("0"))
+                        try
                         {
-                            var uui = JsonConvert.DeserializeObject<UpdateUI>(json);
-                            if (uui != null && uui.Lista.Count > 0)
+                            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+                            nroLicencia = key.GetValue("Licencia").ToString();
+                            Perfil = key.GetValue("Perfil").ToString();
+                        }
+                        catch (Exception)
+                        {
+                            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                            key.SetValue("Licencia", nroLicencia);
+                            key.SetValue("Perfil", Perfil);
+                        }
+
+                        key.Close();
+                        if (!string.IsNullOrEmpty(nroLicencia) && Perfil.Equals("Administrador"))
+                        {
+                            var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
+
+                            string server = ConfigurationManager.AppSettings["server"];
+                            string port = ConfigurationManager.AppSettings["port"];
+
+                            string json = Utils.StrSendMsg(server, int.Parse(port), "checkupui#" + nroLicencia + "#");
+
+
+                            bool FileOk = true;
+                            if (!json.Equals("0"))
                             {
-                                foreach (FileInfo fl in new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles().ToList())
+                                var uui = JsonConvert.DeserializeObject<UpdateUI>(json);
+                                if (uui != null && uui.Lista.Count > 0)
                                 {
-                                    var exist = uui.Lista.Exists(f => f.Nombre.Equals(fl.Name));
-                                    if (exist)
+                                    foreach (FileInfo fl in new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles().ToList())
                                     {
-                                        var fil = uui.Lista.SingleOrDefault(x => x.Nombre.Equals(fl.Name));
-                                        var a = FileVersionInfo.GetVersionInfo(fl.FullName);
-                                        if (FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion != null)
+                                        var exist = uui.Lista.Exists(f => f.Nombre.Equals(fl.Name));
+                                        if (exist)
                                         {
-                                            if (!fil.VersionArchivo.Equals(FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion))
+                                            var fil = uui.Lista.SingleOrDefault(x => x.Nombre.Equals(fl.Name));
+                                            var a = FileVersionInfo.GetVersionInfo(fl.FullName);
+                                            if (FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion != null)
                                             {
-                                                FileOk = false;
+                                                if (!fil.VersionArchivo.Equals(FileVersionInfo.GetVersionInfo(fl.FullName).FileVersion))
+                                                {
+                                                    FileOk = false;
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                if (!FileOk)
-                                {
-                                    ServerInAccept = false;
-
-                                    long lengthInstalador = 0;
-                                    FileStream stream = null;
-                                    if (!File.Exists(nameIntalador))
+                                    if (!FileOk)
                                     {
-                                        stream = new FileStream(nameIntalador, FileMode.CreateNew, FileAccess.Write);
-                                    }
-                                    else
-                                    {
-                                        lengthInstalador = new FileInfo(nameIntalador).Length;
-                                        stream = new FileStream(nameIntalador, FileMode.Append, FileAccess.Write);
-                                    }
+                                        ServerInAccept = false;
+                                        key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                                        key.SetValue("statUI", "required");
+                                        key.Close();
 
-                                    BinaryWriter writer = new BinaryWriter(stream);
-
-                                    long nPosIni = lengthInstalador;//new
-                                    while (nPosIni < uui.SetupLength)
-                                    {
-                                        long largoMax = uui.SetupLength - nPosIni;
-                                        if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
-                                        string newmsg = string.Format("downsetup#{0}#{1}#", nPosIni, largoMax);
-                                        var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
-                                        writer.Write(buffer, 0, buffer.Length);
-                                        nPosIni += buffer.Length;
-                                    }
-
-                                    writer.Close();
-                                    stream.Close();
-
-                                    lengthInstalador = new FileInfo(nameIntalador).Length;
-                                    if (uui.SetupLength == lengthInstalador)
-                                    {
-                                        if (Utils.isCentralizado)
+                                        long lengthInstalador = 0;
+                                        FileStream stream = null;
+                                        if (!File.Exists(nameIntalador))
                                         {
-                                            var argument = string.Format("/DIR=\"{0}\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL", Directory.GetCurrentDirectory());
-                                            SvcWPUI.Start(new string[] { nameIntalador, argument });
+                                            stream = new FileStream(nameIntalador, FileMode.CreateNew, FileAccess.Write);
                                         }
                                         else
                                         {
-                                            Process.Start(nameIntalador, string.Format("/DIR=\"{0}\"", Directory.GetCurrentDirectory()));
+                                            lengthInstalador = new FileInfo(nameIntalador).Length;
+                                            stream = new FileStream(nameIntalador, FileMode.Append, FileAccess.Write);
+                                        }
+
+                                        BinaryWriter writer = new BinaryWriter(stream);
+
+                                        long nPosIni = lengthInstalador;//new
+                                        while (nPosIni < uui.SetupLength)
+                                        {
+                                            long largoMax = uui.SetupLength - nPosIni;
+                                            if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
+                                            string newmsg = string.Format("downsetup#{0}#{1}#", nPosIni, largoMax);
+                                            var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
+                                            writer.Write(buffer, 0, buffer.Length);
+                                            nPosIni += buffer.Length;
+                                        }
+
+                                        writer.Close();
+                                        stream.Close();
+
+                                        ServerInAccept = true;
+
+                                        lengthInstalador = new FileInfo(nameIntalador).Length;
+                                        if (uui.SetupLength == lengthInstalador)
+                                        {
+                                            TipoVentana = 2;
+                                            notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
+                                            notifyIcon2.BalloonTipText = "Se encuentra disponible una actualización para WinperUpdateUI";
+                                            notifyIcon2.BalloonTipTitle = "Actualización WinperUpdateUI";
+                                            notifyIcon2.ShowBalloonTip(5000);
                                         }
                                     }
-
-                                }
-                                else
-                                {
-                                    if (File.Exists(nameIntalador))
+                                    else
                                     {
-                                        File.Delete(nameIntalador);
+                                        if (File.Exists(nameIntalador))
+                                        {
+                                            File.Delete(nameIntalador);
+                                        }
+                                        key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
+                                        key.SetValue("statUI", "updated");
+                                        key.Close();
                                     }
                                 }
                             }
@@ -766,7 +782,29 @@ namespace WinPerUpdateUI
             {
                 ServerInAccept = true;
                 Utils.RegistrarLog("UPUI.log", ex.ToString());
-                MessageBox.Show("Ocurrió un error en timerUI_Tick, revise el log 'UPUI.log'", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void notifyIcon2_BalloonTipClicked(object sender, EventArgs e)
+        {
+            switch (TipoVentana)
+            {
+                case 1:
+                    var form = new frmVersiones();
+                    form.ShowInTaskbar = true;
+                    form.WindowState = FormWindowState.Normal;
+                    form.ambiente = ambienteUpdate;
+                    form.ShowDialog();
+                    break;
+                case 2:
+                    var about = new AboutWinperUpdate();
+                    about.ShowInTaskbar = true;
+                    about.WindowState = FormWindowState.Normal;
+                    about.SvcWPUI = SvcWPUI;
+                    about.ShowDialog();
+                    break;
+                default:
+                    break;
             }
         }
     }

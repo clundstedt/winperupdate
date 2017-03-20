@@ -77,6 +77,13 @@ namespace WinPerUpdateUI
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
+            var dr = new CheckAdmin().ShowDialog(this);
+            if(dr == DialogResult.No)
+            {
+                MessageBox.Show("Administrador incorrecto.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate");
             key.SetValue("Licencia", txtNroLicencia.Text);
             key.SetValue("Perfil", cmbPerfil.Items[cmbPerfil.SelectedIndex]);
@@ -168,7 +175,14 @@ namespace WinPerUpdateUI
 
                         foreach (var item in ambientes)
                         {
-                            dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, "");
+                            string dir = "";
+                            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate\" + item.Nombre);
+                            if (key != null)
+                            {
+                                dir = key.GetValue("DirWinper") == null  ? "" : key.GetValue("DirWinper").ToString();
+                                key.Close();
+                            }
+                            dgAmbientes.Rows.Add(item.idAmbientes, item.Nombre, dir);
                         }
                     }
                 }
