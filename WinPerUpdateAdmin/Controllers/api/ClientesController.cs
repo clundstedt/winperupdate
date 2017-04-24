@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Configuration;
 
 namespace WinPerUpdateAdmin.Controllers.api
 {
@@ -52,7 +53,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     var uriImg = string.Format("{0}/{1}/{2}/{3}", baseUrl, ProcessMsg.Utils.GetPathSetting("Fuentes"), "Mailer", "images");
                     var Fecha = DateTime.Now.ToLongDateString();
                     var Nombre = obj.Persona.Nombres + " " + obj.Persona.Apellidos;
-                    var Link = "";
+                    var Link = ConfigurationManager.AppSettings["link"]; 
                     var Correo = obj.Persona.Mail;
                     var Password = ProcessMsg.Utils.DesEncriptar(obj.Clave);
                     var Licencia = clt.NroLicencia;

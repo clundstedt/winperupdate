@@ -35,6 +35,8 @@
             this.worker = new System.ComponentModel.BackgroundWorker();
             this.timerUI = new System.Windows.Forms.Timer(this.components);
             this.SvcWPUI = new System.ServiceProcess.ServiceController();
+            this.timerPing = new System.Windows.Forms.Timer(this.components);
+            this.workerPing = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // notifyIcon2
@@ -66,6 +68,16 @@
             // 
             this.SvcWPUI.ServiceName = "WPUISVC";
             // 
+            // timerPing
+            // 
+            this.timerPing.Enabled = true;
+            this.timerPing.Interval = 120000;
+            this.timerPing.Tick += new System.EventHandler(this.timerPing_Tick);
+            // 
+            // workerPing
+            // 
+            this.workerPing.DoWork += new System.ComponentModel.DoWorkEventHandler(this.workerPing_DoWork);
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -92,6 +104,8 @@
         private System.ComponentModel.BackgroundWorker worker;
         private System.Windows.Forms.Timer timerUI;
         private System.ServiceProcess.ServiceController SvcWPUI;
+        private System.Windows.Forms.Timer timerPing;
+        private System.ComponentModel.BackgroundWorker workerPing;
     }
 }
 

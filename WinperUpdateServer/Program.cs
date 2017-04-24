@@ -13,6 +13,7 @@ namespace WinperUpdateServer
         /// </summary>
         static void Main()
         {
+           
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
@@ -20,5 +21,7 @@ namespace WinperUpdateServer
             };
             ServiceBase.Run(ServicesToRun);
         }
+
+        
     }
 }

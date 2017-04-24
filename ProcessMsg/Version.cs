@@ -29,6 +29,7 @@ namespace ProcessMsg
                         FechaInstalacion = Convert.ToDateTime(res["FechaInstalacion"].ToString())
                     };
                 }
+                res.Close();
                 return null;
             }
             catch(Exception ex)
@@ -62,6 +63,7 @@ namespace ProcessMsg
                         FechaInstalacion = Convert.ToDateTime(reader["FechaInstalacion"].ToString())
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -433,6 +435,7 @@ namespace ProcessMsg
                     respuesta[0] = reader["coderr"].ToString();
                     respuesta[1] = reader["msgerr"].ToString();
                 }
+                reader.Close();
                 return respuesta;
             }
             catch(Exception ex)

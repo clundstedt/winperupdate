@@ -29,6 +29,7 @@ namespace ProcessMsg
                 {
                     correlativo = int.Parse(dr["correlativo"].ToString());
                 }
+                dr.Close();
                 return correlativo + 1;
             }
             catch(Exception ex)
@@ -124,6 +125,7 @@ namespace ProcessMsg
                         Descripcion = read["Descripcion"].ToString()
                     });
                 }
+                read.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -147,6 +149,7 @@ namespace ProcessMsg
                         Descripcion = read["Descripcion"].ToString()
                     });
                 }
+                read.Close();
                 return lista;
             }
             catch (Exception ex)
@@ -540,6 +543,7 @@ namespace ProcessMsg
                         Suite = int.Parse(reader["Suite"].ToString())
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)

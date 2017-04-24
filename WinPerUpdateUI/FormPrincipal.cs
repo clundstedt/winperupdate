@@ -29,6 +29,7 @@ namespace WinPerUpdateUI
         private List<AmbienteBo> ambientes = new List<AmbienteBo>();
         public string ambienteUpdate = "";
         private int TipoVentana;
+        private bool restartApp = false;
 
         public class DllFileUI
         {
@@ -101,7 +102,7 @@ namespace WinPerUpdateUI
                 }
             }
             catch (Exception) { }
-            
+            timerPing.Start();
             Utils.RegistrarLog("Load.log", "UI Iniciado");
             Utils.RegistrarLog("Load.log", "-----");
             ContextMenu1.MenuItems.Add("Configurar Ambiente y Licencia", new EventHandler(this.Ambiente_Click));
@@ -805,6 +806,29 @@ namespace WinPerUpdateUI
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void timerPing_Tick(object sender, EventArgs e)
+        {
+            workerPing.RunWorkerAsync();
+        }
+
+        private void workerPing_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                string server = ConfigurationManager.AppSettings["server"];
+                string port = ConfigurationManager.AppSettings["port"];
+                string json = Utils.StrSendMsg(server, int.Parse(port), "ping#");
+                if (restartApp)
+                {
+                    Application.Restart();
+                }
+            }
+            catch (Exception)
+            {
+                restartApp = true;
             }
         }
     }

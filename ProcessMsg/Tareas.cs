@@ -44,6 +44,7 @@ namespace ProcessMsg
                         Reportado = bool.Parse(reader["Reportado"].ToString())
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -86,6 +87,7 @@ namespace ProcessMsg
                         Reportado = bool.Parse(reader["Reportado"].ToString())
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch (Exception ex)

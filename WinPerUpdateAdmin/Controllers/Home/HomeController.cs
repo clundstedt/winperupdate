@@ -103,6 +103,21 @@ namespace WinPerUpdateAdmin.Controllers.Home
 
                 if (usuario != null)
                 {
+                    if (string.IsNullOrEmpty(usuario.Clave))
+                    {
+                        usuario.Clave = ProcessMsg.Utils.Encriptar(ProcessMsg.Utils.RandomString(8));
+                        if ((usuario = ProcessMsg.Seguridad.UpdUsuario(usuario.Id, usuario.Clave)) == null)
+                        {
+                            respuesta = new
+                            {
+                                CodErr = 3,
+                                MsgErr = "No se pudo generar la clave, intentelo más tarde..."
+                            };
+                            return Json(respuesta);
+                        }
+                    }
+
+
                     string mensaje = ProcessMsg.Utils.ReadPlantilla(Server.MapPath("~/Content/html/recuperar.htm"));
                     mensaje = mensaje.Replace("@clave@", ProcessMsg.Utils.DesEncriptar(usuario.Clave));
 

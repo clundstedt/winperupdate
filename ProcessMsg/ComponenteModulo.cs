@@ -27,6 +27,8 @@ namespace ProcessMsg
                         Extensiones = reader["Extensiones"].ToString()
                     });
                 }
+
+                reader.Close();
                 return lista;
             }
             catch (Exception ex)
@@ -51,6 +53,7 @@ namespace ProcessMsg
                         Modulo = int.Parse(reader["Modulos"].ToString())
                     };
                 }
+                reader.Close();
                 return comp;
             }
             catch (Exception ex)
@@ -96,6 +99,7 @@ namespace ProcessMsg
                         }
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch (Exception ex)
@@ -128,6 +132,7 @@ namespace ProcessMsg
                         }
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -153,6 +158,7 @@ namespace ProcessMsg
                         Extensiones = reader["Extensiones"].ToString()
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -183,6 +189,7 @@ namespace ProcessMsg
                         NomModulo = reader["NomModulo"].ToString()
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)

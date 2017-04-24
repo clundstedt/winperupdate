@@ -23,6 +23,7 @@ namespace ProcessMsg
                         Nombre = read["Nombre"].ToString()
                     });
                 }
+                read.Close();
                 return lista;
             }
             catch(Exception ex)

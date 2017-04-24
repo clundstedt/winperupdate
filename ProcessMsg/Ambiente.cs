@@ -32,6 +32,7 @@ namespace ProcessMsg
                         EjecutadoOK = bool.Parse(reader["EjecutadoOK"].ToString())
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -82,6 +83,7 @@ namespace ProcessMsg
                         Estado = dr["Estado"] == DBNull.Value ? ' ' : dr["Estado"].ToString()[0]
                     });
                 }
+                dr.Close();
             }
             catch (Exception ex)
             {
@@ -114,6 +116,7 @@ namespace ProcessMsg
                         Estado = dr["Estado"] == DBNull.Value ? ' ' : dr["Estado"].ToString()[0]
                     });
                 }
+                dr.Close();
             }
             catch (Exception ex)
             {
@@ -165,6 +168,7 @@ namespace ProcessMsg
                 {
                     count = int.Parse(reader["count"].ToString());
                 }
+                reader.Close();
                 return count;
             }
             catch(Exception ex)
@@ -210,6 +214,7 @@ namespace ProcessMsg
                         ErrorRegistro = reader["ErrorRegistro"].ToString()
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch (Exception ex)

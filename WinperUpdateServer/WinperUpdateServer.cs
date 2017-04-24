@@ -51,22 +51,23 @@ namespace WinperUpdateServer
 
         public void StartListening(int port)
         {
-            // Data buffer for incoming data.
-            byte[] bytes = new Byte[StateObject.BufferSize];
-
-            // Establish the local endpoint for the socket.
-            // The DNS name of the computer
-            // running the listener is "host.contoso.com".
-            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
-
-            // Create a TCP/IP socket.
-            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            // Bind the socket to the local endpoint and listen for incoming connections.
             try
             {
+                // Data buffer for incoming data.
+                byte[] bytes = new Byte[StateObject.BufferSize];
+
+                // Establish the local endpoint for the socket.
+                // The DNS name of the computer
+                // running the listener is "host.contoso.com".
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                IPAddress ipAddress = ipHostInfo.AddressList.ToList().SingleOrDefault(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+                IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
+
+                // Create a TCP/IP socket.
+                Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                // Bind the socket to the local endpoint and listen for incoming connections.
+
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
 
@@ -76,7 +77,7 @@ namespace WinperUpdateServer
                     allDone.Reset();
 
                     // Start an asynchronous socket to listen for connections.
-                    eventLog1.WriteEntry("Waiting for a connection...", EventLogEntryType.Information, ++eventId);
+                    eventLog1.WriteEntry("Waiting for a connection...", EventLogEntryType.Information, eventId);
                     ServerInAccept = true;
 
                     listener.BeginAccept(
@@ -89,7 +90,7 @@ namespace WinperUpdateServer
             }
             catch (Exception e)
             {
-                eventLog1.WriteEntry(e.ToString(), EventLogEntryType.Error, ++eventId);
+                eventLog1.WriteEntry(e.ToString(), EventLogEntryType.Error, eventId);
             }
 
         }
@@ -114,12 +115,12 @@ namespace WinperUpdateServer
             catch (SocketException e)
             {
                 string output = "AcceptCallback SocketException: " + e.ToString();
-                eventLog1.WriteEntry(output, EventLogEntryType.Error, ++eventId);
+                eventLog1.WriteEntry(output, EventLogEntryType.Error, eventId);
             }
             catch (Exception ex)
             {
                 string output = "AcceptCallback Exception: " + ex.ToString();
-                eventLog1.WriteEntry(output, EventLogEntryType.Error, ++eventId);
+                eventLog1.WriteEntry(output, EventLogEntryType.Error, eventId);
             }
         }
 
@@ -140,7 +141,7 @@ namespace WinperUpdateServer
 
                 // Read data from the client socket. 
                 int bytesRead = handler.EndReceive(ar);
-                eventLog1.WriteEntry(String.Format("Read {0} bytes from socket. \n", bytesRead), EventLogEntryType.Information, ++eventId);
+                eventLog1.WriteEntry(String.Format("Read {0} bytes from socket. \n", bytesRead), EventLogEntryType.Information, eventId);
 
                 if (bytesRead > 0)
                 {
@@ -151,12 +152,12 @@ namespace WinperUpdateServer
                     // Check for end-of-file tag. If it is not there, read 
                     // more data.
                     content = state.sb.ToString();
-                    eventLog1.WriteEntry("Read was: " + content, EventLogEntryType.Information, ++eventId);
+                    eventLog1.WriteEntry("Read was: " + content, EventLogEntryType.Information, eventId);
                     if (content.EndsWith("#"))
                     {
                         // All the data has been read from the 
                         // client. Display it on the console.
-                        //eventLog1.WriteEntry(String.Format("Read {0} bytes from socket. \n Data : {1}", content.Length, content), EventLogEntryType.Information, ++eventId);
+                        //eventLog1.WriteEntry(String.Format("Read {0} bytes from socket. \n Data : {1}", content.Length, content), EventLogEntryType.Information, eventId);
 
                         string[] token = content.Split(new Char[] { '#' });
                         string dirVersiones = ConfigurationManager.AppSettings["dirVersiones"];
@@ -286,7 +287,7 @@ namespace WinperUpdateServer
                                         bok = true;
                                         if (intentos > 1)
                                         {
-                                            eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", intentos), EventLogEntryType.Information, ++eventId);
+                                            eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", intentos), EventLogEntryType.Information, eventId);
                                         }
                                         Send(handler, buffer);
                                     }
@@ -338,7 +339,7 @@ namespace WinperUpdateServer
                                         bok = true;
                                         if (downsetupintentos > 1)
                                         {
-                                            eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", downsetupintentos), EventLogEntryType.Information, ++eventId);
+                                            eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", downsetupintentos), EventLogEntryType.Information, eventId);
                                         }
                                         Send(handler, buffer);
                                     }
@@ -389,30 +390,45 @@ namespace WinperUpdateServer
             catch (SocketException e)
             {
                 string output = "ReadCallback SocketException: " + e.ErrorCode.ToString();
-                eventLog1.WriteEntry(output, EventLogEntryType.Error, ++eventId);
+                eventLog1.WriteEntry(output, EventLogEntryType.Error, eventId);
             }
             catch (Exception ex)
             {
                 string output = "ReadCallback Exception: " + ex.ToString();
-                eventLog1.WriteEntry(output, EventLogEntryType.Error, ++eventId);
+                eventLog1.WriteEntry(output, EventLogEntryType.Error, eventId);
             }
         }
 
         private void Send(Socket handler, String data)
         {
-            // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.UTF8.GetBytes(data);
+            try
+            {
+                // Convert the string data to byte data using ASCII encoding.
+                byte[] byteData = Encoding.UTF8.GetBytes(data);
 
-            eventLog1.WriteEntry(String.Format("Send {0} bytes from socket. \n", byteData.Length), EventLogEntryType.Information, ++eventId);
+                eventLog1.WriteEntry(String.Format("Send {0} bytes from socket. \n", byteData.Length), EventLogEntryType.Information, eventId);
 
-            // Begin sending the data to the remote device.
-            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+                // Begin sending the data to the remote device.
+                handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+            }
+            catch(Exception ex)
+            {
+                eventLog1.WriteEntry(String.Format("Excepcion en 'Send': {0}", ex.ToString()), EventLogEntryType.Warning, eventId);
+            }
         }
 
         private void Send(Socket handler, byte[] byteData)
         {
-            // Begin sending the data to the remote device.
-            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+            try
+            {
+                // Begin sending the data to the remote device.
+                handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+
+            }
+            catch (Exception ex)
+            {
+                eventLog1.WriteEntry(String.Format("Excepcion en 'Send(Socket, byte[])': {0}", ex.ToString()), EventLogEntryType.Warning, eventId);
+            }
         }
 
         private void SendCallback(IAsyncResult ar)
@@ -424,14 +440,14 @@ namespace WinperUpdateServer
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                eventLog1.WriteEntry(string.Format("Sent {0} bytes to client.", bytesSent), EventLogEntryType.Information, ++eventId);
+                eventLog1.WriteEntry(string.Format("Sent {0} bytes to client.", bytesSent), EventLogEntryType.Information, eventId);
 
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
             }
             catch (Exception e)
             {
-                eventLog1.WriteEntry(e.ToString(), EventLogEntryType.Error, ++eventId);
+                eventLog1.WriteEntry(e.ToString(), EventLogEntryType.Error, eventId);
             }
         }
 
@@ -468,14 +484,24 @@ namespace WinperUpdateServer
 
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
-            // TODO: Insert monitoring activities here.
-            if (!ServerInAccept)
+            try
             {
-                eventLog1.WriteEntry("Lanzamos servidor");
-                string port = ConfigurationManager.AppSettings["port"];
-                StartListening(int.Parse(port));
+                // TODO: Insert monitoring activities here.
+                if (!ServerInAccept)
+                {
+                    eventLog1.WriteEntry("Lanzamos servidor");
+                    string port = ConfigurationManager.AppSettings["port"];
+                    StartListening(int.Parse(port));
+                }
             }
+            catch (Exception e)
+            {
+                eventLog1.WriteEntry(e.ToString(), EventLogEntryType.Error, eventId);
+            }
+
         }
+
+        
 
     }
 }

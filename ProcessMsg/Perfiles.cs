@@ -27,6 +27,7 @@ namespace ProcessMsg
                         Submenus=reader["Submenus"].ToString()
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch(Exception ex)
@@ -51,6 +52,7 @@ namespace ProcessMsg
                         Tipo = char.Parse(res["Tipo"].ToString())
                     });
                 }
+                res.Close();
                 return lista;
             }
             catch( Exception ex)

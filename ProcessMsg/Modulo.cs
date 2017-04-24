@@ -78,6 +78,7 @@ namespace ProcessMsg
                          idUsuario = int.Parse(reader["Usuario"].ToString())
                     });
                 }
+                reader.Close();
                 return lista;
             }
             catch (Exception ex)
@@ -106,6 +107,7 @@ namespace ProcessMsg
                         Suite = int.Parse(reader["Suite"].ToString())
                     };
                 }
+                reader.Close();
                 return modulo;
             }
             catch(Exception ex)
