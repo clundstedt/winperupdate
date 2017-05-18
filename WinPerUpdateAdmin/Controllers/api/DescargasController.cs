@@ -27,6 +27,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 List<Descarga> ListaDescargas = new List<Descarga>();
                 var pathFuentes = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes"));
                 var pathDescargas = Path.Combine(pathFuentes, "Descargas");
@@ -54,6 +55,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var pathArchivo = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes")),"Descargas", Dir, Archivo);
                 if (File.Exists(pathArchivo))
                 {

@@ -67,7 +67,9 @@ namespace ProcessMsg
             try
             {
                 var reader = new CnaComponenteModulo().ExecuteComponentesModulos(nombre);
-                return reader.Read();
+                var ret = reader.Read();
+                reader.Close();
+                return ret;
             }
             catch(Exception ex)
             {

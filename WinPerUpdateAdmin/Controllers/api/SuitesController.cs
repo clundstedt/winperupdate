@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace WinPerUpdateAdmin.Controllers.api
@@ -16,6 +17,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Suites.GetSuites();
             }
             catch (Exception ex)

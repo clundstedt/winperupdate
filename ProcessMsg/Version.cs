@@ -344,6 +344,15 @@ namespace ProcessMsg
                     file.WriteLine(@"");
                     file.WriteLine(@"[Icons]");
                     file.WriteLine(@"Name: ""{group}\WinPer""; Filename: ""{app}\reconect.exe""");
+                    file.WriteLine(@"");
+
+                    file.WriteLine(@"[Dirs]");
+                    file.WriteLine(@"Name: ""{app}\fuentes""");
+                    file.WriteLine(@"Name: ""{app}\info""");
+                    file.WriteLine(@"Name: ""{app}\plantillas_certificados""");
+                    file.WriteLine(@"Name: ""{app}\plantillas_contratos""");
+                    file.WriteLine(@"Name: ""{app}\plantillas_finiquitos""");
+                    file.WriteLine(@"Name: ""{app}\plantillas_papeletas_rem""");
 
                     file.WriteLine(@"");
                     file.WriteLine(@"[Registry]");

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using WinSCP;
+using System.IO;
 
 namespace ProcessMsg
 {
@@ -180,14 +182,111 @@ namespace ProcessMsg
             }
             return tbl;
         }
-        
+        /// <summary>
+        /// Transfiere por FTP todos los archivos del PathOrigen al PathDestino.
+        /// </summary>
+        /// <param name="pathOrigen"></param>
+        /// <param name="pathDestino"></param>
+        /// <returns></returns>
+        public static bool FtpSend(string pathOrigen, string pathDestino)
+        {
+            try
+            {
+                SessionOptions sessionOptions = new SessionOptions
+                {
+                    Protocol = Protocol.Ftp,
+                    HostName = ConfigurationManager.AppSettings["hostnameftp"],
+                    UserName = ConfigurationManager.AppSettings["userftp"],
+                    Password = DesEncriptar(ConfigurationManager.AppSettings["passwordftp"]),
+                    PortNumber = int.Parse(ConfigurationManager.AppSettings["portftp"]),
+                    FtpMode = bool.Parse(ConfigurationManager.AppSettings["passivemode"]) ? FtpMode.Passive : FtpMode.Active
+                };
+
+                using (Session session = new Session())
+                {
+                    // Connect
+                    session.Open(sessionOptions);
+
+                    if (!session.FileExists(pathDestino))
+                    {
+                        session.CreateDirectory(pathDestino);
+                    }
+
+                    // Upload files
+                    TransferOptions transferOptions = new TransferOptions();
+                    transferOptions.TransferMode = TransferMode.Binary;
+                    TransferOperationResult transferResult;
+
+
+                    transferResult = session.PutFiles(Path.Combine(pathOrigen, "*"), Path.Combine(pathDestino), false, transferOptions);
+                    transferResult.Check();
+
+
+                    session.Close();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static bool FtpGet(string pathOrigen, string pathDestino)
+        {
+            try
+            {
+                var dataFtp = DesEncriptar(ConfigurationManager.AppSettings["cftp"]).Split('#');
+                SessionOptions sessionOptions = new SessionOptions
+                {
+                    Protocol = Protocol.Sftp,
+                    HostName = dataFtp[0],
+                    UserName = dataFtp[1],
+                    Password = dataFtp[2],
+                    PortNumber = int.Parse(dataFtp[3]),
+                    SshHostKeyFingerprint = "ssh-dss 1024 0a:ac:ff:19:ec:98:11:2e:a6:8d:71:64:5f:20:45:c4"
+                };
+
+                using (Session session = new Session())
+                {
+                    // Connect
+                    session.Open(sessionOptions);
+
+                    if (!session.FileExists(pathOrigen))
+                    {
+                        return false;
+                    }
+
+                    // Upload files
+                    TransferOptions transferOptions = new TransferOptions();
+                    transferOptions.TransferMode = TransferMode.Binary;
+                    TransferOperationResult transferResult;
+                    
+                    transferResult = session.GetFiles(pathOrigen+"*", pathDestino, false, transferOptions);
+                    transferResult.Check();
+
+                    foreach (TransferEventArgs transfer in transferResult.Transfers)
+                    {
+                        Console.WriteLine("Download of {0} succeeded", transfer.FileName);
+                    }
+
+                    session.Close();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         /// <summary>
         /// Genera la version siguiente de la especificada en el parametro
         /// </summary>
         /// <param name="VersionActual"></param>
         /// <returns>Version siguiente</returns>
         /// 
-        
+
         public static string GenerarVersionSiguiente(string VersionActual)
         {
             var nVersion = "";

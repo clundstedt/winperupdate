@@ -6,13 +6,17 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 
 namespace WinPerUpdateAdmin.Controllers.api
 {
     public class VersionController : ApiController
     {
+
         #region Clases
         public class ClienteToVersion
         {
@@ -35,6 +39,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (version == null)
                 {
@@ -51,24 +56,27 @@ namespace WinPerUpdateAdmin.Controllers.api
                     {
                         if (comp.Name.Equals(compOficial.Name))
                         {
-                            var versionBase = ProcessMsg.Utils.GenerarVersionSiguiente(compOficial.Version);
-                            var versionOtra = comp.Version;
-                            var comparacion = ProcessMsg.Utils.ComparaVersion(versionBase, versionOtra);
-                            if (comparacion == 0)
+                            try
                             {
-                                cOk.isOk = "success";
+                                var versionBase = ProcessMsg.Utils.GenerarVersionSiguiente(compOficial.Version);
+                                var versionOtra = comp.Version;
+                                var comparacion = ProcessMsg.Utils.ComparaVersion(versionBase, versionOtra);
+                                if (comparacion == 0)
+                                {
+                                    cOk.isOk = "success";
+                                }
+                                else if (comparacion == 1)
+                                {
+                                    cOk.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente es " + cOk.componente.Version + " y debiera ser " + versionBase + ", ya que la versión oficial es " + compOficial.Version;
+                                    cOk.isOk = "warning";
+                                }
+                                else
+                                {
+                                    cOk.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente (" + cOk.componente.Version + ") debiera ser " + versionBase + ".";
+                                    cOk.isOk = "danger";
+                                }
                             }
-                            else if (comparacion == 1)
-                            {
-                                cOk.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente es " + cOk.componente.Version + " y debiera ser " + versionBase + ", ya que la versión oficial es " + compOficial.Version;
-                                cOk.isOk = "warning";
-                            }
-                            else
-                            {
-                                cOk.componente.MensajeToolTip = "WinperUpdate ha detectado que la versión de este componente (" + cOk.componente.Version + ") debiera ser " + versionBase + ".";
-                                cOk.isOk = "danger";
-                            }
-                            
+                            catch (Exception) { }
                         }
                     }
                     componentesOk.Add(cOk);
@@ -87,6 +95,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (obj != null)
                 {
@@ -202,6 +211,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var clt = ProcessMsg.Cliente.GetClienteUsuario(idUsuario);
                 if (clt == null)
                 {
@@ -231,6 +241,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Cliente.GetVersiones(idCliente, null).Exists(v => v.Release.StartsWith("I"));
             }
             catch(Exception ex)
@@ -245,6 +256,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Componente.GetComponenteByName(NomComponente).OrderByDescending(x => x.idVersion);
             }
             catch(Exception ex)
@@ -258,6 +270,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 System.IO.FileInfo fi = new System.IO.FileInfo(NombreComponente);
 
                 return fi.Extension.ToUpper().Equals(".SQL") ? true : ProcessMsg.ComponenteModulo.ExisteComponentesModulos(NombreComponente);
@@ -274,6 +287,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.ComponenteModulo.GetTipoComponentesByVersion(idVersion);
                 if (obj == null)
                 {
@@ -294,6 +308,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Componente.GetComponentesOficiales(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/") +"N+1"));
                 if (obj == null)
                 {
@@ -314,6 +329,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 int vr = 0;
                 var lista = ProcessMsg.Version.GetVersiones(null).Where(v => int.TryParse(v.Release.ElementAt(0).ToString(), out vr)).ToList();
                 var obj = (lista.Count == 0 ? null : lista.OrderByDescending(x => x.IdVersion).First());
@@ -336,6 +352,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Tareas.GetTareas(idCliente, idVersion);
                 return Content(HttpStatusCode.OK, obj);
             }
@@ -351,6 +368,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 bool paso = false;
                 var lista = ProcessMsg.Tareas.GetTareas(idCliente, idVersion);
                 lista.ForEach(x =>
@@ -377,6 +395,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Version.GetVersiones(null).OrderByDescending(x => x.IdVersion);
                 if (obj == null)
                 {
@@ -397,6 +416,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (obj == null)
                 {
@@ -417,6 +437,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 List<ProcessMsg.Model.AtributosArchivoBo> listaComps = new List<ProcessMsg.Model.AtributosArchivoBo>();
                 var obj = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 var modulosCliente = ProcessMsg.Cliente.GetClientesHasModulo(idCliente);
@@ -458,6 +479,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Componente.GetComponentes(idVersion, null);
                 if (obj == null)
                 {
@@ -478,6 +500,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (version == null)
                 {
@@ -518,6 +541,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (version == null)
                 {
@@ -547,6 +571,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Tareas.ExisteTarea(idCliente, idAmbiente, idVersion, nameFile);
             }
             catch (Exception ex)
@@ -561,6 +586,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetClientesVersion(idVersion);
                 if (obj == null)
                 {
@@ -581,6 +607,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Componente.GetComponenteByName(idVersion, NameFile);
                 if (obj == null)
                 {
@@ -605,7 +632,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
             try
             {
-
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 string msg = string.Format("Reporte de Tareas Atrasadas en el cliente {0}"
                     , idClientes);
 
@@ -646,6 +673,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 string msg = string.Format("Reporte de Tareas Atrasadas en el cliente {0}<br><br>Ambiente: {1}<br>Estado: {2}<br>ID Versión: {3}<br>Fecha y Hora de Registro: {4}<br>Archivo: {5}<br>ERROR: {6}"
                     , tarea.idClientes, tarea.Ambientes.Nombre, tarea.EstadoFmt, tarea.idVersion, tarea.FechaRegistroFmt, tarea.NameFile, tarea.Error);
 
@@ -673,6 +701,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (version.Release == null)
@@ -709,6 +738,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 if (obj != null)
                 {
@@ -723,6 +753,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                         Directory.Delete(incial, true);
                         Directory.CreateDirectory(incial);
                     }
+                    var mods = ProcessMsg.Modulo.GetModulos(null);
                     var comps = new List<ProcessMsg.Model.AtributosArchivoBo>();
                     var CompModulo = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
                     DirectoryInfo di = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")), "N+1"));
@@ -735,7 +766,10 @@ namespace WinPerUpdateAdmin.Controllers.api
                             {
                                 foreach (var c in CompModulo)
                                 {
-                                    if (c.Nombre.Equals(file.Name) && !comps.Exists(x => x.Name.ToUpper().Equals(file.Name.ToUpper())))
+                                    if (c.Nombre.Equals(file.Name) 
+                                    && mods.Exists(x => x.idModulo == c.Modulo && x.isCore)
+                                    && file.DirectoryName.EndsWith(c.Directorio) 
+                                    && !comps.Exists(x => x.Name.ToUpper().Equals(file.Name.ToUpper())))
                                     {
                                         file.CopyTo(Path.Combine(incial, file.Name), true);
                                         comps.Add(new ProcessMsg.Model.AtributosArchivoBo
@@ -771,6 +805,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (archivo == null)
@@ -804,6 +839,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
@@ -820,6 +856,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var idClientes = TipoPub == 1 ? listaClientes.Where(y => y.check).Select(x => x.cliente.Id).ToList() : listaClientes.Select(x => x.cliente.Id).ToList();
                 var res = ProcessMsg.Version.AddVersionCliente(idVersion, idClientes);
                 if (res[0].ToString().Equals("0", StringComparison.OrdinalIgnoreCase))
@@ -840,6 +877,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (idVersion <= 0)
@@ -873,6 +911,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (idVersion <= 0)
@@ -907,6 +946,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 tarea.idVersion = idVersion;
                 int res = ProcessMsg.Tareas.Add(tarea);
                 if (res == 1)
@@ -930,6 +970,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(v => v.IdVersion == idVersion);
                 if (version == null)
                 {
@@ -950,6 +991,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 var obj = ProcessMsg.Tareas.SetEstadoTarea(tarea.idTareas, tarea.Estado, tarea.Error);
@@ -976,6 +1018,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (version.Release == null)
@@ -1009,6 +1052,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (archivo == null)
@@ -1044,6 +1088,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (ProcessMsg.Version.DelVersion(idVersion) <= 0)
@@ -1065,6 +1110,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (archivo == null)

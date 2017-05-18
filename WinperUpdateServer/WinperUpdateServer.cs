@@ -40,6 +40,8 @@ namespace WinperUpdateServer
     {
         public long SetupLength { get; set; }
         public List<DllFileUI> Lista { get; set; }
+
+        public string SetupVersion { get; set; }
     }
 
     public partial class WinperUpdateServer : ServiceBase
@@ -317,7 +319,8 @@ namespace WinperUpdateServer
                                         UpdateUI uui = new UpdateUI
                                         {
                                             Lista = listaDll,
-                                            SetupLength = setup.Length
+                                            SetupLength = setup.Length,
+                                            SetupVersion = (FileVersionInfo.GetVersionInfo(setup.FullName) != null ? FileVersionInfo.GetVersionInfo(setup.FullName).FileVersion : "S/I")
                                         };
 
                                         json = JsonConvert.SerializeObject(uui);
@@ -336,7 +339,7 @@ namespace WinperUpdateServer
                                     var buffer = ProcessMsg.Version.DownloadFile("SetUpdateUI.exe", int.Parse(token[1]), int.Parse(token[2]), dirAchivosUI+"\\update\\", eventLog1);
                                     if (buffer.Length == int.Parse(token[2]))
                                     {
-                                        bok = true;
+                                        downsetupbok = true;
                                         if (downsetupintentos > 1)
                                         {
                                             eventLog1.WriteEntry(String.Format("Bytes enviados en intento {0}", downsetupintentos), EventLogEntryType.Information, eventId);

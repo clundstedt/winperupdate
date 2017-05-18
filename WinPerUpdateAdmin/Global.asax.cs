@@ -24,5 +24,10 @@ namespace WinPerUpdateAdmin
             //System.Net.ServicePointManager.Expect100Continue = false; //Evita el error HTTP 417
             
         }
+
+        protected void Application_PostAuthorizeRequest()
+        {
+            System.Web.HttpContext.Current.SetSessionStateBehavior(System.Web.SessionState.SessionStateBehavior.Required);
+        }
     }
 }

@@ -104,3 +104,5 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.pdb
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCP.exe
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCPnet.dll

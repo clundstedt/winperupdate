@@ -202,7 +202,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                     var files = new DirectoryInfo(sRuta).GetFiles().ToList();
                     foreach (var x in files)
                     {
-                        var comp = componentesModulos.Where(y => y.Nombre.Equals(x.Name)).ToList();
+                        var comp = componentesModulos.Where(y => y.Nombre.Equals(x.Name) && x.DirectoryName.EndsWith(y.Directorio)).ToList();
                         if (comp.Count == 0) continue;
                         if (comp.ElementAt(0) != null)
                         {

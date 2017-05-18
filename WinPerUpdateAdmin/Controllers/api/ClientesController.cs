@@ -35,6 +35,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Seguridad.GetUsuario(idUsuario);
                 if (obj == null)
                 {
@@ -89,6 +90,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Cliente.GetCorrelativo(Folio, MesCon);
             }
             catch (Exception ex)
@@ -103,6 +105,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 List<anio> lista = new List<anio>();
                 for (int i = 1990; i <= DateTime.Now.Year; i++)
                 {
@@ -125,6 +128,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var Cliente = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
                 if (Cliente != null)
                 {
@@ -233,6 +237,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 string pdf = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes")));
                 #region Creador de directorio y archivo
                 if (!Directory.Exists(pdf))
@@ -313,6 +318,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Cliente.GetTrabPlantas();
             }
             catch(Exception ex)
@@ -327,6 +333,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Cliente.GetTrabHonorarios();
             }
             catch (Exception ex)
@@ -341,6 +348,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Version.GetVersionesToCliente(idCliente);
             }
             catch (Exception ex)
@@ -354,6 +362,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
                 if (obj == null)
                 {
@@ -373,6 +382,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetClientes();
                 if (obj == null)
                 {
@@ -393,6 +403,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
                 if (obj == null)
                 {
@@ -413,6 +424,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetVersiones(idCliente, null);
                 if (obj == null)
                 {
@@ -433,6 +445,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetUsuarios(idCliente);
                 if (obj == null)
                 {
@@ -453,6 +466,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetUsuarios(idCliente).SingleOrDefault(x => x.Id == idUsuario);
                 if (obj == null)
                 {
@@ -473,6 +487,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetRegiones();
                 if (obj == null)
                 {
@@ -493,6 +508,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetComunas(idRgn);
                 if (obj == null)
                 {
@@ -513,6 +529,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var key = ProcessMsg.Utils.GenerarLicencia(Folio, MesCon, Correlativo, EstMtc, MesIni, NroTrbc, NroTrbh, NroUsr);
                 return Content(HttpStatusCode.OK, key); ;
             }
@@ -531,6 +548,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var cliente = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
                 if (cliente != null)
                 {
@@ -558,6 +576,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (cliente.Rut == 0)
@@ -595,6 +614,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (usuario.Persona.Nombres == null || usuario.Persona.Apellidos == null || usuario.Persona.Mail == null)
@@ -648,6 +668,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (id <= 0)
@@ -687,6 +708,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (usuario.Persona.Nombres == null || usuario.Persona.Apellidos == null || usuario.Persona.Mail == null)
@@ -732,6 +754,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (id <= 0)

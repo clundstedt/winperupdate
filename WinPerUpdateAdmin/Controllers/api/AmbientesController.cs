@@ -17,6 +17,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 string dirfmt = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes/")) + "PlanillaAmbientes.xlsx");
                 
                 Byte[] objByte = System.IO.File.ReadAllBytes(dirfmt);
@@ -46,6 +47,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Ambiente.GetAmbientesXLSX(idCliente).OrderBy(x => x.idAmbientes);
             }
             catch (Exception ex)
@@ -61,6 +63,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Ambiente.GetAmbientesNoEx(idCliente, idVersion, NameFile).Where(x => !x.EjecutadoOK);
             }
             catch (Exception ex)
@@ -75,6 +78,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Ambiente.AmbienteOK(idVersion, idAmbiente);
             }
             catch (Exception ex)
@@ -89,6 +93,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var list = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, null);
                 if (list.Count == 0)
                 {
@@ -108,6 +113,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var list = ProcessMsg.Ambiente.GetAmbientesByCliente(idCliente, idVersion, null);
                 if (list.Count == 0)
                 {
@@ -127,6 +133,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Ambiente.GetAmbiente(idAmbiente, idCliente);
                 if (obj == null)
                 {
@@ -148,6 +155,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
                 var obj = ProcessMsg.Ambiente.Add(idCliente,ambiente);
                 if (obj == null)
@@ -174,6 +182,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 var obj = ProcessMsg.Ambiente.Update(idCliente, idAmbiente, ambiente);
@@ -201,6 +210,7 @@ namespace MiPrimerAPP.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
                 if (ProcessMsg.Ambiente.Delete(idAmbiente,idCliente) <= 0)
                 {

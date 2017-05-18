@@ -45,6 +45,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return new WebConfig
                 {
                     pathGenSetup = ConfigurationManager.AppSettings["pathGenSetup"],
@@ -70,6 +71,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                
                 var obj = ProcessMsg.Seguridad.GetUsuario(mail);
                 if (obj == null)
                 {
@@ -90,6 +92,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Seguridad.GetUsuarios();
                 if (obj == null)
                 {
@@ -110,6 +113,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Seguridad.GetUsuario(idUsuario);
                 if (obj == null)
                 {
@@ -130,6 +134,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetClienteUsuario(idUsuario);
                 if (obj == null)
                 {
@@ -154,6 +159,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 webConfig.Usuario.Clave = Utils.Encriptar(webConfig.Usuario.Clave);
 
                 var strConn = string.Format(@"Database={0};Server={1};User={2};Password={3};Connect Timeout=200;Integrated Security=;", webConfig.nombrebd, webConfig.svbd, webConfig.userbd, webConfig.passbd);
@@ -213,6 +219,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (usuario.Persona.Nombres == null || usuario.Persona.Apellidos == null || usuario.Persona.Mail == null)
@@ -259,6 +266,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 Configuration cfg = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
 
                 cfg.AppSettings.Settings["pathGenSetup"].Value = webConfig.pathGenSetup;
@@ -286,6 +294,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Seguridad.GetUsuario(mail);
                 if (obj == null)
                 {
@@ -320,6 +329,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
                 if (usuario.Persona.Nombres == null || usuario.Persona.Apellidos == null || usuario.Persona.Mail == null)

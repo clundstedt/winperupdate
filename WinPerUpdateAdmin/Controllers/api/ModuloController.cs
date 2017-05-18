@@ -31,6 +31,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 List<ProcessMsg.Model.ComponenteModuloBo> lista = new List<ProcessMsg.Model.ComponenteModuloBo>();
                 var tipos = ProcessMsg.ComponenteModulo.GetTipoComponentes();
                 var mod = ProcessMsg.Modulo.GetModulo(idModulo);
@@ -69,6 +70,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")),"N+1",Directorio);
                 return Directory.Exists(path);
             }
@@ -84,6 +86,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Modulo.GetModulosBySuite(idSuite).Where(m => m.Estado == 'V').OrderBy(m => m.NomModulo);
             }
             catch(Exception ex)
@@ -98,6 +101,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 string log = "OK.\n\n";
                 if (ProcessMsg.ComponenteModulo.DelAll())
                 {
@@ -165,6 +169,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.ComponenteModulo.GetTipoComponentes();
             }
             catch (Exception ex)
@@ -179,6 +184,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.ComponenteModulo.GetComponentesModulos(idModulo);
             }
             catch(Exception ex)
@@ -193,6 +199,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Modulo.GetModulo(idModulo);
                 if (obj == null)
                 {
@@ -213,6 +220,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Modulo.GetModulos(null);
                 if (obj == null)
                 {
@@ -233,6 +241,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return ProcessMsg.Modulo.GetModulosXlsx(idUsuario);
             }
             catch(Exception ex)
@@ -247,6 +256,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 string dirfmt = string.Format("{0}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Fuentes/")) + "PlanillaModulos.xlsx");
 
                 Byte[] objByte = System.IO.File.ReadAllBytes(dirfmt);
@@ -281,6 +291,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var comps = ComponentesDir.Where(x => x.check).Select(x => x.componente).ToList();
                 if (comps != null)
                 {
@@ -305,6 +316,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.ComponenteModulo.AddTipoComponentes(TipoComponente.Nombre,TipoComponente.isCompBD, TipoComponente.isCompDLL, TipoComponente.Extensiones) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -323,6 +335,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.ComponenteModulo.AddComponentesModulos(ComponenteModulo.Nombre,ComponenteModulo.Descripcion,idModulo,ComponenteModulo.TipoComponentes.idTipoComponentes) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -341,6 +354,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var moduloRes = ProcessMsg.Modulo.AddModulo(modulo);
                 if (moduloRes != null)
                 {
@@ -363,6 +377,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.ComponenteModulo.UpdTipoComponentes(idTipoComponentes, TipoComponente.Nombre, TipoComponente.Extensiones,TipoComponente.isCompBD,TipoComponente.isCompDLL) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -381,6 +396,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.ComponenteModulo.UpdComponentesModulos(idComponentesModulos,ComponenteModulo.Nombre,ComponenteModulo.Descripcion,ComponenteModulo.TipoComponentes.idTipoComponentes) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -399,6 +415,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.Modulo.SetVigente(idModulo) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -417,6 +434,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 modulo.idModulo = idModulo;
                 if (ProcessMsg.Modulo.UpdModulo(modulo) == 1)
                 {
@@ -438,6 +456,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.ComponenteModulo.DelComponentesModulos(idComponentesModulos) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -456,6 +475,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.ComponenteModulo.DelTipoComponentes(idTipoComponentes) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
@@ -474,6 +494,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 if (ProcessMsg.Modulo.DelModulo(idModulo) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
