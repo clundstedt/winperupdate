@@ -13,6 +13,7 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
             
             $scope.lblButton = "Guardar";
             $scope.formData = {};
@@ -28,8 +29,9 @@
                 $scope.formData.dirupload = data.upload;
                 $scope.formData.dirvoficial = data.voficial;
                 $scope.formData.dirfuentes = data.fuentes;
+                $scope.msgError = "";
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.ConfirmarSave = function () {
@@ -53,13 +55,14 @@
                         $scope.lblButton = "Guardar";
                         $timeout(function () {
                             $window.location.href = "/Home/Logout/";
-                        },1500);
+                        }, 1500);
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         $scope.lblButton = "Guardar";
                     });
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.lblButton = "Guardar";
                 });
             }

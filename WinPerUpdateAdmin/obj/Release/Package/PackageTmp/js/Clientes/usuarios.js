@@ -13,6 +13,7 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
             $scope.idUsuario = 0;
             $scope.titulo = "Crear Usuario";
             $scope.labelcreate = "Crear un Usuario";
@@ -30,8 +31,9 @@
 
             serviceClientes.getCliente($scope.idCliente).success(function (data) {
                 $scope.cliente = data;
-            }).error(function (data) {
-                console.error(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             if ($routeParams.idUsuario > 0) {
@@ -46,10 +48,10 @@
                     $scope.formData.estado = data.EstUsr,
                     $scope.titulo = "Modificar Usuario";
                     $scope.labelcreate = "Modificar";
-
+                    $scope.msgError = "";
                     console.log("estado = " + $scope.formData.estado);
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
             }
@@ -98,11 +100,11 @@
                                             $scope.lblStatUser += "Ocurrió un error durante la asignacion de la version al cliente, verifique consola del navegador.\n";
                                         });
                                     }).error(function (err) {
-                                        console.error(err);
+                                        console.error(err); 
                                         $scope.lblStatUser += "Ocurrió un error durante la generacion del instalador de la version inicial, verifique consola del navegador.\n";
                                     });
                                 }).error(function (err) {
-                                    console.error(err);
+                                    console.error(err); 
                                     $scope.lblStatUser += "Ocurrió un error durante la creacion del a version inicial, verifique consola del navegador.\n";
                                 });
                             } else {
@@ -135,7 +137,7 @@
                             }, 3000);
                         });
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); 
                         $scope.lblStatUser += "Ocurrió un error durante la creación, veirifique consola del navegador.\n";
                         $timeout(function () {
                             $scope.AddUserOK = true;
@@ -152,7 +154,7 @@
                             $scope.AddUserOK = true;
                         }, 3000);
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); 
                         $scope.lblStatUser += "Ocurrió un error, verifique consola del navegador\n";
                         $timeout(function () {
                             $scope.AddUserOK = true;
@@ -206,11 +208,12 @@
                                                     $window.setTimeout(function () {
                                                         $window.location.href = "/Clientes#/EditCliente/" + $scope.idCliente;
                                                     }, 2000);
+                                                    $scope.msgError = "";
                                                 }).error(function (err) {
-                                                    console.log(err);
+                                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                                                 });
-                }).error(function (data) {
-                    console.error(data);
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 

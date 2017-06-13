@@ -110,6 +110,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                         Directory.Delete(incial, true);
                         Directory.CreateDirectory(incial);
                     }
+                    var mods = ProcessMsg.Modulo.GetModulos(null);
                     var comps = new List<ProcessMsg.Model.AtributosArchivoBo>();
                     var CompModulo = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
                     DirectoryInfo di = new DirectoryInfo(Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")), "N+1"));
@@ -122,7 +123,10 @@ namespace WinPerUpdateAdmin.Controllers.api
                             {
                                 foreach (var c in CompModulo)
                                 {
-                                    if (c.Nombre.Equals(file.Name) && !comps.Exists(x => x.Name.ToUpper().Equals(file.Name.ToUpper())))
+                                    if (c.Nombre.Equals(file.Name)
+                                    && mods.Exists(x => x.idModulo == c.Modulo && x.isCore)
+                                    && file.DirectoryName.EndsWith(c.Directorio)
+                                    && !comps.Exists(x => x.Name.Equals(file.Name, StringComparison.OrdinalIgnoreCase)))
                                     {
                                         file.CopyTo(Path.Combine(incial, file.Name), true);
                                         comps.Add(new ProcessMsg.Model.AtributosArchivoBo
@@ -168,24 +172,6 @@ namespace WinPerUpdateAdmin.Controllers.api
 
                             //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
                             string result = proc.StandardOutput.ReadToEnd();
-                            //Proceso de copia de N+1 a N
-                            string dirN1 = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")) + "N+1";
-                            string dirN = ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial/")) + "N";
-                            var componentesModulos = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
-
-                            var files = new DirectoryInfo(sRuta).GetFiles().ToList();
-                            foreach (var x in files)
-                            {
-                                var comp = componentesModulos.Where(y => y.Nombre.Equals(x.Name)).ToList();
-                                if (comp.Count == 0) continue;
-                                if (comp.ElementAt(0) != null)
-                                {
-                                    var oPath = Path.Combine(dirN1, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
-                                    var dPath = Path.Combine(dirN, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
-                                    new FileInfo(oPath).CopyTo(dPath, true);
-                                    x.CopyTo(oPath, true);
-                                }
-                            }
                             okInstall = true;
                         }
                         if (okInstall)

@@ -13,6 +13,7 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
 
             $scope.idAmbiente = (angular.isUndefined($routeParams.idAmbiente) ? 0 : $routeParams.idAmbiente);
             $scope.idCliente = $routeParams.idCliente;
@@ -26,8 +27,9 @@
                 serviceAmbientes.getAmbiente($scope.idCliente, $scope.idAmbiente).success(function (data) {
                     console.log(JSON.stringify(data));
                     $scope.ambiente = data;
-                }).error(function (data) {
-                    console.error(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -40,18 +42,19 @@
                     serviceAmbientes.addAmbiente($scope.idCliente, formData.Nombre, formData.Tipo, formData.ServerBd, formData.Instancia, formData.NomBd, formData.UserDbo, formData.PwdDbo).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
-
+                        $scope.msgError = "";
                         console.log(JSON.stringify(data));
                         $scope.idAmbiente = data.idAmbientes;
-                    }).error(function (data) {
-                        console.error(data);
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 } else {//Se Modifica
                     serviceAmbientes.updAmbiente($scope.idCliente, $scope.idAmbiente, formData.Nombre, formData.Tipo, formData.ServerBd, formData.Instancia, formData.NomBd, formData.UserDbo, formData.PwdDbo).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
-                    }).error(function (data) {
-                        console.error(data);
+                        $scope.msgError = "";
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
             }
@@ -61,8 +64,9 @@
                     $window.setTimeout(function () {
                         $window.location.href = "/AmbientesClt#/";
                     }, 2000);
-                }).error(function (data) {
-                    console.error(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 

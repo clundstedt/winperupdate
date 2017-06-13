@@ -62,8 +62,7 @@ namespace ProcessMsg.Model
                 return string.Format("{0:yyyy-MM-ddThhhh:mm:ss}", DateCreate);
             }
         }
-
-
+        
         public string LastWriteFmt
         {
             get
@@ -73,5 +72,7 @@ namespace ProcessMsg.Model
         }
 
         public string MensajeToolTip { get; set; }
+
+        public string Directorio { get; set; }
     }
 }

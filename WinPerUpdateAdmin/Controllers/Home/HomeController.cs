@@ -130,6 +130,14 @@ namespace WinPerUpdateAdmin.Controllers.Home
                         };
                     }
                 }
+                else
+                {
+                    respuesta = new
+                    {
+                        CodErr = 4,
+                        MsgErr = "No existe el correo especificado."
+                    };
+                }
 
                 return Json(respuesta);
             }

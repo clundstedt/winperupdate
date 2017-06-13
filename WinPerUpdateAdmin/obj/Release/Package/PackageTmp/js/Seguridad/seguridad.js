@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.usuarios = [];
             $scope.totales = [0, 0, 0, 0, 0];
             $scope.perfiles = [{ CodPrf: 1, NomPrf: 'Administrador' },
@@ -27,9 +29,9 @@
                 angular.forEach($scope.usuarios, function (item) {
                     $scope.totales[item.CodPrf]++;
                 });
-
+                $scope.msgError = "";
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.Panel = function (idPanel) {

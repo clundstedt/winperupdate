@@ -7,6 +7,13 @@
         </ol>
     </div>
 </div>
+<div class="row" ng-show="msgError != ''">
+    <div class="col-md-12">
+        <div class="alert alert-danger">
+            <strong>Error: </strong> {{msgError}}
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="btn-toolbar hidden-xs">
@@ -56,7 +63,10 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon" title="Directorio del Módulo"><i class="fa fa-file-o fa-fw"></i></span>
-                                        <input type="text" class="form-control" name="directorio" required="required" placeholder="Directorio del Módulo" ng-model="formData.directorio" />
+                                        <input type="text" class="form-control" name="directorio" required="required" placeholder="Directorio del Módulo" ng-model="formData.directorio" disabled="disabled" />
+                                        <span class="input-group-btn" title="Seleccionar Directorio">
+                                            <button type="button" class="btn btn-default" ng-click="showMdlDirModulos()"><i class="fa fa-folder-open-o fa-fw"></i></button>
+                                        </span>
                                     </div>
                                     <span class="error_ingreso" ng-show="frmModulo.directorio.$error.required">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
@@ -522,6 +532,65 @@
                 <button type="button" class="btn btn-primary" ng-click="AgregarCompsDir()" ng-hide="listaCompsDetect.length == 0">
                     Agregar
                 </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mdlDirModulos" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Directorios de Módulos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control btn-block" ng-model="dirModulo"  value="Hola"  disabled="disabled" />
+                                <span class="input-group-btn" title="Volver al directorio anterior.">
+                                    <button type="button" class="btn btn-default" ng-click="dirAnterior(dirModulo)">
+                                        <i class="fa fa-folder-open" aria-hidden="true"></i>
+                                        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="table-responsive">
+                    <table class="table" st-table="displayDirs" st-safe-src="dirsModulos">
+                        <thead>
+                            <tr>
+                                <th><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="isLoadDirs">
+                            <tr><td><h3>Cargando Directorios...</h3></td></tr>
+                        </tbody>
+                        <tbody ng-show="displayDirs.length > 0 && !isLoadDirs">
+                            <tr ng-repeat="dir in displayDirs">
+                                <td>
+                                    <button type="button" class="btn btn-link" ng-click="cargarDirs(dir.FullPath)">{{dir.OriginalPath}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center">
+                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="seleccionarDir(dirModulo)">Seleccionar</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

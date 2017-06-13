@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             console.log(JSON.stringify($routeParams));
             $scope.idVersion = $routeParams.idVersion;
             console.log($scope.idVersion);
@@ -23,14 +25,16 @@
 
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;
-            }).error(function (data) {
-                console.debug(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             serviceAdmin.getModulos().success(function (data) {
                 $scope.modulos = data;
-            }).error(function (data) {
-                console.debug(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             
@@ -39,8 +43,9 @@
                 $scope.formData.comentario = data.Comentario;
                 console.log(data.Modulo);
                 console.log(data.Comentario);
-            }).error(function (data) {
-                console.error(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
 
@@ -51,8 +56,9 @@
                     }
                 }
                 console.log($scope.componentes);
+                $scope.msgError = "";
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
             
 
@@ -67,8 +73,9 @@
                 serviceAdmin.updComponente($scope.idVersion, $scope.namecomponente, formData.modulo, formData.comentario).success(function () {
                     $scope.labelcreate = 'Guardar';
                     $scope.increate = true;
-                }).error(function (data) {
-                    console.debug(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -83,9 +90,9 @@
                     $window.setTimeout(function () {
                         $window.location.href = "/Admin#/EditVersion/" + $scope.idVersion;
                     }, 2000);
-
-                }).error(function (data) {
-                    console.debug(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
         }

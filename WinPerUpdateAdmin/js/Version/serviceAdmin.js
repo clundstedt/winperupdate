@@ -35,10 +35,53 @@
 
             addCliente: addCliente,
             GenVersionInicial: GenVersionInicial,
-            addClientesToVersion: addClientesToVersion
+            addClientesToVersion: addClientesToVersion,
+
+            getModulosByComponente: getModulosByComponente
         };
 
         return service;
+
+        function getModulosByComponente(filename) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var DirModulos = {
+                "Directorio":filename
+            }
+
+            $.ajax({
+                url: '/api/getModulosByComponente',
+                type: "Post",
+                dataType: 'Json',
+                data: DirModulos,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getComponentesVersion(idVersion) {
             var deferred = $q.defer();

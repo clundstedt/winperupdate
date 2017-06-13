@@ -3,7 +3,13 @@
         <h1>Descargas</h1>
     </div>
 </div>
-
+<div class="row" ng-show="msgError != ''">
+    <div class="col-md-12">
+        <div class="alert alert-danger">
+            <strong>Error: </strong> {{msgError}}
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="alert alert-warning" ng-show="descargas.length == 0">

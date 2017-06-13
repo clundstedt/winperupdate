@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.idUsuario = 0;
             $scope.titulo = "Crear Usuario";
             $scope.labelcreate = "Crear un Usuario";
@@ -36,9 +38,9 @@
                     $scope.formData.perfil = data.CodPrf;
                     $scope.formData.idPersona = data.Persona.Id;
                     $scope.formData.estado = data.EstUsr;
-
-                }).error(function (data) {
-                    console.error(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -49,16 +51,19 @@
                         $scope.idUsuario = data.Id;
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
+                        $scope.msgError = "";
+                        $scope.formData.estado = data.EstUsr;
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
                 else {
                     serviceSeguridad.updUsuario($scope.idUsuario, formData.perfil, formData.idPersona, formData.apellido, formData.nombre, formData.mail, formData.estado).success(function (data) {
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
             }
@@ -81,11 +86,12 @@
                         $window.setTimeout(function () {
                             $window.location.href = "/Seguridad#/";
                         }, 2000);
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
-                }).error(function (data) {
-                    console.error(data);
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 

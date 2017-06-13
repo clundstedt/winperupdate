@@ -7,7 +7,13 @@
         </ol>
     </div>
 </div>
-
+<div class="row" ng-show="msgError != ''">
+    <div class="col-md-12">
+        <div class="alert alert-danger">
+            <strong>Error: </strong> {{msgError}}
+        </div>
+    </div>
+</div>
 <div class="container" ng-controller="clientes">
     <div class="row">
         <div class="col-md-12">

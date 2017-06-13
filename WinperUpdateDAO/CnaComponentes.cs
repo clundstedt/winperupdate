@@ -38,7 +38,24 @@ namespace WinperUpdateDAO
             }
         }
 
-        
+        public SqlDataReader ExecuteConDirectorio(int idVersion)
+        {
+            try
+            {
+                SpName = @"select c.*, m.Directorio 
+                             from Componentes c, Modulos m 
+                            where c.idVersion = @idVersion 
+                              and c.Modulo = m.NomModulo";
+                ParmsDictionary.Add("@idVersion", idVersion);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "{NombreFuncion}", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
 
     }
 }

@@ -17,6 +17,10 @@ namespace WinPerUpdateAdmin.Controllers.api
             public bool check { get; set; }
             public ProcessMsg.Model.ComponenteModuloBo componente { get; set; }
         }
+        public class DirModulos
+        {
+            public string Directorio { get; set; }
+        }
         #endregion
 
         #region get
@@ -63,23 +67,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
-        [Route("api/ExistDir/{Directorio}/Modulo")]
-        [HttpGet]
-        public Object GetExisteDirModulo(string Directorio)
-        {
-            try
-            {
-                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")),"N+1",Directorio);
-                return Directory.Exists(path);
-            }
-            catch(Exception ex)
-            {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
-            }
-        }
-
+        
         [Route("api/Modulos/Suite/{idSuite:int}")]
         [HttpGet]
         public Object GetModulosBySuite(int idSuite)
@@ -234,7 +222,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
+        
         [Route("api/ModulosXlsx/{idUsuario:int}")]
         [HttpGet]
         public Object GetModulosXlsx(int idUsuario)
@@ -284,6 +272,59 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region post
+        [Route("api/getModulosByComponente")]
+        [HttpPost]
+        public Object getModulosByComponente([FromBody]DirModulos filename)
+        {
+            try
+            {
+                return Content(HttpStatusCode.OK, ProcessMsg.Modulo.GetModulosByComponente(filename.Directorio));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        [Route("api/ExistDir/Modulo")]
+        [HttpPost]
+        public Object GetExisteDirModulo([FromBody]DirModulos dm)
+        {
+            try
+            {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", dm.Directorio);
+                return Directory.Exists(path);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        [Route("api/getDir")]
+        [HttpPost]
+        public Object getDir([FromBody]DirModulos dm)
+        {
+            try
+            {
+                //if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                
+                var dirVo = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")));
+                if (dm.Directorio.StartsWith(dirVo))
+                {
+                    //dm.Directorio = dm.Directorio.Replace(dirVo, "");
+                }
+                var path = Path.Combine(dirVo, dm.Directorio);
+                if (Directory.Exists(path))
+                {
+                    return Content(HttpStatusCode.OK, new DirectoryInfo(path).GetDirectories());
+                }
+                return Content(HttpStatusCode.BadRequest, (object)path);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
 
         [Route("api/Modulo/ComponentesDir")]
         [HttpPost]

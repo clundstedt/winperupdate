@@ -8,6 +8,8 @@
     modulos.$inject = ['$scope', '$routeParams','serviceModulos','$timeout'];
 
     function modulos($scope, $routeParams, serviceModulos, $timeout) {
+        $scope.msgError = "";
+
         $scope.title = 'modulos';
         $scope.formData = {};
         $scope.formComp = {};
@@ -40,6 +42,10 @@
 
         function activate() {
 
+            $scope.dirModulo = {};
+            $scope.msgError = "";
+            $scope.dirsModulos = [];
+            $scope.isLoadDirs = false;
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idModulo = $routeParams.idModulo;
@@ -53,39 +59,87 @@
                     $scope.accion = "Modificar";
                     serviceModulos.getComponentesModulo($scope.idModulo).success(function (data) {
                         $scope.componentes = data;
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
+
             serviceModulos.getSuites().success(function (data) {
                 $scope.suites = data;
+                $scope.msgError = "";
             }).error(function (err) {
-                console.log(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             serviceModulos.getTipoComponentes().success(function (data) {
                 $scope.tipocomponentes = data;
+                $scope.msgError = "";
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
+
+            $scope.showMdlDirModulos = function () {
+                $scope.dirModulo = "";
+                $scope.isLoadDirs = true;
+                $("#mdlDirModulos").modal('show');
+                serviceModulos.getDirs("N+1").success(function (data) {
+                    $scope.dirsModulos = data;
+                    $scope.isLoadDirs = false;
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                });
+            }
+
+            $scope.cargarDirs = function (dir) {
+                $scope.isLoadDirs = true;
+                serviceModulos.getDirs(dir).success(function (data) {
+                    $scope.dirsModulos = data;
+                    $scope.dirModulo = dir.replace(dir.substring(0, dir.indexOf("N+1") + 4),"");
+                    $scope.isLoadDirs = false;
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                });
+            }
+
+            $scope.dirAnterior = function (dir) {
+                if (dir.lastIndexOf("\\") != -1) {
+                    $scope.dirModulo = dir.substring(0, dir.lastIndexOf("\\"));
+                    $scope.cargarDirs("N+1\\"+$scope.dirModulo);
+                } else {
+                    $scope.cargarDirs("N+1");
+                }
+            }
+
+            $scope.seleccionarDir = function (dir) {
+                if (dir.trim().length == 0) {
+                    $scope.msgError = "Seleccione un directorio.";
+                } else {
+                    $scope.formData.directorio = dir;
+                    $scope.msgError = "";
+                }
+                $("#mdlDirModulos").modal('toggle');
+            }
 
             $scope.CargarTipoComponentes = function () {
                 serviceModulos.getTipoComponentes().success(function (data) {
                     $scope.tipocomponentes = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
             $scope.CargarComponentesModulos = function () {
                 serviceModulos.getComponentesModulo($scope.idModulo).success(function (data) {
                     $scope.componentes = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
             
@@ -93,8 +147,9 @@
                 serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
                     $scope.CargarComponentesModulos();
                     $("#mancom-modal").modal('toggle');
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -105,8 +160,9 @@
                     $timeout(function () {
                         componenteModulo.LblModificar = "Modificar";
                     }, 3000);
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
             
@@ -117,8 +173,9 @@
                     formTipoComp.extensiones = "";
                     formTipoComp.iscompbd = false;
                     formTipoComp.iscompdll = false;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -141,8 +198,9 @@
                 } else {
                     serviceModulos.delTipoComponentes(tipoComponente.idTipoComponentes).success(function (data) {
                         $scope.CargarTipoComponentes();
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
             }
@@ -156,8 +214,9 @@
                 } else {
                     serviceModulos.delComponentesModulos(componentesModulos.idComponentesModulos).success(function (data) {
                         $scope.CargarComponentesModulos();
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
             }
@@ -175,12 +234,13 @@
                                 $scope.listaCompsDetect.push(compD);
                             }
                             $scope.lblAddComponentesDir = "Componentes agregados correctamente.";
+                            $scope.msgError = "";
                         }).error(function (err) {
-                            console.error(err);
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                             $scope.lblAddComponentesDir = "Ocurrió un error durante la recarga de componentes, verifique consola del navegador.";
                         });
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         $scope.lblAddComponentesDir = "Ocurrió un error, verifique consola del navegador.";
                     });
                 }
@@ -202,8 +262,9 @@
                         }
                         $scope.listaCompsDetect.push(compD);
                     }
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -219,8 +280,9 @@
                         $scope.lblAvisoWinper = "El directorio del módulo no existe.";
                         $("#aviso-modal").modal('show');
                     }
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -232,8 +294,9 @@
                     $scope.msgalert = "Módulo creado exitosamente!.";
                     $scope.idModulo = data.idModulo;
                     $scope.formData.estado = data.Estado;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.tipoalert = "danger";
                     $scope.msgalert = "Ocurrió un error durante el proceso de creación del módulo, vuelva a intentarlo.";
                 });
@@ -247,9 +310,10 @@
                 $scope.loading = true;
                 serviceModulos.updModulo($scope.idModulo, formData.nombre, formData.descripcion, formData.iscore, formData.directorio, formData.suite).success(function (data) {
                     $scope.tipoalert = "success";
-                    $scope.msgalert = "Módulo modificado exitosamente!."
+                    $scope.msgalert = "Módulo modificado exitosamente!.";
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.tipoalert = "danger";
                     $scope.msgalert="Ocurrió un error durante el proceso de modificación, vuelva a intentarlo."
                 });
@@ -265,8 +329,9 @@
                     $scope.tipoalert = "success";
                     $scope.msgalert = "Módulo fue caducado con exito!.";
                     $scope.formData.estado = 'C';
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.tipoalert = "danger";
                     $scope.msgalert = "Ocurrió un error durante el proceso de caducación del modulo, vuelva a intentarlo.";
                 });
@@ -283,8 +348,9 @@
                     $scope.tipoalert = "success";
                     $scope.msgalert = "Módulo establecido como vigente exitosamente!.";
                     $scope.formData.estado = 'V';
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.tipoalert = "danger";
                     $scope.msgalert = "Ocurrió un error durante el proceso, vuelva a intentarlo.";
                 });

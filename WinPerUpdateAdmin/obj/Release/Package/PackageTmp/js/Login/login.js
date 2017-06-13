@@ -14,6 +14,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.inlogin = true;
             $scope.inenvioclave = true;
             $scope.labellogin = "Ingresar";
@@ -43,7 +45,7 @@
                     else {
                         $window.location.href = "/Home/AutorizarIngreso?idUser=" + formData.username;
                     }
-                }).error(function (data) {
+                }).error(function (err) {
                     $scope.errorlogin = true;
                     $scope.msgerror = data;
                     $scope.inlogin = true;
@@ -78,7 +80,7 @@
                     setTimeout(function () {
                         $("#myModal .close").click()
                     }, 3000);
-                }).error(function (data) {
+                }).error(function (err) {
                     $scope.msgerr = data;
                     $scope.showerror = true;
                     $scope.showenviando = false;
@@ -93,8 +95,9 @@
                     $timeout(function () {
                         $window.location.href = "/Home";
                     }, 3000);
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.lblLoad = "Ocurrió un error al intentar crear la base de datos, verifique consola del navegador.";
                 });
             }

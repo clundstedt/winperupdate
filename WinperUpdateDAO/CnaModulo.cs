@@ -73,6 +73,21 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+        public SqlDataReader Execute(string nombreArchivo)
+        {
+            try
+            {
+                SpName = @"select * from Modulos 
+                            where idModulo in (select Modulos from ComponentesModulos where Nombre = @filename)";
+                ParmsDictionary.Add("@filename", nombreArchivo);
 
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "{NombreFuncion}", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

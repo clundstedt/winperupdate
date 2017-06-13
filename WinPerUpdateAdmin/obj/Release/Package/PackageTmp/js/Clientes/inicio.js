@@ -13,13 +13,16 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.clientes = [];
             $scope.all = false;
 
             serviceClientes.getClientes().success(function (data) {
                 $scope.clientes = data;
-            }).error(function (data) {
-                console.error(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.GenerarPDF = function () {

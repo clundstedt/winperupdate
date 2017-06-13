@@ -113,8 +113,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
         {
             return PartialView();
         }
-
-
+        
         public Object Upload(int idVersion, HttpPostedFileBase file)
         {
             if (file == null)
@@ -197,21 +196,16 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                     //Proceso de copia de N+1 a N
                     string dirN1 = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N+1";
                     string dirN = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N";
-                    var componentesModulos = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio();
+                    var componentes = ProcessMsg.Componente.GetComponenteConDirectorio(idVersion);
 
                     var files = new DirectoryInfo(sRuta).GetFiles().ToList();
                     foreach (var x in files)
                     {
-                        var comp = componentesModulos.Where(y => y.Nombre.Equals(x.Name) && x.DirectoryName.EndsWith(y.Directorio)).ToList();
-                        if (comp.Count == 0) continue;
-                        if (comp.ElementAt(0) != null)
+                        var comps = componentes.Where(y => y.Name.Equals(x.Name)).ToList();
+                        foreach(var comp in comps)
                         {
-                            var oPath = Path.Combine(dirN1, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
-                            if (!System.IO.File.Exists(oPath))
-                            {
-                                x.CopyTo(oPath, true);
-                            }
-                            var dPath = Path.Combine(dirN, comp.ElementAt(0).Directorio, comp.ElementAt(0).Nombre);
+                            var oPath = Path.Combine(dirN1, comp.Directorio, comp.Name);
+                            var dPath = Path.Combine(dirN, comp.Directorio, comp.Name);
                             new FileInfo(oPath).CopyTo(dPath, true);
                             x.CopyTo(oPath, true);
                         }

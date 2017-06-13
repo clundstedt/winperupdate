@@ -117,6 +117,35 @@ namespace ProcessMsg
             }
         }
 
+        public static List<Model.ModuloBo> GetModulosByComponente(string filename)
+        {
+            try
+            {
+                List<Model.ModuloBo> lista = new List<Model.ModuloBo>();
+                var r = new CnaModulo().Execute(filename);
+                while (r.Read())
+                {
+                    lista.Add(new Model.ModuloBo
+                    {
+                        idModulo = int.Parse(r["idModulo"].ToString()),
+                        Descripcion = r["Descripcion"].ToString(),
+                        Directorio = r["Directorio"].ToString(),
+                        NomModulo = r["NomModulo"].ToString(),
+                        isCore = bool.Parse(r["isCore"].ToString()),
+                        Estado = char.Parse(r["Estado"].ToString()),
+                        Suite = int.Parse(r["Suite"].ToString())
+                    });
+                }
+                r.Close();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         public static List<Model.ModuloBo> GetModulosWithComponenteByCliente(int idCliente)
         {
             try

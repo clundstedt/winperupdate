@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.clientes = [];
             $scope.clientesVersion = [];
             $scope.mensaje = "";
@@ -23,8 +25,9 @@
 
                 serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                     $scope.version = data;
-                }).error(function (data) {
-                    console.error(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
                 serviceClientes.getClientes().success(function (data) {
@@ -47,11 +50,12 @@
                                 }
                             }
                         }
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
-                }).error(function (data) {
-                    console.error(data);
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -91,9 +95,10 @@
                             if (index == $scope.totclientes) {
                                 $scope.mensaje = "Versión publicada exitosamente.";
                             }
-                        }).error(function (data) {
+                            $scope.msgError = "";
+                        }).error(function (err) {
                             $scope.mensaje = "Ocurrió un error durante el proceso de publicación, verifique la consola";
-                            console.error(data);
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     }
                 });

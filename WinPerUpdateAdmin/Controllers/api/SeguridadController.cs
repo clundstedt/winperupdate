@@ -39,6 +39,20 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
+        [Route("api/VerificaSession")]
+        [HttpGet]
+        public Object VerificaSession()
+        {
+            try
+            {
+                return HttpContext.Current.Session["token"] == null;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Config")]
         [HttpGet]
         public Object GetConfig()

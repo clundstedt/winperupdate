@@ -97,7 +97,7 @@ namespace ProcessMsg
 
             var smtp = new System.Net.Mail.SmtpClient();
             smtp.Host = HostMail;
-            //smtp.Port = 50001;
+            //smtp.Port = 587;
             smtp.Credentials = new System.Net.NetworkCredential(userMail, pwdMail);
             smtp.EnableSsl = false;
 
@@ -106,9 +106,9 @@ namespace ProcessMsg
                 smtp.Send(correo);
                 return true;
             }
-            catch (Exception )
+            catch (Exception ex)
             {
-                return false;
+                throw new Exception(string.Format("Error SendMail: {0}", ex.ToString()));
             }
         }
 
@@ -132,6 +132,7 @@ namespace ProcessMsg
             }
             return sBuilder.ToString();
         }
+
         public static bool VerificarMd5Hash(string input, string hash)
         {
             string hashOfInput = GetMd5Hash(input);
@@ -139,8 +140,10 @@ namespace ProcessMsg
             return (0 == comparer.Compare(hashOfInput, hash));
         }
 
-        public static string GenerarLicencia(int NumFolio, string mescon, int correlativo, int estmtc, string mesini, string nrotrbc
-                                            , string nrotrbh, string nrousr)
+        public static string GenerarLicencia(int NumFolio, string mescon
+            , int correlativo, int estmtc
+            , string mesini, string nrotrbc
+            , string nrotrbh, string nrousr)
         {
             string fStr = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}", NumFolio, mescon, correlativo, estmtc, mesini,nrotrbc,nrotrbh,nrousr);
             string hash = GetMd5Hash(fStr);
@@ -244,7 +247,7 @@ namespace ProcessMsg
                     UserName = dataFtp[1],
                     Password = dataFtp[2],
                     PortNumber = int.Parse(dataFtp[3]),
-                    SshHostKeyFingerprint = "ssh-dss 1024 0a:ac:ff:19:ec:98:11:2e:a6:8d:71:64:5f:20:45:c4"
+                    SshHostKeyFingerprint = string.Format("ssh-dss 1024 {0}", dataFtp[4])
                 };
 
                 using (Session session = new Session())

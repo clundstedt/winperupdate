@@ -14,6 +14,7 @@
             getModulo: getModulo,
             getComponentesModulo: getComponentesModulo,
             getTipoComponentes: getTipoComponentes,
+            getDirs: getDirs,
 
             setVigente: setVigente,
             syncComponentes: syncComponentes,
@@ -36,6 +37,45 @@
         };
 
         return service;
+
+        function getDirs(dir) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            var DirModulos = {
+                "Directorio": dir
+            };
+            $.ajax({
+                url: '/api/getDir',
+                type: "POST",
+                dataType: 'Json',
+                data: DirModulos,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function addComponentesDir(lista) {
             var deferred = $q.defer();
@@ -115,10 +155,15 @@
             var deferred = $q.defer();
             var promise = deferred.promise;
 
+            var DirModulos = {
+                "Directorio": directorio
+            };
+
             $.ajax({
-                url: '/api/ExistDir/'+directorio+'/Modulo',
-                type: "GET",
+                url: '/api/ExistDir/Modulo',
+                type: "POST",
                 dataType: 'Json',
+                data: DirModulos,
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));

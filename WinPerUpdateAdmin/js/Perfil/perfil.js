@@ -20,13 +20,15 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
             $scope.id = $("#idToken").val();
             
 
             serviceSeguridad.getUsuario($scope.id).success(function (data) {
                 $scope.user = data;
+                $scope.msgError = "";
             }).error(function (err) {
-                console.log(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.ModificarPrf = function (valido) {

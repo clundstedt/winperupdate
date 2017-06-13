@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.idversion = 0;
             $scope.increate = true;
             $scope.titulo = "Crear Versión";
@@ -37,8 +39,9 @@
 
                 serviceAdmin.getComponentesOficiales().success(function (data) {
                     $scope.componentesOficiales = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
                 $scope.idversion = $routeParams.idVersion;
                 $scope.titulo = "Modificar Versión";
@@ -52,8 +55,9 @@
                         };
                         $scope.listaClientes.push(cl);
                     }
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
                 serviceAdmin.getVersion($scope.idversion).success(function (data) {
@@ -85,9 +89,9 @@
 
                     $scope.fechaini = data.FechaFmt;
 
-
-                }).error(function (data) {
-                    console.error(data);
+                    
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
                 serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
@@ -97,14 +101,18 @@
                         }
                         $scope.TipoComponentes.push(datos);
                     }
+                   
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
+
+                $scope.msgError = "";
             }else{
                 serviceAdmin.getUltimaRelease().success(function (data) {
                     $scope.formData.release = $scope.GenerarNuevaVersion(data);
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.log(err);
+                    console.debug(err); 
                 });
             }
 
@@ -240,9 +248,9 @@
                     $window.setTimeout(function () {
                         $window.location.href = "/Admin#/";
                     }, 2000);
-
-                }).error(function (data) {
-                    console.debug(data);
+                    $scope.msgError = "";
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -252,8 +260,9 @@
                     $window.setTimeout(function () {
                         $window.location.href = "/Admin#/";
                     }, 2000);
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -261,16 +270,18 @@
                 if ($scope.idversion == 0) {
                     serviceAdmin.addVersion(formData.release, formData.fecha, 'N', formData.comentario, '').success(function (data) {
                         $window.location.href = "/Admin#/EditVersion/" + data.IdVersion;
-                    }).error(function (data) {
-                        console.error(data);
+                        $scope.msgError = "";
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
                 else {
                     serviceAdmin.updVersion($scope.idversion, formData.release, formData.fecha, 'N', formData.comentario, '', '').success(function (data) {
                         console.log(JSON.stringify(data));
                         $window.location.href = "/Admin#/EditVersion/" + data.IdVersion;
-                    }).error(function (data) {
-                        console.error(data);
+                        $scope.msgError = "";
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
             };
@@ -299,24 +310,25 @@
                                     $scope.mensaje = "Versión Publicada exitosamente ";
                                     console.debug($scope.mensaje);
                                     $scope.formData.estado = data2.Estado;
-                                }).error(function (data) {
+                                    $scope.msgError = "";
+                                }).error(function (err) {
                                     $scope.mensaje = "Hubo errores al actualizar los datos de la version. Ver consola del navegador.";
-                                    console.error(data);
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                                 });
                             } else {
                                 $scope.mensaje = "Hubo errores al publicar. Ver consola del navegador";
                                 console.error("CodErr: " + data.CodErr + ". MsgErr: " + data.MsgErr);
                             }
-                        }).error(function (data) {
+                        }).error(function (err) {
                             $scope.mensaje = "Hubo errores al obtener la información de la versión. Ver consola del navegador";
-                            console.error(data);
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     }).error(function (errAddCTV) {
                         $scope.mensaje = "Hubo errores al publicar. Ver consola del navegador";
                         console.error(errAddCTV);
                     });
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.mensaje = "Hubo errores al generar instalador. Ver consola del navegador";
                 });
 

@@ -162,6 +162,34 @@ namespace ProcessMsg
 
             return lista;
         }
+        public static List<Model.AtributosArchivoBo> GetComponenteConDirectorio(int idVersion)
+        {
+            try
+            {
+                List<Model.AtributosArchivoBo> lista = new List<Model.AtributosArchivoBo>();
+                var r = new CnaComponentes().ExecuteConDirectorio(idVersion);
+                while (r.Read())
+                {
+                    lista.Add(new Model.AtributosArchivoBo
+                    {
+                        idVersion = int.Parse(r["idVersion"].ToString()),
+                        Name = r["NameFile"].ToString(),
+                        DateCreate = DateTime.Parse(r["FechaFile"].ToString()),
+                        Version = r["VersionFile"].ToString(),
+                        Modulo = r["Modulo"].ToString().Trim(),
+                        Comentario = r["Comentario"].ToString().Trim(),
+                        Directorio = r["Directorio"].ToString()
+                    });
+                }
+                r.Close();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         #endregion
 
         #region Adds
@@ -195,6 +223,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static object[] AddComponentes(int idVersion, List<ProcessMsg.Model.AtributosArchivoBo> componentes)
         {
             try

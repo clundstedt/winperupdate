@@ -20,15 +20,17 @@
         function activate() {
             serviceModulos.listarModulos().success(function (data) {
                 $scope.modulos = data;
+                $scope.msgError = "";
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
             $scope.CargarModXLSX = function () {
                 $("#modxlsx-modal").modal('show');
                 serviceModulos.getModulosXlsx($scope.idUsuario).success(function (data) {
                     $scope.modulosxlsx = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -87,8 +89,9 @@
                             $scope.modulos = data;
                             $scope.modxlsxwarn = false;
                             console.log($scope.modulos);
+                            $scope.msgError = "";
                         }).error(function (err) {
-                            console.error(err);
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     } else {
                         $scope.modxlsxwarn = true;

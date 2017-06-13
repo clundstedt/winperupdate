@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.componentes = [];
             $scope.idVersion = $routeParams.idVersion;
             $scope.componentesOficiales = [];
@@ -20,14 +22,16 @@
 
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;
-            }).error(function (data) {
-                console.debug(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             serviceAdmin.getComponentesOficiales().success(function (data) {
                 $scope.componentesOficiales = data;
+                $scope.msgError = "";
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.VerificaComponentesOkSegunFecha = function () {
@@ -59,11 +63,13 @@
                 return true;
             }
 
+
             $scope.ComponenteOkSegunExistencia = function (fileItem) {
                 serviceAdmin.existeComponente(fileItem.file.name).success(function (data) {
                     fileItem.isError = !data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     fileItem.isError = false;
                 });
             }
@@ -115,9 +121,10 @@
                         .addComponente($scope.idVersion, response.sModulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.sVersion)
                         .success(function (data) {
                             console.log(JSON.stringify(data));
+                            $scope.msgError = "";
                         })
-                        .error(function (data) {
-                            console.error(data);
+                        .error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     
                 }

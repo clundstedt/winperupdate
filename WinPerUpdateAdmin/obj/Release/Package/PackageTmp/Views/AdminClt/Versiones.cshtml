@@ -6,6 +6,13 @@
         </ol>
     </div>
 </div>
+<div class="row" ng-show="msgError != ''">
+    <div class="col-md-12">
+        <div class="alert alert-danger">
+            <strong>Error: </strong> {{msgError}}
+        </div>
+    </div>
+</div>
 <br />
 <div class="tab-content">
     <ul class="nav nav-tabs" role="tablist" ng-init="panel=1">

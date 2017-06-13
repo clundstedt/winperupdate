@@ -5,9 +5,11 @@
         .module('app')
         .controller('controllerHome', controllerHome);
 
-    controllerHome.$inject = ['$scope','factoryHome']; 
+    controllerHome.$inject = ['$scope', 'factoryHome', '$timeout', '$window'];
 
-    function controllerHome($scope, factoryHome) {
+    function controllerHome($scope, factoryHome, $timeout, $window) {
+        $scope.msgError = "";
+
         $scope.title = 'controllerHome';
         $scope.id = $("#idToken").val();
         $scope.formData = {};
@@ -21,11 +23,19 @@
 
         function activate() {
 
+            $timeout(function () {
+                factoryHome.verificaSession().success(function (data) {
+                    if(data)$window.location.href = '/Home';
+                }).error(function (err) {
+                    console.error(err);
+                });
+            }, 60000);
 
             factoryHome.getUsuarioSession($scope.id).success(function (data) {
                 $scope.userSession = data;
-            }).error(function (data) {
-                console.error(data);
+                $scope.msgError = "";
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.VerificarPwdIguales = function (formData) {

@@ -44,7 +44,7 @@ namespace WinPerUpdateAdmin.Controllers.Modulos
                 return RedirectToAction("Error", "Home");
             }
         }
-
+        
         public PartialViewResult Inicio()
         {
             return PartialView();

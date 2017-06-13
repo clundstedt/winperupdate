@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.version = {};
             $scope.versiones = [];
             $scope.ambientes = [];
@@ -52,13 +54,13 @@
                         $scope.ambientes = ambiente;
                     }).
                     error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
 
                     serviceAdmin.existeTareaAtrasada(cliente.Id, $scope.idversion).success(function (data) {
                         $scope.existeTareaAtrasada = data;
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
 
                     serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (data) {
@@ -66,11 +68,11 @@
                         console.log($scope.version);
 
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
-
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
                 serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
@@ -80,8 +82,9 @@
                         }
                         $scope.TipoComponentes.push(datos);
                     }
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
             else {
@@ -93,13 +96,14 @@
                             if (version.Estado == 'P' || version.Estado == 'C') $scope.totales[0]++;
                             else if (version.Estado == 'N') $scope.totales[1]++;
                         });
+                        $scope.msgError = "";
                     }).
-                    error(function (data) {
-                        console.error(data);
+                    error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 })
                 .error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -162,8 +166,9 @@
             $scope.GetAmbientesNoEx = function (idCliente, idVersion, Namefile) {
                 serviceAdmin.getAmbientesNoEx(idCliente, idVersion, Namefile).success(function (data) {
                     $scope.ambientesNoEjecutados = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -180,8 +185,9 @@
                             }
                             $scope.labelReportarTodasTareas = "Reportados";
                         }
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 } else {
                     $scope.actAvisoTareasNoReportadas = true;
@@ -195,8 +201,9 @@
                         $scope.labelReportar = "";
                         tarea.Reportado = true;
                     }
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -212,8 +219,9 @@
                         setTimeout(function () {
                             $scope.ShowDetalleTarea(tarea.idClientes, tarea.idVersion);
                         }, 1500);
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 } else {
                     $scope.actErrorTextArea = true;
@@ -223,17 +231,18 @@
             $scope.ShowDetalleTarea = function (idCliente, idVersion) {
                 serviceAdmin.detalleTareas(idCliente, idVersion).success(function (data) {
                     $scope.detalleTareas = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
                 $("#detalletareas-modal").modal('show');
             }
 
             $scope.CheckInstall = function (idVersion, idUsuario, idAmbiente) {
                 serviceAdmin.getCheckInstall(idVersion, idUsuario, idAmbiente).success(function (dataCheck) {
-                    
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
                 
             }
@@ -253,8 +262,9 @@
                                         $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
                                         $("#avisoexsql-modal").modal('show');
                                     }
+                                    $scope.msgError = "";
                                 }).error(function (err) {
-                                    console.log(err);
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                                 });
                             } else {
                                 $scope.nombreambiente = nombre;
@@ -266,7 +276,7 @@
                             $("#checkins-modal").modal('show');
                         }
                     }).error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 } else {
                     $("#avisocaduca-modal").modal('show');
@@ -295,6 +305,7 @@
                                     $scope.msgAvisoExSQL = "El script ya fue programado, WinperUpdate procederá a ejecutarlo en el ambiente seleccionado. Si usted confirmó la ejecución manual comenzará la descarga del archivo.";
                                 }
                             }
+                            $scope.msgError = "";
                         }).error(function (err) {
                             $scope.msgAvisoExSQL = "ERROR CONTROLADO: " + err;
                         });
@@ -302,7 +313,7 @@
                         $scope.msgAvisoExSQL = "El script ya fue programado en este ambiente y versión.";
                     }
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
 
@@ -320,8 +331,9 @@
                 serviceAdmin.getScript(idVersion, NameFile).success(function (data) {
                     $scope.showScript = true;
                     $scope.txtarea = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -340,13 +352,14 @@
                                 $scope.estaVigente = true;
                             }
                         });
+                        $scope.msgError = "";
                     }).
                     error(function (err) {
-                        console.error(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 })
                 .error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
         }

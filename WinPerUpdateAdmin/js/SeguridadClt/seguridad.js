@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             console.log("id User = " + $("#idToken").val());
 
             $scope.idCliente = $routeParams.idCliente > 0 ? $routeParams.idCliente : 0;
@@ -36,13 +38,13 @@
                     angular.forEach($scope.usuarios, function (item) {
                         $scope.totales[item.CodPrf - 11]++;
                     });
-
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
 
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             if ($routeParams.idUsuario > 0) {
@@ -57,10 +59,10 @@
                     $scope.formData.estado = data.EstUsr,
                     $scope.titulo = "Modificar Usuario";
                     $scope.labelcreate = "Modificar";
-
+                    $scope.msgError = "";
                     console.log("formData.estado = " + $scope.formData.estado);
                 }).error(function (err) {
-                    console.log(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -72,16 +74,18 @@
                         $scope.formData.estado = "V",
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
                 else {
                     serviceClientes.updUsuario($scope.idCliente, $scope.idUsuario, formData.perfil, formData.idPersona, formData.apellido, formData.nombre, formData.mail, formData.estado).success(function (data) {
                         $scope.titulo = "Modificar Usuario";
                         $scope.labelcreate = "Modificar";
+                        $scope.msgError = "";
                     }).error(function (err) {
-                        console.log(err);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
                 }
             }
@@ -105,11 +109,12 @@
                                                     $window.setTimeout(function () {
                                                         $window.location.href = "/SeguridadClt#/Usuarios/";
                                                     }, 2000);
+                                                    $scope.msgError = "";
                                                 }).error(function (err) {
-                                                    console.log(err);
+                                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                                                 });
-                }).error(function (data) {
-                    console.error(data);
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 

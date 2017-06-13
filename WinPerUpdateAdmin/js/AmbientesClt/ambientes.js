@@ -13,6 +13,8 @@
         activate();
 
         function activate() {
+            $scope.msgError = "";
+
             $scope.ambientes = [];
             $scope.ambientesxlsx = [];
             console.log("id User = " + $("#idToken").val());
@@ -24,8 +26,9 @@
                 serviceAmbientes.getAmbientes($scope.idCliente).success(function (ambientes) {
                     console.log(JSON.stringify(ambientes));
                     $scope.ambientes = ambientes;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
                 serviceAmbientes.getAmbientesXlsx($scope.idCliente).success(function (data) {
                     for (var i = 0; i < data.length; i++) {
@@ -34,12 +37,12 @@
                             break;
                         }
                     }
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
-
             }).error(function (err) {
-                console.error(err);
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
             $scope.downloadFile = function () {
@@ -50,8 +53,9 @@
                 $("#ambxlsx-modal").modal('show');
                 serviceAmbientes.getAmbientesXlsx($scope.idCliente).success(function (data) {
                     $scope.ambientesxlsx = data;
+                    $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
 
@@ -90,8 +94,9 @@
                             console.log(JSON.stringify(ambientes));
                             $scope.ambientes = ambientes;
                             $scope.ambxlsxwarn = false;
+                            $scope.msgError = "";
                         }).error(function (err) {
-                            console.error(err);
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     } else {
                         $scope.ambxlsxwarn = true;
