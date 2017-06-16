@@ -10,7 +10,8 @@ namespace WinperUpdateDAO
     public class AddCliente : SpDao
     {
         public object Execute(int rut, char dv, string nombre, string direccion, int idCmn
-            , string nrolicencia, int numfolio, int estmtc, string mesini, string nrotrbc, string nrotrbh, string nrousr, string mescon, int corr)
+            , string nrolicencia, int numfolio, int estmtc, string mesini, string nrotrbc
+            , string nrotrbh, string nrousr, string mescon, int corr, char est)
         {
             SpName = @"INSERT INTO clientes(idCmn
 						,Rut
@@ -25,7 +26,8 @@ namespace WinperUpdateDAO
 						,NroTrbh
 						,NroUsr
                         ,MesCon
-                        ,Correlativo)
+                        ,Correlativo
+                        ,Estado)
                 output INSERTED.idClientes
 				VALUES(@idCmn
 					  ,@Rut
@@ -40,7 +42,8 @@ namespace WinperUpdateDAO
 					  ,@NroTrbh
 					  ,@NroUsr
                       ,@MesCon
-                      ,@Corr)";
+                      ,@Corr
+                      ,@Est)";
             try
             {
                 ParmsDictionary.Add("@Rut", rut);
@@ -57,6 +60,7 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@NroUsr", nrousr);
                 ParmsDictionary.Add("@MesCon", mescon);
                 ParmsDictionary.Add("@Corr", corr);
+                ParmsDictionary.Add("@Est", est);
 
                 return Connector.ExecuteQueryScalar(SpName, ParmsDictionary);
             }

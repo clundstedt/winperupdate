@@ -25,6 +25,7 @@
             getTrabHonorarios: getTrabHonorarios,
             getSuites: getSuites,
             getAnios: getAnios,
+            getExisteMail:getExisteMail,
            
             GenCorrelativo: GenCorrelativo,
             GenVersionInicial: GenVersionInicial,
@@ -43,6 +44,44 @@
         };
 
         return service;
+
+
+        function getExisteMail(mail) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/ExisteMail?mail='+mail,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
 
         function EnviarBienvenida(idUsuario) {
             var deferred = $q.defer();
@@ -1026,27 +1065,28 @@
             return promise;
         }
 
-        function delCliente(id) {
+
+        function delCliente(id, est) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Clientes/' + id,
-                type: "DELETE",
+                url: '/api/Clientes/Vigente?id=' + id + '&est=' + est,
+                type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
-                        //console.log(JSON.stringify(data));
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject('No se pudo eliminar el cliente');
+                        deferred.reject('msgerror');
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
-                    deferred.reject('No se pudo eliminar el cliente');
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
                 }
+
             });
 
             promise.success = function (fn) {
@@ -1061,6 +1101,7 @@
 
             return promise;
         }
+
 
         function getKey(folio, mescon, correlativo,estmtc,mesini,nrotrbc,nrotrbh,nrousr) {
             var deferred = $q.defer();

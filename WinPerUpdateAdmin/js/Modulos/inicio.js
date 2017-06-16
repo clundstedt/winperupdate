@@ -8,7 +8,7 @@
     inicio.$inject = ['$scope', 'serviceModulos', 'FileUploader'];
 
     function inicio($scope, serviceModulos,FileUploader) {
-        $scope.title = 'Modulos';
+        $scope.title = 'Módulos';
         $scope.idUsuario = $("#idToken").val();
         $scope.modulos = [];
         $scope.modulosxlsx = [];

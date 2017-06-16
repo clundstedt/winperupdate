@@ -15,6 +15,7 @@
             getComponentesModulo: getComponentesModulo,
             getTipoComponentes: getTipoComponentes,
             getDirs: getDirs,
+            getExisteComponenteEnDir: getExisteComponenteEnDir,
 
             setVigente: setVigente,
             syncComponentes: syncComponentes,
@@ -37,6 +38,43 @@
         };
 
         return service;
+
+
+        function getExisteComponenteEnDir(comp, dir) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/ExisteComponenteEnDir?nombreComp=' + comp + ' &dir= ' + dir,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    } else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
 
         function getDirs(dir) {
             var deferred = $q.defer();

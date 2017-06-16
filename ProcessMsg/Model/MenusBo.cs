@@ -21,7 +21,7 @@ namespace ProcessMsg.Model
             get
             {
                 string[,] rSubMenus;
-                var data = Submenus.Split('#');
+                var data = Submenus.Split('|');
                 rSubMenus = new string[data.Length,2];
                 for (int i = 0; i < data.Length; i++)
                 {

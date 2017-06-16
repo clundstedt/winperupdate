@@ -39,6 +39,23 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
+
+        [Route("api/ExisteMail")]
+        [HttpGet]
+        public Object GetExisteMail(string mail)
+        {
+            try
+            {
+                var obj = ProcessMsg.Seguridad.GetUsuario(mail);
+                return Content(HttpStatusCode.OK, (obj != null));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [Route("api/VerificaSession")]
         [HttpGet]
         public Object VerificaSession()
@@ -85,7 +102,6 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                
                 var obj = ProcessMsg.Seguridad.GetUsuario(mail);
                 if (obj == null)
                 {
@@ -242,6 +258,11 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    if (ProcessMsg.Seguridad.GetUsuario(usuario.Persona.Mail) != null)
+                    {
+                        return Content(HttpStatusCode.Created, false);
+                    }
+
                     if (usuario.Clave == null)
                     {
                         usuario.Clave = ProcessMsg.Utils.Encriptar(Utils.RandomString(8));

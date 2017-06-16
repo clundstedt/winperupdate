@@ -6,19 +6,22 @@
         if (string.IsNullOrEmpty(item.Submenus))
         {
             <li class="active">
-                <a class="navbar-brand" href="@item.Link">
-                    <span class="fa @item.Icon"></span>
-                    @item.Descripcion
+                <a href="@item.Link">
+                    <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
+                        <span class="fa @item.Icon"></span>
+                    </span>
+                    <span class="full-nav" style="font-family: Calibri;font-size: medium;"> <span class="fa @item.Icon"></span> @item.Descripcion </span>
                 </a>
             </li>
         }
         else
         {
             <li class="active">
-                <a class="navbar-brand dropdown-toggle" data-toggle="dropdown"  aria-expanded="false">
-                    <span class="fa @item.Icon"></span>
-                    @item.Descripcion
-                    <span class="caret"></span>
+                <a href="" class="dropdown-toggle" data-toggle="dropdown"  aria-expanded="false"  >
+                    <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
+                        <span class="fa @item.Icon"></span>
+                    </span>
+                    <span class="full-nav" style="font-family: Calibri;font-size: medium;"><span class="fa @item.Icon"></span> @item.Descripcion </span>
                 </a>
                 <ul class="dropdown-menu">
                     @for (int i = 0; i < item.GetSubMenus.GetLength(0); i++)
@@ -36,19 +39,22 @@
         if (string.IsNullOrEmpty(item.Submenus))
         {
             <li>
-                <a class="navbar-brand" href="@item.Link">
-                    <span class="fa @item.Icon"></span>
-                    @item.Descripcion
+                <a href="@item.Link">
+                    <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
+                        <span class="fa @item.Icon"></span>
+                    </span>
+                    <span class="full-nav" style="font-family: Calibri;font-size: medium;"><span class="fa @item.Icon"></span> @item.Descripcion </span>
                 </a>
             </li>
         }
         else
         {
             <li>
-                <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span class="fa @item.Icon"></span>
-                    @item.Descripcion
-                    <span class="caret"></span>
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"  title="@item.Descripcion">
+                    <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
+                        <span class="fa @item.Icon"></span>
+                    </span>
+                    <span class="full-nav" style="font-family: Calibri;font-size: medium;"><span class="fa @item.Icon"></span> @item.Descripcion </span>
                 </a>
                 <ul class="dropdown-menu">
                     @for (int i = 0; i < item.GetSubMenus.GetLength(0); i++)

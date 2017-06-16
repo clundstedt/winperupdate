@@ -1,26 +1,37 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles Cliente</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/Clientes#/">Clientes</a></li>
-            <li class="active">Un Cliente</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles Cliente</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Clientes#/">Clientes</a></li>
+                <li class="active">Un Cliente</li>
+            </ol>
         </div>
     </div>
-</div>
-<div class="container" ng-controller="clientes">
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="msgSuccess != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idCliente==0">
-                        <span class="fa fa-fw fa-trash-o"></span> Eliminar Cliente
+                    <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idCliente==0 || formData.estado != 'V'">
+                        <span class="fa fa-fw fa-trash-o"></span> Dejar No Vigente
+                    </a>
+                    <a ng-click="Eliminar('V')" data-toggle="modal" class="btn btn-success" ng-hide="idCliente==0 || formData.estado != 'C'">
+                        <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
                     </a>
                 </div>
                 <div class="btn-group" role="toolbar">
@@ -34,7 +45,7 @@
     <br />
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{titulo}}</h3>
                 </div>
@@ -255,7 +266,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
-                                        <label>N° de Licencia del Producto: {{formData.folio.toString().charAt(3) + '' + formData.mescon + '' + formData.correlativo + '' + formData.estmtc + '' + formData.mesini + '' + formData.nrotrbc + '' + formData.nrotrbh + '' + formData.nrousr}}</label>
+                                        <label>N° de Licencia del Producto: {{formData.folio.toString().charAt(3) + '' + formData.mescon + '' + formData.correlativo + '' + formData.estmtc + '' + formData.mesini + '' + formData.nrotrbc + '' + formData.nrotrbh + '' + GenCantUserPerm(formData.nrousr)}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -428,13 +439,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Confirmar Eliminación</h4>
+                    <h4 class="modal-title">Confirmar No Vigencia</h4>
                 </div>
                 <div class="modal-body">
-                    Confirma que desea eliminar al Cliente ?
+                    ¿Está seguro que desea dejar al cliente como <b>No Vigente</b>?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
+                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('C')">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

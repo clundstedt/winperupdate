@@ -1,25 +1,26 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles de la Versi&oacute;n</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/Admin#/">Versiones</a></li>
-            <li class="active">Una Versi&oacute;n</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles de la Versi&oacute;n</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Admin#/">Versiones</a></li>
+                <li class="active">Una Versi&oacute;n</li>
+            </ol>
         </div>
     </div>
-</div>
-<div class="container">
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-                    
+
 
                     <!--button ng-click="ShowConfirmPublish()" ng-disabled="formData.estado=='C' || formData.estado=='P'" data-toggle="modal" class="btn btn-default" ng-hide="idversion==0">
                         <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicar
@@ -148,10 +149,10 @@
             <br />
             <div class="row" ng-repeat="tipoComp in TipoComponentes">
                 <button data-toggle="collapse" class="btn btn-default btn-block" data-target="#{{$index}}">{{tipoComp.Tipo.Nombre}}</button>
-                
+
                 <br />
                 <div id="{{$index}}" class="collapse">
-                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroComponente: tipoComp.Tipo.Extensiones" >
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="ejecutable in componentes | filtroComponente: tipoComp.Tipo.Extensiones">
                         <div class="item panel panel-{{ejecutable.isOk}}">
                             <div class="panel-heading">
                                 <h3 class="panel-title single-line">{{ejecutable.componente.Name}}</h3>
@@ -259,8 +260,8 @@
                     <h4 class="modal-title">Aviso WinperUpdate</h4>
                 </div>
                 <div class="modal-body">
-                    Esta acción no puede ejecutarse debido a que WinperUpdate ha detectado que existen componentes 
-                    cuya versión no es válida en comparación con la versión oficial Winper. Por favor revise los componentes 
+                    Esta acción no puede ejecutarse debido a que WinperUpdate ha detectado que existen componentes
+                    cuya versión no es válida en comparación con la versión oficial Winper. Por favor revise los componentes
                     erróneos y vuelva a subirlos.
                 </div>
                 <div class="modal-footer">

@@ -53,11 +53,6 @@
                 });
             }
 
-            $scope.Test = function () {
-                serviceLogin.test(1).success(function (data) {
-                    console.log(data);
-                });
-            }
 
             $scope.EnviarMail = function () {
                 $scope.showerror = false;
@@ -72,7 +67,7 @@
 
                 $scope.showenviando = true;
                 serviceLogin.sendMail($scope.usernameforgot).success(function (data) {
-                    console.log(JSON.stringify(data));
+                    console.log(data);
                     $scope.okenvio = true;
                     $scope.inenvioclave = true;
                     $scope.labelloginsendclave = "Enviar";

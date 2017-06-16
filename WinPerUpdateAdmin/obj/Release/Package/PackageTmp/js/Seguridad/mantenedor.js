@@ -13,7 +13,11 @@
         activate();
 
         function activate() {
+            $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+
             $scope.msgError = "";
+            $scope.saveUser = "";
+            $scope.msgCamposRequeridos = false;
 
             $scope.idUsuario = 0;
             $scope.titulo = "Crear Usuario";
@@ -44,28 +48,45 @@
                 });
             }
 
-            $scope.SaveUsuario = function (formData) {
-                console.debug("formData = " + JSON.stringify(formData));
-                if ($scope.idUsuario == 0) {
-                    serviceSeguridad.addUsuario(formData.perfil, formData.apellido, formData.nombre, formData.mail, 'V').success(function (data) {
-                        $scope.idUsuario = data.Id;
-                        $scope.titulo = "Modificar Usuario";
-                        $scope.labelcreate = "Modificar";
-                        $scope.msgError = "";
-                        $scope.formData.estado = data.EstUsr;
-                    }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    });
-                }
-                else {
-                    serviceSeguridad.updUsuario($scope.idUsuario, formData.perfil, formData.idPersona, formData.apellido, formData.nombre, formData.mail, formData.estado).success(function (data) {
-                        $scope.titulo = "Modificar Usuario";
-                        $scope.labelcreate = "Modificar";
-                        $scope.msgError = "";
-                    }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    });
-                }
+            $scope.SaveUsuario = function (formData, frmValid) {
+                $scope.saveUser = "";
+                $scope.msgCamposRequeridos = !frmValid;
+                if (frmValid) {
+                    if ($scope.idUsuario == 0) {
+                        serviceSeguridad.addUsuario(formData.perfil, formData.apellido, formData.nombre, formData.mail, 'V').success(function (data) {
+                            $scope.idUsuario = data.Id;
+                            $scope.titulo = "Modificar Usuario";
+                            $scope.labelcreate = "Modificar";
+                            $scope.msgError = "";
+                            $scope.formData.nombre = data.Persona.Nombres;
+                            $scope.formData.apellido = data.Persona.Apellidos;
+                            $scope.formData.mail = data.Persona.Mail;
+                            $scope.formData.perfil = data.CodPrf;
+                            $scope.formData.idPersona = data.Persona.Id;
+                            $scope.formData.estado = data.EstUsr;
+                            $scope.saveUser = "Usuario creado exitosamente!.";
+                        }).error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        });
+                    }
+                    else {
+                        serviceSeguridad.updUsuario($scope.idUsuario, formData.perfil, formData.idPersona, formData.apellido, formData.nombre, formData.mail, formData.estado).success(function (data) {
+                            $scope.titulo = "Modificar Usuario";
+                            $scope.labelcreate = "Modificar";
+                            $scope.msgError = "";
+                            $scope.formData.nombre = data.Persona.Nombres;
+                            $scope.formData.apellido = data.Persona.Apellidos;
+                            $scope.formData.mail = data.Persona.Mail;
+                            $scope.formData.perfil = data.CodPrf;
+                            $scope.formData.idPersona = data.Persona.Id;
+                            $scope.formData.estado = data.EstUsr;
+                            $scope.saveUser = "Usuario modificado exitosamente!.";
+                        }).error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        });
+                    }
+                } 
+                
             }
 
             $scope.ShowConfirm = function () {
@@ -73,6 +94,7 @@
             }
 
             $scope.Eliminar = function (estado) {
+                $scope.saveUser = "";
                 serviceSeguridad.getUsuario($scope.idUsuario).success(function (data) {
                     serviceSeguridad.updUsuario($scope.idUsuario,
                                                 data.CodPrf,
@@ -81,12 +103,12 @@
                                                 data.Persona.Nombres,
                                                 data.Persona.Mail,
                                                 estado).success(function (data2) {
+
                         $('.close').click();
 
-                        $window.setTimeout(function () {
-                            $window.location.href = "/Seguridad#/";
-                        }, 2000);
+                        $scope.formData.estado = estado;
                         $scope.msgError = "";
+                        $scope.saveUser = "Cambios realizados exitosamente.";
                     }).error(function (err) {
                         console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });

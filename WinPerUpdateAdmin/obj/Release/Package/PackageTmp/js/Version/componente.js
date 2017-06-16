@@ -63,15 +63,6 @@
                 return true;
             }
 
-            $scope.GetModulosFile = function (filename) {
-                var list = [];
-                serviceAdmin.getModulosByComponente(filename).success(function (data) {
-                    list = data;
-                }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                });
-                return list;
-            }
 
             $scope.ComponenteOkSegunExistencia = function (fileItem) {
                 serviceAdmin.existeComponente(fileItem.file.name).success(function (data) {

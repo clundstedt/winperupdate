@@ -94,5 +94,15 @@ namespace ProcessMsg.Model
                 return nom;
             }
         }
+
+        public char Estado { get; set; }
+
+        public string EstadoFmt
+        {
+            get
+            {
+                return Estado == 'C' ? "No Vigente" : "Vigente";
+            }
+        }
     }
 }

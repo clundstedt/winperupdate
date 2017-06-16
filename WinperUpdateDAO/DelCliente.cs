@@ -8,12 +8,13 @@ namespace WinperUpdateDAO
 {
     public class DelCliente : SpDao
     {
-        public int Execute(int id)
+        public int Execute(int id, char est)
         {
-            SpName = @" delete Clientes where idClientes = @id";
+            SpName = @"update Clientes set Estado = @est where idClientes = @id";
             try
             {
                 ParmsDictionary.Add("@id", id);
+                ParmsDictionary.Add("@est", est);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

@@ -172,7 +172,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     #endregion
                     #region Fecha Generacion
                     var fechaGeneracion = new Paragraph(
-                            new Chunk(new FileInfo(pdf).CreationTime.ToLongDateString(),
+                            new Chunk(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(new FileInfo(pdf).CreationTime.ToLongDateString()),
                             FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.ITALIC)));
                     fechaGeneracion.Alignment = Element.ALIGN_CENTER;
                     document.Add(fechaGeneracion);
@@ -748,28 +748,19 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region delete
-        [Route("api/Clientes/{id:int}")]
-        [HttpDelete]
-        public Object Delete(int id)
+        [Route("api/Clientes/Vigente")]
+        [HttpGet]
+        public Object Delete(int id, char est)
         {
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
 
-                if (id <= 0)
-                    response.StatusCode = HttpStatusCode.BadRequest;
-                else
+                if (ProcessMsg.Cliente.Delete(id, est) == 1)
                 {
-                    if (ProcessMsg.Cliente.Delete(id) <= 0)
-                    {
-                        response.StatusCode = HttpStatusCode.Accepted;
-                    }
-
-                    return Content(response.StatusCode, (ProcessMsg.Model.ClienteBo)null);
+                    return Content(HttpStatusCode.Created, (ProcessMsg.Model.ClienteBo)ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == id));
                 }
-
-                return Content(response.StatusCode, (ProcessMsg.Model.ClienteBo)null);
+                return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.ClienteBo)null);
             }
             catch (Exception ex)
             {

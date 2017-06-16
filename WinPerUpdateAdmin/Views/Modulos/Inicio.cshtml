@@ -11,25 +11,25 @@
         border: dotted 3px green;
     }
 </style>
-
-<div class="row">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>{{title}}</h1>
-            <ol class="breadcrumb autoscroll">
-                <li class="active">Modulos</li>
-            </ol>
-        </div>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
-        </div>
-    </div>
-</div>
 <div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{title}}</h1>
+                <ol class="breadcrumb autoscroll">
+                    <li class="active">Módulos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <a href="/Modulos#/CrearModulo" class="btn btn-labeled btn-success">
@@ -87,11 +87,11 @@
                                         {{modulo.isCoreFmt}}
                                     </td>
                                     <td style="vertical-align: middle;">
-                                        {{modulo.EstadoFmt}}
+                                        <label class="btn btn-labeled btn-default">{{modulo.EstadoFmt}}</label>
                                     </td>
                                     <td>
-                                        <a href="/Modulos#/EditarModulo/{{modulo.idModulo}}" class="btn btn-labeled btn-info">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Modificar
+                                        <a href="/Modulos#/EditarModulo/{{modulo.idModulo}}" class="btn btn-info">
+                                            <span class="fa fa-pencil"></span>
                                         </a>
                                     </td>
                                 </tr>
@@ -106,7 +106,7 @@
                         </table>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
@@ -218,18 +218,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Aviso WinperUpdate</h4>
+                <h4 class="modal-title">Aviso WinAct</h4>
             </div>
             <div class="modal-body">
                 <div ng-show="sync == 0">
                     A continuación se procederá a sincronizar los componentes que se encuentran en el directorio
-                    VersionOficial de WinperUpdate con los que estan registrados en la base de datos.
+                    VersionOficial de WinAct con los que están registrados en la base de datos.
                     <br /><br />
-                    Tenga en cuenta que el tipo de cada componente sera asignado segun los registros que tenga la base
+                    Tenga en cuenta que el tipo de cada componente sera asignado según los registros que tenga la base
                     de datos, por lo que al final de este proceso se le entregará un reporte con los componentes que no se pudieron
-                    agregar con exito.
+                    agregar con éxito.
                     <br /><br />
-                    <b>NOTA: Los componentes que actualmente se encuentran registrados, seran eliminados.</b>
+                    <b>NOTA: Los componentes que actualmente se encuentran registrados, serán eliminados.</b>
                     <br /><br />
                     Si desea continuar con este proceso oprima <b>Continuar</b>.
                 </div>

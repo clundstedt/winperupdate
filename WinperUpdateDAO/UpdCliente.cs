@@ -9,7 +9,8 @@ namespace WinperUpdateDAO
     public class UpdCliente : SpDao
     {
         public int Execute(int id, int rut, char dv, string nombre, string direccion, int idCmn
-                          ,string nrolicencia, int estmtc, string mesini, string nrotrbc, string nrotrbh, string nrousr, string mescon, int corr)
+                          ,string nrolicencia, int estmtc, string mesini, string nrotrbc
+                          ,string nrotrbh, string nrousr, string mescon, int corr)
         {
             SpName = @" update Clientes 
                            set Rut = @rut, 

@@ -368,7 +368,8 @@ namespace ProcessMsg
                         NroTrbh = dr["NroTrbh"].ToString(),
                         NroUsr = dr["NroUsr"].ToString(),
                         MesCon = dr["MesCon"].ToString(),
-                        Correlativo = int.Parse(dr["Correlativo"].ToString())
+                        Correlativo = int.Parse(dr["Correlativo"].ToString()),
+                        Estado = char.Parse(dr["Estado"].ToString())
                     };
 
                     lista.Add(obj);
@@ -561,7 +562,8 @@ namespace ProcessMsg
             try
             {
                 var dr = (int)query.Execute(cliente.Rut, cliente.Dv, cliente.Nombre, cliente.Direccion, cliente.Comuna.idCmn
-                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh,cliente.NroUsr, cliente.MesCon, cliente.Correlativo);
+                    , cliente.NroLicencia, cliente.NumFolio, cliente.EstMtc,cliente.Mesini,cliente.NroTrbc,cliente.NroTrbh
+                    ,cliente.NroUsr, cliente.MesCon, cliente.Correlativo, cliente.Estado);
 
 
                 return GetClientes().SingleOrDefault(x => x.Id == dr);
@@ -624,12 +626,12 @@ namespace ProcessMsg
         #endregion
 
         #region Dels
-        public static int Delete(int id)
+        public static int Delete(int id, char est)
         {
             var query = new DelCliente();
             try
             {
-                return query.Execute(id);
+                return query.Execute(id, est);
             }
             catch (Exception ex)
             {

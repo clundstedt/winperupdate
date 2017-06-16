@@ -8,42 +8,45 @@
     modulos.$inject = ['$scope', '$routeParams','serviceModulos','$timeout'];
 
     function modulos($scope, $routeParams, serviceModulos, $timeout) {
-        $scope.msgError = "";
-
-        $scope.title = 'modulos';
-        $scope.formData = {};
-        $scope.formComp = {};
-        $scope.formTipoComp = {};
-        $scope.idModulo = 0;
-        $scope.usuario = $("#idToken").val();
-        $scope.loading = false;
-
-        $scope.lblAvisoWinper = "";
-
-        $scope.tipoalert = "";
-        $scope.msgalert = "";
-
-        $scope.accion = "Crear";
-
-        //Componentes
-        $scope.componentes = [];
-        $scope.tipocomponentes = [];
-        $scope.CreandoComponentesModulos = false;
-        $scope.listaCompsDetect = [];
-        $scope.lblAddComponentesDir = "";
-
-        $scope.ModificarTipo = 0;
-        $scope.lblModificarTipoComponente = "Modificar";
-
-        $scope.suites = [];
-
-
+        
         activate();
 
         function activate() {
 
+            $scope.msgError = "";
+
+            $scope.title = 'modulos';
+            $scope.formData = {};
+            $scope.formComp = {};
+            $scope.formTipoComp = {};
+            $scope.idModulo = 0;
+            $scope.Modulo = null;
+            $scope.usuario = $("#idToken").val();
+            $scope.loading = false;
+            $scope.editandoTipComp = false;
+
+            $scope.lblAvisoWinper = "";
+
+            $scope.tipoalert = "";
+            $scope.msgalert = "";
+
+            $scope.accion = "Crear";
+
+            //Componentes
+            $scope.componentes = [];
+            $scope.tipocomponentes = [];
+            $scope.CreandoComponentesModulos = false;
+            $scope.listaCompsDetect = [];
+            $scope.lblAddComponentesDir = "";
+
+            $scope.ModificarTipo = 0;
+            $scope.lblModificarTipoComponente = "Modificar";
+
+            $scope.suites = [];
+
             $scope.dirModulo = {};
             $scope.msgError = "";
+            $scope.msgSuccess = "";
             $scope.dirsModulos = [];
             $scope.isLoadDirs = false;
 
@@ -56,6 +59,7 @@
                     $scope.formData.directorio = data.Directorio;
                     $scope.formData.estado = data.Estado;
                     $scope.formData.suite = data.Suite;
+                    $scope.Modulo = data;
                     $scope.accion = "Modificar";
                     serviceModulos.getComponentesModulo($scope.idModulo).success(function (data) {
                         $scope.componentes = data;
@@ -133,7 +137,7 @@
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
             }
-
+            
             $scope.CargarComponentesModulos = function () {
                 serviceModulos.getComponentesModulo($scope.idModulo).success(function (data) {
                     $scope.componentes = data;
@@ -144,10 +148,24 @@
             }
             
             $scope.CrearComponentesModulos = function (formComp) {
-                serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
-                    $scope.CargarComponentesModulos();
-                    $("#mancom-modal").modal('toggle');
-                    $scope.msgError = "";
+                serviceModulos.getExisteComponenteEnDir(formComp.nombre, $scope.Modulo.Directorio).success(function (exist) {
+                    if (exist) {
+                        serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
+                            $scope.CargarComponentesModulos();
+                            $("#mancom-modal").modal('toggle');
+                            $scope.msgError = "";
+                            $scope.tipoalert = "success";
+                            $scope.msgalert = "Componente creado exitosamente!.";
+                            $timeout(function () {
+                                $scope.tipoalert = "";
+                            }, 10000);
+                        }).error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        });
+                    } else {
+                        $scope.msgError = "El componente no existe en el directorio del módulo!.";
+                        $("#mancom-modal").modal('hide');
+                    }
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -174,6 +192,11 @@
                     formTipoComp.iscompbd = false;
                     formTipoComp.iscompdll = false;
                     $scope.msgError = "";
+                    $scope.tipoalert = "success";
+                    $scope.msgalert = "Tipo de componente creado exitosamente!.";
+                    $timeout(function () {
+                        $scope.tipoalert = "";
+                    }, 10000);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -295,12 +318,15 @@
                     $scope.idModulo = data.idModulo;
                     $scope.formData.estado = data.Estado;
                     $scope.msgError = "";
+                    $scope.Modulo = data;
+                    $scope.loading = false;
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.tipoalert = "danger";
                     $scope.msgalert = "Ocurrió un error durante el proceso de creación del módulo, vuelva a intentarlo.";
+                    $scope.loading = false;
                 });
-                $scope.loading = false;
+                
                 $timeout(function () {
                     $scope.tipoalert = "";
                 }, 10000);
@@ -312,6 +338,7 @@
                     $scope.tipoalert = "success";
                     $scope.msgalert = "Módulo modificado exitosamente!.";
                     $scope.msgError = "";
+                    $scope.Modulo = data;
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.tipoalert = "danger";
@@ -361,13 +388,6 @@
                 }, 10000);
             }
 
-            $scope.ShowManTipCom = function () {
-                $("#mancom-modal").modal('hide');
-                $("#mantipcom-modal").modal({ backdrop: 'static', keyboard: false, show: true });
-                $scope.CreandoComponentesModulos = true;
-                $scope.LimpiarManTipCom();
-            }
-
             $scope.CreandoComponentes = function () {
                 if ($scope.CreandoComponentesModulos) {
                     $("#mancom-modal").modal({ backdrop: 'static', keyboard: false, show: true });
@@ -382,6 +402,7 @@
                 $scope.formTipoComp.iscompbd = tipocomponente.isCompBD;
                 $scope.formTipoComp.iscompdll = tipocomponente.isCompDLL;
                 $scope.ModificarTipo = tipocomponente.idTipoComponentes;
+                $scope.editandoTipComp = true;
             }
 
             $scope.CancelarModificacionTipoComponente = function () {
@@ -390,6 +411,7 @@
                 $scope.formTipoComp.iscompbd = "";
                 $scope.formTipoComp.iscompdll = "";
                 $scope.ModificarTipo = 0;
+                $scope.editandoTipComp = false;
             }
 
             $scope.ModificarTipoComponente = function (formTipoComp) {
@@ -399,9 +421,11 @@
                         $scope.CargarTipoComponentes();
                         $timeout(function () {
                             $scope.lblModificarTipoComponente = "Modificar";
+                            $scope.editandoTipComp = false;
                             $scope.CancelarModificacionTipoComponente();
                         }, 3000);
                     }).error(function (err) {
+                        $scope.editandoTipComp = false;
                         $scope.lblModificarTipoComponente = "!ERROR";
                     });
                 }

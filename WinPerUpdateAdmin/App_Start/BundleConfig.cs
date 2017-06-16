@@ -35,6 +35,7 @@ namespace WinPerUpdateAdmin
                               "~/Scripts/angular.min.js"
                             , "~/Scripts/angular-route.min.js"
                             , "~/Scripts/select.js"
+                            , "~/Scripts/site.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(

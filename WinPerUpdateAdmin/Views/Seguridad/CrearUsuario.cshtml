@@ -1,26 +1,41 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles Usuario</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/Seguridad#/">Usuarios</a></li>
-            <li class="active">Un Usuario</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles Usuario</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Seguridad#/">Usuarios</a></li>
+                <li class="active">Un Usuario</li>
+            </ol>
         </div>
     </div>
-</div>
-<div class="container">
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="saveUser != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                <strong></strong> {{saveUser}}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="msgCamposRequeridos">
+        <div class="col-md-12">
+            <div class="alert alert-warning">
+                <strong>Advertencia: </strong> Hay problemas con algunos campos, verifique los datos e intente nuevamente.
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
                     <a ng-click="ShowConfirm()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-danger">
-                        <span class="fa fa-fw fa-trash-o"></span> Caducar Usuario
+                        <span class="fa fa-fw fa-trash-o"></span> Deja NO Vigente
                     </a>
                     <a ng-click="ShowConfirm()" ng-hide="formData.estado=='V' || idUsuario==0" data-toggle="modal" class="btn btn-success">
                         <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
@@ -64,8 +79,11 @@
                                 <span class="input-group-addon" title="Nombres"><i class="fa fa-user fa-fw"></i></span>
                                 <input class="form-control" type="text" name="nombre" placeholder="Nombres" ng-model="formData.nombre" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
                             </div>
+                            <span class="error_ingreso" ng-show="frmMain.nombre.$error.required && frmMain.nombre.$touched">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                            </span>
                             <span class="error_ingreso" ng-show="frmMain.nombre.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres.
                             </span>
                         </div>
 
@@ -74,28 +92,40 @@
                                 <span class="input-group-addon" title="Apellidos"><i class="fa fa-user fa-fw"></i></span>
                                 <input class="form-control" type="text" name="apellido" placeholder="Apellidos" ng-model="formData.apellido" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
                             </div>
+                            <span class="error_ingreso" ng-show="frmMain.apellido.$error.required && frmMain.apellido.$touched">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                            </span>
                             <span class="error_ingreso" ng-show="frmMain.apellido.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres.
                             </span>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group margin-bottom-sm">
                                 <span class="input-group-addon" title="E-Mail"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                <input class="form-control" type="email" name="mail" placeholder="Mail" ng-model="formData.mail" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                <input class="form-control" type="email" name="mail" placeholder="Mail" ng-model="formData.mail" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }" ng-pattern="emailFormat">
                             </div>
+                            <span class="error_ingreso" ng-show="frmMain.mail.$error.required && frmMain.mail.$touched">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                            </span>
                             <span class="error_ingreso" ng-show="frmMain.mail.$error.maxlength">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                            </span>
+                            <span class="error_ingreso" ng-show="frmMain.mail.$error.pattern">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> E-Mail incorrecto.
                             </span>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon" title="Perfíl"><i class="fa fa-group fa-fw"></i></span>
-                                <select class="form-control" ng-model="formData.perfil" ng-options="perfil.CodPrf as perfil.NomPrf for perfil in perfiles">
+                                <select class="form-control" name="perfil" ng-model="formData.perfil" ng-options="perfil.CodPrf as perfil.NomPrf for perfil in perfiles" required="required">
                                     <option value="">Perf&iacute;l</option> <!-- not selected / blank option -->
                                 </select>
                             </div>
+                            <span class="error_ingreso" ng-show="frmMain.perfil.$error.required && frmMain.perfil.$touched">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                            </span>
                         </div>
 
                         <input type="hidden" ng-model="formData.idPersona" />
@@ -103,7 +133,7 @@
 
                         <hr />
 
-                        <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && SaveUsuario(formData)" ng-disabled="!increate">
+                        <button type="button" class="btn btn-primary btn-block" ng-click="SaveUsuario(formData, frmMain.$valid)" ng-disabled="!increate">
                             <span class="fa fa-check" ng-show="increate"></span>
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                         </button>
@@ -118,11 +148,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" ng-show="formData.estado=='V'">Confirmar Caducar</h4>
+                    <h4 class="modal-title" ng-show="formData.estado=='V'">Confirmar NO Vigencia</h4>
                     <h4 class="modal-title" ng-show="formData.estado=='C'">Confirmar Vigencia</h4>
                 </div>
                 <div class="modal-body">
-                    <span ng-show="formData.estado=='V'">Confirma que desea caducar al Usuario ?</span>
+                    <span ng-show="formData.estado=='V'">Confirma que desea dejar <b>NO Vigente</b> al usuario ?</span>
                     <span ng-show="formData.estado=='C'">Confirma que desea dejar Vigente al Usuario ?</span>
                 </div>
                 <div class="modal-footer">

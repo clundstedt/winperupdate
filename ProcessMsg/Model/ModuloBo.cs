@@ -26,7 +26,7 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return Estado == 'C' ? "Caducado" : "Vigente";
+                return Estado == 'C' ? "No Vigente" : "Vigente";
             }
         }
         public int Suite { get; set; }

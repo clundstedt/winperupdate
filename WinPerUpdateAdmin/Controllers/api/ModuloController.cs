@@ -269,6 +269,23 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
+
+        [Route("api/ExisteComponenteEnDir")]
+        [HttpGet]
+        public Object ExisteComponenteEnDir(string nombreComp, string dir)
+        {
+            try
+            {
+                var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", dir, nombreComp);
+
+                return Content(HttpStatusCode.OK, File.Exists(path));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         #endregion
 
         #region post
@@ -479,9 +496,9 @@ namespace WinPerUpdateAdmin.Controllers.api
                 modulo.idModulo = idModulo;
                 if (ProcessMsg.Modulo.UpdModulo(modulo) == 1)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    return Content(HttpStatusCode.OK, modulo);
                 }
-                return Content(HttpStatusCode.Created, false);
+                return Content(HttpStatusCode.Created, (object) null);
             }
             catch (Exception ex)
             {
