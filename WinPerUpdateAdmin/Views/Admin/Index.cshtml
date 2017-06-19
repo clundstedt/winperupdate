@@ -2,8 +2,9 @@
 @{
     ViewBag.Title = "Index";
 }
+
 @Scripts.Render("~/bundles/admin")
 
-<div ng-view></div>
+<ng-view></ng-view>
 
 <input type="hidden" id="idToken" value="@Session["token"]" />

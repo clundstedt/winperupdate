@@ -86,6 +86,8 @@ namespace ProcessMsg
             string pwdMail = ConfigurationManager.AppSettings["pwdMail"];
             string fromMail = ConfigurationManager.AppSettings["fromMail"];
             string HostMail = ConfigurationManager.AppSettings["HostMail"];
+            string portMail = ConfigurationManager.AppSettings["portMail"];
+            string sslMail = ConfigurationManager.AppSettings["sslMail"];
             
             var correo = new System.Net.Mail.MailMessage();
             correo.From = new System.Net.Mail.MailAddress(userMail, fromMail);
@@ -97,9 +99,9 @@ namespace ProcessMsg
 
             var smtp = new System.Net.Mail.SmtpClient();
             smtp.Host = HostMail;
-            //smtp.Port = 587;
+            smtp.Port = int.Parse(portMail);
             smtp.Credentials = new System.Net.NetworkCredential(userMail, pwdMail);
-            smtp.EnableSsl = false;
+            smtp.EnableSsl = bool.Parse(sslMail);
 
             try
             {

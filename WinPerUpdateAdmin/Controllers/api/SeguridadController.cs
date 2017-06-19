@@ -34,6 +34,8 @@ namespace WinPerUpdateAdmin.Controllers.api
             public string upload { get; set; }
             public string voficial { get; set; }
             public string fuentes { get; set; }
+            public string portMail { get; set; }
+            public string sslMail { get; set; }
         }
 
         #endregion
@@ -87,7 +89,9 @@ namespace WinPerUpdateAdmin.Controllers.api
                     correoSoporte = ConfigurationManager.AppSettings["correoSoporte"],
                     upload = ConfigurationManager.AppSettings["upload"],
                     voficial = ConfigurationManager.AppSettings["voficial"],
-                    fuentes = ConfigurationManager.AppSettings["fuentes"]
+                    fuentes = ConfigurationManager.AppSettings["fuentes"],
+                    portMail = ConfigurationManager.AppSettings["portMail"],
+                    sslMail = ConfigurationManager.AppSettings["sslMail"]
                 };
             }
             catch(Exception ex)
@@ -313,6 +317,8 @@ namespace WinPerUpdateAdmin.Controllers.api
                 cfg.AppSettings.Settings["upload"].Value = webConfig.upload;
                 cfg.AppSettings.Settings["voficial"].Value = webConfig.voficial;
                 cfg.AppSettings.Settings["fuentes"].Value = webConfig.fuentes;
+                cfg.AppSettings.Settings["portMail"].Value = webConfig.portMail;
+                cfg.AppSettings.Settings["sslMail"].Value = webConfig.sslMail;
                 cfg.Save();
                 return Content(HttpStatusCode.OK, true);
             }

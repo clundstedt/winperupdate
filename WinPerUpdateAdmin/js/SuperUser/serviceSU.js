@@ -52,7 +52,7 @@
             return promise;
         }
 
-        function Guardar(innosetup, smtpwu, mailwu, passmailwu, aliasmailwu, mailsoporte, dirupload, dirvoficial, dirfuentes) {
+        function Guardar(innosetup, smtpwu, mailwu, passmailwu, aliasmailwu, mailsoporte, dirupload, dirvoficial, dirfuentes, port, ssl) {
             var webConfig = {
                 "pathGenSetup": innosetup,
                 "hostMail": smtpwu,
@@ -62,7 +62,9 @@
                 "correoSoporte": mailsoporte,
                 "upload": dirupload,
                 "voficial": dirvoficial,
-                "fuentes": dirfuentes
+                "fuentes": dirfuentes,
+                "portMail": port,
+                "sslMail": ssl
             };
 
             var deferred = $q.defer();

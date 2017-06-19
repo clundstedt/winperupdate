@@ -29,6 +29,10 @@
                 $scope.formData.dirupload = data.upload;
                 $scope.formData.dirvoficial = data.voficial;
                 $scope.formData.dirfuentes = data.fuentes;
+                $scope.formData.portmail = data.portMail;
+                $scope.formData.sslmail = data.sslMail;
+
+                console.log($scope.formData.sslmail);
                 $scope.msgError = "";
             }).error(function (err) {
                 console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
@@ -40,7 +44,7 @@
 
             $scope.GuardarConf = function (formData) {
                 $scope.lblButton = "Guardando";
-                serviceSU.Guardar(formData.innosetup, formData.smtpwu, formData.mailwu, formData.passmailwu, formData.aliasmailwu, formData.mailsoporte, formData.dirupload, formData.dirvoficial, formData.dirfuentes).success(function (data) {
+                serviceSU.Guardar(formData.innosetup, formData.smtpwu, formData.mailwu, formData.passmailwu, formData.aliasmailwu, formData.mailsoporte, formData.dirupload, formData.dirvoficial, formData.dirfuentes, formData.portmail, formData.sslmail).success(function (data) {
                     serviceSU.LoadWebConf().success(function (dataLoad) {
                         $scope.formData.innosetup = dataLoad.pathGenSetup;
                         $scope.formData.smtpwu = dataLoad.hostMail;
@@ -52,6 +56,8 @@
                         $scope.formData.dirupload = dataLoad.upload;
                         $scope.formData.dirvoficial = dataLoad.voficial;
                         $scope.formData.dirfuentes = dataLoad.fuentes;
+                        $scope.formData.portmail = dataLoad.portMail;
+                        $scope.formData.sslmail = dataLoad.sslMail;
                         $scope.lblButton = "Guardar";
                         $timeout(function () {
                             $window.location.href = "/Home/Logout/";

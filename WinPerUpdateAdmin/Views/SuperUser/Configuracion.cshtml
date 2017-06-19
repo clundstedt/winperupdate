@@ -101,6 +101,24 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Numero del puerto del servidor SMTP"><i class="fa fa-random fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="portmail" placeholder="Puerto del servidor SMTP" ng-model="formData.portmail" required="required">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.portmail.$error.required">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="checkbox" ng-model="formData.sslmail" ng-true-value="'true'" ng-false-value="'false'"> Habilitar Secure Socket Layer (SSL), para la encriptación de la conexión.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">

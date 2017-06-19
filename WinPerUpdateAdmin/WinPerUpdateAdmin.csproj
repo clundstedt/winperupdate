@@ -194,6 +194,7 @@
     <Content Include="js\Login\login.js" />
     <Content Include="js\Login\serviceLogin.js" />
     <Content Include="js\Version\componente.js" />
+    <Content Include="js\Version\directiveLoadPage.js" />
     <Content Include="js\Version\editcomponente.js" />
     <Content Include="js\Version\publicar.js" />
     <Content Include="js\Version\serviceAdmin.js" />
