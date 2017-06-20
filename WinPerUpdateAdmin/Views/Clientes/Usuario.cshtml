@@ -28,10 +28,10 @@
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
                     <a ng-click="ShowConfirm()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-danger">
-                        <span class="fa fa-fw fa-trash-o"></span> Deja No Vigente
+                        <span class="fa fa-ban"></span> Dejar No Vigente
                     </a>
                     <a ng-click="ShowConfirm()" ng-hide="formData.estado=='V' || idUsuario==0" data-toggle="modal" class="btn btn-success">
-                        <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
+                        <span class="fa fa-check-square-o"></span> Dejar Vigente
                     </a>
                     <a ng-click="ReenviarMailBienvenida()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-warning">
                         <span class="fa fa-fw fa-envelope"></span> Re-enviar E-Mail de Bienvenida
@@ -75,7 +75,7 @@
                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                 <input class="form-control" type="text" name="nombre" placeholder="Nombres" ng-model="formData.nombre" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
                             </div>
-                            <span class="error_ingreso" ng-show="frmMain.nombre.$error.required">
+                            <span class="error_ingreso" ng-show="frmMain.nombre.$error.required  && frmMain.nombre.$touched">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                             </span>
                             <span class="error_ingreso" ng-show="frmMain.nombre.$error.maxlength">
@@ -88,7 +88,7 @@
                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                 <input class="form-control" type="text" name="apellido" placeholder="Apellidos" ng-model="formData.apellido" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
                             </div>
-                            <span class="error_ingreso" ng-show="frmMain.apellido.$error.required">
+                            <span class="error_ingreso" ng-show="frmMain.apellido.$error.required  && frmMain.apellido.$touched">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                             </span>
                             <span class="error_ingreso" ng-show="frmMain.apellido.$error.maxlength">
@@ -99,13 +99,16 @@
                         <div class="form-group">
                             <div class="input-group margin-bottom-sm">
                                 <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                <input class="form-control" type="email" name="mail" placeholder="Mail" ng-model="formData.mail" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                <input class="form-control" type="email" name="mail" placeholder="Mail" ng-model="formData.mail" ng-pattern="emailFormat" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
                             </div>
-                            <span class="error_ingreso" ng-show="frmMain.mail.$error.required">
+                            <span class="error_ingreso" ng-show="frmMain.mail.$error.required && frmMain.mail.$touched">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                             </span>
                             <span class="error_ingreso" ng-show="frmMain.mail.$error.maxlength">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                            </span>
+                            <span class="error_ingreso" ng-show="frmMain.mail.$error.pattern">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> E-Mail incorrecto.
                             </span>
                         </div>
 
@@ -116,7 +119,7 @@
                                     <option value="">Perf&iacute;l</option> <!-- not selected / blank option -->
                                 </select>
                             </div>
-                            <span class="error_ingreso" ng-show="frmMain.perfil.$error.required">
+                            <span class="error_ingreso" ng-show="frmMain.perfil.$error.required && frmMain.perfil.$touched">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                             </span>
                         </div>
@@ -127,7 +130,7 @@
                         <hr />
 
                         <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && SaveUsuario(formData)" ng-disabled="!increate">
-                            <span class="fa fa-check" ng-show="increate"></span>
+                            <span class="fa fa-pencil-square-o" ng-show="increate"></span>
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                         </button>
                     </form>
@@ -163,16 +166,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" ng-show="formData.estado=='V'">Confirmar Caducar</h4>
+                    <h4 class="modal-title" ng-show="formData.estado=='V'">Confirmar No Vigencia</h4>
                     <h4 class="modal-title" ng-show="formData.estado=='C'">Confirmar Vigencia</h4>
                 </div>
                 <div class="modal-body">
-                    <span ng-show="formData.estado=='V'">Confirma que desea caducar al Usuario ?</span>
-                    <span ng-show="formData.estado=='C'">Confirma que desea dejar Vigente al Usuario ?</span>
+                    <span ng-show="formData.estado=='V'">¿Confirma que desea dejar <b>No Vigente</b> al usuario?</span>
+                    <span ng-show="formData.estado=='C'">¿Confirma que desea dejar Vigente al usuario?</span>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('C')" ng-show="formData.estado=='V'">Confirmar</button>
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('V')" ng-show="formData.estado=='C'">Confirmar</button>
+                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('C')" ng-show="formData.estado=='V'">Confirmar</button>
+                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('V')" ng-show="formData.estado=='C'">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

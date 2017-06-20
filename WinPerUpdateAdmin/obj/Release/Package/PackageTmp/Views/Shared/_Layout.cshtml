@@ -4,7 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Pragma" content="no-cache">
+    @{
+        Response.CacheControl = "no-cache";
+        Response.AddHeader("Pragma", "no-cache");
+        Response.Expires = -1;
+    }
     <title>@ViewBag.Title - Control de Versiones</title>
     @Styles.Render("~/Content/css")
 
@@ -23,6 +27,7 @@
 
 </head>
 <body>
+    
     @if (Session["token"] != null)
     {
         <div class="navbar navbar-default navbar-twitch" role="navigation">

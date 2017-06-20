@@ -16,9 +16,9 @@
             </div>
         </div>
     </div>
-    <div class="row" ng-show="msgSuccess != ''">
+    <div class="row"  ng-show="msgSuccess != ''">
         <div class="col-md-12">
-            <div class="alert alert-success">
+            <div class="alert alert-success" id="msgsuccess" tabindex="1">
                 {{msgSuccess}}
             </div>
         </div>
@@ -28,10 +28,10 @@
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
                     <a ng-click="ShowConfirm()" data-toggle="modal" class="btn btn-danger" ng-hide="idCliente==0 || formData.estado != 'V'">
-                        <span class="fa fa-fw fa-trash-o"></span> Dejar No Vigente
+                        <span class="fa fa-ban"></span> Dejar No Vigente
                     </a>
-                    <a ng-click="Eliminar('V')" data-toggle="modal" class="btn btn-success" ng-hide="idCliente==0 || formData.estado != 'C'">
-                        <span class="fa fa-fw fa-trash-o"></span> Dejar Vigente
+                    <a ng-click="ShowConfirmVigente()" data-toggle="modal" class="btn btn-success" ng-hide="idCliente==0 || formData.estado != 'C'">
+                        <span class="fa fa-check-square-o"></span> Dejar Vigente
                     </a>
                 </div>
                 <div class="btn-group" role="toolbar">
@@ -64,6 +64,9 @@
                                     <span class="error_ingreso" ng-show="!rutok">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> rut incorrecto
                                     </span>
+                                    <span class="error_ingreso" ng-show="frmMain.rut.$error.required && frmMain.rut.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -74,6 +77,9 @@
                                     </div>
                                     <span class="error_ingreso" ng-show="frmMain.nombre.$error.maxlength">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmMain.nombre.$error.required && frmMain.nombre.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -88,6 +94,9 @@
                                     <span class="error_ingreso" ng-show="frmMain.direccion.$error.maxlength">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
                                     </span>
+                                    <span class="error_ingreso" ng-show="frmMain.direccion.$error.required && frmMain.direccion.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -97,10 +106,13 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon" title="Región"><i class="fa fa-map-o fa-fw"></i></span>
-                                        <select class="form-control" ng-model="formData.region" ng-change="Comunas(formData)" ng-options="region.idRgn as region.NomRgn for region in regiones">
+                                        <select class="form-control" name="region" required="required" ng-model="formData.region" ng-change="Comunas(formData)" ng-options="region.idRgn as region.NomRgn for region in regiones">
                                             <option value="">Regi&oacute;n</option> <!-- not selected / blank option -->
                                         </select>
                                     </div>
+                                    <span class="error_ingreso" ng-show="frmMain.region.$error.required && frmMain.region.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
                                 </div>
                             </div>
 
@@ -108,10 +120,13 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon" title="Comuna"><i class="fa fa-map-o fa-fw"></i></span>
-                                        <select class="form-control" ng-model="formData.comuna" ng-options="comuna.idCmn as comuna.NomCmn for comuna in comunas | orderBy:NomCmn">
+                                        <select class="form-control" name="comuna" required="required" ng-model="formData.comuna" ng-options="comuna.idCmn as comuna.NomCmn for comuna in comunas | orderBy:NomCmn">
                                             <option value="">Comuna</option> <!-- not selected / blank option -->
                                         </select>
                                     </div>
+                                    <span class="error_ingreso" ng-show="frmMain.comuna.$error.required && frmMain.comuna.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -125,8 +140,8 @@
                                             <option value="">-- Año de contrato --</option>
                                         </select><br>
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.folio.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.folio.$error.required && frmMain.folio.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -138,8 +153,8 @@
                                             <option value="">-- Mes de firma de contrato --</option>
                                         </select><br>
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.mescon.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.mescon.$error.required && frmMain.mescon.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -149,8 +164,8 @@
                                         <span class="input-group-addon" title="Correlativo"><i class="fa fa-list fa-fw"></i></span>
                                         <input class="form-control" type="text" name="correlativo" required ng-model="formData.correlativo" placeholder="Correlativo" /><br>
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.correlativo.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.correlativo.$error.required && frmMain.correlativo.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -159,10 +174,13 @@
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Estado de mantención"><i class="fa fa-gear fa-fw"></i></span>
-                                        <select class="form-control" ng-model="formData.estmtc" ng-options="estmtc.valor as estmtc.nomest for estmtc in estadosMantencion">
+                                        <select class="form-control" name="estmtc" required="required" ng-model="formData.estmtc" ng-options="estmtc.valor as estmtc.nomest for estmtc in estadosMantencion">
                                             <option value="">-- Estado de Mantención --</option>
                                         </select><br>
                                     </div>
+                                    <span class="error_ingreso" ng-show="frmMain.estmtc.$error.required && frmMain.estmtc.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -175,8 +193,8 @@
                                             <option value="">-- Mes inicio contrato mantención --</option>
                                         </select>
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.mesini.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.mesini.$error.required && frmMain.mesini.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -189,10 +207,9 @@
                                             <option value="">-- N° Trabajadores Contratados --</option>
                                         </select>
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.nrotrbc.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.nrotrbc.$error.required && frmMain.nrotrbc.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -205,8 +222,8 @@
                                             <option value="">-- N° Trabajadores Honorarios --</option>
                                         </select>
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.nrotrbh.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.nrotrbh.$error.required && frmMain.nrotrbh.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -216,8 +233,8 @@
                                         <span class="input-group-addon" title="Máxima cantidad de usuarios permitidos"><i class="fa fa-user fa-fw"></i></span>
                                         <input class="form-control" type="text" name="nrousr" required ng-model="formData.nrousr" placeholder="Cantidad de Usuarios Permitidos" />
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmMain.nrousr.$error.required">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido
+                                    <span class="error_ingreso" ng-show="frmMain.nrousr.$error.required && frmMain.nrousr.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
                                     </span>
                                 </div>
                             </div>
@@ -225,7 +242,7 @@
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon" title="Suite"><i class="fa fa-suitcase fa-fw"></i></span>
-                                        <select class="form-control" name="suite" ng-change="CargarModulosBySuite(formData)" ng-model="formData.suite" ng-options="suite.idSuite as suite.Nombre for suite in suites | orderBy:Nombre">
+                                        <select class="form-control" ng-model="formData.suite" ng-change="CargarModulosBySuite(formData.suite)" ng-options="suite.idSuite as suite.Nombre for suite in suites | orderBy:Nombre">
                                             <option value="">-- Suite --</option> 
                                         </select>
                                     </div>
@@ -259,6 +276,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <span class="error_ingreso" ng-show="msgSeleccionSuite != ''">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgSeleccionSuite}}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +314,7 @@
 
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && rutok && SaveCliente(formData)" ng-disabled="!increate">
-                                <span class="fa fa-check" ng-show="increate"></span>
+                                <span class="fa fa-pencil-square-o" ng-show="increate"></span>
                                 <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                             </button>
                         </div>
@@ -442,10 +462,28 @@
                     <h4 class="modal-title">Confirmar No Vigencia</h4>
                 </div>
                 <div class="modal-body">
-                    ¿Está seguro que desea dejar al cliente como <b>No Vigente</b>?
+                    ¿Confirma que desea dejar <b>No Vigente</b> al cliente?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar('C')">Confirmar</button>
+                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('C')">Confirmar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="vigente-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmar Vigencia</h4>
+                </div>
+                <div class="modal-body">
+                    ¿Confirma que desea dejar <b>Vigente</b> al cliente?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('V')">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

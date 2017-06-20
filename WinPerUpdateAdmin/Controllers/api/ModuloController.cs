@@ -129,7 +129,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                         var r = ProcessMsg.ComponenteModulo.AddComponentesModulos(componentesModulos);
                         if (int.Parse(r[0].ToString()) == 0)
                         {
-                            log += "\nComponentes sincronizados con exito!";
+                            log += "\nComponentes sincronizados con éxito!";
                             return log;
                         }
                         log += "\nERROR SQL: " + r[1] + "(" + r[0] + ")";
@@ -180,6 +180,32 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
+
+        [Route("api/Modulo/{idModulo:int}/{Tipo:int}/Componente")]
+        [HttpGet]
+        public Object GetComponenteModulo(int idModulo, int Tipo, string Comp)
+        {
+            try
+            {
+                var compMod = ProcessMsg.ComponenteModulo.GetComponentesModulos(idModulo).Exists(x => x.Nombre.Equals(Comp));
+
+                var tipoComp = ProcessMsg.ComponenteModulo.GetTipoComponentes().SingleOrDefault(x => x.idTipoComponentes == Tipo);
+                var eq = tipoComp.Extensiones.Contains(new FileInfo(Comp).Extension);
+
+                if (!compMod && eq)
+                {
+                    return Content(HttpStatusCode.OK, true);
+                }
+
+                return Content(HttpStatusCode.OK, false);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
 
         [Route("api/Modulo/{idModulo:int}")]
         [HttpGet]
@@ -276,9 +302,9 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", dir, nombreComp);
-
-                return Content(HttpStatusCode.OK, File.Exists(path));
+                var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", dir.Trim(), nombreComp.Trim());
+                var exist = File.Exists(path);
+                return Content(HttpStatusCode.OK, exist);
             }
             catch (Exception ex)
             {
@@ -309,6 +335,10 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                if (dm == null)
+                {
+                    return false;
+                }
                 var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", dm.Directorio);
                 return Directory.Exists(path);
             }

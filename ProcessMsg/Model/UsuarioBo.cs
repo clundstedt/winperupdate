@@ -25,7 +25,7 @@ namespace ProcessMsg.Model
             get
             {
                 if (EstUsr == 'V') return "Vigente";
-                if (EstUsr == 'C') return "Caduco";
+                if (EstUsr == 'C') return "No Vigente";
                 return "";
             }
         }

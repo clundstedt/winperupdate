@@ -10,6 +10,7 @@
         // 3rd Party Modules
         , 'smart-table'
         , 'ui.select'
+        , 'smart-pagination'
     ])
 
     .config(function ($routeProvider) {

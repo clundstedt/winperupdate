@@ -35,7 +35,7 @@ namespace WinPerUpdateAdmin
                               "~/Scripts/angular.min.js"
                             , "~/Scripts/angular-route.min.js"
                             , "~/Scripts/select.js"
-                            , "~/Scripts/site.js"
+                            , "~/Scripts/site.js"//, "~/Scripts/smart-table.min.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
@@ -48,7 +48,10 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
                         "~/Scripts/angular-file-upload.min.js"
-                      , "~/Scripts/smart-table.min.js"
+                      //, "~/Scripts/smart-table.min.js"
+                      , "~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
                       , "~/js/Version/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
@@ -92,7 +95,10 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/clientes").Include(
-                       "~/Scripts/smart-table.min.js"
+                       //"~/Scripts/smart-table.min.js"
+                        "~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
                       , "~/js/Clientes/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
@@ -114,7 +120,10 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/modulos").Include(
                         "~/Scripts/angular-file-upload.min.js"
-                      , "~/Scripts/smart-table.min.js"
+                      //, "~/Scripts/smart-table.min.js"
+                      , "~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
                       , "~/js/Modulos/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
@@ -141,7 +150,10 @@ namespace WinPerUpdateAdmin
                       ));
             bundles.Add(new ScriptBundle("~/bundles/descargas").Include(
                         "~/Scripts/angular-file-upload.min.js"
-                        , "~/Scripts/smart-table.min.js"
+                        //, "~/Scripts/smart-table.min.js"
+                        , "~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
                         , "~/js/Descargas/app.js"
                         , "~/js/Home/controllerHome.js"
                         , "~/js/Home/factoryHome.js"

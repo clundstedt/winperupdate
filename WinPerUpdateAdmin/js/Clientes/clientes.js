@@ -20,6 +20,8 @@
             $scope.msgError = "";
             $scope.msgSuccess = "";
 
+            $scope.msgSeleccionSuite = "";
+
             $scope.modulosWinper = [];
             $scope.idCliente = 0;
             $scope.titulo = "Crear Cliente";
@@ -75,7 +77,7 @@
             }
 
             $scope.GenCantUserPerm = function (data) {
-                while (!angular.isUndefined(data) && data.length < 4) {
+                while (!angular.isUndefined(data) && data.length < 3) {
                     data = "0" + data;
                 }
                 return data;
@@ -83,13 +85,15 @@
 
 
             //se debe llamar una vez que se seleccione una suite y hay que hacer la busqueda por de modulo by suite
-            $scope.CargarModulosBySuite = function (formData) {
-                serviceClientes.getModulosBySuite(formData.suite).success(function (modulos) {
-                    $scope.modulosWinper = modulos;
-                    $scope.msgError = "";
-                }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                });
+            $scope.CargarModulosBySuite = function (suite) {
+                if (!(suite === null)) {
+                    serviceClientes.getModulosBySuite(suite).success(function (modulos) {
+                        $scope.modulosWinper = modulos;
+                        $scope.msgError = "";
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    });
+                }
             }
             
             $scope.SeleccionarTodosModulos = function () {
@@ -102,14 +106,18 @@
             }
 
             $scope.LimpiarSeleccionados = function (formData) {
-                $scope.tmpModulos = [];
-                for (var i = 0; i < $scope.formData.modulos.length; i++) {
-                    if($scope.formData.modulos[i].Suite != formData.suite){
-                        $scope.tmpModulos.push($scope.formData.modulos[i]);
+                $scope.msgSeleccionSuite = "";
+                if (!angular.isUndefined(formData.suite) && !(formData.suite === null)) {
+                    $scope.tmpModulos = [];
+                    for (var i = 0; i < $scope.formData.modulos.length; i++) {
+                        if ($scope.formData.modulos[i].Suite != formData.suite) {
+                            $scope.tmpModulos.push($scope.formData.modulos[i]);
+                        }
                     }
+                    $scope.formData.modulos = $scope.tmpModulos;
+                } else {
+                    $scope.msgSeleccionSuite = "Debe seleccionar una suite.";
                 }
-                $scope.formData.modulos = $scope.tmpModulos;
-               
             }
 
             $scope.isSelected = function (idModulo) {
@@ -204,6 +212,10 @@
                 $("#delete-modal").modal('show');
             }
 
+            $scope.ShowConfirmVigente = function () {
+                $("#vigente-modal").modal('show');
+            }
+
             $scope.ValidarRut = function (formData) {
                 var _value = formData.rut;
                 if (_value.length < 2) return;
@@ -230,7 +242,6 @@
                 $scope.increate = false;
                 $scope.labelcreate = "Enviando";
                 $scope.msgSuccess = "";
-
                 if ($scope.idCliente == 0) {
                     serviceClientes.addCliente(arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
                         $scope.increate = true;
@@ -240,6 +251,7 @@
                             $scope.CargarModulosCliente(data.Id);
                             $scope.msgError = "";
                             $scope.msgSuccess = "Cliente creado exitosamente!.";
+                            $('#msgsuccess').focus();
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
@@ -255,6 +267,7 @@
                             $scope.CargarModulosCliente($scope.idCliente);
                             $scope.msgError = "";
                             $scope.msgSuccess = "Cliente modificado exitosamente!.";
+                            $('#msgsuccess').focus();
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
@@ -279,7 +292,8 @@
                 serviceClientes.delCliente($scope.idCliente, est).success(function (data) {
                     $scope.formData.estado = est;
                     $scope.msgError = "";
-                    $scope.msgSuccess = "Cambio realizado exitosamente!.";
+                    $scope.msgSuccess = "Cambios realizados exitosamente!.";
+                    $('#msgsuccess').focus();
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -299,6 +313,17 @@
             }
 
             $scope.GenCorrelativo = function () {
+                if ($scope.formData.mescon == "01") {
+                    $scope.formData.mesini = $scope.mesesInicioMantencion[$scope.mesesInicioMantencion.length - 1].valor;
+                } else {
+                    for (var i = 0; i < $scope.mesesInicioMantencion.length; i++) {
+                        if ($scope.formData.mescon == $scope.mesesInicioMantencion[i].valor) {
+                            $scope.formData.mesini = $scope.mesesInicioMantencion[i - 1].valor;
+                        }
+                    }
+                }
+                
+
                 if (!(typeof $scope.formData.mescon === "undefined") && !(typeof $scope.formData.folio === "undefined"))
                 {
                     serviceClientes.GenCorrelativo($scope.formData.folio, $scope.formData.mescon).success(function (data) {

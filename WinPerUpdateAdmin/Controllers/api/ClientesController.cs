@@ -171,8 +171,9 @@ namespace WinPerUpdateAdmin.Controllers.api
                     document.Add(rutPdf);
                     #endregion
                     #region Fecha Generacion
+                    var fechaCreacion = new FileInfo(pdf).CreationTime.ToLongDateString();
                     var fechaGeneracion = new Paragraph(
-                            new Chunk(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(new FileInfo(pdf).CreationTime.ToLongDateString()),
+                            new Chunk(fechaCreacion.ElementAt(0).ToString().ToUpper()+ fechaCreacion.Substring(1, fechaCreacion.Length-1),
                             FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.ITALIC)));
                     fechaGeneracion.Alignment = Element.ALIGN_CENTER;
                     document.Add(fechaGeneracion);
@@ -273,8 +274,9 @@ namespace WinPerUpdateAdmin.Controllers.api
                 document.Add(tituloPdf);
                 #endregion
                 #region Fecha Generacion
+                var fechaCreacion = new FileInfo(pdf).CreationTime.ToLongDateString();
                 var fechaGeneracion = new Paragraph(
-                        new Chunk(new FileInfo(pdf).CreationTime.ToLongDateString(),
+                        new Chunk(fechaCreacion.ElementAt(0).ToString().ToUpper() + fechaCreacion.Substring(1, fechaCreacion.Length - 1),
                         FontFactory.GetFont("ARIAL", 14, iTextSharp.text.Font.ITALIC)));
                 fechaGeneracion.Alignment = Element.ALIGN_CENTER;
                 document.Add(fechaGeneracion);

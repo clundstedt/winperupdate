@@ -10,6 +10,7 @@
         // 3rd Party Modules
         , 'smart-table'
         , 'angularFileUpload'
+        , 'smart-pagination'
         
     ]).config(function ($routeProvider) {
         $routeProvider.

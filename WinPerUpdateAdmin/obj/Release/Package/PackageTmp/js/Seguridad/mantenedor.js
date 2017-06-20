@@ -108,7 +108,7 @@
 
                         $scope.formData.estado = estado;
                         $scope.msgError = "";
-                        $scope.saveUser = "Cambios realizados exitosamente.";
+                        $scope.saveUser = "Cambios realizados exitosamente!.";
                     }).error(function (err) {
                         console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });

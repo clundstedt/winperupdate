@@ -14,6 +14,7 @@
 
         function activate() {
             $scope.msgError = "";
+            $scope.msgSuccess = "";
 
             console.log(JSON.stringify($routeParams));
             $scope.idVersion = $routeParams.idVersion;
@@ -63,17 +64,20 @@
             
 
             $scope.titulo = 'Editar Componente';
-            $scope.labelcreate = 'Guardar';
+            $scope.labelcreate = 'Modificar';
             $scope.increate = true;
 
             $scope.SaveVersion = function (formData) {
-                $scope.labelcreate = 'Guardando';
+                $scope.msgSuccess = "";
+                $scope.labelcreate = 'Modificando';
                 $scope.increate = false;
                 console.log(JSON.stringify($scope.formData));
                 serviceAdmin.updComponente($scope.idVersion, $scope.namecomponente, formData.modulo, formData.comentario).success(function () {
-                    $scope.labelcreate = 'Guardar';
+                    $scope.labelcreate = 'Modificar';
                     $scope.increate = true;
                     $scope.msgError = "";
+                    $scope.msgSuccess = "Componente modificado exitosamente!.";
+                    $('#msgsuccess').focus();
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -89,7 +93,7 @@
 
                     $window.setTimeout(function () {
                         $window.location.href = "/Admin#/EditVersion/" + $scope.idVersion;
-                    }, 2000);
+                    }, 3000);
                     $scope.msgError = "";
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";

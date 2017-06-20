@@ -13,6 +13,7 @@
         activate();
 
         function activate() {
+            $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
             $scope.msgError = "";
             $scope.msgSuccess = "";
 

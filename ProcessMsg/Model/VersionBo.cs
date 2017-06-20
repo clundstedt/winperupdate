@@ -37,7 +37,7 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return Estado == 'P' ? "Publicada" : Estado == 'N' ? "Nueva" : "Caduca";
+                return Estado == 'P' ? "Publicada" : Estado == 'N' ? "Nueva" : "No Vigente";
             }
         }
     }

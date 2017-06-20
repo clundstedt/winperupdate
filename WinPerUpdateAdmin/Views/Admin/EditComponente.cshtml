@@ -1,21 +1,29 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles de la Componente</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/Admin#/">Versiones</a></li>
-            <li><a href="/Admin#/EditVersion/{{idVersion}}">Version {{version.Release}}</a></li>
-            <li class="active">{{namecomponente}}</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles de la Componente</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Admin#/">Versiones</a></li>
+                <li><a href="/Admin#/EditVersion/{{idVersion}}">Version {{version.Release}}</a></li>
+                <li class="active">{{namecomponente}}</li>
+            </ol>
         </div>
     </div>
-</div>
-<div class="container">
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="alert alert-success" id="msgsuccess" tabindex="1" ng-show="msgSuccess != ''">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
@@ -77,7 +85,7 @@
                         <hr />
 
                         <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && SaveVersion(formData)" ng-disabled="!increate">
-                            <span class="fa fa-check" ng-show="increate"></span>
+                            <span class="fa fa-pencil-square-o" ng-show="increate"></span>
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                         </button>
                     </form>
@@ -107,10 +115,10 @@
                     <h4 class="modal-title">Confirmar Eliminación</h4>
                 </div>
                 <div class="modal-body">
-                    Confirma que desea eliminar la Componente ?
+                    ¿Confirma que desea eliminar el Componente ?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
+                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar()">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

@@ -15,6 +15,9 @@
 
             $scope.msgError = "";
 
+            $scope.msgErrorManComp = "";
+            $scope.lblBtnCrearTipoComp = "Crear Tipo de Componente";
+
             $scope.title = 'modulos';
             $scope.formData = {};
             $scope.formComp = {};
@@ -148,23 +151,33 @@
             }
             
             $scope.CrearComponentesModulos = function (formComp) {
+                $scope.msgErrorManComp = "";
                 serviceModulos.getExisteComponenteEnDir(formComp.nombre, $scope.Modulo.Directorio).success(function (exist) {
+                    console.log(exist);
                     if (exist) {
-                        serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
-                            $scope.CargarComponentesModulos();
-                            $("#mancom-modal").modal('toggle');
-                            $scope.msgError = "";
-                            $scope.tipoalert = "success";
-                            $scope.msgalert = "Componente creado exitosamente!.";
-                            $timeout(function () {
-                                $scope.tipoalert = "";
-                            }, 10000);
+                        serviceModulos.getComponenteModulo($scope.idModulo, formComp.nombre, formComp.tipocomponente).success(function (existComp) {
+                            if (existComp) {
+                                serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
+                                    $scope.CargarComponentesModulos();
+                                    $("#mancom-modal").modal('toggle');
+                                    $scope.msgError = "";
+                                    $timeout(function () {
+                                        $scope.tipoalert = "success";
+                                        $scope.msgalert = "Componente creado exitosamente!.";
+                                        $('#tipoalert').focus();
+                                    }, 3000);
+                                    
+                                }).error(function (err) {
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                                });
+                            } else {
+                                $scope.msgErrorManComp = "El componente ya existe en el módulo o no corresponde al tipo.";
+                            }
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     } else {
-                        $scope.msgError = "El componente no existe en el directorio del módulo!.";
-                        $("#mancom-modal").modal('hide');
+                        $scope.msgErrorManComp = "El componente no existe en el directorio del módulo.";
                     }
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
@@ -172,13 +185,34 @@
             }
 
             $scope.ModificarComponentesModulos = function (componenteModulo) {
-                componenteModulo.LblModificar = "Modificando...";
-                serviceModulos.updComponentesModulos(componenteModulo.idComponentesModulos, componenteModulo.Nombre, componenteModulo.Descripcion, componenteModulo.TipoComponentes.idTipoComponentes).success(function (data) {
-                    componenteModulo.LblModificar = "Modificado!";
-                    $timeout(function () {
-                        componenteModulo.LblModificar = "Modificar";
-                    }, 3000);
-                    $scope.msgError = "";
+                $scope.msgErrorManComp = "";
+                serviceModulos.getExisteComponenteEnDir(componenteModulo.Nombre, $scope.Modulo.Directorio).success(function (exist) {
+                    if (exist) {
+                        serviceModulos.getComponenteModulo($scope.idModulo, componenteModulo.Nombre, componenteModulo.TipoComponentes.idTipoComponentes).success(function (existComp) {
+                            if (!existComp) {
+                                componenteModulo.LblModificar = "Modificando...";
+                                serviceModulos.updComponentesModulos(componenteModulo.idComponentesModulos, componenteModulo.Nombre, componenteModulo.Descripcion, componenteModulo.TipoComponentes.idTipoComponentes).success(function (data) {
+                                    componenteModulo.LblModificar = "Modificado!";
+                                    $timeout(function () {
+                                        componenteModulo.LblModificar = "Modificar";
+                                    }, 3000);
+                                    $scope.msgError = "";
+                                }).error(function (err) {
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                                });
+                            } else {
+                                $scope.tipoalert = "danger";
+                                $scope.msgalert = "El componente ya existe en el módulo o no corresponde al tipo.";
+                                $('#tipoalert').focus();
+                            }
+                        }).error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        });
+                    } else {
+                        $scope.tipoalert = "danger";
+                        $scope.msgalert = "El componente no existe en el directorio del módulo.";
+                        $('#tipoalert').focus();
+                    }
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -192,11 +226,8 @@
                     formTipoComp.iscompbd = false;
                     formTipoComp.iscompdll = false;
                     $scope.msgError = "";
-                    $scope.tipoalert = "success";
-                    $scope.msgalert = "Tipo de componente creado exitosamente!.";
-                    $timeout(function () {
-                        $scope.tipoalert = "";
-                    }, 10000);
+                    $scope.lblBtnCrearTipoComp = "Creado!";
+                    $timeout(function () { $scope.lblBtnCrearTipoComp = "Crear Tipo de Componente"; }, 3000);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -291,22 +322,28 @@
                 });
             }
 
-            $scope.Accion = function (formData) {
-                serviceModulos.ExistDirModulo(formData.directorio).success(function (data) {
-                    if (data) {
-                        if ($scope.accion == "Crear") {
-                            $scope.Crear(formData);
-                        } else if ($scope.accion == "Modificar") {
-                            $scope.Modificar(formData);
+            $scope.Accion = function (formData, valid) {
+                if (valid) {
+                    serviceModulos.ExistDirModulo(formData.directorio).success(function (data) {
+                        if (data) {
+                            if ($scope.accion == "Crear") {
+                                $scope.Crear(formData);
+                            } else if ($scope.accion == "Modificar") {
+                                $scope.Modificar(formData);
+                            }
+                        } else {
+                            $scope.lblAvisoWinper = "El directorio del módulo no existe.";
+                            $("#aviso-modal").modal('show');
                         }
-                    } else {
-                        $scope.lblAvisoWinper = "El directorio del módulo no existe.";
-                        $("#aviso-modal").modal('show');
-                    }
-                    $scope.msgError = "";
-                }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                });
+                        $scope.msgError = "";
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    });
+                } else {
+                    $scope.tipoalert = "warning";
+                    $scope.msgalert = "Advertencia: Hay problemas con algunos campos, verifique los datos e intente nuevamente.";
+                    $('#tipoalert').focus();
+                }
             }
 
             $scope.Crear = function (formData) {
@@ -320,16 +357,11 @@
                     $scope.msgError = "";
                     $scope.Modulo = data;
                     $scope.loading = false;
+                    $('#tipoalert').focus();
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    $scope.tipoalert = "danger";
-                    $scope.msgalert = "Ocurrió un error durante el proceso de creación del módulo, vuelva a intentarlo.";
                     $scope.loading = false;
                 });
-                
-                $timeout(function () {
-                    $scope.tipoalert = "";
-                }, 10000);
             }
 
             $scope.Modificar = function (formData) {
@@ -339,53 +371,41 @@
                     $scope.msgalert = "Módulo modificado exitosamente!.";
                     $scope.msgError = "";
                     $scope.Modulo = data;
+                    $('#tipoalert').focus();
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    $scope.tipoalert = "danger";
-                    $scope.msgalert="Ocurrió un error durante el proceso de modificación, vuelva a intentarlo."
                 });
                 $scope.loading = false;
-                $timeout(function () {
-                    $scope.tipoalert = "";
-                }, 10000);
             }
 
             $scope.Eliminar = function () {
                 $scope.loading = true;
                 serviceModulos.delModulo($scope.idModulo).success(function (data) {
                     $scope.tipoalert = "success";
-                    $scope.msgalert = "Módulo fue caducado con exito!.";
+                    $scope.msgalert = "Cambios realizados exitosamente!.";
+                    $('#tipoalert').focus();
                     $scope.formData.estado = 'C';
                     $scope.msgError = "";
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    $scope.tipoalert = "danger";
-                    $scope.msgalert = "Ocurrió un error durante el proceso de caducación del modulo, vuelva a intentarlo.";
                 });
                 $("#confelim-modal").modal('toggle');
                 $scope.loading = false;
-                $timeout(function () {
-                    $scope.tipoalert = "";
-                }, 10000);
             }
 
             $scope.Vigente = function () {
                 $scope.loading = true;
                 serviceModulos.setVigente($scope.idModulo).success(function (data) {
                     $scope.tipoalert = "success";
-                    $scope.msgalert = "Módulo establecido como vigente exitosamente!.";
+                    $scope.msgalert = "Cambios realizados exitosamente!.";
                     $scope.formData.estado = 'V';
                     $scope.msgError = "";
+                    $('#tipoalert').focus();
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    $scope.tipoalert = "danger";
-                    $scope.msgalert = "Ocurrió un error durante el proceso, vuelva a intentarlo.";
                 });
                 $("#confvigen-modal").modal('toggle');
                 $scope.loading = false;
-                $timeout(function () {
-                    $scope.tipoalert = "";
-                }, 10000);
             }
 
             $scope.CreandoComponentes = function () {
@@ -415,9 +435,9 @@
             }
 
             $scope.ModificarTipoComponente = function (formTipoComp) {
-                if ($scope.lblModificarTipoComponente != "OK!") {
+                if ($scope.lblModificarTipoComponente != "Modificado!") {
                     serviceModulos.updTipoComponente($scope.ModificarTipo, formTipoComp.nombre, formTipoComp.extensiones, formTipoComp.iscompbd, formTipoComp.iscompdll).success(function (data) {
-                        $scope.lblModificarTipoComponente = "OK!";
+                        $scope.lblModificarTipoComponente = "Modificado!";
                         $scope.CargarTipoComponentes();
                         $timeout(function () {
                             $scope.lblModificarTipoComponente = "Modificar";

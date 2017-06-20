@@ -19,7 +19,7 @@
     </div>
     <div class="row" ng-show="msgSuccess != ''">
         <div class="col-md-12">
-            <div class="alert alert-success">
+            <div class="alert alert-success" id="msgsuccess" tabindex="1">
                 {{msgSuccess}}
             </div>
         </div>
@@ -40,12 +40,12 @@
                     </button>
 
 
-                    <button ng-click="UpdateEstado('C')" class="btn btn-danger" ng-hide="idversion==0 || formData.estado=='C'">
-                        <span class="fa fa-fw fa-trash-o"></span> Caducar
+                    <button data-target="#confirma-cambio" data-toggle="modal" class="btn btn-danger" ng-hide="idversion==0 || formData.estado=='C'">
+                        <span class="fa fa-ban"></span> Dejar No Vigente
                     </button>
 
-                    <button ng-click="UpdateEstado('P')" class="btn btn-success" ng-hide="idversion==0 || formData.estado == 'N' || formData.estado=='P'">
-                        <span class="fa fa-fw fa-bullhorn"></span> Vigente
+                    <button data-target="#confirma-cambio" data-toggle="modal" class="btn btn-success" ng-hide="idversion==0 || formData.estado == 'N' || formData.estado=='P'">
+                        <span class="fa fa-check-square-o"></span> Dejar Vigente
                     </button>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                         <div class="form-group">
                             <div class="input-group date" id='datepicker'>
                                 <span class="input-group-addon" title="Fecha"><i class="fa fa-calendar-o fa-fw"></i></span>
-                                <input class="form-control" id="fecha" type="text" name="fecha" placeholder="fecha" ng-model="formData.fecha" required="required" ng-maxlength="10">
+                                <input class="form-control" id="fecha" type="text" name="fecha" placeholder="Fecha de Liberación" ng-model="formData.fecha" required="required" ng-maxlength="10">
                             </div>
                             <span class="error_ingreso" ng-show="frmMain.fecha.$error.required && frmMain.fecha.$touched">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
@@ -131,7 +131,7 @@
                         <hr />
 
                         <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && SaveVersion(formData)" ng-disabled="!increate">
-                            <span class="fa fa-check" ng-show="increate"></span>
+                            <span class="fa fa-pencil-square-o" ng-show="increate"></span>
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                         </button>
                     </form>
@@ -365,6 +365,26 @@
     </div>
 </div>
 
+<div id="confirma-cambio" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmar Vigencia</h4>
+            </div>
+            <div class="modal-body">
+                <p ng-hide="formData.estado=='C'">¿Confirma que desea dejar <b>No Vigente</b> la versión?</p>
+                <p ng-hide="formData.estado == 'N' || formData.estado=='P'">¿Confirma que desea dejar <b>Vigente</b> la versión?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="UpdateEstado('C')" class="btn btn-success" ng-hide="formData.estado=='C'">Confirmar</button>
+                <button type="button" ng-click="UpdateEstado('P')" class="btn btn-success" ng-hide="formData.estado == 'N' || formData.estado=='P'">Confirmar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <input type="hidden" id="Version" value="{{idversion}}" />
 
 <script type="text/javascript">
