@@ -591,6 +591,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    cliente.Estado = 'V';
                     var obj = ProcessMsg.Cliente.Add(cliente);
                     if (obj == null)
                     {

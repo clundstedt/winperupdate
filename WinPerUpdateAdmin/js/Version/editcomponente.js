@@ -77,7 +77,7 @@
                     $scope.increate = true;
                     $scope.msgError = "";
                     $scope.msgSuccess = "Componente modificado exitosamente!.";
-                    $('#msgsuccess').focus();
+                    window.scrollTo(0,0);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });

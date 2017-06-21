@@ -244,7 +244,7 @@
                     $scope.msgSuccess = "Cambios realizados exitosamente!.";
                     $("#confirma-cambio").modal('toggle');
                     $timeout(function () {
-                        $('#msgsuccess').focus();
+                        window.scrollTo(0,0);
                     },3000);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
@@ -257,7 +257,7 @@
                 if ($scope.idversion == 0) {
                     serviceAdmin.addVersion(formData.release, formData.fecha, 'N', formData.comentario, '').success(function (data) {
                         $scope.msgSuccess = "Versión creada exitosamente!.";
-                        $('#msgsuccess').focus();
+                        window.scrollTo(0,0);
                         $scope.msgError = "";
                         $timeout(function () {
                             $window.location.href = "/Admin#/EditVersion/" + data.IdVersion;
@@ -271,7 +271,7 @@
                         $scope.idversion = data.IdVersion;
                         $scope.msgError = "";
                         $scope.msgSuccess = "Versión modificada exitosamente!.";
-                        $('#msgsuccess').focus();
+                        window.scrollTo(0,0);
                     }).error(function (err) {
                         console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });

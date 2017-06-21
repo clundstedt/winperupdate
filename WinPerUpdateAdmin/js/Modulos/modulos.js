@@ -164,7 +164,7 @@
                                     $timeout(function () {
                                         $scope.tipoalert = "success";
                                         $scope.msgalert = "Componente creado exitosamente!.";
-                                        $('#tipoalert').focus();
+                                        window.scrollTo(0,0);
                                     }, 3000);
                                     
                                 }).error(function (err) {
@@ -203,7 +203,7 @@
                             } else {
                                 $scope.tipoalert = "danger";
                                 $scope.msgalert = "El componente ya existe en el módulo o no corresponde al tipo.";
-                                $('#tipoalert').focus();
+                                window.scrollTo(0,0);
                             }
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
@@ -211,7 +211,7 @@
                     } else {
                         $scope.tipoalert = "danger";
                         $scope.msgalert = "El componente no existe en el directorio del módulo.";
-                        $('#tipoalert').focus();
+                        window.scrollTo(0,0);
                     }
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
@@ -342,7 +342,7 @@
                 } else {
                     $scope.tipoalert = "warning";
                     $scope.msgalert = "Advertencia: Hay problemas con algunos campos, verifique los datos e intente nuevamente.";
-                    $('#tipoalert').focus();
+                    window.scrollTo(0,0);
                 }
             }
 
@@ -357,7 +357,7 @@
                     $scope.msgError = "";
                     $scope.Modulo = data;
                     $scope.loading = false;
-                    $('#tipoalert').focus();
+                    $('#msgsuccess').focus();
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     $scope.loading = false;
@@ -371,7 +371,7 @@
                     $scope.msgalert = "Módulo modificado exitosamente!.";
                     $scope.msgError = "";
                     $scope.Modulo = data;
-                    $('#tipoalert').focus();
+                    window.scrollTo(0,0);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -383,7 +383,7 @@
                 serviceModulos.delModulo($scope.idModulo).success(function (data) {
                     $scope.tipoalert = "success";
                     $scope.msgalert = "Cambios realizados exitosamente!.";
-                    $('#tipoalert').focus();
+                    window.scrollTo(0,0);
                     $scope.formData.estado = 'C';
                     $scope.msgError = "";
                 }).error(function (err) {
@@ -400,7 +400,7 @@
                     $scope.msgalert = "Cambios realizados exitosamente!.";
                     $scope.formData.estado = 'V';
                     $scope.msgError = "";
-                    $('#tipoalert').focus();
+                    window.scrollTo(0,0);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });

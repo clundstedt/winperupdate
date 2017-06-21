@@ -97,6 +97,7 @@
             }
             
             $scope.SeleccionarTodosModulos = function () {
+                $scope.msgSeleccionSuite = "";
                 for (var i = 0; i < $scope.modulosWinper.length; i++) {
                     if (!$scope.isSelected($scope.modulosWinper[i].idModulo)) {
                         $scope.formData.modulos.push($scope.modulosWinper[i]);
@@ -113,6 +114,10 @@
                         if ($scope.formData.modulos[i].Suite != formData.suite) {
                             $scope.tmpModulos.push($scope.formData.modulos[i]);
                         }
+                    }
+                    console.log($scope.tmpModulos.length);
+                    if ($scope.tmpModulos.length == $scope.formData.modulos.length) {
+                        $scope.msgSeleccionSuite = "No hay módulos en la suite seleccionada.";
                     }
                     $scope.formData.modulos = $scope.tmpModulos;
                 } else {
@@ -251,7 +256,7 @@
                             $scope.CargarModulosCliente(data.Id);
                             $scope.msgError = "";
                             $scope.msgSuccess = "Cliente creado exitosamente!.";
-                            $('#msgsuccess').focus();
+                            window.scrollTo(0,0);
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
@@ -267,7 +272,7 @@
                             $scope.CargarModulosCliente($scope.idCliente);
                             $scope.msgError = "";
                             $scope.msgSuccess = "Cliente modificado exitosamente!.";
-                            $('#msgsuccess').focus();
+                            window.scrollTo(0,0);
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
@@ -293,7 +298,7 @@
                     $scope.formData.estado = est;
                     $scope.msgError = "";
                     $scope.msgSuccess = "Cambios realizados exitosamente!.";
-                    $('#msgsuccess').focus();
+                    window.scrollTo(0,0);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
