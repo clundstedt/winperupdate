@@ -55,8 +55,7 @@ namespace MiPrimerAPP.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
-
+        
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/{NameFile}/Ambientes")]
         [HttpGet]
         public Object GetAmbientesNoEx(int idCliente, int idVersion, string NameFile)

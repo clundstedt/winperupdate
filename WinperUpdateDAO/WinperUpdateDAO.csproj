@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddAmbiente.cs" />
+    <Compile Include="AddBitacora.cs" />
     <Compile Include="AddCliente.cs" />
     <Compile Include="AddComponente.cs" />
     <Compile Include="AddComponenteModulo.cs" />
+    <Compile Include="AddControlCambios.cs" />
     <Compile Include="AddModulo.cs" />
     <Compile Include="AddModuloVersion.cs" />
     <Compile Include="AddPersona.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="AddVersionCliente.cs" />
     <Compile Include="AddVersionToAmbiente.cs" />
     <Compile Include="CnaAmbientes.cs" />
+    <Compile Include="CnaBitacora.cs" />
     <Compile Include="CnaClienteByNroLicencia.cs" />
     <Compile Include="CnaClientes.cs" />
     <Compile Include="CnaClienteUsuario.cs" />
@@ -65,6 +68,7 @@
     <Compile Include="CnaComponenteModulo.cs" />
     <Compile Include="CnaComponentes.cs" />
     <Compile Include="CnaComuna.cs" />
+    <Compile Include="CnaControlCambios.cs" />
     <Compile Include="CnaModulo.cs" />
     <Compile Include="CnaModuloVersiones.cs" />
     <Compile Include="CnaPerfiles.cs" />
@@ -81,6 +85,7 @@
     <Compile Include="DelCliente.cs" />
     <Compile Include="DelComponente.cs" />
     <Compile Include="DelComponenteModulo.cs" />
+    <Compile Include="DelControlCambios.cs" />
     <Compile Include="DelModulo.cs" />
     <Compile Include="delUsuario.cs" />
     <Compile Include="DelVersion.cs" />
@@ -91,6 +96,7 @@
     <Compile Include="UpdCliente.cs" />
     <Compile Include="UpdComponente.cs" />
     <Compile Include="UpdComponenteModulo.cs" />
+    <Compile Include="UpdControlCambios.cs" />
     <Compile Include="UpdModulo.cs" />
     <Compile Include="UpdPersona.cs" />
     <Compile Include="UpdTareas.cs" />

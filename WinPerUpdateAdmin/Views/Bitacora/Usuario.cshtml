@@ -1,0 +1,104 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Bitácora Usuarios</h1>
+        </div>
+    </div>
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="msgSuccess != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success" id="msgsuccess" tabindex="1">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table st-table="dpBitacora" st-safe-src="registrosBitacora" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="7"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
+                                </tr>
+                                <tr>
+                                    <th>Datos de Registro</th>
+                                    <th>Fecha</th>
+                                    <th>Acción</th>
+                                    <th>Propiedad</th>
+                                    <th>Valor Anterior</th>
+                                    <th>Valor Nuevo</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="bitacora in dpBitacora">
+                                    <td>{{bitacora.Registro}}</td>
+                                    <td>{{bitacora.FechaFmt}}</td>
+                                    <td>{{bitacora.AccionFmt}}</td>
+                                    <td>{{bitacora.Campo}}</td>
+                                    <td>{{bitacora.VantFmt}}</td>
+                                    <td>{{bitacora.VnueFmt}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-default btn-xs" title="Visualizar datos del usuario que realizó esta acción.">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10" st-template="../../Scripts/smart-table/pagination.custom.html"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mdlInfoUser" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Información del Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-2">Nombre:</div>
+                    <div class="col-md-2">{{usuario.Persona.Nombres}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Apellido:</div>
+                    <div class="col-md-2">{{usuario.Persona.Apellidos}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Correo:</div>
+                    <div class="col-md-2">{{usuario.Persona.Mail}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Pefil:</div>
+                    <div class="col-md-2">{{usuario.NombrePerfil}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">Estado:</div>
+                    <div class="col-md-2">{{usuario.EstadoDisplay}}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

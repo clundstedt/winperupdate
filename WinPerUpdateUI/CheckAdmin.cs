@@ -48,5 +48,10 @@ namespace WinPerUpdateUI
                 Utils.RegistrarLog("CheckAdmin.log", ex.ToString());
             }
         }
+
+        private void CheckAdmin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

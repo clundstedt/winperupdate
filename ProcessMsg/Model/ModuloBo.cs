@@ -31,5 +31,38 @@ namespace ProcessMsg.Model
         }
         public int Suite { get; set; }
         public List<ComponenteModuloBo> ComponentesModulo { get; set; }
+
+        /// <summary>
+        /// Retorna información para el registro de la bitacora.
+        /// </summary>
+        /// <param name="accion">I: Insertado, D: Eliminado, U: Modificado y ?: Dato de Registro</param>
+        /// <returns></returns>
+        public string Bitacora(char accion)   
+        {
+            string str = "";
+            switch (accion)
+            {
+                case 'I':
+                    str = string.Format("{0} Insertado", NomModulo);
+                    break;
+                case 'D':
+                    str = string.Format("{0} Eliminado", NomModulo);
+                    break;
+                case 'U':
+                    str = string.Format(@"NomModulo={0}|Descripcion={1}|isCore={2}|Directorio={3}|Suite={4}"
+                                        , NomModulo
+                                        , Descripcion
+                                        , isCore
+                                        , Directorio
+                                        , Suite);
+                    break;
+                case '?':
+                    str = string.Format("{0}", NomModulo);
+                    break;
+                default:
+                    break;
+            }
+            return str;
+        }
     }
 }

@@ -25,7 +25,7 @@
             var promise = deferred.promise;
 
             $.ajax({
-                url: 'api/Cliente/'+idCliente+'/AmbientesXLSX',
+                url: '/api/Cliente/' + idCliente + '/AmbientesXLSX',
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {

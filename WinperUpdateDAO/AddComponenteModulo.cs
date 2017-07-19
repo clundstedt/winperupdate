@@ -48,22 +48,25 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
-        public int ExecuteTipoComponentes(string Nombre, bool isCompBD, bool isCompDLL, string Extensiones)
+        public int ExecuteTipoComponentes(string Nombre, bool isCompBD, bool isCompDLL, string Extensiones, bool isCompCambios)
         {
             SpName = @"INSERT INTO TipoComponentes (Nombre
                                                    ,isCompBD
                                                    ,isCompDLL
-                                                   ,Extensiones)
+                                                   ,Extensiones
+                                                   ,isCompCambios)
                                             VALUES (@Nombre
                                                    ,@isCompBD
                                                    ,@isCompDLL
-                                                   ,@Extensiones)";
+                                                   ,@Extensiones
+                                                   ,@isCompCambios)";
             try
             {
                 ParmsDictionary.Add("@Nombre", Nombre);
                 ParmsDictionary.Add("@isCompBD", isCompBD);
                 ParmsDictionary.Add("@isCompDLL", isCompDLL);
                 ParmsDictionary.Add("@Extensiones", Extensiones);
+                ParmsDictionary.Add("@isCompCambios", isCompCambios);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

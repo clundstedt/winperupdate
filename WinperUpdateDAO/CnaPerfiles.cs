@@ -15,7 +15,9 @@ namespace WinperUpdateDAO
                                     ON pm.CodPrf = p.CodPrf INNER JOIN Menus m
                                     ON pm.idMenus = m.idMenus INNER JOIN Usuarios u
                                     ON p.CodPrf = u.CodPrf
-                                 WHERE u.idUsuarios = @idUsuarios";
+                                 WHERE u.idUsuarios = @idUsuarios
+                                    AND m.Orden is not null
+                                ORDER BY m.Orden";
             try
             {
                 ParmsDictionary.Add("@idUsuarios", idUsuarios);

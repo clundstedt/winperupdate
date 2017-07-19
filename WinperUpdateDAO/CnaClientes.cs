@@ -9,6 +9,27 @@ namespace WinperUpdateDAO
 {
     public class CnaClientes : SpDao
     {
+        public SqlDataReader ExecuteByModulo(int idModulo)
+        {
+            try
+            {
+                SpName = @"SELECT c.* FROM Clientes c
+                                INNER JOIN Clientes_has_Modulos cm
+                                        ON c.idClientes = cm.idClientes
+                                INNER JOIN Modulos m
+                                        ON cm.idModulo = m.idModulo
+                                     WHERE m.Estado = 'V'
+                                       AND m.idModulo = @idModulo";
+                ParmsDictionary.Add("@idModulo", idModulo);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
         public new SqlDataReader Execute()
         {
             SpName = @"select * from Clientes";
@@ -27,7 +48,8 @@ namespace WinperUpdateDAO
             SpName = @"SELECT mw.* FROM Modulos mw 
                                               INNER JOIN Clientes_has_Modulos chm
                                                       ON chm.idModulo = mw.idModulo 
-                                                   WHERE chm.idClientes = @idCliente";
+                                                   WHERE chm.idClientes = @idCliente
+                                                ORDER BY chm.idModulo";
             try
             {
                 ParmsDictionary.Add("@idCliente", idCliente);
@@ -37,6 +59,22 @@ namespace WinperUpdateDAO
             catch(Exception ex)
             {
                 var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public SqlDataReader ExecuteNoVigencia(int idCliente)
+        {
+            try
+            {
+                SpName = @"SELECT * FROM Clientes_NoVigencia WHERE Cliente = @cliente ORDER BY Fecha DESC";
+                ParmsDictionary.Add("@cliente", idCliente);
+
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "{NombreFuncion}", ex.Message);
                 throw new Exception(msg, ex);
             }
         }

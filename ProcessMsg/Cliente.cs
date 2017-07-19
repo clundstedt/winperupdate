@@ -18,7 +18,73 @@ namespace ProcessMsg
         }
         #endregion
 
-        #region Metodos GETs
+        #region GETs
+
+        public static List<Model.ClienteNoVigenteBo> GetClienteNoVigente(int id)
+        {
+            try
+            {
+                List<Model.ClienteNoVigenteBo> lista = new List<Model.ClienteNoVigenteBo>();
+                var r = new CnaClientes().ExecuteNoVigencia(id);
+                while (r.Read())
+                {
+                    lista.Add(new Model.ClienteNoVigenteBo
+                    {
+                        Id = int.Parse(r["id"].ToString()),
+                        Fecha = Convert.ToDateTime(r["fecha"].ToString()),
+                        Motivo = r["motivo"].ToString(),
+                        Cliente = int.Parse(r["cliente"].ToString()),
+                        Usuario = int.Parse(r["usuario"].ToString()),
+                        UsuarioFmt = Seguridad.GetUsuario(int.Parse(r["usuario"].ToString()))
+                    });
+                }
+                r.Close();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static List<Model.ClienteBo> GetClientesByModulo(int idModulo)
+        {
+            try
+            {
+                List<Model.ClienteBo> lista = new List<Model.ClienteBo>();
+                var dr = new CnaClientes().ExecuteByModulo(idModulo);
+                while (dr.Read())
+                {
+                    lista.Add(new Model.ClienteBo
+                    {
+                        Id = int.Parse(dr["IdClientes"].ToString()),
+                        Rut = int.Parse(dr["Rut"].ToString()),
+                        Dv = dr["Dv"].ToString()[0],
+                        Nombre = dr["RazonSocial"].ToString(),
+                        Direccion = dr["Direccion"].ToString(),
+                        NroLicencia = dr["NroLicencia"].ToString(),
+                        Comuna = GetComunaById(int.Parse(dr["idCmn"].ToString())),
+                        NumFolio = int.Parse(dr["Folio"].ToString()),
+                        EstMtc = int.Parse(dr["EstMtc"].ToString()),
+                        Mesini = dr["MesIni"].ToString(),
+                        NroTrbc = dr["NroTrbc"].ToString(),
+                        NroTrbh = dr["NroTrbh"].ToString(),
+                        NroUsr = dr["NroUsr"].ToString(),
+                        MesCon = dr["MesCon"].ToString(),
+                        Correlativo = int.Parse(dr["Correlativo"].ToString()),
+                        Estado = char.Parse(dr["Estado"].ToString())
+                    });
+                }
+                dr.Close();
+                return lista;
+            }
+            catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static int GetCorrelativo(int folio, string mescon)
         {
             try
@@ -384,7 +450,7 @@ namespace ProcessMsg
 
             return lista;
         }
-
+        
         public static Model.ClienteBo GetClienteByLicencia(string nroLicencia, EventLog log)
         {
             var lista = new List<Model.ClienteBo>();
@@ -593,6 +659,18 @@ namespace ProcessMsg
             try
             {
                 return query.Execute(idUsuario, idCliente);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static int AddClienteNoVigente(DateTime fecha, string motivo, int cliente, int usuario)
+        {
+            try
+            {
+                return new AddCliente().ExecutNoVigencia(fecha, motivo, cliente, usuario);
             }
             catch (Exception ex)
             {

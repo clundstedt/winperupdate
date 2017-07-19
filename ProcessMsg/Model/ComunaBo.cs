@@ -13,5 +13,7 @@ namespace ProcessMsg.Model
         public string NomCmn { get; set; }
 
         public RegionBo Region { get; set; }
+
+
     }
 }

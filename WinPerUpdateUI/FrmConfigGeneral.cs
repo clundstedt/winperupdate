@@ -31,6 +31,14 @@ namespace WinPerUpdateUI
         {
             try
             {
+                /*var dr = new CheckSoporte().ShowDialog(this);
+                if (dr != DialogResult.Yes)
+                {
+                    MessageBox.Show("Soporte incorrecto. No se guardaron los cambios.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }*/
+
+
                 Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.Settings["server"].Value = TxtIpWUS.Text;
                 config.AppSettings.Settings["port"].Value = TxtPuertoWUS.Text;
@@ -42,7 +50,7 @@ namespace WinPerUpdateUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error durante el guardado, pruebe ejecutando WinperUpdate como Administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ocurrió un error durante el guardado, pruebe ejecutando WinAct como Administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Utils.RegistrarLog("ErrorConfigGen.log", ex.ToString());
             }
             

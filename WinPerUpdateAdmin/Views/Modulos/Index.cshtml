@@ -4,6 +4,17 @@
 }
 @Scripts.Render("~/bundles/modulos")
 <div ng-view></div>
+<div class="modalLoad"></div>
+<script>
+    $body = $("body");
+
+
+    $(document).ajaxStart(function () {
+        $body.addClass("loading");
+    }).ajaxStop(function () {
+        $body.removeClass("loading");
+    });
+</script>
 <input type="hidden" id="idToken" value="@Session["token"]" />
 
 

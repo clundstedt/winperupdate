@@ -11,7 +11,7 @@ namespace WinperUpdateDAO
     {
         public SqlDataReader ExecuteComponentesModulos()
         {
-            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones
+            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones, tc.isCompCambios
                                                       FROM ComponentesModulos cm
                                                 INNER JOIN TipoComponentes tc
                                                         ON cm.TipoComponentes = tc.idTipoComponentes";
@@ -27,7 +27,7 @@ namespace WinperUpdateDAO
         }
         public SqlDataReader ExecuteComponentesModulos(int idModulo)
         {
-            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones
+            SpName = @"SELECT cm.*, tc.Nombre as NombreTipo, tc.isCompBD, tc.isCompDLL, tc.Extensiones, tc.isCompCambios
                                                       FROM ComponentesModulos cm
                                                 INNER JOIN TipoComponentes tc
                                                         ON cm.TipoComponentes = tc.idTipoComponentes
@@ -77,14 +77,51 @@ namespace WinperUpdateDAO
 
         public SqlDataReader ExecuteConDirectorio()
         {
-            SpName = @"SELECT cm.*, m.directorio, m.NomModulo
-                                            FROM ComponentesModulos cm INNER JOIN Modulos m
-                                              ON cm.Modulos = m.idModulo";
+            SpName = @"SELECT cm.*, m.directorio, m.NomModulo FROM ComponentesModulos cm INNER JOIN Modulos m
+                                                                ON cm.Modulos = m.idModulo
+                                                             WHERE m.isCore = 1
+                                                               AND m.Estado = 'V'";
             try
             {
                 return Connector.ExecuteQuery(SpName, null);
             }
             catch(Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteConDirectorio", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public SqlDataReader ExecuteConDirectorio(int idComp)
+        {
+            SpName = @"SELECT cm.*, m.directorio, m.NomModulo
+                                            FROM ComponentesModulos cm INNER JOIN Modulos m
+                                              ON cm.Modulos = m.idModulo
+                                           WHERE cm.idComponentesModulos = @id";
+            try
+            {
+                ParmsDictionary.Add("@id", idComp);
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteConDirectorio", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public SqlDataReader ExecuteConDirectorioByModulo(int idModulo)
+        {
+            SpName = @"SELECT cm.*, m.directorio, m.NomModulo
+                                            FROM ComponentesModulos cm INNER JOIN Modulos m
+                                              ON cm.Modulos = m.idModulo
+                                           WHERE cm.Modulos = @id";
+            try
+            {
+                ParmsDictionary.Add("@id", idModulo);
+                return Connector.ExecuteQuery(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
             {
                 var msg = string.Format("Error al ejecutar {0}: {1}", "ExecuteConDirectorio", ex.Message);
                 throw new Exception(msg, ex);

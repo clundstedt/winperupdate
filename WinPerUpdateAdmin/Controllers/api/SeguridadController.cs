@@ -278,7 +278,8 @@ namespace WinPerUpdateAdmin.Controllers.api
                     }
                     else
                     {
-                        usuario.Persona.Id = persona.Id;
+                        usuario.Persona = persona;
+                        ProcessMsg.Bitacora.AddBitacora("Usuario", null, usuario.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), usuario.Bitacora('?'));
                         var obj = ProcessMsg.Seguridad.AddUsuario(usuario);
                         if (obj == null)
                         {
@@ -379,21 +380,26 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
-                    var persona = ProcessMsg.Seguridad.UpdPersona(usuario.Persona);
-                    if (persona == null)
+                    var userAnt = ProcessMsg.Seguridad.GetUsuario(id);
+                    if (userAnt != null)
                     {
-                        response.StatusCode = HttpStatusCode.Accepted;
-                    }
-                    else
-                    {
-                        usuario.Persona.Id = persona.Id;
-                        usuario.Id = id;
-                        var obj = ProcessMsg.Seguridad.UpdUsuario(usuario);
-                        if (obj == null)
+                        var persona = ProcessMsg.Seguridad.UpdPersona(usuario.Persona);
+                        if (persona == null)
                         {
                             response.StatusCode = HttpStatusCode.Accepted;
                         }
-                        return Content(response.StatusCode, obj);
+                        else
+                        {
+                            usuario.Persona = persona;
+                            usuario.Id = id;
+                            ProcessMsg.Bitacora.AddBitacora("Usuario", userAnt.Bitacora('U'), usuario.Bitacora('U'), 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), usuario.Bitacora('?'));
+                            var obj = ProcessMsg.Seguridad.UpdUsuario(usuario);
+                            if (obj == null)
+                            {
+                                response.StatusCode = HttpStatusCode.Accepted;
+                            }
+                            return Content(response.StatusCode, obj);
+                        }
                     }
                 }
 

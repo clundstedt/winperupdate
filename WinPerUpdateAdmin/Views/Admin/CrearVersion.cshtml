@@ -29,12 +29,6 @@
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
                 <div class="btn-group" role="toolbar">
-
-
-                    <!--button ng-click="ShowConfirmPublish()" ng-disabled="formData.estado=='C' || formData.estado=='P'" data-toggle="modal" class="btn btn-default" ng-hide="idversion==0">
-                        <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicar
-                    </!--button-->
-
                     <button data-toggle="modal" data-target="#publica-modal" ng-disabled="formData.estado=='C' || formData.estado=='P'" class="btn btn-default" ng-hide="idversion==0">
                         <span class="fa fa-fw fa-square-o" ng-show="formData.estado=='N'"></span><span class="fa fa-fw fa-check-square-o" ng-show="formData.estado=='P'"></span> Publicar
                     </button>
@@ -83,7 +77,7 @@
     <br />
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{titulo}}</h3>
                 </div>
@@ -140,22 +134,15 @@
         </div>
     </div>
     <br />
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Control de Cambios</h1>
-        </div>
-    </div>
-    <br />
-    <div class="row">
+    <div class="row" ng-hide="idversion==0">
         <div class="col-md-12">
             <h1>Componentes</h1>
-
-            <div class="container" ng-hide="idversion==0">
+            <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="btn-toolbar" role="toolbar">
                             <div class="btn-toolbar" role="toolbar">
-                                <a href="/Admin#/CrearComponente/{{idversion}}" ng-disabled="formData.estado=='C'" class="btn btn-labeled btn-success">
+                                <a href="/Admin#/CrearComponente/{{idversion}}" ng-disabled="formData.estado=='C' || formData.estado=='P'" class="btn btn-labeled btn-success">
                                     <span class="btn-label"><span class="fa fa-cubes"></span></span> Asignar Componente
                                 </a>
                             </div>
@@ -204,6 +191,79 @@
                                 <a href="Admin#/EditComponente/{{idversion}}/{{ejecutable.componente.Name}}" ng-click="ico_load = 'fa fa-circle-o-notch fa-spin'; blockBtn = true;" ng-init="ico_load = 'fa fa-pencil'; blockBtn= false;" class="btn btn-labeled btn-primary" ng-disabled="formData.estado=='C' || blockBtn">
                                     <span class="btn-label"><span class="{{ico_load}}"></span></span> Editar
                                 </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row" ng-hide="idversion==0">
+        <div class="col-md-12">
+            <h1>Control de Cambios</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-toolbar" role="toolbar">
+                                <a href="/Admin#/ControlCambios/{{idversion}}" ng-disabled="formData.estado=='C' || formData.estado=='P'" class="btn btn-labeled btn-success">
+                                    <span class="btn-label"><span class="fa fa-cubes"></span></span> Asignar Control de Cambios
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="cc in listaControlCambios">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <center>
+                                        <img src="~/Img/Chat_CC_WinAct.png" alt="" />
+                                    </center>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="list-group-item-heading">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <img src="~/Img/Circle_CC_Winact.png" alt="" width="10" height="10" /> Release: {{cc.Release}}
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="pull-right">
+                                                    {{cc.FechaFmt}} <img src="~/Img/Reloj_CC_Winact.png" alt="" width="15" height="15" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                N° Tips: {{cc.Tips}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                Por: {{cc.Usuario}} <img src="~/Img/User_CC_Winact.png" alt="" width="15" height="15" /><label style="width:10px;"></label>Módulo: {{cc.ModuloFmt.NomModulo}} <img src="~/Img/Modulo_CC_Winact.png" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{cc.Descripcion}}
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="pull-right">
+                                                <a href="/Admin/#/ControlCambios/{{idversion}}/{{cc.Tips}}/{{cc.Modulo}}" class="btn btn-default btn-xs" title="Ver detalladamente el control de cambios."><i class="fa fa-eye"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -281,7 +341,7 @@
                     <h4 class="modal-title">Aviso WinperUpdate</h4>
                 </div>
                 <div class="modal-body">
-                    Esta acción no puede ejecutarse debido a que WinperUpdate ha detectado que existen componentes
+                    Esta acción no puede ejecutarse debido a que WinAct ha detectado que existen componentes
                     cuya versión no es válida en comparación con la versión oficial Winper. Por favor revise los componentes
                     erróneos y vuelva a subirlos.
                 </div>
@@ -292,6 +352,7 @@
         </div>
     </div>
 
+    
 </div>
 
 <div id="publica-modal" class="modal fade" role="dialog">

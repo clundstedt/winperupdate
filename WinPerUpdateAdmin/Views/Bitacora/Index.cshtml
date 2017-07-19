@@ -1,0 +1,19 @@
+﻿@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Index";
+}
+@Scripts.Render("~/bundles/bitacora")
+
+<ng-view></ng-view>
+<div class="modalLoad"></div>
+<script>
+    $body = $("body");
+
+
+    $(document).ajaxStart(function () {
+        $body.addClass("loading");
+    }).ajaxStop(function () {
+        $body.removeClass("loading");
+    });
+</script>
+<input type="hidden" id="idToken" value="@Session["token"]" />

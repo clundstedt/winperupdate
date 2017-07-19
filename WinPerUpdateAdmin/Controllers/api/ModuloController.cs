@@ -24,6 +24,45 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
+        
+        [Route("api/getModulosDesdeSuite/{Suite:int}")]
+        [HttpGet]
+        public Object GetModulosDesdeSuite(int Suite)
+        {
+            try
+            {
+                var suite = ProcessMsg.Suites.GetSuites().SingleOrDefault(x => x.idSuite == Suite);
+                if (suite == null)
+                {
+                    return Content(HttpStatusCode.BadRequest, (object)null);
+                }
+                return Content(HttpStatusCode.OK, ProcessMsg.Modulo.GetModulosBySuites(suite.Subsuites));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
+        [Route("api/getModulosVersion/{idVersion:int}")]
+        [HttpGet]
+        public Object GetModulosVersion(int idVersion)
+        {
+            try
+            {
+                var nombresMods = ProcessMsg.Version.GetModulosVersiones(idVersion, null).Distinct().ToList();
+                var mod = ProcessMsg.Modulo.GetModulos(null).Where(x => nombresMods.Exists(y => y.Equals(x.NomModulo, StringComparison.OrdinalIgnoreCase)));
+
+                return Content(HttpStatusCode.OK, mod);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         /// <summary>
         /// Retorna la lista de componentes actuales que existen en el directorio del modulo especificado.
         /// </summary>
@@ -373,9 +412,9 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
-        [Route("api/Modulo/ComponentesDir")]
+        [Route("api/Modulo/ComponentesDir/{idModulo:int}")]
         [HttpPost]
-        public Object PostComponentesDir([FromBody] List<ComponenteDir> ComponentesDir)
+        public Object PostComponentesDir(int idModulo, [FromBody] List<ComponenteDir> ComponentesDir)
         {
             try
             {
@@ -383,12 +422,33 @@ namespace WinPerUpdateAdmin.Controllers.api
                 var comps = ComponentesDir.Where(x => x.check).Select(x => x.componente).ToList();
                 if (comps != null)
                 {
-                    var res = ProcessMsg.ComponenteModulo.AddComponentesModulos(comps);
-                    if (res[0].ToString().Equals("0"))
+                    var mod = ProcessMsg.Modulo.GetModulo(idModulo);
+                    if (mod != null)
                     {
-                        return Content(HttpStatusCode.OK, res[1]);
+                        List<ProcessMsg.Model.BitacoraBo> bitacoras = new List<ProcessMsg.Model.BitacoraBo>();
+                        foreach (var c in comps)
+                        {
+                            c.NomModulo = mod.NomModulo;
+                            bitacoras.Add(new ProcessMsg.Model.BitacoraBo
+                            {
+                                Menu = "Modulo",
+                                Vant = "",
+                                Vnue = c.Bitacora('I'),
+                                Accion = 'I',
+                                Fecha = DateTime.Now,
+                                Usuario = int.Parse(HttpContext.Current.Session["token"].ToString()),
+                                Registro = c.Bitacora('?')
+                            });
+                        }
+                        ProcessMsg.Bitacora.AddBitacora(bitacoras);
+                        var res = ProcessMsg.ComponenteModulo.AddComponentesModulos(comps);
+                        if (res[0].ToString().Equals("0"))
+                        {
+                            return Content(HttpStatusCode.OK, res[1]);
+                        }
+
+                        return Content(HttpStatusCode.Created, res[1]);
                     }
-                    return Content(HttpStatusCode.Created, res[1]);
                 }
                 return Content(HttpStatusCode.Accepted, "Error: ComponentesDir NULL");
             }
@@ -405,7 +465,8 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.ComponenteModulo.AddTipoComponentes(TipoComponente.Nombre,TipoComponente.isCompBD, TipoComponente.isCompDLL, TipoComponente.Extensiones) == 1)
+                ProcessMsg.Bitacora.AddBitacora("Modulo", null, TipoComponente.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), TipoComponente.Bitacora('?'));
+                if (ProcessMsg.ComponenteModulo.AddTipoComponentes(TipoComponente.Nombre,TipoComponente.isCompBD, TipoComponente.isCompDLL, TipoComponente.Extensiones, TipoComponente.isCompCambios) == 1)
                 {
                     return Content(HttpStatusCode.OK, true);
                 }
@@ -424,9 +485,16 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.ComponenteModulo.AddComponentesModulos(ComponenteModulo.Nombre,ComponenteModulo.Descripcion,idModulo,ComponenteModulo.TipoComponentes.idTipoComponentes) == 1)
+                var mod = ProcessMsg.Modulo.GetModulo(idModulo);
+                if (mod != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ComponenteModulo.NomModulo = mod.NomModulo;
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", null, ComponenteModulo.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), ComponenteModulo.Bitacora('?'));
+
+                    if (ProcessMsg.ComponenteModulo.AddComponentesModulos(ComponenteModulo.Nombre, ComponenteModulo.Descripcion, idModulo, ComponenteModulo.TipoComponentes.idTipoComponentes) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
                 return Content(HttpStatusCode.Created, false);
             }
@@ -443,6 +511,9 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                ProcessMsg.Bitacora.AddBitacora("Modulo", null, modulo.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), modulo.Bitacora('?'));
+
+
                 var moduloRes = ProcessMsg.Modulo.AddModulo(modulo);
                 if (moduloRes != null)
                 {
@@ -466,9 +537,14 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.ComponenteModulo.UpdTipoComponentes(idTipoComponentes, TipoComponente.Nombre, TipoComponente.Extensiones,TipoComponente.isCompBD,TipoComponente.isCompDLL) == 1)
+                var tipo = ProcessMsg.ComponenteModulo.GetTipoComponentes().SingleOrDefault(x => x.idTipoComponentes == idTipoComponentes);
+                if (tipo != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", tipo.Bitacora('U'), TipoComponente.Bitacora('U'), 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), tipo.Bitacora('?'));
+                    if (ProcessMsg.ComponenteModulo.UpdTipoComponentes(idTipoComponentes, TipoComponente.Nombre, TipoComponente.Extensiones, TipoComponente.isCompBD, TipoComponente.isCompDLL, TipoComponente.isCompCambios) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
                 return Content(HttpStatusCode.Created, false);
             }
@@ -485,9 +561,15 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.ComponenteModulo.UpdComponentesModulos(idComponentesModulos,ComponenteModulo.Nombre,ComponenteModulo.Descripcion,ComponenteModulo.TipoComponentes.idTipoComponentes) == 1)
+                var comp = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio(idComponentesModulos);
+                if (comp != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", comp.Bitacora('U'), ComponenteModulo.Bitacora('U'), 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), comp.Bitacora('?'));
+
+                    if (ProcessMsg.ComponenteModulo.UpdComponentesModulos(idComponentesModulos, ComponenteModulo.Nombre, ComponenteModulo.Descripcion, ComponenteModulo.TipoComponentes.idTipoComponentes) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
                 return Content(HttpStatusCode.Created, false);
             }
@@ -504,10 +586,16 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.Modulo.SetVigente(idModulo) == 1)
+                var mod = ProcessMsg.Modulo.GetModulo(idModulo);
+                if (mod != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", null, null, 'V', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), mod.Bitacora('?'));
+                    if (ProcessMsg.Modulo.SetVigente(idModulo) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
+                
                 return Content(HttpStatusCode.Created, false);
             }
             catch(Exception ex)
@@ -524,9 +612,15 @@ namespace WinPerUpdateAdmin.Controllers.api
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 modulo.idModulo = idModulo;
-                if (ProcessMsg.Modulo.UpdModulo(modulo) == 1)
+                var modAnt = ProcessMsg.Modulo.GetModulo(idModulo);
+                if (modAnt != null)
                 {
-                    return Content(HttpStatusCode.OK, modulo);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", modAnt.Bitacora('U'), modulo.Bitacora('U'), 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), modulo.Bitacora('?'));
+
+                    if (ProcessMsg.Modulo.UpdModulo(modulo) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, modulo);
+                    }
                 }
                 return Content(HttpStatusCode.Created, (object) null);
             }
@@ -545,9 +639,14 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.ComponenteModulo.DelComponentesModulos(idComponentesModulos) == 1)
+                var comp = ProcessMsg.ComponenteModulo.GetComponentesConDirectorio(idComponentesModulos);
+                if (comp != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", comp.Bitacora('D'), null, 'D', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), comp.Bitacora('?'));
+                    if (ProcessMsg.ComponenteModulo.DelComponentesModulos(idComponentesModulos) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
                 return Content(HttpStatusCode.Created, false);
             }
@@ -564,9 +663,14 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.ComponenteModulo.DelTipoComponentes(idTipoComponentes) == 1)
+                var tipo = ProcessMsg.ComponenteModulo.GetTipoComponentes().SingleOrDefault(x => x.idTipoComponentes == idTipoComponentes);
+                if (tipo != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", tipo.Bitacora('D'), null, 'D', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), tipo.Bitacora('?'));
+                    if (ProcessMsg.ComponenteModulo.DelTipoComponentes(idTipoComponentes) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
                 return Content(HttpStatusCode.Created, false);
             }
@@ -583,9 +687,15 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                if (ProcessMsg.Modulo.DelModulo(idModulo) == 1)
+                var mod = ProcessMsg.Modulo.GetModulo(idModulo);
+                if (mod != null)
                 {
-                    return Content(HttpStatusCode.OK, true);
+                    ProcessMsg.Bitacora.AddBitacora("Modulo", null, null, 'N', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), mod.Bitacora('?'));
+
+                    if (ProcessMsg.Modulo.DelModulo(idModulo) == 1)
+                    {
+                        return Content(HttpStatusCode.OK, true);
+                    }
                 }
                 return Content(HttpStatusCode.Created, false);
             }

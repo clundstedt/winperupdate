@@ -74,5 +74,39 @@ namespace ProcessMsg.Model
         public string MensajeToolTip { get; set; }
 
         public string Directorio { get; set; }
+
+        /// <summary>
+        /// Retorna información para el registro de la bitacora.
+        /// </summary>
+        /// <param name="accion">I: Insertado, D: Eliminado, U: Modificado y ?: Dato de Registro</param>
+        /// <returns></returns>
+        public string Bitacora(char accion)
+        {
+            string str = "";
+            switch (accion)
+            {
+                case 'I':
+                    str = string.Format("{0} Insertado", Name);
+                    break;
+                case 'D':
+                    str = string.Format("{0} Eliminado", Name);
+                    break;
+                case 'U':
+                    str = string.Format(@"Modulo={0}|idVersion={1}|NameFile={2}|VersionFile={3}|FechaFile={4}|Comentario={5}"
+                                        , Modulo
+                                        , idVersion
+                                        , Name
+                                        , Version
+                                        , LastWrite
+                                        , Comentario);
+                    break;
+                case '?':
+                    str = string.Format("{0} (ID Versión: {1})", Name, idVersion);
+                    break;
+                default:
+                    break;
+            }
+            return str;
+        }
     }
 }

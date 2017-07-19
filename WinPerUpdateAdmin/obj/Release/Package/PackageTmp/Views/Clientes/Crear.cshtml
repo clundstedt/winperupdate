@@ -465,8 +465,35 @@
                     ¿Confirma que desea dejar <b>No Vigente</b> al cliente?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('C')">Confirmar</button>
+                    <button class="btn btn-success"  ng-click="ShowMdlMotivo()">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mdlMotivo" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Motivo No Vigencia</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-group margin-bottom-sm">
+                            <span class="input-group-addon" title="Motivo"><i class="fa fa-commenting fa-fw"></i></span>
+                            <textarea class="form-control" name="motivo" rows="10" required ng-model="formData.motivoVigencia" placeholder="Motivo por el cual el cliente quedará No Vigente"></textarea>
+                        </div>
+                        <span class="error_ingreso" ng-show="frmMain.motivo.$error.required && frmMain.motivo.$touched">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="Eliminar('C', formData.motivoVigencia)">Confirmar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -483,7 +510,7 @@
                     ¿Confirma que desea dejar <b>Vigente</b> al cliente?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('V')">Confirmar</button>
+                    <button class="btn btn-success" data-dismiss="modal" ng-click="Eliminar('V', '')">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

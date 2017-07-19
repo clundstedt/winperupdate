@@ -152,32 +152,23 @@
             
             $scope.CrearComponentesModulos = function (formComp) {
                 $scope.msgErrorManComp = "";
-                serviceModulos.getExisteComponenteEnDir(formComp.nombre, $scope.Modulo.Directorio).success(function (exist) {
-                    console.log(exist);
-                    if (exist) {
-                        serviceModulos.getComponenteModulo($scope.idModulo, formComp.nombre, formComp.tipocomponente).success(function (existComp) {
-                            if (existComp) {
-                                serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
-                                    $scope.CargarComponentesModulos();
-                                    $("#mancom-modal").modal('toggle');
-                                    $scope.msgError = "";
-                                    $timeout(function () {
-                                        $scope.tipoalert = "success";
-                                        $scope.msgalert = "Componente creado exitosamente!.";
-                                        window.scrollTo(0,0);
-                                    }, 3000);
-                                    
-                                }).error(function (err) {
-                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                                });
-                            } else {
-                                $scope.msgErrorManComp = "El componente ya existe en el módulo o no corresponde al tipo.";
-                            }
+                serviceModulos.getComponenteModulo($scope.idModulo, formComp.nombre, formComp.tipocomponente).success(function (existComp) {
+                    if (existComp) {
+                        serviceModulos.addComponentesModulos(formComp.nombre, formComp.descripcion, $scope.idModulo, formComp.tipocomponente).success(function (data) {
+                            $scope.CargarComponentesModulos();
+                            $("#mancom-modal").modal('toggle');
+                            $scope.msgError = "";
+                            $timeout(function () {
+                                $scope.tipoalert = "success";
+                                $scope.msgalert = "Componente creado exitosamente!.";
+                                window.scrollTo(0, 0);
+                            }, 3000);
+
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                         });
                     } else {
-                        $scope.msgErrorManComp = "El componente no existe en el directorio del módulo.";
+                        $scope.msgErrorManComp = "El componente ya existe en el módulo o no corresponde al tipo.";
                     }
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
@@ -219,12 +210,13 @@
             }
             
             $scope.CrearTipoComponente = function (formTipoComp) {
-                serviceModulos.addTipoComponentes(formTipoComp.nombre, formTipoComp.iscompbd, formTipoComp.iscompdll, $scope.PreparaExtTipoComponente(formTipoComp.extensiones)).success(function (data) {
+                serviceModulos.addTipoComponentes(formTipoComp.nombre, formTipoComp.iscompbd, formTipoComp.iscompdll, $scope.PreparaExtTipoComponente(formTipoComp.extensiones), formTipoComp.iscompcambios).success(function (data) {
                     $scope.CargarTipoComponentes();
                     formTipoComp.nombre = "";
                     formTipoComp.extensiones = "";
                     formTipoComp.iscompbd = false;
                     formTipoComp.iscompdll = false;
+                    formTipoComp.iscompcambios = false;
                     $scope.msgError = "";
                     $scope.lblBtnCrearTipoComp = "Creado!";
                     $timeout(function () { $scope.lblBtnCrearTipoComp = "Crear Tipo de Componente"; }, 3000);
@@ -277,7 +269,7 @@
 
             $scope.AgregarCompsDir = function () {
                 if ($scope.listaCompsDetect.length > 0) {
-                    serviceModulos.addComponentesDir($scope.listaCompsDetect).success(function (data) {
+                    serviceModulos.addComponentesDir($scope.idModulo, $scope.listaCompsDetect).success(function (data) {
                         serviceModulos.GetComponentesDirectorio($scope.idModulo).success(function (data) {
                             $scope.listaCompsDetect = [];
                             for (var i = 0; i < data.length; i++) {
@@ -421,6 +413,7 @@
                 $scope.formTipoComp.extensiones = tipocomponente.Extensiones;
                 $scope.formTipoComp.iscompbd = tipocomponente.isCompBD;
                 $scope.formTipoComp.iscompdll = tipocomponente.isCompDLL;
+                $scope.formTipoComp.iscompcambios = tipocomponente.isCompCambios;
                 $scope.ModificarTipo = tipocomponente.idTipoComponentes;
                 $scope.editandoTipComp = true;
             }
@@ -430,13 +423,14 @@
                 $scope.formTipoComp.extensiones = "";
                 $scope.formTipoComp.iscompbd = "";
                 $scope.formTipoComp.iscompdll = "";
+                $scope.formTipoComp.iscompcambios = "";
                 $scope.ModificarTipo = 0;
                 $scope.editandoTipComp = false;
             }
 
             $scope.ModificarTipoComponente = function (formTipoComp) {
                 if ($scope.lblModificarTipoComponente != "Modificado!") {
-                    serviceModulos.updTipoComponente($scope.ModificarTipo, formTipoComp.nombre, formTipoComp.extensiones, formTipoComp.iscompbd, formTipoComp.iscompdll).success(function (data) {
+                    serviceModulos.updTipoComponente($scope.ModificarTipo, formTipoComp.nombre, formTipoComp.extensiones, formTipoComp.iscompbd, formTipoComp.iscompdll, formTipoComp.iscompcambios).success(function (data) {
                         $scope.lblModificarTipoComponente = "Modificado!";
                         $scope.CargarTipoComponentes();
                         $timeout(function () {

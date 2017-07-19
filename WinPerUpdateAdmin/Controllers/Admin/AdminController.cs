@@ -113,6 +113,11 @@ namespace WinPerUpdateAdmin.Controllers.Admin
         {
             return PartialView();
         }
+
+        public PartialViewResult ControlCambios()
+        {
+            return PartialView();
+        }
         
         public Object Upload(int idVersion, HttpPostedFileBase file)
         {
@@ -158,6 +163,40 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             }
         }
 
+        public Object UploadCambios(int idVersion, int idModulo, int tips, HttpPostedFileBase file)
+        {
+            try
+            {
+                var modulo = ProcessMsg.Modulo.GetModulo(idModulo);
+                if (modulo != null)
+                {
+                    var dirFuente = ProcessMsg.Utils.GetPathSetting(HttpContext.Server.MapPath("~/Fuentes/"));
+                    var dirDocCambios = Path.Combine(dirFuente, "DocCambios");
+                    if (!Directory.Exists(dirDocCambios))
+                    {
+                        Directory.CreateDirectory(dirDocCambios);
+                    }
+                    var dirDocs = Path.Combine(dirDocCambios, string.Format("{0}_{1}_{2}", idVersion, idModulo, tips));
+                    if (!Directory.Exists(dirDocs))
+                    {
+                        Directory.CreateDirectory(dirDocs);
+                    }
+                    else
+                    {
+                        Directory.Delete(dirDocs, true);
+                        Directory.CreateDirectory(dirDocs);
+                    }
+                    var pathFile = Path.Combine(dirDocs, file.FileName);
+                    file.SaveAs(pathFile);
+                    return Json(new { Cod = 0, Msg = "Archivo subido correctamente!." });
+                }
+                return Json(new { Cod = 2, Msg = "Modulo " + idModulo + " no existe" });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { Cod = 1, Msg = ex.Message });
+            }
+        }
         [HttpPost]
         public Object GenerarVersion (FormCollection form)
         {
@@ -170,8 +209,10 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Uploads/")) + version.Release;
                 if (!sRuta.EndsWith("\\")) sRuta += @"\";
                 string sFile = "WP" + version.Release.Replace(".", "") + string.Format("{0:yyyyMMddhhhhmmss}", DateTime.Now);
-
-                if (ProcessMsg.Version.GenerarInstalador(idVersion, sFile, sRuta) > 0)
+                string dirN1 = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N+1";
+                string dirFuentes = Path.Combine(ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Fuentes")));
+                if (!Directory.Exists(dirFuentes)) Directory.CreateDirectory(dirFuentes);
+                if (ProcessMsg.Version.GenerarInstalador(idVersion, sFile, sRuta, dirN1, dirFuentes) > 0)
                 {
                     string Command = ConfigurationManager.AppSettings["pathGenSetup"];
                     string argument = "\"" + sRuta + sFile + ".iss\"";
@@ -184,30 +225,41 @@ namespace WinPerUpdateAdmin.Controllers.Admin
 
                     //Indica que el proceso no despliegue una pantalla negra (El proceso se ejecuta en background)
                     procStartInfo.CreateNoWindow = false;
-
+                    
                     //Inicializa el proceso
                     System.Diagnostics.Process proc = new System.Diagnostics.Process();
                     proc.StartInfo = procStartInfo;
                     proc.Start();
                     
+                    
 
                     //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
                     string result = proc.StandardOutput.ReadToEnd();
-                    //Proceso de copia de N+1 a N
-                    string dirN1 = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N+1";
-                    string dirN = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N";
-                    var componentes = ProcessMsg.Componente.GetComponenteConDirectorio(idVersion);
-
-                    var files = new DirectoryInfo(sRuta).GetFiles().ToList();
-                    foreach (var x in files)
+                    if (!version.IsVersionInicial)
                     {
-                        var comps = componentes.Where(y => y.Name.Equals(x.Name)).ToList();
-                        foreach(var comp in comps)
+                        if (ProcessMsg.Version.GenerarControlCambios(idVersion, dirN1))
                         {
-                            var oPath = Path.Combine(dirN1, comp.Directorio, comp.Name);
-                            var dPath = Path.Combine(dirN, comp.Directorio, comp.Name);
-                            new FileInfo(oPath).CopyTo(dPath, true);
-                            x.CopyTo(oPath, true);
+                            //Proceso de copia de N+1 a N
+
+                            string dirN = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/VersionOficial/")) + "N";
+                            var componentes = ProcessMsg.Componente.GetComponenteConDirectorio(idVersion);
+
+                            var files = new DirectoryInfo(sRuta).GetFiles().ToList();
+                            foreach (var x in files)
+                            {
+                                var comps = componentes.Where(y => y.Name.Equals(x.Name)).ToList();
+                                foreach (var comp in comps)
+                                {
+                                    var oPath = Path.Combine(dirN1, comp.Directorio, comp.Name);
+                                    var dPath = Path.Combine(dirN, comp.Directorio, comp.Name);
+                                    System.IO.File.Copy(oPath, dPath, true);
+                                    x.CopyTo(oPath, true);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { Version = idVersion, CodErr = 4, MsgErr = "No pudo generar el control de cambios.", Output = "" });
                         }
                     }
 
@@ -221,6 +273,6 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 return Json(new { Version = 0, CodErr = 3, MsgErr = ex.Message, Output = "" });
             }
         }
-        
+
     }
 }

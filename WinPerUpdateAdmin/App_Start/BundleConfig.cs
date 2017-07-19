@@ -28,8 +28,10 @@ namespace WinPerUpdateAdmin
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datepicker.min.css",
                       "~/Content/jasny-bootstrap.min.css"
-                      , "~/Content/select.css",
-                      "~/Content/Site.css").Include("~/css/font-awesome.min.css", new CssRewriteUrlTransform()));
+                      //, "~/Content/upload/fileinput.css"
+                      //, "~/Content/upload/theme.css"
+                      , "~/Content/select.css"
+                      ,"~/Content/Site.css").Include("~/css/font-awesome.min.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                               "~/Scripts/angular.min.js"
@@ -37,13 +39,24 @@ namespace WinPerUpdateAdmin
                             , "~/Scripts/select.js"
                             , "~/Scripts/site.js"//, "~/Scripts/smart-table.min.js"
                       ));
-
+            bundles.Add(new ScriptBundle("~/bundles/upload").Include(
+                              "~/Scripts/upload/sortable.js"
+                            , "~/Scripts/upload/fileinput.js"
+                            , "~/Scripts/upload/es.js"
+                            , "~/Scripts/upload/theme.js"
+                      ));
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
                       "~/js/Login/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
                       ,"~/js/Login/login.js",
                       "~/js/Login/serviceLogin.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/error").Include(
+                         "~/js/Home/app.js"
+                       , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
@@ -60,6 +73,7 @@ namespace WinPerUpdateAdmin
                       , "~/js/Version/componente.js"
                       , "~/js/Version/editcomponente.js"
                       , "~/js/Version/publicar.js"
+                      , "~/js/Version/controlcambios.js"
                       , "~/js/Version/serviceAdmin.js"
                       , "~/js/Clientes/serviceClientes.js"
                       , "~/js/Seguridad/serviceSeguridad.js"
@@ -160,6 +174,57 @@ namespace WinPerUpdateAdmin
                         , "~/js/Descargas/descargas.js"
                         , "~/js/Descargas/serviceDescargas.js"
                       ));
+            bundles.Add(new ScriptBundle("~/bundles/bitacora").Include(
+                         "~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
+                      , "~/js/Bitacora/app.js"
+                      , "~/js/Home/controllerHome.js"
+                      , "~/js/Home/factoryHome.js"
+                      , "~/js/Bitacora/ctrlBitacora.js"
+                      , "~/js/Bitacora/svcBitacora.js"
+                      ));
+            //layout 2
+
+            bundles.Add(new StyleBundle("~/Content/csslayout2").Include(
+                      "~/Content/layout2/bootstrap.min.css"
+                      , "~/Content/layout2/style.css"
+                      , "~/css/font-awesome.css"
+                      ).Include("~/Content/layout2/icon-font.min.css", new CssRewriteUrlTransform()));
+
+            bundles.Add(new ScriptBundle("~/bundles/chartl2").Include(
+                        "~/Scripts/layout2/Chart.js"
+                      ));
+
+            bundles.Add(new StyleBundle("~/Content/animatel2").Include(
+                      "~/Content/layout2/animate.css"
+                      ));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/wowl2").Include(
+                        "~/Scripts/layout2/wow.min.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryl2").Include(
+                        "~/Scripts/layout2/jquery-1.10.2.min.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/jsfooterl2").Include(
+                        "~/Scripts/layout2/jquery.nicescroll.js"
+                        , "~/Scripts/layout2/scripts.js"
+                        ,"~/Scripts/layout2/bootstrap.min.js"
+                      ));
+
+            
+            bundles.Add(new StyleBundle("~/Content/cssl2").Include(
+                      "~/Content/bootstrap-datepicker.min.css",
+                      "~/Content/jasny-bootstrap.min.css"
+                      , "~/Content/select.css"
+                      ));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrapl2").Include(
+                      "~/Scripts/bootstrap-datepicker.min.js",
+                      "~/Scripts/locales/bootstrap-datepicker.es.min.js"
+                      , "~/Scripts/jasny-bootstrap.min.js"));
         }
     }
 }

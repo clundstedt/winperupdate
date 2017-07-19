@@ -3,8 +3,8 @@
 ViewBag.Title = "Index";
 }
 @if (Model) {
+  <!--Menu Antiguo  
 <li>
-    
     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
         <img src="~/Content/Images/user.png" alt="">{{userSession.Persona.NomFmt}}
         <span class="fa fa-angle-down"></span>
@@ -17,6 +17,24 @@ ViewBag.Title = "Index";
         </li>
         <li class="divider"></li>
         <li><a href="" data-toggle="modal" data-target="#modalLogout" >Logout</a></li>
+    </ul>
+</li>
+      -->
+<li class="dropdown profile_details_drop">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <div class="profile_img">
+            <span style="background:url(../../Content/Images/user.png) no-repeat center;"> </span>
+            <div class="user-name">
+                <p>{{userSession.Persona.NomFmt}}<span>{{userSession.NombrePerfil}}</span></p>
+            </div>
+            
+            <div class="clearfix"></div>
+        </div>
+    </a>
+    <ul class="dropdown-menu drp-mnu">
+        <li> <a href="/Home/Perfil/"><i class="fa fa-cog"></i> Perfil</a> </li>
+        <li> <a href="" data-toggle="modal" data-target="#modalCambioPwd"><i class="fa fa-user"></i>Cambio Clave</a> </li>
+        <li> <a href="" data-toggle="modal" data-target="#modalLogout"><i class="fa fa-sign-out"></i> Logout</a> </li>
     </ul>
 </li>
 }

@@ -30,27 +30,7 @@ namespace ProcessMsg.Model
             }
         }
         
-        public string NombrePerfil
-        {
-            get
-            {
-                object[,] mz =
-                {
-                    { 1, "Administrador" },
-                    { 2, "Desarrollador" },
-                    { 3, "Soporte" },
-                    { 4, "Gestión" },
-                    { 11, "Administrador" },
-                    { 12, "DBA" }
-                };
-                #pragma warning disable
-                for (int x = 0; x < mz.GetLength(0); x++)
-                {
-                    return (int.Parse(mz[x, 0].ToString()) == CodPrf) ? mz[x, 1].ToString() : null;
-                }
-                return null;
-            }
-        }
+        public string NombrePerfil { get; set; }
 
         public string TipoUsuario
         {
@@ -66,6 +46,40 @@ namespace ProcessMsg.Model
             {
                 return (Cliente == null) ? "INNOVASOFT" : Cliente.Nombre;
             }
+        }
+
+        /// <summary>
+        /// Retorna información para el registro de la bitacora.
+        /// </summary>
+        /// <param name="accion">I: Insertado, D: Eliminado, U: Modificado y ?: Dato de Registro</param>
+        /// <returns></returns>
+        public string Bitacora(char accion)
+        {
+            string str = "";
+            switch (accion)
+            {
+                case 'I':
+                    str = string.Format("{0} Insertado", Persona.NomFmt);
+                    break;
+                case 'D':
+                    str = string.Format("{0} Eliminado", Persona.NomFmt);
+                    break;
+                case 'U':
+                    str = string.Format(@"idUsuarios={0}|CodPrf={1}|Nombres={2}|Apellidos={3}|Mail={4}|Estado={5}"
+                                        , Id
+                                        , CodPrf
+                                        , Persona.Nombres
+                                        , Persona.Apellidos
+                                        , Persona.Mail
+                                        , EstadoDisplay);
+                    break;
+                case '?':
+                    str = Cliente == null ? string.Format("{0}", Persona.NomFmt) : string.Format("{0} (Cliente: {1})", Persona.NomFmt, Cliente.Nombre);
+                    break;
+                default:
+                    break;
+            }
+            return str;
         }
     }
 }

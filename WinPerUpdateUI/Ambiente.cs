@@ -78,9 +78,9 @@ namespace WinPerUpdateUI
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             var dr = new CheckAdmin().ShowDialog(this);
-            if(dr == DialogResult.No)
+            if(dr != DialogResult.Yes)
             {
-                MessageBox.Show("Administrador incorrecto.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Administrador incorrecto. No se guardaron los cambios.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -133,7 +133,7 @@ namespace WinPerUpdateUI
 
             if (cmbPerfil.SelectedIndex == 0)
             {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
                 config.AppSettings.Settings["sql"].Value = chkPermitirSQL.Checked.ToString();
                 config.Save(ConfigurationSaveMode.Modified);
             }
@@ -210,6 +210,18 @@ namespace WinPerUpdateUI
         private void cmbPerfil_SelectedIndexChanged(object sender, EventArgs e)
         {
             chkPermitirSQL.Visible = (cmbPerfil.SelectedIndex == 0);
+        }
+
+        private void dgAmbientes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 2 && e.RowIndex >= 0)
+            {
+                var dr = FbdDirectorioWinper.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    dgAmbientes.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = FbdDirectorioWinper.SelectedPath;
+                }
+            }
         }
     }
 }

@@ -29,6 +29,22 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
+
+        [Route("api/getClienteNoVigente/{id:int}")]
+        [HttpGet]
+        public Object GetClienteNoVigente(int id)
+        {
+            try
+            {
+                var cl = ProcessMsg.Cliente.GetClienteNoVigente(id);
+                return Content(HttpStatusCode.OK, cl.Count > 0 ? cl.ElementAt(0) : (object)null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
         [Route("api/Bienvenida/Usuario/{idUsuario:int}")]
         [HttpGet]
         public Object EnviarBienvenidaUsuario(int idUsuario)
@@ -556,6 +572,22 @@ namespace WinPerUpdateAdmin.Controllers.api
                 {
                     if (modulos.Count > 0)
                     {
+                        string vant = "";
+                        string vnue = "";
+                        var modsCl = ProcessMsg.Cliente.GetClientesHasModulo(idCliente);
+
+                        foreach (var m in modsCl)
+                        {
+                            vant += string.Format("Modulo={0}|", m.NomModulo);
+                        }
+                        foreach (var m in modulos)
+                        {
+                            vnue += string.Format("Modulo={0}|", m.NomModulo);
+                        }
+                        ProcessMsg.Bitacora.AddBitacora("Cliente", vant, vnue, 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), cliente.Bitacora('?'));
+
+
+
                         var idModulos = modulos.Select(x => x.idModulo).ToArray();
                         if (ProcessMsg.Cliente.AddClientesHasModulos(idCliente, idModulos))
                         {
@@ -592,6 +624,15 @@ namespace WinPerUpdateAdmin.Controllers.api
                 else
                 {
                     cliente.Estado = 'V';
+                    //registro en bitacora
+                    ProcessMsg.Bitacora.AddBitacora("Cliente"
+                        , null
+                        , cliente.Bitacora('I')
+                        , 'I'
+                        , DateTime.Now
+                        , int.Parse(HttpContext.Current.Session["token"].ToString())
+                        , cliente.Bitacora('?'));
+                    
                     var obj = ProcessMsg.Cliente.Add(cliente);
                     if (obj == null)
                     {
@@ -626,31 +667,37 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
-                    if (usuario.Clave == null)
+                    var clt = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idCliente);
+                    if (clt != null)
                     {
-                        usuario.Clave = ProcessMsg.Utils.Encriptar(ProcessMsg.Utils.RandomString(10));
-                    }
-                    var persona = ProcessMsg.Seguridad.AddPersona(usuario.Persona);
-                    if (persona == null)
-                    {
-                        response.StatusCode = HttpStatusCode.Accepted;
-                    }
-                    else
-                    {
-                        usuario.Persona.Id = persona.Id;
-                        var obj = ProcessMsg.Seguridad.AddUsuarioCliente(usuario);
-                        if (obj == null)
+                        if (usuario.Clave == null)
                         {
-                            return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
+                            usuario.Clave = ProcessMsg.Utils.Encriptar(ProcessMsg.Utils.RandomString(10));
                         }
-
-                        var res = ProcessMsg.Cliente.AddUsuario(idCliente, obj.Id);
-                        if (res == 0)
+                        var persona = ProcessMsg.Seguridad.AddPersona(usuario.Persona);
+                        if (persona == null)
                         {
-                            return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
+                            response.StatusCode = HttpStatusCode.Accepted;
                         }
+                        else
+                        {
+                            usuario.Persona = persona;
+                            usuario.Cliente = clt;
+                            ProcessMsg.Bitacora.AddBitacora("Usuario", null, usuario.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), usuario.Bitacora('?'));
+                            var obj = ProcessMsg.Seguridad.AddUsuarioCliente(usuario);
+                            if (obj == null)
+                            {
+                                return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
+                            }
 
-                        return Content(HttpStatusCode.Created, obj);
+                            var res = ProcessMsg.Cliente.AddUsuario(idCliente, obj.Id);
+                            if (res == 0)
+                            {
+                                return Content(HttpStatusCode.Accepted, (ProcessMsg.Model.VersionBo)null);
+                            }
+
+                            return Content(HttpStatusCode.Created, obj);
+                        }
                     }
                 }
 
@@ -661,7 +708,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
+        
         #endregion
 
         #region put
@@ -686,6 +733,20 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
+                    cliente.Id = id;
+                    //registro en bitacora
+                    var cltAnt = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == id);
+                    if (cltAnt != null)
+                    {
+                        ProcessMsg.Bitacora.AddBitacora("Cliente"
+                            , cltAnt.Bitacora('U')
+                            , cliente.Bitacora('U')
+                            , 'U'
+                            , DateTime.Now
+                            , int.Parse(HttpContext.Current.Session["token"].ToString())
+                            , cltAnt.Bitacora('?'));
+                    }
+
                     var obj = ProcessMsg.Cliente.Update(id, cliente);
                     if (obj == null)
                     {
@@ -720,23 +781,28 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
-                    var persona = ProcessMsg.Seguridad.UpdPersona(usuario.Persona);
-                    if (persona == null)
+                    var userAnt = ProcessMsg.Seguridad.GetUsuario(idUsuario);
+                    if (userAnt != null)
                     {
-                        response.StatusCode = HttpStatusCode.Accepted;
-                    }
-                    else
-                    {
-                        usuario.Persona.Id = persona.Id;
-                        usuario.Id = idUsuario;
-                        ProcessMsg.Seguridad.UpdUsuario(usuario);
-
-                        var obj = ProcessMsg.Cliente.GetUsuarios(id).SingleOrDefault(x => x.Id == idUsuario);
-                        if (obj == null)
+                        var persona = ProcessMsg.Seguridad.UpdPersona(usuario.Persona);
+                        if (persona == null)
                         {
                             response.StatusCode = HttpStatusCode.Accepted;
                         }
-                        return Content(response.StatusCode, obj);
+                        else
+                        {
+                            usuario.Persona = persona;
+                            usuario.Id = idUsuario;
+                            ProcessMsg.Bitacora.AddBitacora("Usuario", userAnt.Bitacora('U'), usuario.Bitacora('U'), 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), userAnt.Bitacora('?'));
+                            ProcessMsg.Seguridad.UpdUsuario(usuario);
+
+                            var obj = ProcessMsg.Cliente.GetUsuarios(id).SingleOrDefault(x => x.Id == idUsuario);
+                            if (obj == null)
+                            {
+                                response.StatusCode = HttpStatusCode.Accepted;
+                            }
+                            return Content(response.StatusCode, obj);
+                        }
                     }
                 }
 
@@ -753,15 +819,45 @@ namespace WinPerUpdateAdmin.Controllers.api
         #region delete
         [Route("api/Clientes/Vigente")]
         [HttpGet]
-        public Object Delete(int id, char est)
+        public Object Delete(int id, char est, string motivo)
         {
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
 
-                if (ProcessMsg.Cliente.Delete(id, est) == 1)
+                //registro en bitacora
+                var cl = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == id);
+                if (cl != null)
                 {
-                    return Content(HttpStatusCode.Created, (ProcessMsg.Model.ClienteBo)ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == id));
+                    if (est == 'C')
+                    {
+                        if (ProcessMsg.Cliente.AddClienteNoVigente(DateTime.Now, motivo, id, int.Parse(HttpContext.Current.Session["token"].ToString())) == 1)
+                        {
+                            if (ProcessMsg.Cliente.Delete(id, est) == 1)
+                            {
+                                ProcessMsg.Bitacora.AddBitacora("Cliente"
+                                                               , cl.Bitacora(est == 'C' ? 'N' : 'V')
+                                                               , null, (est == 'C' ? 'N' : 'V')
+                                                               , DateTime.Now
+                                                               , int.Parse(HttpContext.Current.Session["token"].ToString())
+                                                               , cl.Bitacora('?'));
+                                return Content(HttpStatusCode.Created, (ProcessMsg.Model.ClienteBo)ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == id));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (ProcessMsg.Cliente.Delete(id, est) == 1)
+                        {
+                            ProcessMsg.Bitacora.AddBitacora("Cliente"
+                                                            , cl.Bitacora(est == 'C' ? 'N' : 'V')
+                                                            , null, (est == 'C' ? 'N' : 'V')
+                                                            , DateTime.Now
+                                                            , int.Parse(HttpContext.Current.Session["token"].ToString())
+                                                            , cl.Bitacora('?'));
+                            return Content(HttpStatusCode.Created, (ProcessMsg.Model.ClienteBo)ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == id));
+                        }
+                    }
                 }
                 return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.ClienteBo)null);
             }

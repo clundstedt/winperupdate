@@ -311,6 +311,14 @@ namespace WinPerUpdateUI
                 Utils.RegistrarLog("InstallFile.log", dirComponentes);
                 if (System.IO.Directory.Exists(directorio))
                 {
+                    var dirs = new System.IO.DirectoryInfo(dirComponentes).GetDirectories().ToList();
+                    foreach (var d in dirs)
+                    {
+                        if (!Directory.Exists(Path.Combine(directorio, d.Name)))
+                        {
+                            d.MoveTo(Path.Combine(directorio, d.Name));
+                        }
+                    }
                     Utils.RegistrarLog("InstallFile.log", directorio);
                     var files = new System.IO.DirectoryInfo(dirComponentes).GetFiles().ToList();
                     var cont = files.Count;
@@ -321,13 +329,28 @@ namespace WinPerUpdateUI
                         Utils.RegistrarLog("InstallFile.log", x.Name);
                         if (!x.Name.StartsWith("unins000") && !x.Extension.ToUpper().Equals(".SQL"))
                         {
-                            foreach (var mc in Utils.ModulosContratados)
+                            if (x.Name.Equals("Deploy31.exe"))
                             {
-                                if (mc.ComponentesModulo.Exists(cm => cm.Nombre.Equals(x.Name)))
+                                x.CopyTo(Path.Combine(directorio, x.Name), true);
+                            }
+                            else
+                            {
+                                foreach (var mc in Utils.ModulosContratados)
                                 {
-                                    x.CopyTo(Path.Combine(directorio, x.Name), true);
-                                    Utils.RegistrarLog("InstallFile.log", x.Name + " COPIADO A " + Path.Combine(directorio, x.Name) + " Y ELIMINADO");
-                                    break;
+                                    if (mc.ComponentesModulo.Exists(cm => cm.Nombre.Equals(x.Name)))
+                                    {
+                                        if (mc.ComponentesModulo.Exists(cm => cm.Nombre.Equals(x.Name) && cm.TipoComponentes.isCompCambios))
+                                        {
+                                            x.CopyTo(Path.Combine(directorio, "info", x.Name), true);
+                                            Utils.RegistrarLog("InstallFile.log", x.Name + " COPIADO A " + Path.Combine(directorio, "info", x.Name) + " Y ELIMINADO");
+                                        }
+                                        else
+                                        {
+                                            x.CopyTo(Path.Combine(directorio, x.Name), true);
+                                            Utils.RegistrarLog("InstallFile.log", x.Name + " COPIADO A " + Path.Combine(directorio, x.Name) + " Y ELIMINADO");
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                             x.Delete();
@@ -340,7 +363,9 @@ namespace WinPerUpdateUI
                         progress++;
                         bwCopia.ReportProgress((progress*100)/cont);
                     });
+                    
                     System.IO.Directory.Delete(dirComponentes, true);
+                    e.Result = new object[] { directorio, version.HasDeploy31 };
                 }
             }
         }
@@ -368,7 +393,28 @@ namespace WinPerUpdateUI
             else
             {
                 Progreso.Close();
-                MessageBox.Show("Instalación finalizada con exito.", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var hasDeploy = e.Result != null ? bool.Parse(((object[])e.Result)[1].ToString()) : false;
+                Process myProcess = new Process();
+                if (hasDeploy)
+                {
+                    MessageBox.Show("A continuación WinAct procederá a instalar Deploy31.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    var deploy = e.Result != null ? Path.Combine(((object[])e.Result)[0].ToString(), "Deploy31.exe") : null;
+                    if (File.Exists(deploy))
+                    {
+                        myProcess.StartInfo.FileName = deploy;
+                        myProcess.Start();
+                        myProcess.WaitForExit();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No existe Deploy31 en el directorio de WinPer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                if (myProcess.ExitCode != 0)
+                {
+                    MessageBox.Show("No se finalizó correctamente la instalación de Deploy31.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                MessageBox.Show("WinPer se ha instalado correctamente.", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 keya.SetValue("Status", "updated");
                 Utils.RegistrarLog("InstallFile.log", "El proceso de instalación finalizó con exito!.");
                 Application.Restart();

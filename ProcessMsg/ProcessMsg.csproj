@@ -51,14 +51,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ambiente.cs" />
+    <Compile Include="Bitacora.cs" />
     <Compile Include="Cliente.cs" />
     <Compile Include="Componente.cs" />
     <Compile Include="ComponenteModulo.cs" />
     <Compile Include="Model\AmbienteBo.cs" />
     <Compile Include="Model\AmbientesXLSXBo.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
+    <Compile Include="Model\BitacoraBo.cs" />
     <Compile Include="Model\ClienteBo.cs" />
+    <Compile Include="Model\ClienteNoVigenteBo.cs" />
     <Compile Include="Model\ComponenteModuloBo.cs" />
+    <Compile Include="Model\ControlCambiosBo.cs" />
     <Compile Include="Model\MenusBo.cs" />
     <Compile Include="Model\ModuloXLSXBo.cs" />
     <Compile Include="Model\PerfilesBo.cs" />

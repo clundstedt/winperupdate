@@ -10,5 +10,7 @@ namespace ProcessMsg.Model
     {
         public int idSuite { get; set; }
         public string Nombre { get; set; }
+        public string Subsuites { get; set; } 
+        
     }
 }

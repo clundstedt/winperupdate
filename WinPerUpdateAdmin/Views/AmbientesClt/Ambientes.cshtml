@@ -48,7 +48,7 @@
         <div class="col-md-12">
             <div class="alert alert-warning" ng-show="ambxlsxwarn">
                 <span class="fa fa-exclamation-triangle"></span>
-                ADVERTENCIA: Usted importó ambientes desde un Excel. WinperUpdate detectó algunos errores, click 
+                ADVERTENCIA: Usted importó ambientes desde un Excel. WinAct detectó algunos errores, click 
                 <button type="button" class="btn btn-warning btn-sm" ng-click="CargarAmbXLSX()">AQUÍ</button> 
                 para ver el estado.
             </div>
@@ -95,8 +95,8 @@
                                         {{ambiente.UserDbo}}
                                     </td>
                                     <td>
-                                        <a href="/AmbientesClt#/EditAmbiente/{{idCliente}}/{{ambiente.idAmbientes}}" class="btn btn-labeled btn-info">
-                                            <span class="btn-label"><span class="fa fa-pencil"></span></span> Modificar
+                                        <a href="/AmbientesClt#/EditAmbiente/{{idCliente}}/{{ambiente.idAmbientes}}" class="btn btn-info btn-xs">
+                                            <span class="fa fa-pencil"></span>
                                         </a>
                                     </td>
                                 </tr>

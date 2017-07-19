@@ -108,5 +108,25 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+
+        public int ExecutNoVigencia(DateTime fecha, string motivo, int cliente, int usuario)
+        {
+            try
+            {
+                SpName = @"INSERT INTO Clientes_NoVigencia (Fecha, Motivo, Cliente, Usuario) VALUES(@fecha, @motivo, @cliente, @usuario)";
+
+                ParmsDictionary.Add("@fecha", fecha);
+                ParmsDictionary.Add("@motivo", motivo);
+                ParmsDictionary.Add("@cliente", cliente);
+                ParmsDictionary.Add("@usuario", usuario);
+
+                return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

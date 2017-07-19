@@ -40,10 +40,48 @@
             updUsuario: updUsuario,
             delCliente: delCliente,
 
-            addModuloCliente: addModuloCliente
+            addModuloCliente: addModuloCliente,
+            getClienteNoVigente: getClienteNoVigente
         };
 
         return service;
+
+
+        function getClienteNoVigente(id) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/getClienteNoVigente/'+id,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
 
         function getExisteMail(mail) {
@@ -189,7 +227,7 @@
             return promise;
         }
 
-        function addVersionInicial(release, estado, comentario) {
+        function addVersionInicial(release, estado, comentario, hasDeploy) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -198,7 +236,9 @@
                 "Release": release,
                 "Estado": estado,
                 "Comentario": comentario,
-                "Fecha": "null"
+                "Fecha": "null",
+                "IsVersionInicial": true,
+                "HasDeploy31": hasDeploy
             };
 
             $.ajax({
@@ -1066,12 +1106,12 @@
         }
 
 
-        function delCliente(id, est) {
+        function delCliente(id, est, motivo) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Clientes/Vigente?id=' + id + '&est=' + est,
+                url: '/api/Clientes/Vigente?id=' + id + '&est=' + est+'&motivo='+motivo,
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {

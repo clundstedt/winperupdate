@@ -49,7 +49,7 @@
                 console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
 
-
+            /*carga el historial de cambios de un componente
             serviceAdmin.getComponentesByName($routeParams.name).success(function (data) {
                 for (var i = 0; i < data.length; i++) {
                     if(data[i].idVersion != $scope.idVersion){
@@ -61,7 +61,7 @@
             }).error(function (err) {
                 console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
             });
-            
+            */
 
             $scope.titulo = 'Editar Componente';
             $scope.labelcreate = 'Modificar';

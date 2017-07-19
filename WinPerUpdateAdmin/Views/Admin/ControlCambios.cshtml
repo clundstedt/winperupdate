@@ -1,0 +1,212 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Control de Cambios</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Admin#/">Versiones</a></li>
+                <li><a href="/Admin#/EditVersion/{{idVersion}}">Versión {{version.Release}}</a></li>
+                <li class="active">Control de Cambios</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="msgSuccess != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="controlCambios != null">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-danger" ng-click="ShowMdlDeleteControlCambios()"><i class="fa fa-trash"></i>Eliminar</button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Formulario Control de Cambios
+                </div>
+                <div class="panel-body">
+                    <form name="frmCC">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Módulo"><i class="fa fa-cube fa-fw"></i></span>
+                                        <select class="form-control" ng-disabled="controlCambios != null" name="modulo" required ng-model="formData.modulo" ng-options="modulo.idModulo as modulo.NomModulo for modulo in modulos">
+                                            <option value="">Seleccione Módulo</option>
+                                        </select>
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmCC.modulo.$error.required && frmCC.modulo.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Release de Mantenimiento"><i class="fa fa-tablet fa-fw"></i></span>
+                                        <input id="releaseman" type="text" name="releaseman" required class="form-control" ng-model="formData.release" placeholder="Release de Mantenimiento" />
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmCC.releaseman.$error.required && frmCC.releaseman.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Numero de Tips"><i class="fa fa-sort-numeric-asc fa-fw"></i></span>
+                                        <input id="tips" type="text" name="tips" ng-disabled="controlCambios != null" required class="form-control" ng-model="formData.tips" placeholder="N° de Tips" />
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmCC.tips.$error.required && frmCC.tips.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Descripción"><i class="fa fa-comment fa-fw"></i></span>
+                                        <textarea id="desccc" rows="15" name="desccc" required cols="20" class="form-control" ng-model="formData.desccc" placeholder="Descripción"></textarea>
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmCC.desccc.$error.required && frmCC.desccc.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon" title="Impacto de la Modificación"><i class="fa fa-braille fa-fw"></i></span>
+                                        <input type="text" name="impacto" required="required" class="form-control" ng-model="formData.impacto" placeholder="Impacto de la Modificación" />
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmCC.impacto.$error.required && frmCC.impacto.$touched">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                Seleccione Documentos.
+                                <input type="file" nv-file-select="" uploader="uploader" multiple /><br />
+                                <span class="error_ingreso" ng-show="uploader.queue.length == 0 && controlCambios == null">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Debe agregar los documentos correspondientes.
+                                </span>
+                                <table class="table" ng-hide="uploader.queue.length == 0 && controlCambios == null">
+                                    <thead>
+                                        <tr>
+                                            <th width="25%">Nombre</th>
+                                            <th ng-show="uploader.isHTML5">Tamaño</th>
+                                            <th ng-show="uploader.isHTML5">Progreso</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="file in controlCambios.DocCambios">
+                                            <td>{{file}}</td>
+                                            <td></td>
+                                            <td style="width: 35%;">
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': 100 + '%' }"></div>
+                                                </div>
+                                            </td>
+                                            <td><i class="glyphicon glyphicon-ok"></i>OK!</td>
+                                            <td style="width: 10%;">
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="ShowMdlDeleteDocCambios(file)">
+                                                    <span class="glyphicon glyphicon-trash"></span> Eliminar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="item in uploader.queue">
+                                            <td>
+                                                <strong>{{ item.file.name }}</strong>
+                                            </td>
+                                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                            <td ng-show="uploader.isHTML5" style="width: 35%;">
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i>OK!</span>
+                                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i>Cancelado!</span>
+                                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i>Error!</span>
+                                            </td>
+                                            <td style="width: 10%;">
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                    <span class="glyphicon glyphicon-trash"></span> Eliminar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" ng-show="controlCambios == null" ng-click="frmCC.$valid && uploader.queue.length > 0 && uploader.uploadAll()">
+                            Agregar
+                        </button>
+                        <button class="btn btn-primary btn-block" ng-show="controlCambios != null" ng-click="frmCC.$valid && ModificarControlCambios()">
+                            <i class="fa fa-pencil-square-o"></i>Modificar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mdlDeleteDocCambios" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirme</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar el documento <b>{{DocCambiosEliminar}}</b>?.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="EliminarDocCambios(DocCambiosEliminar)">Confirmar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mdlDeleteControlCambios" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirme</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar el control de cambios por completo?.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="EliminarControlCambios()">Confirmar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

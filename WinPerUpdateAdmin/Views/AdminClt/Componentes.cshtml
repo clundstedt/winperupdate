@@ -1,21 +1,26 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles de la Versi&oacute;n</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/AdminClt#/">Versiones</a></li>
-            <li class="active">Detalle Versi&oacute;n {{version.Release}}</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles de la Versi&oacute;n</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/AdminClt#/">Versiones</a></li>
+                <li class="active">Detalle Versi&oacute;n {{version.Release}}</li>
+            </ol>
         </div>
     </div>
-</div>
-<br/>
-<div class="container">
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <p>
+        {{version.Comentario}}
+    </p>
     <div class="row">
         <div class="alert alert-info" ng-controller="controllerHome">
             <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> AVISO:</strong> Puede hacer seguimiento de las tareas agendadas haciendo click en  <button ng-click="ShowDetalleTarea(userSession.Cliente.Id, version.IdVersion)" type="button" class="btn btn-info btn-xs">Estado de Tareas</button>.
@@ -28,7 +33,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <div class="btn-toolbar visible-xs-block">
                 <div class="btn-group" role="toolbar">
                     <div class="btn-group" role="group">
@@ -48,10 +53,8 @@
         </div>
     </div>
     <br />
-    <p>
-        {{version.Comentario}}
-    </p>
-    <div class="row">
+
+    <div class="row" ng-controller="controllerHome">
         <div class="col-md-12">
             <h1>Componentes</h1>
             <br />
@@ -75,11 +78,12 @@
                                     </ul>
                                 </div>
                             </div>
+                            
                             <div class="panel-footer text-right" ng-init="inficha=true">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group-sm margin-bottom-sm">
-                                            <div class="dropdown" ng-controller="controllerHome" ng-show="isCompBD(ejecutable)">
+                                            <div class="dropdown" ng-show="ejecutable.Name.endsWith('.sql') || ejecutable.Name.endsWith('.SQL')">
                                                 <button class="btn btn-labeled btn-success dropdown-toggle" ng-click="GetAmbientesNoEx(userSession.Cliente.Id, version.IdVersion, ejecutable.Name)" type="button" data-toggle="dropdown">
                                                     <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar en...
                                                     <span class="caret"></span>
@@ -94,27 +98,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a ng-click="ShowDetalle(ejecutable.Comentario)" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
+                                    <a ng-click="ShowDetalle(ejecutable.Comentario)" ng-hide="true" class="btn btn-labeled btn-primary" data-toggle="modal" ng-disabled="formData.estado=='C'">
                                         <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalle Cambio
                                     </a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
 
     <div id="avisocaduca-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                    <h4 class="modal-title">Aviso WinAct</h4>
                 </div>
                 <div class="modal-body">
-                    Esta versión se encuentra caducada. WinperUpdate no permitirá publicarla en este ambiente.
+                    Esta versión se encuentra caducada. WinAct no permitirá publicarla en este ambiente.
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -131,15 +137,17 @@
                     <h4 class="modal-title">Confirmar Publicaci&oacute;n</h4>
                 </div>
                 <div class="modal-body">
-                    A continuación se proceder&aacute; a publicar en el ambiente <b>{{nombreambiente}}</b>. Una vez publicado
-                    Winper Update comenzar&aacute; a instalar la versi&oacute;n <b>{{version.Release}}</b> en cada una de las estaciones
-                    de trabajo en que se encuentre activado Winper Update.<br /><br />
+                    A continuación se proceder&aacute; a publicar en el ambiente <b>{{nombreambiente}}</b>. Una vez publicado,
+                    WinAct comenzar&aacute; a instalar la versi&oacute;n <b>{{version.Release}}</b> en cada una de las estaciones
+                    de trabajo en que se encuentre activado WinActUI.<br /><br />
                     Confirma que desea publicar la Versi&oacute;n ?
                 </div>
                 <div class="modal-footer">
-                    <span style="color: red">{{mensaje}}</span>
+                    <div class="pull-left">
+                        <span style="color: red">{{mensaje}}</span>
+                    </div>
                     <button class="btn btn-danger" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
-                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-default" data-dismiss="modal" ng-click="mensaje = ''">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -150,10 +158,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                    <h4 class="modal-title">Aviso WinAct</h4>
                 </div>
                 <div class="modal-body">
-                    WinperUpdate ha detectado que en este ambiente <b>NO</b> se encuentra instalada la versión anterior. Primero debe 
+                    WinAct ha detectado que en este ambiente <b>NO</b> se encuentra instalada la versión anterior. Primero debe
                     liberar la versión anterior a esta para continuar.
                 </div>
                 <div class="modal-footer">
@@ -188,8 +196,8 @@
                     <h4 class="modal-title">Confirmar Ejecución</h4>
                 </div>
                 <div class="modal-body">
-                    A continuación se procederá a ejecutar el script <b>{{nombrearchExSQL}}</b> de la versión <b>{{version.Release}}</b> en el 
-                    ambiente <b>{{nombreambienteExSQL}}</b>, esta tarea <b>NO</b> es inmediata, debe esperar a que WinperUpdate la realice.
+                    A continuación se procederá a ejecutar el script <b>{{nombrearchExSQL}}</b> de la versión <b>{{version.Release}}</b> en el
+                    ambiente <b>{{nombreambienteExSQL}}</b>, esta tarea <b>NO</b> es inmediata, debe esperar a que WinAct la realice.
                     Si desea ejecutar usted el script, puede copiarlo haciendo click en la opción <b>Ver Script</b>.
                     <textarea class="form-control" ng-show="showScript" ng-model="txtarea" rows="15"></textarea>
                 </div>
@@ -208,7 +216,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                    <h4 class="modal-title">Aviso WinAct</h4>
                 </div>
                 <div class="modal-body">
                     {{msgAvisoExSQL}}
@@ -225,7 +233,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Aviso WinperUpdate</h4>
+                    <h4 class="modal-title">Aviso WinAct</h4>
                 </div>
                 <div class="modal-body">
                     {{msgAvisoExSQL}}
@@ -245,10 +253,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Confirmación WinperUpdate</h4>
+                    <h4 class="modal-title">Confirmación WinAct</h4>
                 </div>
                 <div class="modal-body">
-                    Usted optó por la ejecución manual del script, WinperUpdate asumirá que este script lo ejecutó
+                    Usted optó por la ejecución manual del script, WinAct asumirá que este script lo ejecutó
                     directamente en la base de datos de Winper. Si ocurrió un error durante la ejecución manual, puede
                     reportarlo desde la opción <b>Estado de Tareas</b>
                 </div>
@@ -341,22 +349,21 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <span class="error_ingreso" ng-show="actAvisoTareasNoReportadas">
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No hay tareas que reportar.
-                    </span>
-                    <span class="error_ingreso" ng-show="actErrorTextArea">
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Debe escribir el error en el área de texto.
-                    </span>
+                    <div class="pull-left">
+                        <span class="error_ingreso" ng-show="actAvisoTareasNoReportadas">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No hay tareas que reportar.
+                        </span>
+                        <span class="error_ingreso" ng-show="actErrorTextArea">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Debe escribir el error en el área de texto.
+                        </span>
+                    </div>
                     <button class="btn btn-info" ng-click="ReportarTodasTareas()" ng-disabled="labelReportarTodasTareas=='Reportados' || labelReportarTodasTareas=='Enviando...' || labelReportar=='Enviando...'">
-                    {{labelReportarTodasTareas}}
+                        {{labelReportarTodasTareas}}
                     </button>
                     <button class="btn btn-default" ng-click="actAvisoTareasNoReportadas = false; actErrorTextArea = false;" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-
-
 

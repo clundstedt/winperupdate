@@ -38,6 +38,14 @@
             templateUrl: '/Admin/EditComponente',
             controller: 'editcomponente'
         }).
+        when('/ControlCambios/:idVersion', {
+            templateUrl: '/Admin/ControlCambios',
+            controller: 'controlcambios'
+        }).
+        when('/ControlCambios/:idVersion/:tips/:modulo', {
+            templateUrl: '/Admin/ControlCambios',
+            controller: 'controlcambios'
+        }).
         otherwise({
             redirectTo: '/'
         });

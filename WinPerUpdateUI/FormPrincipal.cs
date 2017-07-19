@@ -173,7 +173,7 @@ namespace WinPerUpdateUI
                         "REG ADD \"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v  WinperUpdate /t REG_SZ /d \"" +exe+"\"  /f >> regUI.log"
                         });
                     }
-                    var pas = Utils.ShowDialogInput(string.Format("Se procederá a configurar WinperUpdate en el arranque de Windows.\nEscriba la clave para el usuario {0}", Environment.UserName), "Clave de Usuario", true);
+                    var pas = Utils.ShowDialogInput(string.Format("Se procederá a configurar WinAct en el arranque de Windows.\nEscriba la clave para el usuario {0}", Environment.UserName), "Clave de Usuario", true);
 
                     if (string.IsNullOrEmpty(pas))
                     {
@@ -539,16 +539,8 @@ namespace WinPerUpdateUI
                         }
                     }
                 }
-
-
-                //var comm = conn.CreateCommand();
-                //comm.CommandType = CommandType.Text;
-                //comm.CommandText = query;
-                //comm.ExecuteNonQuery();
-
                 conn.Close();
-
-                //ProcessMsg.Tareas.SetEstadoTarea(idTarea, 1, "");
+                
                 Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#1#OK#");
 
                 return true;
@@ -558,10 +550,8 @@ namespace WinPerUpdateUI
                 conn.Close();
 
                 var msg = "Error al abrir la conexion" + ex.Message + ".";
-                //ProcessMsg.Tareas.SetEstadoTarea(idTarea, 2, ex.Message);
                 Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#2#" + ex.Message + "#");
                 Utils.RegistrarLog("EjecutarQuery.log", ex.ToString());
-                //throw new Exception(msg, ex);
             }
 
             return false;
@@ -649,16 +639,19 @@ namespace WinPerUpdateUI
         {
             if (e.Error != null)
             {
-                MessageBox.Show(string.Format("Ocurrio un error durante la recepción del archivo.\n\n{0}", e.Error.Message), "ERROR WinperUpdate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(string.Format("Ocurrio un error durante la recepción del archivo.\n\n{0}", e.Error.Message), "ERROR WinperUpdate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Utils.RegistrarLog("WorkerDoWork.log", e.Error.ToString());
+                notifyIcon2.Text = "Winper Update (Error en Descarga)";
             }
             else if (e.Cancelled)
             {
                 MessageBox.Show("Se ha cancelado la recepcion del archivo", "CANCELADO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                ServerInAccept = true;
             }
             else
             {
                 notifyIcon2.Text = "Winper Update";
+                ServerInAccept = true;
             }
         }
 
@@ -670,6 +663,7 @@ namespace WinPerUpdateUI
 
         private void timerUI_Tick(object sender, EventArgs e)
         {
+            if(ServerInAccept)
             BwUpdate.RunWorkerAsync();
         }
 
@@ -698,6 +692,7 @@ namespace WinPerUpdateUI
 
         private void timerPing_Tick(object sender, EventArgs e)
         {
+            if(ServerInAccept)
             workerPing.RunWorkerAsync();
         }
 

@@ -24,7 +24,8 @@ namespace WinperUpdateStrCon
                 MessageBox.Show("Campo 'String de Conexión' se encuentra vacío","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
-            TxtStrConEnc.Text = Encriptar(TxtStrCon.Text);
+            if (RdbBase.Checked) TxtStrConEnc.Text = Encriptar(TxtStrCon.Text);
+            else TxtStrConEnc.Text = G_Encripta(TxtStrCon.Text);
         }
 
         private void BtnSelCop_Click(object sender, EventArgs e)
@@ -55,7 +56,8 @@ namespace WinperUpdateStrCon
                     MessageBox.Show("Campo 'String de Conexión' se encuentra vacío", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                TxtStrConEnc.Text = DesEncriptar(TxtStrCon.Text);
+                if (RdbBase.Checked) TxtStrConEnc.Text = DesEncriptar(TxtStrCon.Text);
+                else TxtStrConEnc.Text = G_Desencripta(TxtStrCon.Text);
             }
             catch (FormatException fex)
             {
@@ -78,6 +80,28 @@ namespace WinperUpdateStrCon
             //result = System.Text.Encoding.Unicode.GetString(decryted, 0, decryted.ToArray().Length);
             result = System.Text.Encoding.Unicode.GetString(decryted);
             return result;
+        }
+
+        public static string G_Encripta(string palabra)
+        {
+            string strRes = "";
+            var arr = palabra.ToCharArray().Select(x => Convert.ToInt32(x));
+            foreach (var x in arr)
+            {
+                strRes += (((127 * 3) + x) + (x % 2 != 0 ? 127 : -127));
+            }
+            return strRes;
+        }
+
+        public static string G_Desencripta(string hash)
+        {
+            string str = "";
+            for (int i = 0; i < hash.Length; i += 3)
+            {
+                var n = int.Parse(hash.Substring(i, 3));
+                str += Convert.ToChar((n - (127 * 3) + (n % 2 == 0 ? 127 : -127)));
+            }
+            return str;
         }
 
     }

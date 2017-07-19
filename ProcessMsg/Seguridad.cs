@@ -51,6 +51,7 @@ namespace ProcessMsg
             var consulta = new CnaUsuarioById();
             try
             {
+                int a = 0;
                 var dr = consulta.Execute(id);
                 while (dr.Read())
                 {
@@ -59,6 +60,7 @@ namespace ProcessMsg
                         Id = int.Parse(dr["IdUsuarios"].ToString()),
                         CodPrf = int.Parse(dr["CodPrf"].ToString()),
                         EstUsr = dr["EstUsr"].ToString()[0],
+                        NombrePerfil = dr["NombrePerfil"].ToString(),
                         Persona = new Model.PersonaBo
                         {
                             Id = int.Parse(dr["idPersonas"].ToString()),
@@ -67,9 +69,9 @@ namespace ProcessMsg
                             Mail = dr["Mail"].ToString()
                         }
                     };
-                    if (dr["idClientes"] != DBNull.Value)
+                    if (int.TryParse(dr["idClientes"].ToString(), out a))
                     {
-                        obj.Cliente = Cliente.GetClientes().SingleOrDefault(x => x.Id == int.Parse(dr["idClientes"].ToString()));
+                        obj.Cliente = Cliente.GetClientes().SingleOrDefault(x => x.Id == a);
                     }
                 }
                 dr.Close();

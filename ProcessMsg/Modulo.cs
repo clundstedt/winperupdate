@@ -11,6 +11,36 @@ namespace ProcessMsg
     public class Modulo
     {
         #region Gets
+
+        public static List<Model.ModuloBo> GetModulosBySuites(string suites)
+        {
+            try
+            {
+                List<Model.ModuloBo> lista = new List<Model.ModuloBo>();
+                var r = new CnaModulo().ExecuteBySuites(suites);
+                while (r.Read())
+                {
+                    lista.Add(new Model.ModuloBo
+                    {
+                        idModulo = int.Parse(r["idModulo"].ToString()),
+                        NomModulo = r["NomModulo"].ToString(),
+                        Descripcion = r["Descripcion"].ToString(),
+                        isCore = bool.Parse(r["isCore"].ToString()),
+                        Directorio = r["Directorio"].ToString(),
+                        Estado = char.Parse(r["Estado"].ToString()),
+                        Suite = int.Parse(r["Suite"].ToString())
+                    });
+                }
+                r.Close();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
         public static List<Model.ModuloBo> GetModulosBySuite(int idSuite)
         {
             try

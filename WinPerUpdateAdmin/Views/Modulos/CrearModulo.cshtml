@@ -176,7 +176,7 @@
                             <tbody>
                                 <tr ng-repeat="componente in displayComponentes" class="row-tabla" style="height: 20px;">
                                     <td style="vertical-align: middle;">
-                                        <input type="text" class="form-control" placeholder="Nombre" ng-model="componente.Nombre" />
+                                        <input type="text" class="form-control input-sm" placeholder="Nombre" ng-model="componente.Nombre" />
                                     </td>
                                     <td style="vertical-align: middle;">
                                         <a href="" ng-hide="componente.VerDescripcion" ng-click="componente.VerDescripcion = true">Ver y Editar Descripción</a>
@@ -185,7 +185,7 @@
                                     </td>
                                     <td style="vertical-align: middle;">
                                         <div class="input-group margin-bottom-sm">
-                                            <select class="form-control" ng-model="componente.TipoComponentes.idTipoComponentes" ng-options="tipo.idTipoComponentes as tipo.Nombre for tipo in tipocomponentes">
+                                            <select class="form-control input-sm" ng-model="componente.TipoComponentes.idTipoComponentes" ng-options="tipo.idTipoComponentes as tipo.Nombre for tipo in tipocomponentes">
                                                 <option value="">Tipo de Componente</option>
                                             </select>
                                         </div>
@@ -193,12 +193,12 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <button class="btn btn-labeled btn-info" ng-disabled="componente.LblModificar != 'Modificar'" ng-click="ModificarComponentesModulos(componente)">
+                                                <button class="btn btn-labeled btn-info btn-xs" ng-disabled="componente.LblModificar != 'Modificar'" ng-click="ModificarComponentesModulos(componente)">
                                                     <span class="btn-label"><span class="fa fa-{{componente.LblModificar != 'Modificar' ? componente.LblModificar == 'Modificando...' ? 'circle-o-notch fa-spin' : 'check' : 'pencil'}}"></span></span>{{componente.LblModificar}}
                                                 </button>
                                             </div>
                                             <div class="col-md-6">
-                                                <button class="btn btn-labeled btn-danger" ng-click="EliminarComponentesModulos(componente)">
+                                                <button class="btn btn-labeled btn-danger btn-xs" ng-click="EliminarComponentesModulos(componente)">
                                                     <span class="btn-label"><span class="fa fa-{{componente.LblEliminar == 'Eliminar' ? 'trash' : 'spinner fa-pulse'}}"></span></span>{{componente.LblEliminar}}
                                                 </button>
                                             </div>
@@ -307,7 +307,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <label><input type="checkbox" ng-model="formTipoComp.iscompbd" /> Es componente de Base de Datos <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
+                                    <label><input type="checkbox" ng-model="formTipoComp.iscompbd" /> Es componente de Base de Datos. <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
                                     <script>
                                         $(document).ready(function () {
                                             $('[data-toggle="tooltip"]').tooltip();
@@ -321,7 +321,21 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <label><input type="checkbox" ng-model="formTipoComp.iscompdll" /> Es componente DLL <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
+                                    <label><input type="checkbox" ng-model="formTipoComp.iscompdll" /> Es componente DLL. <a href="" data-toggle="tooltip" title="Esta opción hará que el componente sea pre-requisito para poder publicar una versión en un ambiente."><i class="fa fa-question-circle"></i></a></label>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('[data-toggle="tooltip"]').tooltip();
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label><input type="checkbox" ng-model="formTipoComp.iscompcambios" /> Es componente de control de cambios. <a href="" data-toggle="tooltip" title="Esta opción hará que el componente al momento de la instalación de Winper, se sitúe en el directorio 'info'."><i class="fa fa-question-circle"></i></a></label>
                                     <script>
                                         $(document).ready(function () {
                                             $('[data-toggle="tooltip"]').tooltip();

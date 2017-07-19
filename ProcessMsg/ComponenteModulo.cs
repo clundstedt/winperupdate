@@ -24,7 +24,8 @@ namespace ProcessMsg
                         Nombre = reader["Nombre"].ToString(),
                         isCompBD = bool.Parse(reader["isCompBD"].ToString()),
                         isCompDLL = bool.Parse(reader["isCompDLL"].ToString()),
-                        Extensiones = reader["Extensiones"].ToString()
+                        Extensiones = reader["Extensiones"].ToString(),
+                        isCompCambios = bool.Parse(reader["isCompCambios"].ToString())
                     });
                 }
 
@@ -97,7 +98,8 @@ namespace ProcessMsg
                             Nombre = reader["NombreTipo"].ToString(),
                             isCompBD = bool.Parse(reader["isCompBD"].ToString()),
                             isCompDLL = bool.Parse(reader["isCompDLL"].ToString()),
-                            Extensiones = reader["Extensiones"].ToString()
+                            Extensiones = reader["Extensiones"].ToString(),
+                            isCompCambios = bool.Parse(reader["isCompCambios"].ToString())
                         }
                     });
                 }
@@ -130,7 +132,8 @@ namespace ProcessMsg
                             Nombre = reader["NombreTipo"].ToString(),
                             isCompBD = bool.Parse(reader["isCompBD"].ToString()),
                             isCompDLL = bool.Parse(reader["isCompDLL"].ToString()),
-                            Extensiones = reader["Extensiones"].ToString()
+                            Extensiones = reader["Extensiones"].ToString(),
+                            isCompCambios = bool.Parse(reader["isCompCambios"].ToString())
                         }
                     });
                 }
@@ -157,7 +160,8 @@ namespace ProcessMsg
                         Nombre = reader["Nombre"].ToString(),
                         isCompBD = bool.Parse(reader["isCompBD"].ToString()),
                         isCompDLL = bool.Parse(reader["isCompDLL"].ToString()),
-                        Extensiones = reader["Extensiones"].ToString()
+                        Extensiones = reader["Extensiones"].ToString(),
+                        isCompCambios = bool.Parse(reader["isCompCambios"].ToString())
                     });
                 }
                 reader.Close();
@@ -169,6 +173,10 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+        /// <summary>
+        /// Obtiene una lista con todos los componentes de los modulos vigentes y principales del sistema, ademas con su respectivo directorio.
+        /// </summary>
+        /// <returns></returns>
         public static List<Model.ComponenteModuloBo> GetComponentesConDirectorio()
         {
             List<Model.ComponenteModuloBo> lista = new List<Model.ComponenteModuloBo>();
@@ -195,6 +203,69 @@ namespace ProcessMsg
                 return lista;
             }
             catch(Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        /// <summary>
+        /// Obtiene un componente y su respectivo directorio segun su ID.
+        /// No hace excepciones si el modulo al que corresponde es principal del sistema o esta vigente o no vigente.
+        /// </summary>
+        /// <param name="idComp"></param>
+        /// <returns></returns>
+        public static Model.ComponenteModuloBo GetComponentesConDirectorio(int idComp)
+        {
+            try
+            {
+                Model.ComponenteModuloBo comp = null;
+                var reader = new CnaComponenteModulo().ExecuteConDirectorio(idComp);
+                while (reader.Read())
+                {
+                    comp = new Model.ComponenteModuloBo
+                    {
+                        idComponentesModulos = int.Parse(reader["idComponentesModulos"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        Modulo = int.Parse(reader["Modulos"].ToString()),
+                        TipoComponentes = GetTipoComponentes().SingleOrDefault(x => x.idTipoComponentes == int.Parse(reader["TipoComponentes"].ToString())),
+                        Directorio = reader["Directorio"].ToString(),
+                        NomModulo = reader["NomModulo"].ToString()
+                    };
+                }
+                reader.Close();
+                return comp;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static List<Model.ComponenteModuloBo> GetComponentesConDirectorioByModulo(int idModulo)
+        {
+            try
+            {
+                List<Model.ComponenteModuloBo> comp = new List<Model.ComponenteModuloBo>();
+                var reader = new CnaComponenteModulo().ExecuteConDirectorioByModulo(idModulo);
+                while (reader.Read())
+                {
+                    comp.Add(new Model.ComponenteModuloBo
+                    {
+                        idComponentesModulos = int.Parse(reader["idComponentesModulos"].ToString()),
+                        Nombre = reader["Nombre"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        Modulo = int.Parse(reader["Modulos"].ToString()),
+                        TipoComponentes = GetTipoComponentes().SingleOrDefault(x => x.idTipoComponentes == int.Parse(reader["TipoComponentes"].ToString())),
+                        Directorio = reader["Directorio"].ToString(),
+                        NomModulo = reader["NomModulo"].ToString()
+                    });
+                }
+                reader.Close();
+                return comp;
+            }
+            catch (Exception ex)
             {
                 var msg = "Excepcion Controlada: " + ex.Message;
                 throw new Exception(msg, ex);
@@ -241,11 +312,11 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-        public static int AddTipoComponentes(string Nombre, bool isCompBD, bool isCompDLL, string Extensiones)
+        public static int AddTipoComponentes(string Nombre, bool isCompBD, bool isCompDLL, string Extensiones, bool isCompCambios)
         {
             try
             {
-                return new AddComponenteModulo().ExecuteTipoComponentes(Nombre, isCompBD, isCompDLL, Extensiones);
+                return new AddComponenteModulo().ExecuteTipoComponentes(Nombre, isCompBD, isCompDLL, Extensiones, isCompCambios);
             }
             catch(Exception ex)
             {
@@ -270,11 +341,11 @@ namespace ProcessMsg
             }
         }
 
-        public static int UpdTipoComponentes(int idTipoComponentes, string Nombre, string Extensiones, bool isCompBD, bool isCompDLL)
+        public static int UpdTipoComponentes(int idTipoComponentes, string Nombre, string Extensiones, bool isCompBD, bool isCompDLL, bool isCompCambios)
         {
             try
             {
-                return new UpdComponenteModulo().ExecuteTipoComponente(idTipoComponentes, Nombre, Extensiones, isCompBD, isCompDLL);
+                return new UpdComponenteModulo().ExecuteTipoComponente(idTipoComponentes, Nombre, Extensiones, isCompBD, isCompDLL, isCompCambios);
             }
             catch(Exception ex)
             {

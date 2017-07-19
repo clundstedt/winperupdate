@@ -83,7 +83,10 @@
                 return data;
             }
 
-
+            $scope.ShowMdlMotivo = function () {
+                $("#delete-modal").modal('toggle');
+                $("#mdlMotivo").modal('show');
+            }
             //se debe llamar una vez que se seleccione una suite y hay que hacer la busqueda por de modulo by suite
             $scope.CargarModulosBySuite = function (suite) {
                 if (!(suite === null)) {
@@ -103,7 +106,6 @@
                         $scope.formData.modulos.push($scope.modulosWinper[i]);
                     }
                 }
-                console.log($scope.modulosWinper);
             }
 
             $scope.LimpiarSeleccionados = function (formData) {
@@ -265,7 +267,7 @@
                     });
                 }
                 else {
-                    serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.mescon, formData.correlativo).success(function (data) {
+                    serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
                         $scope.increate = true;
                         $scope.labelcreate = "Modificar";
                         serviceClientes.addModuloCliente($scope.idCliente, $scope.formData.modulos).success(function (data) {
@@ -292,13 +294,14 @@
                 });
             }
 
-            $scope.Eliminar = function (est) {
+            $scope.Eliminar = function (est, motivo) {
                 $scope.msgSuccess = "";
-                serviceClientes.delCliente($scope.idCliente, est).success(function (data) {
+                serviceClientes.delCliente($scope.idCliente, est, motivo).success(function (data) {
                     $scope.formData.estado = est;
                     $scope.msgError = "";
                     $scope.msgSuccess = "Cambios realizados exitosamente!.";
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
+                    if(est == 'C')$("#mdlMotivo").modal('toggle');
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -343,7 +346,13 @@
                 }
             }
 
-
+            $scope.SeleccionDesdeSuite = function (suite) {
+                serviceClientes.getModulosDesdeSuite(suite).success(function (data) {
+                    $scope.formData.modulos = data;
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                });
+            }
         }
 
     }

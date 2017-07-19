@@ -13,6 +13,9 @@
         activate();
 
         function activate() {
+
+            
+
             $scope.msgError = "";
 
             $scope.version = {};
@@ -45,44 +48,30 @@
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idversion = $routeParams.idVersion;
-                $scope.titulo = "Modificar Versión";
-                $scope.labelcreate = "Modificar";
 
                 serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
-                    //console.log(JSON.stringify(cliente));
                     serviceAdmin.getAmbientes(cliente.Id, $scope.idversion).success(function (ambiente) {
-                        $scope.ambientes = ambiente;
+                        serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (dataVersion) {
+                            serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
+                                for (var i = 0; i < data.length; i++) {
+                                    var datos = {
+                                        Tipo: data[i]
+                                    }
+                                    $scope.TipoComponentes.push(datos);
+                                }
+                                $scope.msgError = "";
+                                $scope.version = dataVersion;
+                                $scope.ambientes = ambiente;
+                            }).error(function (err) {
+                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            });
+                        }).error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        });
                     }).
                     error(function (err) {
                         console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                     });
-
-                    serviceAdmin.existeTareaAtrasada(cliente.Id, $scope.idversion).success(function (data) {
-                        $scope.existeTareaAtrasada = data;
-                    }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    });
-
-                    serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (data) {
-                        $scope.version = data;
-                        console.log($scope.version);
-
-                    }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    });
-                    $scope.msgError = "";
-                }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                });
-
-                serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var datos = {
-                            Tipo: data[i]
-                        }
-                        $scope.TipoComponentes.push(datos);
-                    }
-                    $scope.msgError = "";
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
                 });
@@ -107,11 +96,6 @@
                 });
             }
 
-            $scope.isCompBD = function (ejecutable) {
-                var split = ejecutable.Name.split('.');
-                var ext = split[split.length - 1];
-                return ext == "sql";
-            }
 
             $scope.EjecutadoEnPruebas = function (idAmbientes, paso)
             {
@@ -229,6 +213,8 @@
             }
 
             $scope.ShowDetalleTarea = function (idCliente, idVersion) {
+                $scope.actAvisoTareasNoReportadas = false;
+                $scope.actErrorTextArea = false;
                 serviceAdmin.detalleTareas(idCliente, idVersion).success(function (data) {
                     $scope.detalleTareas = data;
                     $scope.msgError = "";
@@ -259,7 +245,7 @@
                                         $scope.estaVigente = false;
                                         $("#publish-modal").modal('show');
                                     } else {
-                                        $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinperUpdate o de forma manual.";
+                                        $scope.msgAvisoExSQL = "En este ambiente aun no se ejecutan los script SQL correspondientes. Estos script se pueden ejecutar de manera automática a través de WinAct o de forma manual.";
                                         $("#avisoexsql-modal").modal('show');
                                     }
                                     $scope.msgError = "";
@@ -269,7 +255,7 @@
                             } else {
                                 $scope.nombreambiente = nombre;
                                 $scope.idAmbiente = id;
-                                $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinperUpdate debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
+                                $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinAct debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
                                 $("#confpub-modal").modal('show');
                             }
                         } else {
@@ -283,14 +269,22 @@
                 }
             }
 
-            $scope.ShowConfirmEjecSQL = function (id, nombre,modulo,  nombrearch, idClt, CodPrf) {
-                $scope.idAmbienteExSQL = id;
-                $scope.nombreambienteExSQL = nombre;
-                $scope.moduloExSQL = modulo;
-                $scope.nombrearchExSQL = nombrearch;
-                $scope.idcltExSQL = idClt;
-                $scope.codprfExSQL = CodPrf;
-                $("#ejecsql-modal").modal('show');
+            $scope.ShowConfirmEjecSQL = function (id, nombre, modulo, nombrearch, idClt, CodPrf) {
+                serviceAdmin.getCheckInstall($scope.idversion, $scope.idUsuario, id).success(function (dataCheck) {
+                    if (dataCheck) {
+                        $scope.idAmbienteExSQL = id;
+                        $scope.nombreambienteExSQL = nombre;
+                        $scope.moduloExSQL = modulo;
+                        $scope.nombrearchExSQL = nombrearch;
+                        $scope.idcltExSQL = idClt;
+                        $scope.codprfExSQL = CodPrf;
+                        $("#ejecsql-modal").modal('show');
+                    } else {
+                        $("#checkins-modal").modal('show');
+                    }
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                });
             }
 
             $scope.EjecutarTareaSQL = function (idVersion, Estado) {
@@ -302,7 +296,7 @@
                                 if (Estado == 3) {
                                     $scope.msgAvisoExSQL = "WinperUpdate procederá a descargar el script en su ordenador dentro de unos segundos, usted debe ejecutarlo directamente en la base de datos. Si necesita descargar nuevamente el archivo puede hacerlo de la opción Estado de Tareas";
                                 } else {
-                                    $scope.msgAvisoExSQL = "El script ya fue programado, WinperUpdate procederá a ejecutarlo en el ambiente seleccionado. Si usted confirmó la ejecución manual comenzará la descarga del archivo.";
+                                    $scope.msgAvisoExSQL = "El script ya fue programado, WinAct procederá a ejecutarlo en el ambiente seleccionado. Si usted confirmó la ejecución manual comenzará la descarga del archivo.";
                                 }
                             }
                             $scope.msgError = "";

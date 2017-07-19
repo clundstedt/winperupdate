@@ -116,12 +116,12 @@
             return promise;
         }
 
-        function addComponentesDir(lista) {
+        function addComponentesDir(idModulo, lista) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/Modulo/ComponentesDir',
+                url: '/api/Modulo/ComponentesDir/'+idModulo,
                 type: "POST",
                 dataType: 'text',
                 contentType: "application/json",
@@ -303,17 +303,19 @@
             return promise;
         }
 
-        function updTipoComponente(idtipocomponente, nombre, extensiones, bd, dll) {
+        function updTipoComponente(idtipocomponente, nombre, extensiones, bd, dll, cambios) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             var tipoComp = {
+                idTipoComponentes: idtipocomponente,
                 Nombre: nombre,
                 Extensiones: extensiones,
                 isCompBD: bd,
-                isCompDLL: dll
+                isCompDLL: dll,
+                isCompCambios: cambios
             };
             $.ajax({
-                url: 'api/TipoComponentes/' + idtipocomponente,
+                url: '/api/TipoComponentes/' + idtipocomponente,
                 type: "PUT",
                 dataType: 'Json',
                 data: tipoComp,
@@ -349,7 +351,7 @@
             var promise = deferred.promise;
 
             $.ajax({
-                url: 'api/Modulo/'+idModulo+'/Vigente',
+                url: '/api/Modulo/'+idModulo+'/Vigente',
                 type: "PUT",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
@@ -571,14 +573,15 @@
             return promise;
         }
 
-        function addTipoComponentes(nombre, iscompbd, iscompdll, extensiones){
+        function addTipoComponentes(nombre, iscompbd, iscompdll, extensiones, iscompcambios){
             var deferred = $q.defer();
             var promise = deferred.promise;
             var TipoComponentes = {
                 "Nombre": nombre,
                 "isCompBD": iscompbd,
                 "isCompDLL": iscompdll,
-                "Extensiones": extensiones
+                "Extensiones": extensiones,
+                "isCompCambios": iscompcambios
             };
             $.ajax({
                 url: '/api/TipoComponentes',

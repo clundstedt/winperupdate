@@ -96,7 +96,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static bool ExisteTarea(int idCliente, int idAmbiente, int idVersion, string nameFile)
         {
             try
@@ -109,7 +108,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static int Add(ProcessMsg.Model.TareaBo tarea)
         {
             try
@@ -124,7 +122,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static int SetEstadoTarea(int idTareas)
         {
             try
@@ -137,7 +134,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static int SetEstadoTarea(int idTareas, int estado, string msgErr)
         {
             try
@@ -150,7 +146,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static int ReportarTarea(int idTareas)
         {
             try
@@ -163,7 +158,6 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-
         public static int ReportarTodasTareas(int idCliente, int idVersion)
         {
             try

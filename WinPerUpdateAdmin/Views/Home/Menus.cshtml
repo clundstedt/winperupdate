@@ -5,6 +5,7 @@
     {
         if (string.IsNullOrEmpty(item.Submenus))
         {
+            <!--
             <li class="active">
                 <a href="@item.Link">
                     <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
@@ -12,10 +13,12 @@
                     </span>
                     <span class="full-nav" style="font-family: Calibri;font-size: medium;"> <span class="fa @item.Icon"></span> @item.Descripcion </span>
                 </a>
-            </li>
+            </li>-->
+            <li class="active"><a href="@item.Link"><i class="fa @item.Icon fa-2x"></i><span>@item.Descripcion</span></a></li>
         }
         else
         {
+            <!--
             <li class="active">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown"  aria-expanded="false"  >
                     <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
@@ -30,14 +33,27 @@
                     }
                     
                 </ul>
+            </li>-->
+
+            <li class="menu-list act">
+                <a href="#">
+                    <i class="fa @item.Icon"></i>
+                    <span>@item.Descripcion</span>
+                </a>
+                <ul class="sub-menu-list">
+                    @for (int i = 0; i < item.GetSubMenus.GetLength(0); i++)
+                    {
+                        <li><a href="@item.GetSubMenus[i, 1]">@item.GetSubMenus[i, 0]</a></li>
+                    }
+                </ul>
             </li>
         }
-
     }
     else
     {
         if (string.IsNullOrEmpty(item.Submenus))
         {
+            <!--
             <li>
                 <a href="@item.Link">
                     <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
@@ -45,10 +61,12 @@
                     </span>
                     <span class="full-nav" style="font-family: Calibri;font-size: medium;"><span class="fa @item.Icon"></span> @item.Descripcion </span>
                 </a>
-            </li>
+            </li>-->
+            <li><a href="@item.Link"><i class="fa @item.Icon fa-2x"></i><span>@item.Descripcion</span></a></li>
         }
         else
         {
+            <!--
             <li>
                 <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"  title="@item.Descripcion">
                     <span class="small-nav" data-toggle="tooltip" data-placement="right" title="@item.Descripcion">
@@ -62,6 +80,18 @@
                         <li><a href="@item.GetSubMenus[i, 1]">@item.GetSubMenus[i, 0]</a></li>
                     }
 
+                </ul>
+            </li>-->
+            <li class="menu-list">
+                <a href="#">
+                    <i class="fa @item.Icon"></i>
+                    <span>@item.Descripcion</span>
+                </a>
+                <ul class="sub-menu-list">
+                    @for (int i = 0; i < item.GetSubMenus.GetLength(0); i++)
+                    {
+                        <li><a href="@item.GetSubMenus[i, 1]">@item.GetSubMenus[i, 0]</a></li>
+                    }
                 </ul>
             </li>
         }

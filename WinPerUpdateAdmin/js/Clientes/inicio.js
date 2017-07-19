@@ -17,6 +17,8 @@
 
             $scope.clientes = [];
             $scope.all = false;
+            $scope.clienteNoVigente = null;
+
 
             serviceClientes.getClientes().success(function (data) {
                 $scope.clientes = data;
@@ -27,6 +29,15 @@
 
             $scope.GenerarPDF = function () {
                 window.location = '/api/Clientes/PDF';
+            }
+
+            $scope.ShowMdlMotivo = function (id) {
+                serviceClientes.getClienteNoVigente(id).success(function (data) {
+                    $scope.clienteNoVigente = data;
+                    $("#mdlMotivo").modal('show');
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                });
             }
 
         }

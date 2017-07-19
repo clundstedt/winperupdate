@@ -1,28 +1,29 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles Usuario Cliente</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/Clientes#/">Clientes</a></li>
-            <li><a href="/Clientes#/EditCliente/{{idCliente}}">{{cliente.Nombre}}</a></li>
-            <li class="active">Un Usuario</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles Usuario Cliente</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Clientes#/">Clientes</a></li>
+                <li><a href="/Clientes#/EditCliente/{{idCliente}}">{{cliente.Nombre}}</a></li>
+                <li class="active">Un Usuario</li>
+            </ol>
         </div>
     </div>
-</div>
-<div class="row" ng-show="msgSuccess != ''">
-    <div class="col-md-12">
-        <div class="alert alert-success">
-            {{msgSuccess}}
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
+    <div class="row" ng-show="msgSuccess != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
@@ -36,9 +37,15 @@
                     <a ng-click="ReenviarMailBienvenida()" ng-hide="formData.estado=='C' || idUsuario==0" data-toggle="modal" class="btn btn-warning">
                         <span class="fa fa-fw fa-envelope"></span> Re-enviar E-Mail de Bienvenida
                     </a>
+                    
                 </div>
             </div>
-
+            <label class="btn btn-default" ng-show="idUsuario==0">
+                <input type="checkbox" ng-model="formData.versionInicial" autocomplete="off"> Crear versión inicial
+            </label>
+            <label class="btn btn-default" ng-show="formData.versionInicial && idUsuario==0">
+                <input type="checkbox" ng-model="formData.hasDeploy" autocomplete="off"> Agregar Deploy31 a la versión inicial
+            </label>
             <div class="btn-toolbar visible-xs-block">
                 <div class="btn-group" role="toolbar">
                     <div class="btn-group" role="group">

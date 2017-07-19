@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.txtNroLicencia = new System.Windows.Forms.TextBox();
@@ -42,6 +42,7 @@
             this.NomAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DirAmbiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chkPermitirSQL = new System.Windows.Forms.CheckBox();
+            this.FbdDirectorioWinper = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgAmbientes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,22 +122,23 @@
             this.dgAmbientes.Location = new System.Drawing.Point(17, 76);
             this.dgAmbientes.Name = "dgAmbientes";
             this.dgAmbientes.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgAmbientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgAmbientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgAmbientes.Size = new System.Drawing.Size(451, 125);
             this.dgAmbientes.TabIndex = 7;
             this.dgAmbientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dgAmbientes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgAmbientes_CellDoubleClick);
             // 
             // CodAmbiente
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.CodAmbiente.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.CodAmbiente.DefaultCellStyle = dataGridViewCellStyle1;
             this.CodAmbiente.HeaderText = "Codigo";
             this.CodAmbiente.Name = "CodAmbiente";
             this.CodAmbiente.ReadOnly = true;
@@ -144,8 +146,8 @@
             // 
             // NomAmbiente
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.NomAmbiente.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.NomAmbiente.DefaultCellStyle = dataGridViewCellStyle2;
             this.NomAmbiente.HeaderText = "Ambiente";
             this.NomAmbiente.Name = "NomAmbiente";
             this.NomAmbiente.ReadOnly = true;
@@ -203,5 +205,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NomAmbiente;
         private System.Windows.Forms.DataGridViewTextBoxColumn DirAmbiente;
         private System.Windows.Forms.CheckBox chkPermitirSQL;
+        private System.Windows.Forms.FolderBrowserDialog FbdDirectorioWinper;
     }
 }

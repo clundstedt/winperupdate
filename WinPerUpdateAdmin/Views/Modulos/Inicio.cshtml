@@ -48,7 +48,7 @@
         <div class="col-md-12">
             <div class="alert alert-warning" ng-show="modxlsxwarn">
                 <span class="fa fa-exclamation-triangle"></span>
-                ADVERTENCIA: Usted importó módulos desde un Excel. WinperUpdate detectó algunos errores, click
+                ADVERTENCIA: Usted importó módulos desde un Excel. WinAct detectó algunos errores, click
                 <button type="button" class="btn btn-warning btn-sm" ng-click="CargarModXLSX()">AQUÍ</button>
                 para ver el estado.
             </div>
@@ -87,10 +87,10 @@
                                         {{modulo.isCoreFmt}}
                                     </td>
                                     <td style="vertical-align: middle;">
-                                        <label class="btn btn-labeled btn-default">{{modulo.EstadoFmt}}</label>
+                                        <label class="btn btn-labeled btn-default btn-xs">{{modulo.EstadoFmt}}</label>
                                     </td>
                                     <td>
-                                        <a href="/Modulos#/EditarModulo/{{modulo.idModulo}}" class="btn btn-info">
+                                        <a href="/Modulos#/EditarModulo/{{modulo.idModulo}}" class="btn btn-info btn-xs">
                                             <span class="fa fa-pencil"></span>
                                         </a>
                                     </td>

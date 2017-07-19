@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinPerUpdateUI", "WinPerUpd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinperUpdateStrCon", "WinperUpdateStrCon\WinperUpdateStrCon.csproj", "{1CEE3559-0063-4433-9A14-DE1A16E5F75C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessWPUI", "..\ProcessWPUI\ProcessWPUI\ProcessWPUI.csproj", "{FAEA280B-D791-4A08-9179-8E17C6606090}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,10 +57,6 @@ Global
 		{1CEE3559-0063-4433-9A14-DE1A16E5F75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CEE3559-0063-4433-9A14-DE1A16E5F75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CEE3559-0063-4433-9A14-DE1A16E5F75C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAEA280B-D791-4A08-9179-8E17C6606090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAEA280B-D791-4A08-9179-8E17C6606090}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAEA280B-D791-4A08-9179-8E17C6606090}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAEA280B-D791-4A08-9179-8E17C6606090}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

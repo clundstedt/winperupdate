@@ -104,38 +104,51 @@
                 <h4 class="modal-title">Generando Versión Inicial</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Release</label>
-                        <div class="form-group">
-                            <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon" title="Release de la version. Ej: 7.0.0"><i class="fa fa-link fa-fw"></i></span>
-                                <input class="form-control" type="text" name="release" placeholder="Release de la version. Ej: 7.0.0" ng-model="formData.release" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                <form name="frmMain">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Release</label>
+                            <div class="form-group">
+                                <div class="input-group margin-bottom-sm">
+                                    <span class="input-group-addon" title="Release de la version. Ej: 7.0.0"><i class="fa fa-link fa-fw"></i></span>
+                                    <input class="form-control" type="text" name="release" placeholder="Release de la version. Ej: 7.0.0" ng-model="formData.release" required="required" ng-maxlength="100">
+                                </div>
+                                <span class="error_ingreso" ng-show="frmMain.release.$error.required && frmMain.release.$touched">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                </span>
                             </div>
-                            <span class="error_ingreso" ng-show="frmMain.release.$error.required">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
-                            </span>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Descripción</label>
-                        <div class="form-group">
-                            <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon" title="Descripción"><i class="fa fa-comment-o fa-fw"></i></span>
-                                <textarea class="form-control" rows="5" name="descripcion" placeholder="Descripción" ng-model="formData.descripcion" ng-maxlength="2048" ng-model-options="{ updateOn: 'blur' }"></textarea>
-                            </div>
-                            <span class="error_ingreso" ng-show="frmMain.descripcion.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 2048 carácteres
-                            </span>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Descripción</label>
+                            <div class="form-group">
+                                <div class="input-group margin-bottom-sm">
+                                    <span class="input-group-addon" title="Descripción"><i class="fa fa-comment-o fa-fw"></i></span>
+                                    <textarea class="form-control" rows="5" name="descripcion" required="required" placeholder="Descripción" ng-model="formData.descripcion" ng-maxlength="2048"></textarea>
+                                </div>
+                                <span class="error_ingreso" ng-show="frmMain.descripcion.$error.required && frmMain.descripcion.$touched">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.
+                                </span>
+                                <span class="error_ingreso" ng-show="frmMain.descripcion.$error.maxlength">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 2048 carácteres
+                                </span>
 
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="checkbox" ng-checked="true" ng-model="formData.hasdeploy" /> No incorporar Deploy31 en esta versión.
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" ng-click="GenerarVersionInicial(formData)">Generar</button>
+                <span class="error_ingreso pull-left" ng-show="!frmMain.$valid && msgVersionInicial != ''">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgVersionInicial}}
+                </span>
+                <button type="button" class="btn btn-info" ng-click="GenerarVersionInicial(formData, frmMain.$valid)">Generar</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

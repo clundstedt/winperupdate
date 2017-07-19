@@ -116,6 +116,12 @@
     <Compile Include="CheckAdmin.Designer.cs">
       <DependentUpon>CheckAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="CheckSoporte.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheckSoporte.Designer.cs">
+      <DependentUpon>CheckSoporte.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CheckAdmin.resx">
       <DependentUpon>CheckAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheckSoporte.resx">
+      <DependentUpon>CheckSoporte.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

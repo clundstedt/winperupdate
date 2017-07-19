@@ -5,9 +5,9 @@ namespace WinperUpdateDAO
 {
     public class AddVersion : SpDao
     {
-        public int Execute(string numVersion, DateTime fecVersion, char estado, string comentario, string usuario)
+        public int Execute(string numVersion, DateTime fecVersion, char estado, string comentario, string usuario, bool isVersionInicial, bool hasDeploy = false)
         {
-            SpName = @" insert into Versiones (NumVersion, FecVersion, Estado, Comentario, Usuario) values (@numVersion, @fecVersion, @estado, @comentario, @usuario)";
+            SpName = @" insert into Versiones (NumVersion, FecVersion, Estado, Comentario, Usuario, IsVersionInicial, HasDeploy31) values (@numVersion, @fecVersion, @estado, @comentario, @usuario, @isVersionInicial, @hasdeploy)";
             try
             {
                 ParmsDictionary.Add("@numVersion", numVersion);
@@ -15,6 +15,8 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@estado", estado);
                 ParmsDictionary.Add("@comentario", comentario);
                 ParmsDictionary.Add("@usuario", usuario);
+                ParmsDictionary.Add("@isVersionInicial", isVersionInicial);
+                ParmsDictionary.Add("@hasdeploy", hasDeploy);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

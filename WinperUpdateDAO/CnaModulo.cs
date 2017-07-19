@@ -89,5 +89,19 @@ namespace WinperUpdateDAO
                 throw new Exception(msg, ex);
             }
         }
+        public SqlDataReader ExecuteBySuites(string suites)
+        {
+            try
+            {
+                SpName = @"SELECT * FROM modulos WHERE suite IN (@suites) AND isCore = 1 AND Estado = 'V' ORDER BY suite DESC";
+
+                return Connector.ExecuteQuery(SpName.Replace("@suites",suites), ParmsDictionary);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
+        }
     }
 }

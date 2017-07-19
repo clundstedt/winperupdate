@@ -20,7 +20,8 @@ namespace ProcessMsg
                     lista.Add(new Model.SuiteBo
                     {
                         idSuite = int.Parse(read["idSuite"].ToString()),
-                        Nombre = read["Nombre"].ToString()
+                        Nombre = read["Nombre"].ToString(),
+                        Subsuites = read["Subsuites"].ToString()
                     });
                 }
                 read.Close();

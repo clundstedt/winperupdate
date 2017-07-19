@@ -37,10 +37,295 @@
             GenVersionInicial: GenVersionInicial,
             addClientesToVersion: addClientesToVersion,
 
-            getModulosByComponente: getModulosByComponente
+            getModulosByComponente: getModulosByComponente,
+            getModulosVersion: getModulosVersion,
+
+            addControlCambios: addControlCambios,
+            getControlCambios: getControlCambios,
+            getControlCambiosEx: getControlCambiosEx,
+            delDocCambios: delDocCambios,
+            updControlCambios: updControlCambios,
+            delControlCambios: delControlCambios
         };
 
         return service;
+
+
+        function delControlCambios(version, tips, modulo) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/delControlCambios/'+version+'/'+tips+'/'+modulo,
+                type: "DELETE",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function delDocCambios(doc, version, tips, modulo) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/delDocCambios/'+version+'/'+tips+'/'+modulo+'/?doc='+doc,
+                type: "DELETE",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getControlCambiosEx(idVersion, tips, modulo) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/getControlCambios/' + idVersion + '/'+tips + '/'+modulo,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getControlCambios(idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/getControlCambios/'+idVersion,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function addControlCambios(idVersion, idModulo, release, tips, desccc, docCambios, impacto) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var obj = {
+                "Version": idVersion,
+                "Modulo":idModulo,
+                "Release":release,
+                "Tips":tips,
+                "Descripcion":desccc,
+                "DocCambios": docCambios,
+                "Impacto": impacto
+            };
+
+            $.ajax({
+                url: '/api/ControlCambios',
+                type: "POST",
+                dataType: 'Json',
+                data: obj,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function updControlCambios(idVersion, idModulo, release, tips, desccc, docCambios, impacto) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var obj = {
+                "Version": idVersion,
+                "Modulo": idModulo,
+                "Release": release,
+                "Tips": tips,
+                "Descripcion": desccc,
+                "DocCambios": docCambios,
+                "Impacto": impacto
+            };
+
+            $.ajax({
+                url: '/api/ControlCambios',
+                type: "PUT",
+                dataType: 'Json',
+                data: obj,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+                
+        function getModulosVersion(idversion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/getModulosVersion/'+idversion,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getModulosByComponente(filename) {
             var deferred = $q.defer();
@@ -446,7 +731,7 @@
             return promise;
         }
 
-        function addVersionInicial(release, estado, comentario) {
+        function addVersionInicial(release, estado, comentario, hasdeploy) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -455,7 +740,9 @@
                 "Release": release,
                 "Estado": estado,
                 "Comentario": comentario,
-                "Fecha": "null"
+                "Fecha": "null",
+                "IsVersionInicial": true,
+                "HasDeploy31": hasdeploy
             };
 
             $.ajax({
@@ -502,7 +789,8 @@
                 "Fecha": '' + fechaIn[2] + '-' + fechaIn[1] + '-' + fechaIn[0] + 'T00:00:00',
                 "Estado": estado,
                 "Comentario": comentario,
-                "Usuario": usuario
+                "Usuario": usuario,
+                "IsVersionInicial": false
             };
             console.debug(JSON.stringify(version));
 

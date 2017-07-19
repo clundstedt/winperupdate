@@ -104,5 +104,48 @@ namespace ProcessMsg.Model
                 return Estado == 'C' ? "No Vigente" : "Vigente";
             }
         }
+
+        /// <summary>
+        /// Retorna información para el registro de la bitacora.
+        /// </summary>
+        /// <param name="accion">I: Insertado, D: Eliminado, U: Modificado y ?: Dato de Registro</param>
+        /// <returns></returns>
+        public string Bitacora(char accion)
+        {
+            string str = "";
+            switch (accion)
+            {
+                case 'I':
+                    str = string.Format("{0} Insertado", Nombre);
+                    break;
+                case 'D':
+                    str = string.Format("{0} Eliminado", Nombre);
+                    break;
+                case 'U':
+                    str = string.Format(@"Id={0}|Rut={1}|Dv={2}|Nombre={3}|Direccion={4}|Comuna={5}|NroLicencia={6}|NumFolio={7}|EstMtc={8}|Mesini={9}|NroTrbc={10}|NroTrbh={11}|NroUsr={12}|MesCon={13}|Correlativo={14}"
+                                        , Id
+                                        , Rut
+                                        , Dv
+                                        , Nombre
+                                        , Direccion
+                                        , Comuna.idCmn
+                                        , NroLicencia
+                                        , NumFolio
+                                        , EstMtc
+                                        , Mesini
+                                        , NroTrbc
+                                        , NroTrbh
+                                        , NroUsr
+                                        , MesCon
+                                        , Correlativo);
+                    break;
+                case '?':
+                    str = string.Format("{0}", Nombre);
+                    break;
+                default:
+                    break;
+            }
+            return str;
+        }
     }
 }

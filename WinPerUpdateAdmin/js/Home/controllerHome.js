@@ -22,14 +22,14 @@
         activate();
 
         function activate() {
-
+            /*
             $timeout(function () {
                 factoryHome.verificaSession().success(function (data) {
                     if(data)$window.location.href = '/Home';
                 }).error(function (err) {
                     console.error(err);
                 });
-            }, 60000);
+            }, 60000);*/
 
             factoryHome.getUsuarioSession($scope.id).success(function (data) {
                 $scope.userSession = data;

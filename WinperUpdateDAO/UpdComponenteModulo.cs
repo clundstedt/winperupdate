@@ -30,12 +30,13 @@ namespace WinperUpdateDAO
             }
         }
 
-        public int ExecuteTipoComponente(int idTipoComponentes, string Nombre, string Extensiones, bool isCompBD, bool isCompDLL)
+        public int ExecuteTipoComponente(int idTipoComponentes, string Nombre, string Extensiones, bool isCompBD, bool isCompDLL, bool isCompCambios)
         {
             SpName = @"UPDATE TipoComponentes SET Nombre = @Nombre
                                                  ,Extensiones = @Extensiones
                                                  ,isCompBD = @isCompBD
                                                  ,isCompDLL = @isCompDLL
+                                                 ,isCompCambios = @isCompCambios
                                             WHERE idTipoComponentes = @idTipoComponentes";
             try
             {
@@ -43,6 +44,7 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@Extensiones", Extensiones);
                 ParmsDictionary.Add("@isCompBD", isCompBD);
                 ParmsDictionary.Add("@isCompDLL", isCompDLL);
+                ParmsDictionary.Add("@isCompCambios", isCompCambios);
                 ParmsDictionary.Add("@idTipoComponentes", idTipoComponentes);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);

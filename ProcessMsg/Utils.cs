@@ -34,6 +34,27 @@ namespace ProcessMsg
             return result;
         }
 
+        public static string G_Encripta(string palabra)
+        {
+            string strRes = "";
+            var arr = palabra.ToCharArray().Select(x => Convert.ToInt32(x));
+            foreach (var x in arr)
+            {
+                strRes += (((127 * 3) + x) + (x % 2 != 0 ? 127 : -127));
+            }
+            return strRes;
+        }
+
+        public static string G_Desencripta(string hash)
+        {
+            string str = "";
+            for (int i = 0; i < hash.Length; i += 3)
+            {
+                var n = int.Parse(hash.Substring(i, 3));
+                str += Convert.ToChar((n - (127 * 3) + (n % 2 == 0 ? 127 : -127)));
+            }
+            return str;
+        }
         public static string RandomString(int size)
         {
             StringBuilder builder = new StringBuilder();
@@ -241,7 +262,8 @@ namespace ProcessMsg
         {
             try
             {
-                var dataFtp = DesEncriptar(ConfigurationManager.AppSettings["cftp"]).Split('#');
+                var dataEnc = G_Desencripta(ConfigurationManager.AppSettings["cftp"]);
+                var dataFtp = DesEncriptar(dataEnc).Split('#');
                 SessionOptions sessionOptions = new SessionOptions
                 {
                     Protocol = Protocol.Sftp,
@@ -249,7 +271,8 @@ namespace ProcessMsg
                     UserName = dataFtp[1],
                     Password = dataFtp[2],
                     PortNumber = int.Parse(dataFtp[3]),
-                    SshHostKeyFingerprint = string.Format("ssh-dss 1024 {0}", dataFtp[4])
+                    FtpMode = bool.Parse(dataFtp[4]) ? FtpMode.Passive : FtpMode.Passive,
+                    SshHostKeyFingerprint = string.Format("ssh-dss 1024 {0}", dataFtp[5])
                 };
 
                 using (Session session = new Session())
