@@ -24,19 +24,37 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
-        
+
+        [Route("api/isModuloVigente")]
+        [HttpGet]
+        public Object isModuloVigente(string fileName)
+        {
+            try
+            {
+                var mods = ProcessMsg.Modulo.GetModulosByComponente(fileName);
+
+                return Content(HttpStatusCode.OK, mods.Where(x=> x.Estado == 'V').ToList().Count > 0);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [Route("api/getModulosDesdeSuite/{Suite:int}")]
         [HttpGet]
         public Object GetModulosDesdeSuite(int Suite)
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var suite = ProcessMsg.Suites.GetSuites().SingleOrDefault(x => x.idSuite == Suite);
                 if (suite == null)
                 {
                     return Content(HttpStatusCode.BadRequest, (object)null);
                 }
-                return Content(HttpStatusCode.OK, ProcessMsg.Modulo.GetModulosBySuites(suite.Subsuites));
+                return Content(HttpStatusCode.OK, ProcessMsg.Modulo.GetModulosBySuites(suite.Subsuites).Where(x=> x.Estado =='V'));
             }
             catch (Exception ex)
             {
@@ -51,10 +69,11 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var nombresMods = ProcessMsg.Version.GetModulosVersiones(idVersion, null).Distinct().ToList();
                 var mod = ProcessMsg.Modulo.GetModulos(null).Where(x => nombresMods.Exists(y => y.Equals(x.NomModulo, StringComparison.OrdinalIgnoreCase)));
 
-                return Content(HttpStatusCode.OK, mod);
+                return Content(HttpStatusCode.OK, mod.OrderBy(x => x.NomModulo));
             }
             catch (Exception ex)
             {
@@ -227,6 +246,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var compMod = ProcessMsg.ComponenteModulo.GetComponentesModulos(idModulo).Exists(x => x.Nombre.Equals(Comp));
 
                 var tipoComp = ProcessMsg.ComponenteModulo.GetTipoComponentes().SingleOrDefault(x => x.idTipoComponentes == Tipo);
@@ -341,6 +361,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var path = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")), "N+1", dir.Trim(), nombreComp.Trim());
                 var exist = File.Exists(path);
                 return Content(HttpStatusCode.OK, exist);
@@ -360,6 +381,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 return Content(HttpStatusCode.OK, ProcessMsg.Modulo.GetModulosByComponente(filename.Directorio));
             }
             catch (Exception ex)
@@ -392,7 +414,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                //if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 
                 var dirVo = Path.Combine(ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/VersionOficial")));
                 if (dm.Directorio.StartsWith(dirVo))

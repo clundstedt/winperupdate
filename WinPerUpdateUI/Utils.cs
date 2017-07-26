@@ -265,8 +265,7 @@ namespace WinPerUpdateUI
                 //eventLog1.WriteEntry(output);
                 throw new Exception(output);
             }
-
-            return null;
+            
         }
 
 

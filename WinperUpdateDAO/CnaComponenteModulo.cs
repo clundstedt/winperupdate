@@ -47,7 +47,7 @@ namespace WinperUpdateDAO
 
         public SqlDataReader ExecuteComponentesModulos(string nombreComponente)
         {
-            SpName = @"SELECT * FROM ComponentesModulos WHERE Nombre = @Nombre";
+            SpName = @"SELECT cm.*, m.NomModulo FROM ComponentesModulos cm INNER JOIN Modulos m ON cm.Modulos = m.idModulo WHERE cm.Nombre = @Nombre";
             try
             {
                 ParmsDictionary.Add("@Nombre", nombreComponente);

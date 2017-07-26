@@ -45,11 +45,48 @@
             getControlCambiosEx: getControlCambiosEx,
             delDocCambios: delDocCambios,
             updControlCambios: updControlCambios,
-            delControlCambios: delControlCambios
+            delControlCambios: delControlCambios,
+            isModuloVigente: isModuloVigente
         };
 
         return service;
 
+
+        function isModuloVigente(fileName) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/isModuloVigente/?fileName=' + fileName,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function delControlCambios(version, tips, modulo) {
             var deferred = $q.defer();

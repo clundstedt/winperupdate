@@ -45,6 +45,7 @@ namespace ProcessMsg.Model
             }
         }
         public bool HasDeploy31 { get; set; }
+        public bool isInstall { get; set; }
         /// <summary>
         /// Retorna información para el registro de la bitacora.
         /// </summary>

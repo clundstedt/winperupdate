@@ -126,7 +126,38 @@ namespace ProcessMsg
             }
             return lista;
         }
-
+        public static List<Model.AmbienteBo> GetAmbientesByClienteEx(int idCliente, int idVersion, EventLog log)
+        {
+            List<Model.AmbienteBo> lista = new List<Model.AmbienteBo>();
+            try
+            {
+                var dr = new CnaAmbientes().ExecuteEx(idCliente, idVersion);
+                while (dr.Read())
+                {
+                    lista.Add(new Model.AmbienteBo
+                    {
+                        idAmbientes = int.Parse(dr["idAmbientes"].ToString()),
+                        idClientes = idCliente,
+                        Nombre = dr["Nombre"].ToString(),
+                        Tipo = int.Parse(dr["Tipo"].ToString()),
+                        ServerBd = dr["ServerBd"].ToString(),
+                        Instancia = dr["Instancia"].ToString(),
+                        NomBd = dr["NomBd"].ToString(),
+                        UserDbo = dr["UserDbo"].ToString(),
+                        PwdDbo = Utils.DesEncriptar(dr["PwdDbo"].ToString()),
+                        Estado = dr["Estado"] == DBNull.Value ? ' ' : dr["Estado"].ToString()[0]
+                    });
+                }
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
+            return lista;
+        }
         public static Model.AmbienteBo GetAmbiente(int idAmbiente, int idCliente)
         {
             try

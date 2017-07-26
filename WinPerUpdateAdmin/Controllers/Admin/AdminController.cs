@@ -104,6 +104,11 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             return PartialView();
         }
 
+        public PartialViewResult AsignarScripts()
+        {
+            return PartialView();
+        }
+
         public PartialViewResult UploadFile()
         {
             return PartialView();
@@ -144,6 +149,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                 }
                 var isSQL = new FileInfo(file.FileName).Extension.ToUpper().Equals(".SQL");
                 var comp = ProcessMsg.ComponenteModulo.GetComponenteModuloByName(file.FileName);
+                var exist = ProcessMsg.Componente.GetComponenteByName(idVersion, file.FileName);
                 ProcessMsg.Model.ModuloBo mod = null;
                 if(!isSQL) mod = ProcessMsg.Modulo.GetModulos(null).SingleOrDefault(x => x.idModulo == comp.Modulo);
                 if ((comp != null && mod != null) || isSQL)
@@ -152,7 +158,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
 
                     FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(sNameFiles);
 
-                    return Json(new { CodErr = 0, MsgErr = "", sVersion = myFileVersionInfo.FileVersion ?? "S/I", sModulo = (isSQL ? "N/A":mod.NomModulo) });
+                    return Json(new { CodErr = exist == null ? 0 : -1, MsgErr = "", sVersion = myFileVersionInfo.FileVersion ?? "S/I", sModulo = (isSQL ? "N/A":mod.NomModulo) });
                 }
 
                 return Json(new { CodErr = 4, MsgErr = "No se encontro el modulo para este componente.", sVersion = "", sModulo = "" });

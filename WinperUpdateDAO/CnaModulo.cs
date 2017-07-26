@@ -13,7 +13,7 @@ namespace WinperUpdateDAO
     {
         public new SqlDataReader Execute()
         {
-            SpName = @" select * from Modulos";
+            SpName = @" select * from Modulos ORDER BY NomModulo";
             try
             {
                 return Connector.ExecuteQuery(SpName, ParmsDictionary);

@@ -42,12 +42,30 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region get
 
+
+        [Route("api/Perfiles/Internos")]
+        [HttpGet]
+        public Object GetPerfiles()
+        {
+            try
+            {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                return Content(HttpStatusCode.OK, ProcessMsg.Perfiles.GetPerfiles().Where(x => x.Tipo == 'I'));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [Route("api/ExisteMail")]
         [HttpGet]
         public Object GetExisteMail(string mail)
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Seguridad.GetUsuario(mail);
                 return Content(HttpStatusCode.OK, (obj != null));
             }

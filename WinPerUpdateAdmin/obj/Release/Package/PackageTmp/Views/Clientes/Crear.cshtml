@@ -250,7 +250,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-10">
                                 <div class="form-group">
                                     <div class="input-group-sm margin-bottom-sm">
                                         <ui-select multiple ng-model="formData.modulos" theme="bootstrap"  close-on-select="false" title="Seleccione un Modulo">
@@ -262,23 +262,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="input-group-sm margin-bottom-sm">
-                                        <div class="btn-toolbar hidden-xs">
-                                            <div class="btn-group btn-group-sm" role="toolbar">
-                                                <button type="button" ng-disabled="modulosWinper.length == 0" class="btn btn-info" ng-click="SeleccionarTodosModulos()">
-                                                    Seleccionar  Todo
-                                                </button>
-                                                <button type="button" ng-disabled="modulosWinper.length == 0" class="btn btn-default" ng-click="LimpiarSeleccionados(formData)">
-                                                    Limpiar  Selección
-                                                </button>
+                            <div class="col-md-2">
+                                <div class="pull-right">
+                                    <div class="form-group">
+                                        <div class="input-group-sm margin-bottom-sm">
+                                            <div class="btn-toolbar hidden-xs">
+                                                <div class="btn-group" role="toolbar">
+                                                    <button type="button" ng-disabled="modulosWinper.length == 0" title="Seleccionar todos los módulos de la suite seleccionada." class="btn btn-info" ng-click="SeleccionarTodosModulos()">
+                                                        <i class="fa fa-mouse-pointer" aria-hidden="true"></i>
+                                                    </button>
+                                                    <button type="button" ng-disabled="modulosWinper.length == 0" title="Seleccionar todos los módulos desde la suite seleccionada." class="btn btn-success" ng-click="SeleccionDesdeSuite(formData.suite)">
+                                                        <i class="fa fa-reply-all" aria-hidden="true"></i>
+                                                    </button>
+                                                    <button type="button" ng-disabled="modulosWinper.length == 0" title="Limpiar todos los módulos de la suite seleccionada." class="btn btn-default" ng-click="LimpiarSeleccionados(formData)">
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    </button>
+                                                    <button type="button" ng-disabled="modulosWinper.length == 0" title="Limpiar todos los módulos." class="btn btn-default" ng-click="LimpiarTodosModulos()">
+                                                        <i class="fa fa-ban" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
+                                        <span class="error_ingreso" ng-show="msgSeleccionSuite != ''">
+                                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgSeleccionSuite}}
+                                        </span>
                                     </div>
-                                    <span class="error_ingreso" ng-show="msgSeleccionSuite != ''">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgSeleccionSuite}}
-                                    </span>
                                 </div>
                             </div>
                         </div>

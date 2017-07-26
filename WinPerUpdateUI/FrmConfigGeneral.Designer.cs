@@ -37,7 +37,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.TxtIpSFTP = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.ChkEjecutarSQL = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.BtnGuardar = new System.Windows.Forms.ToolStripButton();
             this.BtnSalir = new System.Windows.Forms.ToolStripButton();
@@ -120,16 +119,6 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Conexión ";
             // 
-            // ChkEjecutarSQL
-            // 
-            this.ChkEjecutarSQL.AutoSize = true;
-            this.ChkEjecutarSQL.Location = new System.Drawing.Point(12, 308);
-            this.ChkEjecutarSQL.Name = "ChkEjecutarSQL";
-            this.ChkEjecutarSQL.Size = new System.Drawing.Size(238, 17);
-            this.ChkEjecutarSQL.TabIndex = 4;
-            this.ChkEjecutarSQL.Text = "Permitir al Administrador Ejecutar Scripts SQL";
-            this.ChkEjecutarSQL.UseVisualStyleBackColor = true;
-            // 
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
@@ -171,7 +160,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(301, 334);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.ChkEjecutarSQL);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "FrmConfigGeneral";
@@ -199,7 +187,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox TxtIpSFTP;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox ChkEjecutarSQL;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton BtnGuardar;
         private System.Windows.Forms.ToolStripButton BtnSalir;

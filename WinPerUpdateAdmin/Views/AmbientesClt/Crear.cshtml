@@ -165,6 +165,7 @@
                         </div>
                         <button type="button" class="btn btn-primary btn-block" ng-click="frmAmbiente.$valid && SaveAmbiente(ambiente)" ng-disabled="">
                             <i class="fa fa-pencil-square-o" ng-show="idAmbiente != 0" aria-hidden="true"></i>
+                            <i class="fa fa-check" ng-show="idAmbiente == 0" aria-hidden="true"></i>
                             <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                         </button>
                     </form>

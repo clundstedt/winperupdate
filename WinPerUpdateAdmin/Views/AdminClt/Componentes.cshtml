@@ -79,11 +79,11 @@
                                 </div>
                             </div>
                             
-                            <div class="panel-footer text-right" ng-init="inficha=true">
+                            <div class="panel-footer text-right" ng-init="inficha=true" ng-show="ejecutable.Name.endsWith('.sql') || ejecutable.Name.endsWith('.SQL')">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group-sm margin-bottom-sm">
-                                            <div class="dropdown" ng-show="ejecutable.Name.endsWith('.sql') || ejecutable.Name.endsWith('.SQL')">
+                                            <div class="dropdown" >
                                                 <button class="btn btn-labeled btn-success dropdown-toggle" ng-click="GetAmbientesNoEx(userSession.Cliente.Id, version.IdVersion, ejecutable.Name)" type="button" data-toggle="dropdown">
                                                     <span class="btn-label"><span class="fa fa-gear"></span></span>Ejecutar en...
                                                     <span class="caret"></span>
@@ -146,7 +146,7 @@
                     <div class="pull-left">
                         <span style="color: red">{{mensaje}}</span>
                     </div>
-                    <button class="btn btn-danger" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
+                    <button class="btn btn-success" ng-click="Publicar()" ng-disabled="estaVigente">Confirmar</button>
                     <button class="btn btn-default" data-dismiss="modal" ng-click="mensaje = ''">Cerrar</button>
                 </div>
             </div>

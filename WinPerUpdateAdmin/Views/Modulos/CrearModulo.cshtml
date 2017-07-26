@@ -107,7 +107,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="checkbox">
-                                            <label><input type="checkbox" ng-checked="true" ng-model="formData.iscore" ng-true-value="true" ng-false-value="false">Marcar este módulo como parte de los módulos principales del sistema.</label>
+                                            <label><input type="checkbox" ng-checked="accion != 'Modificar' ?? true" ng-model="formData.iscore" ng-true-value="true" ng-false-value="false">Marcar este módulo como parte de los módulos principales del sistema.</label>
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" ng-hide="false" ng-controller="inicio">
-                        <table st-table="displayComponentes" st-safe-src="componentes" class="table table-striped">
+                        <table st-table="displayComponentes" st-safe-src="componentes" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th colspan="5"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
@@ -509,7 +509,7 @@
                     <strong>!</strong> No se detectaron nuevos componentes.
                 </div>
                 <div class="table-responsive" ng-hide="listaCompsDetect.length == 0">
-                    <table st-table="displayCompDir" st-safe-src="listaCompsDetect" class="table table-striped">
+                    <table st-table="displayCompDir" st-safe-src="listaCompsDetect" class="table table-hover">
                         <thead>
                             <tr>
                                 <th colspan="3"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
@@ -577,7 +577,7 @@
                 </div>
                 <br />
                 <div class="table-responsive">
-                    <table class="table" st-table="displayDirs" st-safe-src="dirsModulos">
+                    <table class="table table-hover" st-table="displayDirs" st-safe-src="dirsModulos">
                         <thead>
                             <tr>
                                 <th><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
@@ -596,7 +596,7 @@
                         <tfoot>
                             <tr>
                                 <td class="text-center">
-                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"  st-template="../../Scripts/smart-table/pagination.custom.html"></div>
                                 </td>
                             </tr>
                         </tfoot>

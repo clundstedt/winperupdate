@@ -62,14 +62,14 @@
                 $scope.aniosInicioContrato = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
             
             serviceClientes.getRegiones().success(function (regiones) {
                 $scope.regiones = regiones;
                 $scope.msgError = "";
             }).error(function (error) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 
             $scope.GenerarPDFCliente = function (idCliente) {
@@ -94,7 +94,7 @@
                         $scope.modulosWinper = modulos;
                         $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }
             }
@@ -127,6 +127,10 @@
                 }
             }
 
+            $scope.LimpiarTodosModulos = function () {
+                $scope.formData.modulos = [];
+            }
+
             $scope.isSelected = function (idModulo) {
                 for (var i = 0; i < $scope.formData.modulos.length; i++) {
                     if ($scope.formData.modulos[i].idModulo == idModulo) {
@@ -152,7 +156,7 @@
                 $scope.suites = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
             
 
@@ -193,17 +197,17 @@
                         });
 
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
 
                     serviceClientes.getVersionesClientes($scope.idCliente).success(function (data) {
                         $scope.versionesCliente = data;
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
 
 
@@ -260,10 +264,10 @@
                             $scope.msgSuccess = "Cliente creado exitosamente!.";
                             window.scrollTo(0,0);
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }
                 else {
@@ -276,10 +280,10 @@
                             $scope.msgSuccess = "Cliente modificado exitosamente!.";
                             window.scrollTo(0,0);
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }
             }
@@ -290,7 +294,7 @@
                     $scope.modulosWinper = $scope.formData.modulos;
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -303,7 +307,7 @@
                     window.scrollTo(0, 0);
                     if(est == 'C')$("#mdlMotivo").modal('toggle');
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -313,7 +317,7 @@
                         formData.licencia = data;
                         $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 } else {
                     $("#genkey-modal").modal('show');
@@ -337,7 +341,7 @@
                     serviceClientes.GenCorrelativo($scope.formData.folio, $scope.formData.mescon).success(function (data) {
                         $scope.formData.correlativo = data;
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }
                 else
@@ -346,7 +350,13 @@
                 }
             }
 
-
+            $scope.SeleccionDesdeSuite = function (suite) {
+                serviceClientes.getModulosDesdeSuite(suite).success(function (data) {
+                    $scope.formData.modulos = data;
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                });
+            }
         }
 
     }

@@ -14,7 +14,7 @@
         activate();
 
         function activate() {
-
+            window.scrollTo(0, 0);
             $scope.idVersion = 0;
             $scope.msgError = "";
             $scope.msgSuccess = "";
@@ -39,7 +39,7 @@
                         $scope.formData.desccc = data.Descripcion;
                         $scope.formData.impacto = data.Impacto;
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); 
                     });
                 }
 
@@ -49,10 +49,10 @@
                         $scope.msgError = "";
                         $scope.modulos = modulosVersion;
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                     });
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                 });
             }
 
@@ -74,7 +74,7 @@
                     $("#mdlDeleteDocCambios").modal('toggle');
                 }).error(function (err) {
                     $("#mdlDeleteDocCambios").modal('toggle');
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                 });
             }
 
@@ -94,7 +94,7 @@
                         window.scrollTo(0, 0);
                         $scope.uploader.clearQueue();
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                     });
                 }
             }
@@ -106,7 +106,7 @@
                         $window.location.href = "/Admin/#/EditVersion/" + $scope.idVersion;
                     }, 2000);
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                 });
             }
 
@@ -179,7 +179,7 @@
                         window.scrollTo(0, 0);
                         $scope.uploader.clearQueue();
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                     });
                 } else {
                     serviceAdmin.addControlCambios($scope.idVersion, $scope.formData.modulo, $scope.formData.release, $scope.formData.tips, $scope.formData.desccc, $scope.nameFiles, $scope.formData.impacto).success(function (data) {
@@ -192,7 +192,7 @@
                         $scope.formData.impacto = "";
                         $scope.uploader.clearQueue();
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                     });
                 }
             }

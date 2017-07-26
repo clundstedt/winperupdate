@@ -7,7 +7,7 @@
         ,'angularFileUpload'
         , 'smart-table'
         // Custom modules 
-
+        , 'smart-pagination'
         // 3rd Party Modules
         
     ])

@@ -41,11 +41,48 @@
             delCliente: delCliente,
 
             addModuloCliente: addModuloCliente,
-            getClienteNoVigente: getClienteNoVigente
+            getClienteNoVigente: getClienteNoVigente,
+            getModulosDesdeSuite: getModulosDesdeSuite
         };
 
         return service;
 
+
+        function getModulosDesdeSuite(suite) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/getModulosDesdeSuite/'+suite,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function getClienteNoVigente(id) {
             var deferred = $q.defer();
@@ -83,7 +120,6 @@
             return promise;
         }
 
-
         function getExisteMail(mail) {
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -119,8 +155,7 @@
 
             return promise;
         }
-
-
+        
         function EnviarBienvenida(idUsuario) {
             var deferred = $q.defer();
             var promise = deferred.promise;

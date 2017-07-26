@@ -23,13 +23,13 @@
                 svcBitacora.getBitacoraByMenu($routeParams.menu).success(function (data) {
                     $scope.registrosBitacora = data;
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                 });
             } else {
                 svcBitacora.getBitacoraByMenu("Cliente").success(function (data) {
                     $scope.registrosBitacora = data;
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                 });
             }
 
@@ -38,7 +38,7 @@
                     $("#mdlInfoUser").modal('show');
                     $scope.usuario = data;
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);
                 });
             }
 

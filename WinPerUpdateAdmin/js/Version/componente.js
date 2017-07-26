@@ -14,24 +14,26 @@
 
         function activate() {
             $scope.msgError = "";
+            $scope.msgError2 = [];
 
             $scope.componentes = [];
             $scope.idVersion = $routeParams.idVersion;
             $scope.componentesOficiales = [];
             $scope.modulos = [];
 
+
             serviceAdmin.getVersion($scope.idVersion).success(function (data) {
                 $scope.version = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 
             serviceAdmin.getComponentesOficiales().success(function (data) {
                 $scope.componentesOficiales = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 
             $scope.VerificaComponentesOkSegunFecha = function () {
@@ -63,16 +65,6 @@
                 return true;
             }
 
-
-            $scope.ComponenteOkSegunExistencia = function (fileItem) {
-                serviceAdmin.existeComponente(fileItem.file.name).success(function (data) {
-                    fileItem.isError = !data;
-                    $scope.msgError = "";
-                }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
-                    fileItem.isError = false;
-                });
-            }
 
             $scope.VerificaComponentesOkSegunExistencia = function () {
                 var paso = false;
@@ -115,20 +107,16 @@
 
             // CALLBACKS
             uploader.onSuccessItem = function (fileItem, response, status, headers) {
-                //console.info('onSuccessItem', fileItem);
                 if (response.CodErr == 0) {
                     serviceAdmin
                         .addComponente($scope.idVersion, response.sModulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.sVersion)
                         .success(function (data) {
-                            console.log(JSON.stringify(data));
                             $scope.msgError = "";
                         })
                         .error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
-                    
                 }
-
             };
             uploader.onErrorItem = function (fileItem, response, status, headers) {
                 //console.info('onErrorItem', fileItem, response, status, headers);
@@ -140,7 +128,26 @@
                 //console.info('onCompleteItem', fileItem, response, status, headers);
             };
             uploader.onAfterAddingFile = function (fileItem) {
-                $scope.ComponenteOkSegunExistencia(fileItem);
+                serviceAdmin.existeComponente(fileItem.file.name).success(function (data) {
+                    fileItem.isError = !data;
+                    if (!fileItem.isError) {
+                        serviceAdmin.isModuloVigente(fileItem.file.name).success(function (isVigente) {
+                            if (isVigente) {
+                                $scope.msgError = "";
+                            } else {
+                                $scope.msgError2.push(fileItem.file.name);
+                                fileItem.remove();
+                            }
+                        }).error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                        });
+                    } else {
+                        $scope.msgError = "";
+                    }
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                    fileItem.isError = false;
+                });
             };
 
             //console.info('uploader', uploader);

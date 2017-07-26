@@ -25,10 +25,7 @@
             $scope.increate = true;
             $scope.formData = {};
             $scope.mensaje = '';
-            $scope.perfiles = [{ CodPrf: 1, NomPrf: 'Administrador' },
-                               { CodPrf: 2, NomPrf: 'Desarrollador' },
-                               { CodPrf: 3, NomPrf: 'Soporte' },
-                               { CodPrf: 4, NomPrf: 'Gestión' }];
+            $scope.perfiles = [];
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idUsuario = $routeParams.idUsuario;
@@ -44,9 +41,15 @@
                     $scope.formData.estado = data.EstUsr;
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
+
+            serviceSeguridad.getPerfiles().success(function (data) {
+                $scope.perfiles = data;
+            }).error(function (err) {
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+            });
 
             $scope.SaveUsuario = function (formData, frmValid) {
                 $scope.saveUser = "";
@@ -66,7 +69,7 @@
                             $scope.formData.estado = data.EstUsr;
                             $scope.saveUser = "Usuario creado exitosamente!.";
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
                     }
                     else {
@@ -82,7 +85,7 @@
                             $scope.formData.estado = data.EstUsr;
                             $scope.saveUser = "Usuario modificado exitosamente!.";
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
                     }
                 } 
@@ -110,10 +113,10 @@
                         $scope.msgError = "";
                         $scope.saveUser = "Cambios realizados exitosamente!.";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 

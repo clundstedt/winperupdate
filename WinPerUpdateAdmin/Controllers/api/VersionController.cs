@@ -864,16 +864,17 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
-                    var obj = ProcessMsg.Componente.AddComponente(idVersion, archivo);
-                    if (obj == null)
+                    var comp = ProcessMsg.ComponenteModulo.GetComponentesModuloByName(archivo.Name);
+                    foreach (var c in comp)
                     {
-                        response.StatusCode = HttpStatusCode.Accepted;
+                        archivo.Modulo = c.NomModulo;
+                        if (ProcessMsg.Componente.AddComponente(idVersion, archivo) == 1)
+                        {
+                            ProcessMsg.Bitacora.AddBitacora("Version", "", c.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), c.Bitacora('?'));
+                        }
                     }
-                    else 
-                    {
-                        ProcessMsg.Bitacora.AddBitacora("Version", "", obj.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), obj.Bitacora('?'));
-                        return Content(HttpStatusCode.Created, obj);
-                    }
+
+                    return Content(HttpStatusCode.Created, true);
                 }
 
                 return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);
@@ -1032,6 +1033,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                         control.Fecha = DateTime.Now;
                         if (ProcessMsg.Version.UpdControlCambios(control))
                         {
+                            control.VersionFmt = cc.VersionFmt;
                             ProcessMsg.Bitacora.AddBitacora("Version", cc.Bitacora('U'), cc.Bitacora('U'), 'U', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), control.Bitacora('?'));
                             return Content(HttpStatusCode.OK, ProcessMsg.Version.GetControlCambios(control.Version).SingleOrDefault(x => x.Tips == control.Tips && x.Modulo == control.Modulo));
                         }

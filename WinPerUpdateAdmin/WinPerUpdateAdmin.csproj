@@ -225,6 +225,7 @@
     <Content Include="js\Login\app.js" />
     <Content Include="js\Login\login.js" />
     <Content Include="js\Login\serviceLogin.js" />
+    <Content Include="js\Version\asignarscripts.js" />
     <Content Include="js\Version\componente.js" />
     <Content Include="js\Version\controlcambios.js" />
     <Content Include="js\Version\editcomponente.js" />
@@ -459,6 +460,7 @@
     <Content Include="Views\Bitacora\Usuario.cshtml" />
     <Content Include="Views\Bitacora\Modulo.cshtml" />
     <Content Include="Views\Bitacora\Version.cshtml" />
+    <Content Include="Views\Admin\AsignarScripts.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -470,6 +472,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BasicAuthModule.cs" />
     <Compile Include="Controllers\api\AmbientesController.cs" />
     <Compile Include="Controllers\api\BitacoraController.cs" />
     <Compile Include="Controllers\api\DescargasController.cs" />

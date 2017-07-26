@@ -68,10 +68,10 @@
                         $scope.componentes = data;
                         $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -80,14 +80,14 @@
                 $scope.suites = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 
             serviceModulos.getTipoComponentes().success(function (data) {
                 $scope.tipocomponentes = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 
             $scope.showMdlDirModulos = function () {
@@ -98,7 +98,7 @@
                     $scope.dirsModulos = data;
                     $scope.isLoadDirs = false;
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -109,7 +109,7 @@
                     $scope.dirModulo = dir.replace(dir.substring(0, dir.indexOf("N+1") + 4),"");
                     $scope.isLoadDirs = false;
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -137,7 +137,7 @@
                     $scope.tipocomponentes = data;
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
             
@@ -146,7 +146,7 @@
                     $scope.componentes = data;
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
             
@@ -165,13 +165,13 @@
                             }, 3000);
 
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
                     } else {
                         $scope.msgErrorManComp = "El componente ya existe en el módulo o no corresponde al tipo.";
                     }
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -189,7 +189,7 @@
                                     }, 3000);
                                     $scope.msgError = "";
                                 }).error(function (err) {
-                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                                 });
                             } else {
                                 $scope.tipoalert = "danger";
@@ -197,7 +197,7 @@
                                 window.scrollTo(0,0);
                             }
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
                     } else {
                         $scope.tipoalert = "danger";
@@ -205,7 +205,7 @@
                         window.scrollTo(0,0);
                     }
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
             
@@ -221,7 +221,7 @@
                     $scope.lblBtnCrearTipoComp = "Creado!";
                     $timeout(function () { $scope.lblBtnCrearTipoComp = "Crear Tipo de Componente"; }, 3000);
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -246,7 +246,7 @@
                         $scope.CargarTipoComponentes();
                         $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }
             }
@@ -262,7 +262,7 @@
                         $scope.CargarComponentesModulos();
                         $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 }
             }
@@ -282,11 +282,11 @@
                             $scope.lblAddComponentesDir = "Componentes agregados correctamente.";
                             $scope.msgError = "";
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                             $scope.lblAddComponentesDir = "Ocurrió un error durante la recarga de componentes, verifique consola del navegador.";
                         });
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         $scope.lblAddComponentesDir = "Ocurrió un error, verifique consola del navegador.";
                     });
                 }
@@ -310,7 +310,7 @@
                     }
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 
@@ -329,7 +329,7 @@
                         }
                         $scope.msgError = "";
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     });
                 } else {
                     $scope.tipoalert = "warning";
@@ -351,7 +351,7 @@
                     $scope.loading = false;
                     $('#msgsuccess').focus();
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     $scope.loading = false;
                 });
             }
@@ -365,7 +365,7 @@
                     $scope.Modulo = data;
                     window.scrollTo(0,0);
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
                 $scope.loading = false;
             }
@@ -379,7 +379,7 @@
                     $scope.formData.estado = 'C';
                     $scope.msgError = "";
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
                 $("#confelim-modal").modal('toggle');
                 $scope.loading = false;
@@ -394,7 +394,7 @@
                     $scope.msgError = "";
                     window.scrollTo(0,0);
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
                 $("#confvigen-modal").modal('toggle');
                 $scope.loading = false;

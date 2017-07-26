@@ -13,6 +13,7 @@
         activate();
 
         function activate() {
+            window.scrollTo(0, 0);
             $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
             $scope.msgError = "";
             $scope.msgSuccess = "";
@@ -37,7 +38,7 @@
                 $scope.cliente = data;
                 $scope.msgError = "";
             }).error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 
             if ($routeParams.idUsuario > 0) {
@@ -56,13 +57,14 @@
                     $scope.msgError = "";
                     console.log("estado = " + $scope.formData.estado);
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
 
             }
             
             $scope.SaveUsuario = function (formData) {
                 $scope.msgError = "";
+                window.scrollTo(0, 0);
                 if ($scope.idUsuario == 0) {
                     serviceClientes.getExisteMail(formData.mail).success(function (dataMail) {
                         if (!dataMail) {
@@ -239,10 +241,10 @@
                                                     $scope.msgError = "";
                                                     $scope.msgSuccess = "Cambios realizados exitosamente!.";
                                                 }).error(function (err) {
-                                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                                                 });
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                 });
             }
 

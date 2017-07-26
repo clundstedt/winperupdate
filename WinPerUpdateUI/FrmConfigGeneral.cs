@@ -23,7 +23,6 @@ namespace WinPerUpdateUI
             TxtIpWUS.Text = ConfigurationManager.AppSettings["server"];
             TxtPuertoWUS.Text = ConfigurationManager.AppSettings["port"];
             TxtIpSFTP.Text = ConfigurationManager.AppSettings["cftp"];
-            ChkEjecutarSQL.Checked = bool.Parse(ConfigurationManager.AppSettings["sql"]);
         }
         
 
@@ -31,22 +30,17 @@ namespace WinPerUpdateUI
         {
             try
             {
-                /*var dr = new CheckSoporte().ShowDialog(this);
-                if (dr != DialogResult.Yes)
+                var dr = MessageBox.Show("¿Está seguro que desea guardar la configuración?. Esto podría causar que la aplicación no funcione correctamente. Se recomienda contactar a soporte WinPer.", "Adavertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dr == DialogResult.Yes)
                 {
-                    MessageBox.Show("Soporte incorrecto. No se guardaron los cambios.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }*/
-
-
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                config.AppSettings.Settings["server"].Value = TxtIpWUS.Text;
-                config.AppSettings.Settings["port"].Value = TxtPuertoWUS.Text;
-                config.AppSettings.Settings["sql"].Value = ChkEjecutarSQL.Checked.ToString();
-                config.AppSettings.Settings["cftp"].Value = TxtIpSFTP.Text;
-                config.Save(ConfigurationSaveMode.Modified);
-                MessageBox.Show("Configuración guardada con exito!.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Application.Restart();
+                    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    config.AppSettings.Settings["server"].Value = TxtIpWUS.Text;
+                    config.AppSettings.Settings["port"].Value = TxtPuertoWUS.Text;
+                    config.AppSettings.Settings["cftp"].Value = TxtIpSFTP.Text;
+                    config.Save(ConfigurationSaveMode.Modified);
+                    MessageBox.Show("Configuración guardada con exito!.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Application.Restart();
+                }
             }
             catch (Exception ex)
             {

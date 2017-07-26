@@ -1,140 +1,161 @@
-﻿<style>
-    .my-drop-zone {
-        border: dotted 3px lightgray;
-    }
+﻿<div class="container" ng-controller="componente" >
+    <style>
+        .my-drop-zone {
+            border: dotted 3px lightgray;
+        }
 
-    .nv-file-over {
-        border: dotted 3px red;
-    }
-    /* Default class applied to drop zones on over */
-    .another-file-over-class {
-        border: dotted 3px green;
-    }
+        .nv-file-over {
+            border: dotted 3px red;
+        }
+        /* Default class applied to drop zones on over */
+        .another-file-over-class {
+            border: dotted 3px green;
+        }
 
-    html, body {
-        height: 100%;
-    }
-</style>
+        html, body {
+            height: 100%;
+        }
+    </style>
 
-<div class="row">
-    <div class="col-md-12">
-        <h1>Detalles de la Versi&oacute;n</h1>
-        <ol class="breadcrumb autoscroll">
-            <li><a href="/Admin#/">Versiones</a></li>
-            <li><a href="/Admin#/EditVersion/{{idVersion}}">Version {{version.Release}}</a></li>
-            <li class="active">Asignar Componentes</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Detalles de la Versi&oacute;n</h1>
+            <ol class="breadcrumb autoscroll">
+                <li><a href="/Admin#/">Versiones</a></li>
+                <li><a href="/Admin#/EditVersion/{{idVersion}}">Version {{version.Release}}</a></li>
+                <li class="active">Asignar Componentes</li>
+            </ol>
         </div>
     </div>
-</div>
-<br />
-<div class="row" ng-controller="componente" nv-file-drop="" uploader="uploader" options="uploadOptions">
-
-    <div class="col-md-3">
-
-        <h3>Selección de Archivos</h3>
-
-        <div ng-show="uploader.isHTML5">
-            <!-- 3. nv-file-over uploader="link" over-class="className" -->
-            <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
-                Drop zone
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
             </div>
         </div>
-
-        <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
-        Selecci&oacute;n manual
-        <input type="file" nv-file-select="" uploader="uploader" multiple /><br />
     </div>
+    <br />
 
-    <div class="col-md-9" style="margin-bottom: 40px">
+    <div class="row" ng-show="msgError2.length > 0">
+        <div class="col-md-12">
+            <div class="alert alert-warning">
+                <strong>Advertencia: </strong> Los siguiente archivos fueron removidos debido a que pertenecen a módulos No Vigentes:
+                <br />
+                <ul>
+                    <li ng-repeat="f in msgError2">{{f}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br />
 
-        <h3>Cola de Subida</h3>
-        <p>Elementos en la Cola: {{ uploader.queue.length }}</p>
+    <div class="row" nv-file-drop="" uploader="uploader" options="uploadOptions">
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th width="25%">Nombre</th>
-                    <th ng-show="uploader.isHTML5">Tamaño</th>
-                    <th ng-show="uploader.isHTML5">Progreso</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in uploader.queue">
-                    <td>
-                        <span class="error_ingreso" ng-hide="ComponenteOkSegunFecha(item.file)">
-                            <i class="fa fa-exclamation-triangle fa-2x" data-toggle="tooltip" title="La fecha de modificación de este componente es menor que la del componente oficial. Verifique que sea el correcto" aria-hidden="true"></i>
-                        </span>
-                        <span class="error_ingreso" ng-show="item.isError == true">
-                            <i class="fa fa-ban fa-2x" data-toggle="tooltip" title="Este componente NO existe, debe ingresarlo primero desde el mantenedor de módulos." aria-hidden="true"></i>
-                        </span>
-                        <script>
-                            $(document).ready(function(){
-                            $('[data-toggle="tooltip"]').tooltip();
-                            });
-                        </script>
-                    </td>
-                    <td>
-                        <strong>{{ item.file.name }}</strong>
-                    </td>
-                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                    <td ng-show="uploader.isHTML5">
-                        <div class="progress" style="margin-bottom: 0;">
-                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                    <td nowrap>
-                        <!--ng-hide="!ComponenteOkSegunFecha(item.file)"-->
-                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()"  ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.isError">
-                            <span class="glyphicon glyphicon-upload"></span> Subir
-                        </button>
-                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancelar
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                            <span class="glyphicon glyphicon-trash"></span> Eliminar
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-md-2">
 
-        <div>
-            <div>
-                Progreso de la carga:
-                <div class="progress" style="">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+            <h4>Selección de Archivos</h4>
+
+            <div ng-show="uploader.isHTML5">
+                <!-- 3. nv-file-over uploader="link" over-class="className" -->
+                <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                    Drop zone
                 </div>
             </div>
-            <button type="button" class="btn btn-success btn-s" ng-click="VerificaComponentesOkSegunExistencia()" ng-disabled="!uploader.getNotUploadedItems().length">
-                <span class="glyphicon glyphicon-upload"></span> Subir Todos
-            </button>
-            <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
-                <span class="glyphicon glyphicon-ban-circle"></span> Cancelar Todos
-            </button>
-            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                <span class="glyphicon glyphicon-trash"></span> Eliminar Todos
-            </button>
+
+            <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
+            Selecci&oacute;n manual<br />
+            <span  class="btn btn-info btn-file btn-sm">
+                <span class="glyphicon glyphicon-paperclip"></span>  Elegir Archivo<input type="file" nv-file-select="" uploader="uploader" multiple />
+            </span>
+            
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-9" style="margin-bottom: 40px">
+
+            <h4>Cola de Subida</h4>
+            <p>Elementos en la Cola: {{ uploader.queue.length }}</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th width="15%"><center>Nombre</center></th>
+                        <th ng-show="uploader.isHTML5"><center>Tamaño</center></th>
+                        <th ng-show="uploader.isHTML5" width="30%"><center>Progreso</center></th>
+                        <th><center>Estado</center></th>
+                        <th><center>Acción</center></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in uploader.queue">
+                        <td>
+                            <center>
+                                <span class="error_ingreso" ng-hide="ComponenteOkSegunFecha(item.file)">
+                                    <i class="fa fa-exclamation-triangle fa-2x" data-toggle="tooltip" title="La fecha de modificación de este componente es menor que la del componente oficial. Verifique que sea el correcto" aria-hidden="true"></i>
+                                </span>
+                                <span class="error_ingreso" ng-show="item.isError == true">
+                                    <i class="fa fa-ban fa-2x" data-toggle="tooltip" title="Este componente NO existe, debe ingresarlo primero desde el mantenedor de módulos." aria-hidden="true"></i>
+                                </span>
+                                <script>
+                                $(document).ready(function () {
+                                    $('[data-toggle="tooltip"]').tooltip();
+                                });
+                                </script>
+                            </center>
+                        </td>
+                        <td>
+                            <center><strong>{{ item.file.name }}</strong></center>
+                        </td>
+                        <td ng-show="uploader.isHTML5" nowrap><center>{{ item.file.size/1024/1024|number:2 }} MB</center></td>
+                        <td ng-show="uploader.isHTML5">
+                            <center>
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </center>                    
+                        </td>
+                        <td class="text-center">
+                            <center>
+                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                            </center>
+                        </td>
+                        <td nowrap>
+                            <center>
+                                <!--ng-hide="!ComponenteOkSegunFecha(item.file)"-->
+                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.isError">
+                                    <span class="glyphicon glyphicon-upload"></span>
+                                </button>
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                    <span class="glyphicon glyphicon-ban-circle"></span>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </center>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <hr/>
+                <button type="button" class="btn btn-success btn-sm" ng-click="VerificaComponentesOkSegunExistencia()" ng-disabled="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Subir Todos
+                </button>
+                <button type="button" class="btn btn-warning btn-sm" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancelar Todos
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Eliminar Todos
+                </button>
+            </div>
+
         </div>
 
     </div>
-
 </div>
-
 <div id="errorcompsegfec-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 

@@ -106,7 +106,7 @@ namespace ProcessMsg
         public static Model.AtributosArchivoBo GetComponenteByName(int idVersion, string nameFile)
         {
             var consulta = new CnaComponenteByName();
-            var obj = new Model.AtributosArchivoBo();
+            Model.AtributosArchivoBo obj = null;
             try
             {
                 var dr = consulta.Execute(idVersion, nameFile);
@@ -193,29 +193,20 @@ namespace ProcessMsg
         #endregion
 
         #region Adds
-        public static Model.AtributosArchivoBo AddComponente(int idVersion, Model.AtributosArchivoBo componente)
+        public static int AddComponente(int idVersion, Model.AtributosArchivoBo componente)
         {
             try
             {
                 var lista = Version.GetModulosVersiones(idVersion, null);
-                bool existe = false;
-                for (int i = 0; i < lista.Count(); i++)
+                if (!lista.Exists(x => x.Equals(componente.Modulo, StringComparison.OrdinalIgnoreCase)))
                 {
-                    if (lista[i].Trim().ToLower().Equals(componente.Modulo.Trim().ToLower())) existe = true;
-                }
-                if (!existe)
-                {
-                    if (Version.AddModuloVersion(idVersion, componente.Modulo) <= 0) return null;
+                    if (Version.AddModuloVersion(idVersion, componente.Modulo) <= 0) return 0;
                 }
 
                 var query = new AddComponente();
 
-                if (query.Execute(idVersion, componente.Modulo, componente.Name, componente.Version, componente.LastWrite) > 0)
-                {
-                    return GetComponentes(idVersion, componente.Modulo, null).Last();
-                }
+                return query.Execute(idVersion, componente.Modulo, componente.Name, componente.Version, componente.LastWrite);
 
-                return null;
             }
             catch (Exception ex)
             {

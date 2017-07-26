@@ -6,9 +6,12 @@
         'ngRoute'
 
         // Custom modules 
-
+        
         // 3rd Party Modules
         , 'angularFileUpload'
+        , 'smart-table'
+        // Custom modules 
+        , 'smart-pagination'
     ])
 
     .config(function ($routeProvider) {

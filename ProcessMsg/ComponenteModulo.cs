@@ -38,24 +38,51 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
+        public static List<Model.ComponenteModuloBo> GetComponentesModuloByName(string nombre)
+        {
+            try
+            {
+                List<Model.ComponenteModuloBo> obj = new List<Model.ComponenteModuloBo>();
+                var r = new CnaComponenteModulo().ExecuteComponentesModulos(nombre);
+                while (r.Read())
+                {
+                    obj.Add( new Model.ComponenteModuloBo
+                    {
+                        idComponentesModulos = int.Parse(r["idComponentesModulos"].ToString()),
+                        Nombre = r["Nombre"].ToString(),
+                        Descripcion = r["Descripcion"].ToString(),
+                        Modulo = int.Parse(r["Modulos"].ToString()),
+                        NomModulo = r["NomModulo"].ToString()
+                    });
+                }
+                r.Close();
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static Model.ComponenteModuloBo GetComponenteModuloByName(string nombre)
         {
             try
             {
-                Model.ComponenteModuloBo comp = null;
-                var reader = new CnaComponenteModulo().ExecuteComponentesModulos(nombre);
-                while (reader.Read())
+                Model.ComponenteModuloBo obj = null;
+                var r = new CnaComponenteModulo().ExecuteComponentesModulos(nombre);
+                while (r.Read())
                 {
-                    comp = new Model.ComponenteModuloBo
+                    obj = new Model.ComponenteModuloBo
                     {
-                        idComponentesModulos = int.Parse(reader["idComponentesModulos"].ToString()),
-                        Nombre = reader["Nombre"].ToString(),
-                        Descripcion = reader["Descripcion"].ToString(),
-                        Modulo = int.Parse(reader["Modulos"].ToString())
+                        idComponentesModulos = int.Parse(r["idComponentesModulos"].ToString()),
+                        Nombre = r["Nombre"].ToString(),
+                        Descripcion = r["Descripcion"].ToString(),
+                        Modulo = int.Parse(r["Modulos"].ToString())
                     };
                 }
-                reader.Close();
-                return comp;
+                r.Close();
+                return obj;
             }
             catch (Exception ex)
             {

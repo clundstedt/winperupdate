@@ -242,7 +242,8 @@ namespace ProcessMsg
                         Comentario = dr["Comentario"].ToString(),
                         Usuario = dr["Usuario"].ToString(),
                         Instalador = dr["Instalador"].ToString(),
-                        Componentes = new List<Model.AtributosArchivoBo>()
+                        Componentes = new List<Model.AtributosArchivoBo>(),
+                        isInstall = Ambiente.GetAmbientesByClienteEx(idCliente, int.Parse(dr["idVersion"].ToString()), null).Count > 0
                     };
 
                     foreach (var modulo in Version.GetModulosVersiones(obj.IdVersion, null))

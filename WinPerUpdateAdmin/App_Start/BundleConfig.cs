@@ -74,6 +74,7 @@ namespace WinPerUpdateAdmin
                       , "~/js/Version/editcomponente.js"
                       , "~/js/Version/publicar.js"
                       , "~/js/Version/controlcambios.js"
+                      , "~/js/Version/asignarscripts.js"
                       , "~/js/Version/serviceAdmin.js"
                       , "~/js/Clientes/serviceClientes.js"
                       , "~/js/Seguridad/serviceSeguridad.js"
@@ -99,6 +100,9 @@ namespace WinPerUpdateAdmin
 
             bundles.Add(new ScriptBundle("~/bundles/ambientesclt").Include(
                       "~/Scripts/angular-file-upload.min.js"
+                      ,"~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
                       ,  "~/js/AmbientesClt/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"

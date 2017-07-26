@@ -95,8 +95,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="input-group margin-bottom-sm">
-                                        <span class="input-group-addon" title="Impacto de la Modificación"><i class="fa fa-braille fa-fw"></i></span>
-                                        <input type="text" name="impacto" required="required" class="form-control" ng-model="formData.impacto" placeholder="Impacto de la Modificación" />
+                                        <span class="input-group-addon" title="Impacto de la Modificación"><input ng-model="chkimpacta" type="checkbox" ng-init="chkimpacta = false" ng-change="chkimpacta ? formData.impacto = 'No impacta otras funcionalidades' : formData.impacto = ''" />No Impacta</span>
+                                        <input type="text" name="impacto" required="required" class="form-control" ng-disabled="chkimpacta" ng-model="formData.impacto" placeholder="Impacto de la Modificación" />
                                     </div>
                                     <span class="error_ingreso" ng-show="frmCC.impacto.$error.required && frmCC.impacto.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo requerido.

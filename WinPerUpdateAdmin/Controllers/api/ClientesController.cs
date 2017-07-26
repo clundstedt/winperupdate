@@ -9,11 +9,18 @@ using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Configuration;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http.Controllers;
 
 namespace WinPerUpdateAdmin.Controllers.api
 {
     public class ClientesController : ApiController
     {
+        public override Task<HttpResponseMessage> ExecuteAsync(HttpControllerContext controllerContext, CancellationToken cancellationToken)
+        {
+            return base.ExecuteAsync(controllerContext, cancellationToken);
+        }
         #region structs
         struct anio
         {
@@ -36,6 +43,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var cl = ProcessMsg.Cliente.GetClienteNoVigente(id);
                 return Content(HttpStatusCode.OK, cl.Count > 0 ? cl.ElementAt(0) : (object)null);
             }
@@ -394,12 +402,14 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
+
         [Route("api/Clientes")]
         [HttpGet]
         public Object Get()
         {
             try
             {
+                var u = HttpContext.Current.Request.Url;
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 var obj = ProcessMsg.Cliente.GetClientes();
                 if (obj == null)

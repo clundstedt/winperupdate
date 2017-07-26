@@ -25,7 +25,7 @@
                 $scope.msgError = "";
             }).
             error(function (err) {
-                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
             
             $scope.GenerarVersionInicial = function (formData, valid) {
@@ -46,17 +46,17 @@
                                 $('#loading-modal').modal('toggle');
                                 $scope.msgError = "";
                             }).error(function (err) {
-                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                                 $scope.lblLoad = "Ocurrió un error al obtener la información de la versión inicial. Verifique la consola del navegador.";
                                 $scope.btnLoadHabilitado = true;
                             });
                         }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                             $scope.lblLoad = "Ocurrió un error al agregar los componentes de la versión inicial. Verifique la consola del navegador.";
                             $scope.btnLoadHabilitado = true;
                         });
                     }).error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         $scope.lblLoad = "Ocurrió un error al crear la versión inicial. Verifique la consola del navegador.";
                         $scope.btnLoadHabilitado = true;
                     });

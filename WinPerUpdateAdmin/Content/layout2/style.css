@@ -281,7 +281,7 @@ ul.dropdown-menu.drp-mnu li {
 }
 
 .custom-nav li .fa {
-    font-size: 16px;
+    font-size: 20px;
     vertical-align: middle;
     margin-right: 10px;
     width: 16px;
@@ -495,10 +495,11 @@ h5.left-nav-title {
 
 .left-side-collapsed .custom-nav li a i {
     margin-right: 0;
-	font-size: 1.2em;
+	font-size: 20px;
 }
 ul.nav li a span {
     padding-left: .5em;
+	font-size: large;
 }
 
 .left-side-collapsed .main-content {

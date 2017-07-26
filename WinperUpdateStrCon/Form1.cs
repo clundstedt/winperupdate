@@ -59,7 +59,7 @@ namespace WinperUpdateStrCon
                 if (RdbBase.Checked) TxtStrConEnc.Text = DesEncriptar(TxtStrCon.Text);
                 else TxtStrConEnc.Text = G_Desencripta(TxtStrCon.Text);
             }
-            catch (FormatException fex)
+            catch (FormatException)
             {
                 MessageBox.Show("El 'String de Conexión' no se encuentra encriptado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

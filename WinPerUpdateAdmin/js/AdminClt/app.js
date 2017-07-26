@@ -31,7 +31,7 @@
         return function (input) {
             var salida = [];
             angular.forEach(input, function (version) {
-                if (version.Estado == 'P' || version.Estado == 'C') {
+                if (version.Estado == 'P' && !version.isInstall) {
                     salida.push(version)
                 }
             });
@@ -39,12 +39,23 @@
         }
     })
 
-
-    .filter('filtroVersionesBeta', function () {
+    .filter('filtroVersionesNV', function () {
         return function (input) {
             var salida = [];
             angular.forEach(input, function (version) {
-                if (version.Estado == 'N') {
+                if (version.Estado == 'C') {
+                    salida.push(version)
+                }
+            });
+            return salida;
+        }
+    })
+
+    .filter('filtroVersionesPub', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (version) {
+                if (version.isInstall && version.Estado == 'P') {
                     salida.push(version)
                 }
             });
