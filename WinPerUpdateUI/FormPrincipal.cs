@@ -18,6 +18,7 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
+
 namespace WinPerUpdateUI
 {
     public partial class FormPrincipal : Form
@@ -103,6 +104,37 @@ namespace WinPerUpdateUI
                 }
             }
             catch (Exception) { }
+
+            /*if (!File.Exists("AppSetting.xml"))
+            {
+                try
+                {
+                    File.Create("AppSetting.xml").Close();
+                    System.Xml.XmlTextWriter xDoc = new System.Xml.XmlTextWriter("AppSetting.xml", Encoding.GetEncoding("ISO-8859-1"));
+                    xDoc.WriteStartElement("Setting");
+                    xDoc.WriteElementString("server", ConfigurationManager.AppSettings["server"]);
+                    xDoc.WriteElementString("port", ConfigurationManager.AppSettings["port"]);
+                    xDoc.WriteElementString("sql", ConfigurationManager.AppSettings["sql"]);
+                    xDoc.WriteElementString("cftp", ConfigurationManager.AppSettings["cftp"]);
+                    xDoc.WriteEndElement();
+                    xDoc.Close();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("Debe ejecutar WinAct como Administrador para crear el archivo de configuración.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+            }*/
+
+            if (string.IsNullOrEmpty(Utils.GetSetting("server")) || string.IsNullOrEmpty(Utils.GetSetting("port")))
+            {
+                Utils.SetSetting("server", ConfigurationManager.AppSettings["server"]);
+                Utils.SetSetting("port", int.Parse(ConfigurationManager.AppSettings["port"]));
+                Utils.SetSetting("sql", bool.Parse(ConfigurationManager.AppSettings["sql"]));
+                Utils.SetSetting("cftp", ConfigurationManager.AppSettings["cftp"]);
+            }
+            
+
             timerPing.Start();
             Utils.RegistrarLog("Load.log", "UI Iniciado");
             Utils.RegistrarLog("Load.log", "-----");
@@ -212,8 +244,8 @@ namespace WinPerUpdateUI
 
             if (!string.IsNullOrEmpty(nroLicencia))
             {
-                string server = ConfigurationManager.AppSettings["server"];
-                string port = ConfigurationManager.AppSettings["port"];
+                string server = Utils.GetSetting("server");
+                string port = Utils.GetSetting("port");
 
                 try
                 {
@@ -320,8 +352,8 @@ namespace WinPerUpdateUI
 
                 if (!string.IsNullOrEmpty(nroLicencia))
                 {
-                    string server = ConfigurationManager.AppSettings["server"];
-                    string port = ConfigurationManager.AppSettings["port"];
+                    string server = Utils.GetSetting("server");
+                    string port = Utils.GetSetting("port");
 
                     try
                     {
@@ -357,7 +389,7 @@ namespace WinPerUpdateUI
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason != CloseReason.WindowsShutDown)
+            if (e.CloseReason != CloseReason.WindowsShutDown && e.CloseReason != CloseReason.ApplicationExitCall)
             {
                 var res = MessageBox.Show("¿Está seguro que desea cerrar WinperUpdate?", "CONFIRME", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (res != DialogResult.Yes)
@@ -366,7 +398,6 @@ namespace WinPerUpdateUI
                     return;
                 }
             }
-            Application.Exit();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -377,8 +408,8 @@ namespace WinPerUpdateUI
                 {
                     // TODO: Insert monitoring activities here.
 
-                    string server = ConfigurationManager.AppSettings["server"];
-                    string port = ConfigurationManager.AppSettings["port"];
+                    string server = Utils.GetSetting("server");
+                    string port = Utils.GetSetting("port");
                     string dirTmp = Path.GetTempPath();
                     string json = Utils.StrSendMsg(server, int.Parse(port), "modulos#" + cliente.Id + "#");
                     Utils.ModulosContratados = JsonConvert.DeserializeObject<List<ModuloBo>>(json);
@@ -448,7 +479,7 @@ namespace WinPerUpdateUI
                     string ambiente = key2.GetValue("Ambientes").ToString();
                     key2.Close();
 
-                    if ((perfil.Equals("Administrador") && bool.Parse(ConfigurationManager.AppSettings["sql"])) || perfil.Equals("DBA"))
+                    if ((perfil.Equals("Administrador") && bool.Parse(Utils.GetSetting("sql"))) || perfil.Equals("DBA"))
                     {
                         int idPerfil = perfil.Equals("Administrador") ? 11 : 12;
                         var tareas = new List<TareaBo>();
@@ -513,8 +544,8 @@ namespace WinPerUpdateUI
         private Boolean EjecutarQuery (int idTarea, string nameFile, string Server, string DataBase, string User, string Password)
         {
             string ConnectionStr = string.Format("Database={0};Server={1};User={2};Password={3};Connect Timeout=200;Integrated Security=;", DataBase, Server, User, Password);
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
+            string server = Utils.GetSetting("server");
+            string port = Utils.GetSetting("port");
             SqlConnection conn = new SqlConnection();
             try
             {
@@ -700,8 +731,8 @@ namespace WinPerUpdateUI
         {
             try
             {
-                string server = ConfigurationManager.AppSettings["server"];
-                string port = ConfigurationManager.AppSettings["port"];
+                string server = Utils.GetSetting("server");
+                string port = Utils.GetSetting("port");
                 string json = Utils.StrSendMsg(server, int.Parse(port), "ping#");
                 if (restartApp)
                 {
@@ -745,8 +776,8 @@ namespace WinPerUpdateUI
                         {
                             var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
 
-                            string server = ConfigurationManager.AppSettings["server"];
-                            string port = ConfigurationManager.AppSettings["port"];
+                            string server = Utils.GetSetting("server");
+                            string port = Utils.GetSetting("port");
 
                             string json = Utils.StrSendMsg(server, int.Parse(port), "checkupui#" + nroLicencia + "#");
 
@@ -839,8 +870,8 @@ namespace WinPerUpdateUI
                 {
                     var nameIntalador = Path.Combine(Path.GetTempPath(), "SetUpdateUI.exe");
 
-                    string server = ConfigurationManager.AppSettings["server"];
-                    string port = ConfigurationManager.AppSettings["port"];
+                    string server = Utils.GetSetting("server");
+                    string port = Utils.GetSetting("port");
 
                     string json = Utils.StrSendMsg(server, int.Parse(port), "checkupui#" + nroLicencia + "#");
 

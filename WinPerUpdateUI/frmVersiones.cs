@@ -38,8 +38,8 @@ namespace WinPerUpdateUI
                 dirTmp += dirTmp.EndsWith("\\") ? "" : "\\";
                 dirTmp += "WinPer\\" + ambiente + "\\";
 
-                string server = ConfigurationManager.AppSettings["server"];
-                string port = ConfigurationManager.AppSettings["port"];
+                string server = Utils.GetSetting("server");
+                string port = Utils.GetSetting("port");
 
                 for (int i = 0; i < treeModulos.Nodes.Count; i++)
                 {
@@ -156,8 +156,8 @@ namespace WinPerUpdateUI
 
         private void treeModulos_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
+            string server = Utils.GetSetting("server");
+            string port = Utils.GetSetting("port");
 
             string modulo = e.Node.Text;
 
@@ -264,8 +264,8 @@ namespace WinPerUpdateUI
             treeModulos.Nodes.Clear();
             treeModulos.Nodes.Add("Winper V " + version);
 
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
+            string server = Utils.GetSetting("server");
+            string port = Utils.GetSetting("port");
 
             try
             {

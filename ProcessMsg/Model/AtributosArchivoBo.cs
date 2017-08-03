@@ -15,19 +15,28 @@ namespace ProcessMsg.Model
         public string Version { get; set; }
         public string Modulo { get; set; }
         public string Comentario { get; set; }
-        public string Tipo
+        
+        public char Tipo { get; set; }
+
+        public string TipoFmt
         {
             get
             {
-                if (Name.EndsWith("exe"))
+                string str = "";
+                switch (Tipo)
                 {
-                    return "exe";
+                    case 'A': str = "Alter";break;
+                    case 'S': str = "Procedimiento Almacenado";break;
+                    case 'F': str = "Funcion";break;
+                    case 'T': str = "Trigger";break;
+                    case 'V': str = "Vista";break;
+                    case 'Q': str = "Query";break;
+                    case '*': str = "Archivo";break;
+                    default:
+                        str = "Tipo desconocido";
+                        break;
                 }
-                else if (Name.EndsWith("qrp"))
-                {
-                    return "qrp";
-                }
-                return "otro";
+                return str;
             }
         }
 
@@ -46,6 +55,8 @@ namespace ProcessMsg.Model
                 }
             }
         }
+
+        public string MotorSql { get; set; }
 
         public string DateCreateFmt
         {

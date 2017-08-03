@@ -20,9 +20,9 @@ namespace WinPerUpdateUI
 
         private void FrmConfigGeneral_Load(object sender, EventArgs e)
         {
-            TxtIpWUS.Text = ConfigurationManager.AppSettings["server"];
-            TxtPuertoWUS.Text = ConfigurationManager.AppSettings["port"];
-            TxtIpSFTP.Text = ConfigurationManager.AppSettings["cftp"];
+            TxtIpWUS.Text = Utils.GetSetting("server");
+            TxtPuertoWUS.Text = Utils.GetSetting("port");
+            TxtIpSFTP.Text = Utils.GetSetting("cftp");
         }
         
 
@@ -33,11 +33,9 @@ namespace WinPerUpdateUI
                 var dr = MessageBox.Show("¿Está seguro que desea guardar la configuración?. Esto podría causar que la aplicación no funcione correctamente. Se recomienda contactar a soporte WinPer.", "Adavertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dr == DialogResult.Yes)
                 {
-                    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    config.AppSettings.Settings["server"].Value = TxtIpWUS.Text;
-                    config.AppSettings.Settings["port"].Value = TxtPuertoWUS.Text;
-                    config.AppSettings.Settings["cftp"].Value = TxtIpSFTP.Text;
-                    config.Save(ConfigurationSaveMode.Modified);
+                    Utils.SetSetting("server", TxtIpWUS.Text);
+                    Utils.SetSetting("port", int.Parse(TxtPuertoWUS.Text));
+                    Utils.SetSetting("cftp", TxtIpSFTP.Text);
                     MessageBox.Show("Configuración guardada con exito!.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Application.Restart();
                 }

@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Data.SQLite;
 
 namespace WinPerUpdateUI
 {
@@ -268,7 +270,90 @@ namespace WinPerUpdateUI
             
         }
 
+        public static void SetSetting(string campo, object valor)
+        {
+            string sql = "";
+            
+            if(valor is string || valor is bool) sql = string.Format("UPDATE Setting SET {0}='{1}'", campo, valor);
+            else sql = string.Format("UPDATE Setting SET {0}={1}", campo, valor);
 
+            var dirSqlite = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"WinActUI");
+            if (!Directory.Exists(dirSqlite)) Directory.CreateDirectory(dirSqlite);
+            dirSqlite = Path.Combine(dirSqlite, "AppSetting.sqlite");
+            if (!File.Exists(dirSqlite)) CrearAppSetting(dirSqlite);
 
+            var strConn = string.Format("Data Source={0};Version=3;", dirSqlite);
+            SQLiteConnection lite = new SQLiteConnection(strConn);
+            lite.Open();
+            SQLiteCommand cmdUpd = new SQLiteCommand(sql, lite);
+            cmdUpd.ExecuteNonQuery();
+            lite.Close();
+        }
+
+        public static string GetSetting(string campo)
+        {
+            var dirSqlite = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinActUI");
+            if (!Directory.Exists(dirSqlite)) Directory.CreateDirectory(dirSqlite);
+            dirSqlite = Path.Combine(dirSqlite, "AppSetting.sqlite");
+            if (!File.Exists(dirSqlite))CrearAppSetting(dirSqlite);
+
+            var strConn = string.Format("Data Source={0};Version=3;", dirSqlite);
+            SQLiteConnection lite = new SQLiteConnection(strConn);
+            lite.Open();
+
+            SQLiteCommand cmd = new SQLiteCommand(string.Format("SELECT {0} FROM Setting", campo), lite);
+            string val = null;
+            var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                val = r[0].ToString();
+            }
+            r.Close();
+            lite.Close();
+            return val;
+        }
+        private static void CrearAppSetting(string file)
+        {
+            SQLiteConnection.CreateFile(file);
+            var strConn = string.Format("Data Source={0};Version=3;", file);
+            SQLiteConnection lite = new SQLiteConnection(strConn);
+            lite.Open();
+            SQLiteCommand cmd = new SQLiteCommand("CREATE TABLE Setting (server varchar(10), port int, sql bit, cftp text)", lite);
+            cmd.ExecuteNonQuery();
+            cmd = new SQLiteCommand("INSERT INTO Setting (server, port, sql, cftp) VALUES (null,0,0,null)", lite);
+            cmd.ExecuteNonQuery();
+            lite.Close();
+        }
+
+        public static void SetAppSetting(string nodo, string valor)
+        {
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("AppSetting.xml");
+            var a = xDoc.DocumentElement;
+            for (int i = 0; i < a.ChildNodes.Count; i++)
+            {
+                if (a.ChildNodes[i].LocalName.Equals(nodo, StringComparison.OrdinalIgnoreCase))
+                {
+                    a.ChildNodes[i].InnerText = valor;
+                }
+            }
+            xDoc.Save("AppSetting.xml");
+        }
+
+        public static string GetAppSetting(string nodo)
+        {
+            string str = null;
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("AppSetting.xml");
+            var a = xDoc.DocumentElement;
+            for (int i = 0; i < a.ChildNodes.Count; i++)
+            {
+                if (a.ChildNodes[i].LocalName.Equals(nodo, StringComparison.OrdinalIgnoreCase))
+                {
+                    str = a.ChildNodes[i].InnerText;
+                }
+            }
+            return str;
+        }
     }
 }

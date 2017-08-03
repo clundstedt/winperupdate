@@ -13,6 +13,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
 {
     public class AdminController : Controller
     {
+        
         public char TipoPerfil = 'I';//Interno
         // GET: Admin
         public ActionResult Index()
@@ -277,6 +278,57 @@ namespace WinPerUpdateAdmin.Controllers.Admin
             catch (Exception ex)
             {
                 return Json(new { Version = 0, CodErr = 3, MsgErr = ex.Message, Output = "" });
+            }
+        }
+
+        //Uploads Scripts
+        public Object UploadSql(int idVersion, char tipo, HttpPostedFileBase file)
+        {
+            if (file == null)
+            {
+                return Json(new { CodErr = 1, MsgErr = "No Files", Tipo = ""});
+            }
+            try
+            {
+                var version = ProcessMsg.Version.GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
+                if (version == null) return Json(new { CodErr = 2, MsgErr = "Version no existe", Tipo = "" });
+
+                string sRuta = ProcessMsg.Utils.GetPathSetting(Server.MapPath("~/Uploads/")) + version.Release;
+
+                if (!Directory.Exists(sRuta))
+                {
+                    Directory.CreateDirectory(sRuta);
+                }
+
+                string dirScript = Path.Combine(sRuta, "Scripts");
+                if (!Directory.Exists(dirScript))
+                {
+                    Directory.CreateDirectory(dirScript);
+                }
+
+                string sNameFiles = Path.Combine(dirScript, file.FileName);
+
+                if (System.IO.File.Exists(sNameFiles))
+                {
+                    System.IO.File.Delete(sNameFiles);
+                }
+                var isSql = new FileInfo(file.FileName).Extension;
+                if (isSql.Equals(".sql", StringComparison.OrdinalIgnoreCase))
+                {
+                    file.SaveAs(sNameFiles);
+
+                    return Json(new
+                    {
+                        CodErr = 0,
+                        MsgErr = "",
+                        Tipo = tipo
+                    });
+                }
+                return Json(new { CodErr = 4, MsgErr = "Archivo incorrecto.", Tipo = "" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { CodErr = 3, MsgErr = ex.Message, Tipo = "" });
             }
         }
 

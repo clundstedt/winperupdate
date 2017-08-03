@@ -26,6 +26,9 @@ body a{
 	text-decoration:none;
 }
 
+.container{
+	width: 100%;
+}
 /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak

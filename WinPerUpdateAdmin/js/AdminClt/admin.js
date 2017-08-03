@@ -5,9 +5,9 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'serviceAmbientes'];
+    admin.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'serviceAmbientes', '$timeout'];
 
-    function admin($scope, $routeParams, serviceAdmin, serviceAmbientes) {
+    function admin($scope, $routeParams, serviceAdmin, serviceAmbientes, $timeout) {
         $scope.title = 'admin';
 
         activate();
@@ -15,8 +15,8 @@
         function activate() {
 
             
-
             $scope.msgError = "";
+            $scope.msgSuccess = "";
 
             $scope.version = {};
             $scope.versiones = [];
@@ -26,7 +26,7 @@
             $scope.idAmbiente = 0;
             $scope.mensaje = "";
             $scope.showScript = false;
-
+            $scope.ambienteSel = null;
             $scope.DetalleCambio = "";
 
             $scope.TipoComponentes = [];
@@ -45,35 +45,49 @@
             $scope.ambientesNoEjecutados = [];
             $scope.actAvisoTareasNoReportadas = false;
             $scope.errorTextArea = false;
+            $scope.cliente = null;
+            $scope.hasSql = false;
+
+            $scope.listaControlCambios = [];
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 $scope.idversion = $routeParams.idVersion;
-
-                serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
-                    serviceAdmin.getAmbientes(cliente.Id, $scope.idversion).success(function (ambiente) {
-                        serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (dataVersion) {
-                            serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
-                                for (var i = 0; i < data.length; i++) {
-                                    var datos = {
-                                        Tipo: data[i]
-                                    }
-                                    $scope.TipoComponentes.push(datos);
-                                }
-                                $scope.msgError = "";
-                                $scope.version = dataVersion;
-                                $scope.ambientes = ambiente;
+                serviceAdmin.getHasScripts($scope.idversion).success(function (hasSql) {
+                    $scope.hasSql = hasSql;
+                    serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
+                        serviceAdmin.getAmbientes(cliente.Id, $scope.idversion).success(function (ambiente) {
+                            serviceAdmin.getVersionCliente($scope.idversion, cliente.Id).success(function (dataVersion) {
+                                serviceAdmin.getTiposComponentes($scope.idversion).success(function (data) {
+                                    serviceAdmin.getControlCambios($scope.idversion).success(function (dataCC) {
+                                        $scope.listaControlCambios = dataCC;
+                                        for (var i = 0; i < data.length; i++) {
+                                            var datos = {
+                                                Tipo: data[i]
+                                            }
+                                            $scope.TipoComponentes.push(datos);
+                                        }
+                                        $scope.msgError = "";
+                                        $scope.version = dataVersion;
+                                        $scope.ambientes = ambiente;
+                                        $scope.cliente = cliente;
+                                    }).error(function (err) {
+                                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                                    });
+                                }).error(function (err) {
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                                });
                             }).error(function (err) {
-                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                             });
-                        }).error(function (err) {
-                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                        }).
+                        error(function (err) {
+                            console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                         });
-                    }).
-                    error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                     });
                 }).error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                 });
             }
             else {
@@ -88,11 +102,11 @@
                         $scope.msgError = "";
                     }).
                     error(function (err) {
-                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                     });
                 })
                 .error(function (err) {
-                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                 });
             }
 
@@ -233,6 +247,86 @@
                 
             }
 
+            $scope.publish = function (idVersion, idCliente, idAmbiente, paso, nombreAmbiente, codPrf, AmbienteSel) {
+                if ($scope.version.Estado == 'P') {
+                    serviceAdmin.getCheckInstall(idVersion, idCliente, idAmbiente).success(function (dataCheck) {
+                        if (dataCheck) {
+                            if ($scope.hasSql) {
+                                serviceAdmin.getScriptsOk(idVersion, idCliente, idAmbiente).success(function (data) {
+                                    if (data == 0) {
+                                        if ($scope.EjecutadoEnPruebas(idAmbiente, paso)) {
+                                            $scope.nombreambiente = nombreAmbiente;
+                                            $scope.idAmbiente = idAmbiente;
+                                            $scope.ambienteSel = AmbienteSel;
+                                            $scope.estaVigente = false;
+                                            $("#publish-modal").modal('show');
+                                            $scope.msgError = "";
+                                        } else {
+                                            $scope.nombreambiente = nombreAmbiente;
+                                            $scope.idAmbiente = idAmbiente;
+                                            $scope.ambienteSel = AmbienteSel;
+                                            $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinAct debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
+                                            $("#confpub-modal").modal('show');
+                                        }
+                                    } else if (data == 1) {
+                                        $("#mdlAvisoScriptPendiente").modal('show');
+                                    } else if (data == 2) {
+                                        $scope.idAmbiente = idAmbiente;
+                                        $scope.ambienteSel = AmbienteSel;
+                                        $("#mdlAddTareas").modal('show');
+                                    } else {
+                                        $scope.ambienteSel = AmbienteSel;
+                                        $scope.ambienteSel.EstadoEjecucionSql = 3;
+                                        $scope.ambienteSel.ColorEstadoEjecucionSql = "danger";
+                                        $scope.ShowDetalleTarea(idCliente, idVersion);
+                                    }
+                                }).error(function (err) {
+                                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                                });
+                            } else {
+                                if ($scope.EjecutadoEnPruebas(idAmbiente, paso)) {
+                                    $scope.nombreambiente = nombreAmbiente;
+                                    $scope.idAmbiente = idAmbiente;
+                                    $scope.ambienteSel = AmbienteSel;
+                                    $scope.estaVigente = false;
+                                    $("#publish-modal").modal('show');
+                                    $scope.msgError = "";
+                                } else {
+                                    $scope.nombreambiente = nombreAmbiente;
+                                    $scope.idAmbiente = idAmbiente;
+                                    $scope.ambienteSel = AmbienteSel;
+                                    $scope.msgAvisoExSQL = "Se ha detectado que usted tiene un ambiente de pruebas, WinAct debe validar primero que la versión tiene que ser publicada con exito en un ambiente de pruebas.";
+                                    $("#confpub-modal").modal('show');
+                                }
+                            }
+                        } else {
+                            $("#checkins-modal").modal('show');
+                        }
+                    }).error(function (err) {
+                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                    });
+                } else {
+                    $("#avisocaduca-modal").modal('show');
+                }
+            }
+
+            $scope.EjecutarSqls = function (idVersion, idCliente, idAmbiente, codPrf) {
+                serviceAdmin.addTareas(idVersion, idCliente, idAmbiente, codPrf).success(function (data) {
+                    console.log($scope.ambienteSel);
+                    $("#mdlAddTareas").modal('toggle');
+                    $scope.msgError = "";
+                    $scope.msgSuccess = "Scripts programado para su ejecución. Puede ver el estado en Estado de Scripts.";
+                    window.scrollTo(0, 0);
+                    $scope.ambienteSel.EstadoEjecucionSql = 1;
+                    $scope.ambienteSel.ColorEstadoEjecucionSql = "info";
+                    $timeout(function () {
+                        $scope.msgSuccess = "";
+                    },5000);
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                });
+            }
+
             $scope.ShowConfirmPublish = function (id, nombre, idVersion, paso) {
                 if ($scope.version.Estado == 'P') {
                     serviceAdmin.getCheckInstall(idVersion, $scope.idUsuario, id).success(function (dataCheck) {
@@ -337,9 +431,10 @@
 
             $scope.Publicar = function () {
                 serviceAdmin.getCliente($scope.idUsuario).success(function (cliente) {
-                    //console.log(JSON.stringify(cliente));
                     serviceAdmin.addVersion($scope.idversion, cliente.Id, $scope.idAmbiente, 'V').success(function () {
                         $scope.mensaje = "Versión agregada exitosamente";
+                        $scope.ambienteSel.EstadoEjecucionSql = 0;
+                        $scope.ambienteSel.ColorEstadoEjecucionSql = "default";
                         angular.forEach($scope.ambientes, function (item) {
                             if (item.idAmbientes == $scope.idAmbiente) {
                                 item.Estado = 'V';

@@ -18,6 +18,7 @@ namespace WinPerUpdateUI
             InitializeComponent();
 
             string dirTmp = Path.GetTempPath();
+            
 
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;

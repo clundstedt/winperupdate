@@ -28,5 +28,25 @@ namespace ProcessMsg.Model
                 return Tipo == 1 ? "Producción" : "Pruebas";
             }
         }
+
+        public int EstadoEjecucionSql { get; set; }
+
+        public string ColorEstadoEjecucionSql
+        {
+            get
+            {
+                string str = "";
+                switch (EstadoEjecucionSql)
+                {
+                    case 0: str = Estado == 0 ? "warning" : "default";break;
+                    case 1: str = "info";break;
+                    case 3: str = "danger";break;
+                    default:
+                        str = "default";
+                        break;
+                }
+                return str;
+            }
+        }
     }
 }

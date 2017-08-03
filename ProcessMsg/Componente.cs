@@ -56,7 +56,9 @@ namespace ProcessMsg
                         DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
                         Version = dr["VersionFile"].ToString(),
                         Modulo = dr["Modulo"].ToString().Trim(),
-                        Comentario = dr["Comentario"].ToString().Trim()
+                        Comentario = dr["Comentario"].ToString().Trim(),
+                        Tipo = char.Parse(dr["Tipo"].ToString()),
+                        MotorSql = dr["MotorSql"].ToString()
                     };
 
                     lista.Add(obj);
@@ -87,7 +89,9 @@ namespace ProcessMsg
                         DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
                         Version = dr["VersionFile"].ToString(),
                         Modulo = dr["Modulo"].ToString().Trim(),
-                        Comentario = dr["Comentario"].ToString()
+                        Comentario = dr["Comentario"].ToString(),
+                        Tipo = char.Parse(dr["Tipo"].ToString()),
+                        MotorSql = dr["MotorSql"].ToString()
                     };
 
                     lista.Add(obj);
@@ -119,7 +123,9 @@ namespace ProcessMsg
                         DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
                         Version = dr["VersionFile"].ToString(),
                         Modulo = dr["Modulo"].ToString().Trim(),
-                        Comentario = dr["Comentario"].ToString().Trim()
+                        Comentario = dr["Comentario"].ToString().Trim(),
+                        Tipo = char.Parse(dr["Tipo"].ToString()),
+                        MotorSql = dr["MotorSql"].ToString()
                     };
                 }
                 dr.Close();
@@ -148,7 +154,9 @@ namespace ProcessMsg
                         DateCreate = DateTime.Parse(dr["FechaFile"].ToString()),
                         Version = dr["VersionFile"].ToString(),
                         Modulo = dr["Modulo"].ToString().Trim(),
-                        Comentario = dr["Comentario"].ToString().Trim()
+                        Comentario = dr["Comentario"].ToString().Trim(),
+                        Tipo = char.Parse(dr["Tipo"].ToString()),
+                        MotorSql = dr["MotorSql"].ToString()
                     }
                     );
                 }
@@ -178,7 +186,9 @@ namespace ProcessMsg
                         Version = r["VersionFile"].ToString(),
                         Modulo = r["Modulo"].ToString().Trim(),
                         Comentario = r["Comentario"].ToString().Trim(),
-                        Directorio = r["Directorio"].ToString()
+                        Directorio = r["Directorio"].ToString(),
+                        Tipo = char.Parse(r["Tipo"].ToString()),
+                        MotorSql = r["MotorSql"].ToString()
                     });
                 }
                 r.Close();
@@ -205,7 +215,7 @@ namespace ProcessMsg
 
                 var query = new AddComponente();
 
-                return query.Execute(idVersion, componente.Modulo, componente.Name, componente.Version, componente.LastWrite);
+                return query.Execute(idVersion, componente.Modulo, componente.Name, componente.Version, componente.LastWrite, componente.Tipo, componente.MotorSql);
 
             }
             catch (Exception ex)

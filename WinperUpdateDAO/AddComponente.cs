@@ -8,10 +8,10 @@ namespace WinperUpdateDAO
 {
     public class AddComponente : SpDao
     {
-        public int Execute(int idVersion, string modulo, string nameFile, string numVersion, DateTime fecVersion)
+        public int Execute(int idVersion, string modulo, string nameFile, string numVersion, DateTime fecVersion, char tipo, string motor)
         {
-            SpName = @" insert into Componentes (idVersion, Modulo, NameFile, VersionFile, FechaFile, Comentario) 
-                                    values (@idVersion, @modulo, @nameFile, @numVersion, @fecVersion, '')";
+            SpName = @" insert into Componentes (idVersion, Modulo, NameFile, VersionFile, FechaFile, Comentario, Tipo, MotorSql) 
+                                    values (@idVersion, @modulo, @nameFile, @numVersion, @fecVersion, '', @tipo, @motor)";
             try
             {
                 ParmsDictionary.Add("@idVersion", idVersion);
@@ -19,6 +19,8 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@nameFile", nameFile);
                 ParmsDictionary.Add("@numVersion", numVersion);
                 ParmsDictionary.Add("@fecVersion", fecVersion);
+                ParmsDictionary.Add("@tipo", tipo);
+                ParmsDictionary.Add("@motor", motor);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

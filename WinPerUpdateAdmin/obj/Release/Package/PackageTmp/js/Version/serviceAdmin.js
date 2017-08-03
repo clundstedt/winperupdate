@@ -46,7 +46,8 @@
             delDocCambios: delDocCambios,
             updControlCambios: updControlCambios,
             delControlCambios: delControlCambios,
-            isModuloVigente: isModuloVigente
+            isModuloVigente: isModuloVigente,
+            addComponenteSql:addComponenteSql
         };
 
         return service;
@@ -994,6 +995,52 @@
             return promise;
         }
 
+        function addComponenteSql(id, modulo, name, fecha, tipo, motor) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            var componente = {
+                "Modulo": modulo,
+                "Name": name,
+                "LastWrite": fecha,
+                "Version": "S/I",
+                "Tipo": tipo,
+                "MotorSql": motor
+            };
+
+            $.ajax({
+                url: '/api/Version/' + id + '/Componentes',
+                type: "POST",
+                dataType: 'Json',
+                data: componente,
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 201) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('No se pudo agregar la componente');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + ". msg: " + xhr.responseText);
+                    deferred.reject('No se pudo agregar la componente');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
         function addComponente(id, modulo, name, fecha, version) {
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -1002,7 +1049,9 @@
                 "Modulo": modulo,
                 "Name": name,
                 "LastWrite": fecha,
-                "Version": version
+                "Version": version,
+                "Tipo": '*',
+                "MotorSql": 'N/A'
             };
 
             $.ajax({

@@ -30,8 +30,8 @@ namespace WinPerUpdateUI
                 string perfil = key.GetValue("Perfil").ToString();
                 key.Close();
 
-                string server = ConfigurationManager.AppSettings["server"];
-                string port = ConfigurationManager.AppSettings["port"];
+                string server = Utils.GetSetting("server");
+                string port = Utils.GetSetting("port");
 
                 var cliente = new ClienteBo();
                 string json = Utils.StrSendMsg(server, int.Parse(port), "checklicencia#" + txtNroLicencia.Text + "#");
@@ -131,11 +131,14 @@ namespace WinPerUpdateUI
             key.SetValue("Ambientes", ambientes);
             key.Close();
 
-            if (cmbPerfil.SelectedIndex == 0)
+            if (cmbPerfil.SelectedIndex == 0 && cmbPerfil.Visible)
             {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-                config.AppSettings.Settings["sql"].Value = chkPermitirSQL.Checked.ToString();
-                config.Save(ConfigurationSaveMode.Modified);
+                try
+                {
+                    Utils.SetSetting("sql", bool.Parse(chkPermitirSQL.Checked.ToString()));
+                }
+                catch (UnauthorizedAccessException) { MessageBox.Show("No existe autorización para guardar los cambios, pruebe ejecutando WinAct como Administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                
             }
             
             this.Close();
@@ -150,8 +153,8 @@ namespace WinPerUpdateUI
 
         private void txtNroLicencia_Leave(object sender, EventArgs e)
         {
-            string server = ConfigurationManager.AppSettings["server"];
-            string port = ConfigurationManager.AppSettings["port"];
+            string server = Utils.GetSetting("server");
+            string port = Utils.GetSetting("port");
 
             try
             {
@@ -200,7 +203,7 @@ namespace WinPerUpdateUI
 
         private void Ambiente_Load(object sender, EventArgs e)
         {
-            var chek = ConfigurationManager.AppSettings["sql"];
+            var chek = Utils.GetSetting("sql");
             if (chek != null)
             {
                 chkPermitirSQL.Checked = bool.Parse(chek);

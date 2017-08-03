@@ -16,25 +16,32 @@
             </div>
         </div>
     </div>
+    <div class="row" ng-show="msgSuccess != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success" id="msgsuccess" tabindex="1">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
     <br />
 
     <p>
         {{version.Comentario}}
     </p>
     <div class="row">
-        <div class="alert alert-info" ng-controller="controllerHome">
+        <!--div class="alert alert-info" ng-controller="controllerHome">
             <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> AVISO:</strong> Puede hacer seguimiento de las tareas agendadas haciendo click en  <button ng-click="ShowDetalleTarea(userSession.Cliente.Id, version.IdVersion)" type="button" class="btn btn-info btn-xs">Estado de Tareas</button>.
-        </div>
+        </div-->
         <div class="col-md-12">
             <div class="btn-toolbar hidden-xs">
-                <div class="btn-group" role="toolbar">
-                    <button ng-repeat="ambiente in ambientes" ng-click="ShowConfirmPublish(ambiente.idAmbientes, ambiente.Nombre, version.IdVersion, true)" ng-disabled="ambiente.Estado=='V' || ambiente.Estado=='I'" data-toggle="modal" class="btn btn-default">
-                        <span class="fa fa-fw fa-square-o" ng-show="ambiente.Estado==' '"></span><span class="fa fa-fw fa-check-square-o" ng-show="ambiente.Estado=='V' || ambiente.Estado=='I'"></span> Publicar en {{ambiente.Nombre}}
+                <div class="btn-group" role="toolbar" ng-controller="controllerHome">
+                    <button ng-repeat="ambiente in ambientes" ng-click="publish(version.IdVersion, cliente.Id, ambiente.idAmbientes, true, ambiente.Nombre, userSession.CodPrf, ambiente)" ng-disabled="ambiente.Estado=='V' || ambiente.Estado=='I'" data-toggle="modal" class="btn btn-{{ambiente.ColorEstadoEjecucionSql}}">
+                        Publicar en {{ambiente.Nombre}}
                     </button>
                 </div>
             </div>
 
-            <div class="btn-toolbar visible-xs-block">
+            <!--div class="btn-toolbar visible-xs-block">
                 <div class="btn-group" role="toolbar">
                     <div class="btn-group" role="group">
                         <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
@@ -49,7 +56,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div-->
         </div>
     </div>
     <br />
@@ -78,7 +85,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            
+                            <!--
                             <div class="panel-footer text-right" ng-init="inficha=true" ng-show="ejecutable.Name.endsWith('.sql') || ejecutable.Name.endsWith('.SQL')">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -103,7 +110,44 @@
                                     </a>
                                 </div>
                             </div>
+                                -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Control de Cambios</h1>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="cc in listaControlCambios">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <center>
+                                        <img src="~/Img/Chat_CC_WinAct.png" alt="" />
+                                    </center>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="list-group-item-heading">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label style="width:10px;"></label>Módulo: {{cc.ModuloFmt.NomModulo}} <img src="~/Img/Modulo_CC_Winact.png" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{cc.Descripcion}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,7 +246,7 @@
                     <textarea class="form-control" ng-show="showScript" ng-model="txtarea" rows="15"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-warning" data-toggle="modal" data-target="#confejscman-modal" ng-disabled="estaVigente">Ejecutar Script Manualmente</button>
+                    <!--button class="btn btn-warning" data-toggle="modal" data-target="#confejscman-modal" ng-disabled="estaVigente">Ejecutar Script Manualmente</button-->
                     <button class="btn btn-success" ng-click="EjecutarTareaSQL(version.IdVersion, 0)" ng-disabled="estaVigente">Ejecutar Script</button>
                     <button class="btn btn-info" ng-click="ShowScriptSQL(version.IdVersion, nombrearchExSQL, idAmbienteExSQL, userSession)" ng-disabled="estaVigente">Ver Script</button>
                     <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -238,8 +282,8 @@
                 <div class="modal-body">
                     {{msgAvisoExSQL}}
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" ng-click="ShowConfirmPublish(idAmbiente,nombreambiente, version.IdVersion, false)" data-dismiss="modal">
+                <div class="modal-footer" ng-controller="controllerHome">
+                    <button class="btn btn-primary" ng-click="publish(version.IdVersion,cliente.Id, idAmbiente, false,nombreambiente,userSession.CodPrf, ambienteSel)" data-dismiss="modal">
                         Publicar de todas formas
                     </button>
                     <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -365,5 +409,48 @@
             </div>
         </div>
     </div>
+
+    <div id="mdlAddTareas" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Aviso WinAct</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Esta versión tiene script SQL que no han sido ejecutados en el ambiente seleccionado. WinAct procederá
+                    a ejecutarlos de forma automática. Posteriormente instalará los componentes en las estaciones de trabajo donde se encuentra
+                    WinAct configurado para este ambiente.</p><br />
+                    <b>NOTA: Para la ejecución de los script SQL, debe estar WinAct instalado y configurado como perfil DBA o Administrador
+                    con permisos para ejecución de scripts.</b>
+                </div>
+                <div class="modal-footer" ng-controller="controllerHome">
+                    <button type="button" class="btn btn-success" ng-click="EjecutarSqls(version.IdVersion, cliente.Id, idAmbiente,userSession.CodPrf)">Ejecutar Scripts</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mdlAvisoScriptPendiente" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Aviso WinAct</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Existen scripts en estado PENDIENTE, debe esperar a que WinAct los ejecute.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 

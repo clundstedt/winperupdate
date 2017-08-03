@@ -32,6 +32,36 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
+        
+        [Route("api/Version/{idVersion:int}/{idCliente:int}/{idAmbiente:int}/ScriptsOk")]
+        [HttpGet]
+        public Object GetScriptsOk(int idVersion, int idCliente, int idAmbiente)  
+        {
+            try
+            {
+                return Content(HttpStatusCode.OK, ProcessMsg.Tareas.GetScriptsOk(idVersion, idCliente,idAmbiente));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        
+        [Route("api/Version/{idVersion:int}/HasScript")]
+        [HttpGet]
+        public Object GetHasScript(int idVersion)
+        {
+            try
+            {
+                var obj = ProcessMsg.Componente.GetComponentes(idVersion, null).Where(x => x.Tipo != '*').ToList();
+                return Content(HttpStatusCode.OK, (obj.Count > 0));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        
         [Route("api/getControlCambios/{idVersion:int}/{tips:int}/{modulo:int}")]
         [HttpGet]
         public Object GetControlCambios(int idVersion, int tips, int modulo)
@@ -223,20 +253,15 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
 
-        [Route("api/CheckInstall/Version/{idVersion:int}/Usuario/{idUsuario:int}/Ambiente/{idAmbiente:int}")]
+        [Route("api/CheckInstall/Version/{idVersion:int}/Cliente/{idCliente:int}/Ambiente/{idAmbiente:int}")]
         [HttpGet]
-        public Object GetCheckInstall(int idVersion, int idUsuario, int idAmbiente)
+        public Object GetCheckInstall(int idVersion, int idCliente, int idAmbiente)
         {
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                var clt = ProcessMsg.Cliente.GetClienteUsuario(idUsuario);
-                if (clt == null)
-                {
-                    return Content(HttpStatusCode.Accepted, false);
-                }
                 
-                var idVersiones = ProcessMsg.Cliente.GetVersiones(clt.Id, null).OrderBy(x => x.IdVersion).Where(x => x.Estado == 'P').Select(x => x.IdVersion);
+                var idVersiones = ProcessMsg.Cliente.GetVersiones(idCliente, null).OrderBy(x => x.IdVersion).Where(x => x.Estado == 'P').Select(x => x.IdVersion);
                 if (idVersiones != null)
                 {
                     if (idVersion == idVersiones.ElementAt(0))
@@ -244,7 +269,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                         return true;
                     }
                 }
-                var obj = ProcessMsg.Version.CheckVersionAnteriorInstalada(idVersion, clt.Id, idAmbiente);
+                var obj = ProcessMsg.Version.CheckVersionAnteriorInstalada(idVersion, idCliente, idAmbiente);
                 return (obj != null);
             }
             catch(Exception ex)
@@ -573,7 +598,7 @@ namespace WinPerUpdateAdmin.Controllers.api
                     return Content(HttpStatusCode.BadRequest, (ProcessMsg.Model.VersionBo)null);
                 }
 
-                string dirfmt = string.Format("{0}{1}/{2}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Uploads/")), version.Release, obj.Name);
+                string dirfmt = string.Format("{0}{1}/Scripts/{2}", ProcessMsg.Utils.GetPathSetting(HttpContext.Current.Server.MapPath("~/Uploads/")), version.Release, obj.Name);
                 var contenidoSQL = System.IO.File.ReadAllText(dirfmt);
 
                 return contenidoSQL;
@@ -645,6 +670,40 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region post
 
+        [Route("api/Tareas/{idVersion:int}/{idCliente:int}/{idAmbiente:int}/{codPrf:int}")]
+        [HttpPost]
+        public Object PostTareas(int idVersion, int idCliente, int idAmbiente, int codPrf)
+        {
+            try
+            {
+                List<ProcessMsg.Model.TareaBo> tareas = new List<ProcessMsg.Model.TareaBo>();
+                var scripts = ProcessMsg.Componente.GetComponentes(idVersion, null).Where(x => x.Tipo != '*').OrderBy(x => x.Tipo).ToList();
+                foreach (var script in scripts)
+                {
+                    tareas.Add(new ProcessMsg.Model.TareaBo
+                    {
+                        idClientes = idCliente,
+                        Ambientes = new ProcessMsg.Model.AmbienteBo
+                        {
+                            idAmbientes = idAmbiente
+                        },
+                        CodPrf = codPrf,
+                        Estado = 0,
+                        Modulo = script.Modulo,
+                        idVersion = idVersion,
+                        NameFile = script.Name,
+                        Error = ""
+                    });
+                }
+
+                return Content(HttpStatusCode.OK, ProcessMsg.Tareas.Add(tareas));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+        
         [Route("api/ControlCambios")]
         [HttpPost]
         public Object PostControlCambios([FromBody]ProcessMsg.Model.ControlCambiosBo control)
@@ -864,17 +923,16 @@ namespace WinPerUpdateAdmin.Controllers.api
                     response.StatusCode = HttpStatusCode.BadRequest;
                 else
                 {
-                    var comp = ProcessMsg.ComponenteModulo.GetComponentesModuloByName(archivo.Name);
-                    foreach (var c in comp)
+                    var existe = ProcessMsg.Componente.GetComponentes(archivo.idVersion, null).SingleOrDefault(x => x.Modulo.Equals(archivo.Modulo) && x.Name.Equals(archivo.Name));
+                    if (existe == null)
                     {
-                        archivo.Modulo = c.NomModulo;
                         if (ProcessMsg.Componente.AddComponente(idVersion, archivo) == 1)
                         {
-                            ProcessMsg.Bitacora.AddBitacora("Version", "", c.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), c.Bitacora('?'));
+                            ProcessMsg.Bitacora.AddBitacora("Version", "", archivo.Bitacora('I'), 'I', DateTime.Now, int.Parse(HttpContext.Current.Session["token"].ToString()), archivo.Bitacora('?'));
                         }
                     }
-
                     return Content(HttpStatusCode.Created, true);
+
                 }
 
                 return Content(response.StatusCode, (ProcessMsg.Model.AtributosArchivoBo)null);

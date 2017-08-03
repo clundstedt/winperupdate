@@ -21,6 +21,7 @@
             $scope.modulos = [];
             $scope.version = null;
             $scope.msgError = "";
+            $scope.formData = {};
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 serviceAdmin.getVersion($routeParams.idVersion).success(function (data) {
@@ -34,6 +35,40 @@
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0); window.scrollTo(0, 0);
                 });
+            }
+
+            $scope.isUndefinedOrNullMotor = function (motor) {
+                return (angular.isUndefined(motor) || motor === null)
+            }
+
+            $scope.isUndefinedOrNullModulo = function (modulo) {
+                return (angular.isUndefined(modulo) || modulo === null)
+            }
+
+            $scope.existeFile = function (name) {
+                $scope.con = 0;
+                $scope.cantidad = 0;
+                do {
+                    if ($scope.con == 0) {
+                        for (var i = 0; i < $scope.uploaderAlt.queue.length; i++) {
+                            if ($scope.uploaderAlt.queue[i].file.name == name) $scope.cantidad++;
+                        }
+                    } else if ($scope.con == 1) {
+                        for (var i = 0; i < $scope.uploaderSp.queue.length; i++) {
+                            if ($scope.uploaderSp.queue[i].file.name == name) $scope.cantidad++;
+                        }
+                    } else if ($scope.con == 2) {
+                        for (var i = 0; i < $scope.uploaderFn.queue.length; i++) {
+                            if ($scope.uploaderFn.queue[i].file.name == name) $scope.cantidad++;
+                        }
+                    } else {
+                        for (var i = 0; i < $scope.uploaderTr.queue.length; i++) {
+                            if ($scope.uploaderTr.queue[i].file.name == name) $scope.cantidad++;
+                        }
+                    }
+                    $scope.con++;
+                } while ($scope.con < 3);
+                return $scope.cantidad;
             }
 
             $scope.uploadAll = function () {
@@ -81,7 +116,16 @@
 
             // CALLBACKS
             uploaderAlt.onSuccessItem = function (fileItem, response, status, headers) {
-                //console.info("onSuccessItem", fileItem, response, status, headers);
+                if (response.CodErr == 0) {
+                    serviceAdmin
+                        .addComponenteSql($scope.version.IdVersion, $scope.formData.modulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.Tipo, $scope.formData.motor)
+                        .success(function (data) {
+                            $scope.msgError = "";
+                        })
+                        .error(function (err) {
+                            console.error(err); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
+                        });
+                }
             };
             uploaderAlt.onErrorItem = function (fileItem, response, status, headers) {
                 //console.info('onErrorItem', fileItem, response, status, headers);
@@ -106,8 +150,12 @@
                     $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
-                $scope.nameFiles = [];
-                fileItem.url = '';
+                if ($scope.existeFile(fileItem.file.name) > 1) {
+                    fileItem.remove();
+                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    window.scrollTo(0, 0);
+                }
+                fileItem.url = '/Admin/UploadSql?idVersion='+$scope.version.IdVersion+'&tipo=A';
             };
 
             uploaderAlt.onCompleteAll = function () {
@@ -138,8 +186,16 @@
 
             // CALLBACKS
             uploaderSp.onSuccessItem = function (fileItem, response, status, headers) {
-                
-                //console.info("onSuccessItem", fileItem, response, status, headers);
+                if (response.CodErr == 0) {
+                    serviceAdmin
+                        .addComponenteSql($scope.version.IdVersion, $scope.formData.modulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.Tipo, $scope.formData.motor)
+                        .success(function (data) {
+                            $scope.msgError = "";
+                        })
+                        .error(function (err) {
+                            console.error(err); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
+                        });
+                }
             };
             uploaderSp.onErrorItem = function (fileItem, response, status, headers) {
                 //console.info('onErrorItem', fileItem, response, status, headers);
@@ -164,8 +220,12 @@
                     $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
-                $scope.nameFiles = [];
-                fileItem.url = '';
+                if ($scope.existeFile(fileItem.file.name) > 1) {
+                    fileItem.remove();
+                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    window.scrollTo(0, 0);
+                }
+                fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=S';
             };
 
             uploaderSp.onCompleteAll = function () {
@@ -196,8 +256,16 @@
 
             // CALLBACKS
             uploaderFn.onSuccessItem = function (fileItem, response, status, headers) {
-                $scope.nameFiles.push(fileItem.file.name);
-                //console.info("onSuccessItem", fileItem, response, status, headers);
+                if (response.CodErr == 0) {
+                    serviceAdmin
+                        .addComponenteSql($scope.version.IdVersion, $scope.formData.modulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.Tipo, $scope.formData.motor)
+                        .success(function (data) {
+                            $scope.msgError = "";
+                        })
+                        .error(function (err) {
+                            console.error(err); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
+                        });
+                }
             };
             uploaderFn.onErrorItem = function (fileItem, response, status, headers) {
                 //console.info('onErrorItem', fileItem, response, status, headers);
@@ -222,8 +290,12 @@
                     $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
-                $scope.nameFiles = [];
-                fileItem.url = '';
+                if ($scope.existeFile(fileItem.file.name) > 1) {
+                    fileItem.remove();
+                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    window.scrollTo(0, 0);
+                }
+                fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=F';
             };
 
             uploaderFn.onCompleteAll = function () {
@@ -254,8 +326,16 @@
 
             // CALLBACKS
             uploaderTr.onSuccessItem = function (fileItem, response, status, headers) {
-                $scope.nameFiles.push(fileItem.file.name);
-                //console.info("onSuccessItem", fileItem, response, status, headers);
+                if (response.CodErr == 0) {
+                    serviceAdmin
+                        .addComponenteSql($scope.version.IdVersion, $scope.formData.modulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.Tipo, $scope.formData.motor)
+                        .success(function (data) {
+                            $scope.msgError = "";
+                        })
+                        .error(function (err) {
+                            console.error(err); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
+                        });
+                }
             };
             uploaderTr.onErrorItem = function (fileItem, response, status, headers) {
                 //console.info('onErrorItem', fileItem, response, status, headers);
@@ -280,8 +360,12 @@
                     $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
-                $scope.nameFiles = [];
-                fileItem.url = '';
+                if ($scope.existeFile(fileItem.file.name) > 1) {
+                    fileItem.remove();
+                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    window.scrollTo(0, 0);
+                }
+                fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=T';
             };
 
             uploaderTr.onCompleteAll = function () {

@@ -192,7 +192,9 @@ namespace WinperUpdateServer
                                 {
                                     var item = ProcessMsg.Version.GetVersiones(eventLog1).SingleOrDefault(x => x.IdVersion == tarea.idVersion);
 
-                                    string fileName = dirVersiones + item.Release + "\\" + tarea.NameFile;
+                                    string fileName = "";
+                                    if (!new FileInfo(tarea.NameFile).Extension.Equals(".sql", StringComparison.OrdinalIgnoreCase)) fileName = dirVersiones + item.Release + "\\" + tarea.NameFile;
+                                    else fileName = Path.Combine(dirVersiones,item.Release,"Scripts",tarea.NameFile);
                                     if (File.Exists(fileName))
                                     {
                                         System.IO.FileInfo info = new System.IO.FileInfo(fileName);

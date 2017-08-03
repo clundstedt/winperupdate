@@ -35,8 +35,8 @@ namespace WinPerUpdateUI
             try
             {
                 string licencia = (Owner as Ambiente).txtNroLicencia.Text;
-                string server = ConfigurationManager.AppSettings["server"];
-                string port = ConfigurationManager.AppSettings["port"];
+                string server = Utils.GetSetting("server");
+                string port = Utils.GetSetting("port");
 
                 string resultado = Utils.StrSendMsg(server, int.Parse(port), string.Format("checksop#{0}#{1}#", TxtNombre.Text, Utils.GetMd5Hash(TxtPassword.Text)));
                 DialogResult = resultado.Equals("1") ? DialogResult.Yes : DialogResult.No;

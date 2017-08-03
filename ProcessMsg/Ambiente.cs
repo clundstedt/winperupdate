@@ -93,7 +93,6 @@ namespace ProcessMsg
             }
             return lista;
         }
-
         public static List<Model.AmbienteBo> GetAmbientesByCliente(int idCliente, int idVersion, EventLog log)
         {
             List<Model.AmbienteBo> lista = new List<Model.AmbienteBo>();
@@ -113,7 +112,8 @@ namespace ProcessMsg
                         NomBd = dr["NomBd"].ToString(),
                         UserDbo = dr["UserDbo"].ToString(),
                         PwdDbo = Utils.DesEncriptar(dr["PwdDbo"].ToString()),
-                        Estado = dr["Estado"] == DBNull.Value ? ' ' : dr["Estado"].ToString()[0]
+                        Estado = dr["Estado"] == DBNull.Value ? ' ' : dr["Estado"].ToString()[0],
+                        EstadoEjecucionSql = Tareas.GetScriptsOk(idVersion, idCliente, int.Parse(dr["idAmbientes"].ToString())) 
                     });
                 }
                 dr.Close();

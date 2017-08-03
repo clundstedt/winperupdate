@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,34 @@ namespace ProcessMsg
 {
     public class Tareas
     {
-    
+        public static int GetScriptsOk(int idVersion, int idCliente, int idAmbiente)
+        {
+            try
+            {
+                var tareas = ProcessMsg.Tareas.GetTareas(idCliente, idVersion).Where(x => x.Ambientes.idAmbientes == idAmbiente).ToList();
+                if (tareas.Count == 0)
+                {
+                    return 2;
+                }
+                var scriptsPendientes = tareas.Where(x => x.Ambientes.idAmbientes == idAmbiente && x.Estado == 0).ToList();
+                if (scriptsPendientes.Count > 0)
+                {
+                    return 1;
+                }
+                var scriptsEjecutados = tareas.Where(x => x.Ambientes.idAmbientes == idAmbiente && x.Estado == 1).ToList().Count;
+                var scripts = ProcessMsg.Componente.GetComponentes(idVersion, null).Where(x => x.Tipo != '*').ToList().Count;
+                if (scripts != scriptsEjecutados)
+                {
+                    return  3;
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
         public static List<ProcessMsg.Model.TareaBo> GetTareas(int idClientes, int idVersion)
         {
             List<ProcessMsg.Model.TareaBo> lista = new List<ProcessMsg.Model.TareaBo>();
@@ -115,6 +143,32 @@ namespace ProcessMsg
                 return new AddTareas().Execute(tarea.idTareas,tarea.idClientes,tarea.Ambientes.idAmbientes
                                               ,tarea.CodPrf,tarea.Estado,tarea.Modulo,tarea.idVersion
                                               ,tarea.NameFile, tarea.Error);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                throw new Exception(msg, ex);
+            }
+        }
+        public static bool Add(List<ProcessMsg.Model.TareaBo> tareas)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("0");
+                dt.Columns.Add("1");
+                dt.Columns.Add("2");
+                dt.Columns.Add("3");
+                dt.Columns.Add("4");
+                dt.Columns.Add("5");
+                dt.Columns.Add("6");
+                dt.Columns.Add("7");
+                dt.Columns.Add("8");
+                foreach (var i in tareas)
+                {
+                    dt.Rows.Add(new object[] { i.idTareas, i.idClientes, i.Ambientes.idAmbientes, i.CodPrf, i.Estado, i.Modulo, i.idVersion, i.NameFile, i.Error });
+                }
+                return new AddTareas().Execute(dt);
             }
             catch (Exception ex)
             {

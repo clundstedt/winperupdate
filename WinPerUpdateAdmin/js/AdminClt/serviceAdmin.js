@@ -28,17 +28,129 @@
 
             addVersion: addVersion,
             addTarea: addTarea,
-            getCheckInstall: getCheckInstall
+            getCheckInstall: getCheckInstall,
+            getHasScripts: getHasScripts,
+            getScriptsOk: getScriptsOk,
+            addTareas: addTareas,
+            getControlCambios: getControlCambios
         };
 
         return service;
 
-        function getCheckInstall(idVersion, idUsuario, idAmbiente) {
+        function getControlCambios(idVersion) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
             $.ajax({
-                url: '/api/CheckInstall/Version/' + idVersion + '/Usuario/' + idUsuario + '/Ambiente/' + idAmbiente,
+                url: '/api/getControlCambios/' + idVersion,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getScriptsOk(idVersion, idCliente, idAmbiente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/' + idVersion + '/' + idCliente + '/' + idAmbiente + '/ScriptsOk',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getHasScripts(idVersion) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Version/' + idVersion + '/HasScript',
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getCheckInstall(idVersion, idCliente, idAmbiente) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/CheckInstall/Version/' + idVersion + '/Cliente/' + idCliente + '/Ambiente/' + idAmbiente,
                 type: "GET",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
@@ -324,6 +436,7 @@
 
             return promise;
         }
+
         function getAmbientesNoEx(idCliente, idVersion, NameFile) {
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -361,7 +474,6 @@
             return promise;
 
         }
-
 
         function ambienteOK(idAmbiente, idVersion) {
             var deferred = $q.defer();
@@ -661,6 +773,44 @@
             return promise;
         }
 
+        function addTareas(idVersion, idCliente, idAmbiente, codPrf) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            
+            $.ajax({
+                url: '/api/Tareas/' + idVersion + '/' + idCliente + '/' + idAmbiente + '/' + codPrf,
+                type: "POST",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+                
         function addTarea(idVersion, idCliente, idAmbientes, CodPrf, Modulo, NameFile, Estado) {
             var deferred = $q.defer();
             var promise = deferred.promise;

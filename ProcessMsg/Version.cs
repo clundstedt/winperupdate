@@ -799,7 +799,16 @@ namespace ProcessMsg
         {
             try
             {
-                string fileName = dirVersiones + namefile;
+                string fileName = "";
+                if (new FileInfo(namefile).Extension.Equals(".sql", StringComparison.OrdinalIgnoreCase))
+                {
+                    var sp = namefile.Split('\\');
+                    fileName = Path.Combine(dirVersiones,sp[0], "Scripts", sp[1]);
+                }
+                else
+                {
+                    fileName = dirVersiones + namefile;
+                }
                 long sizeBuffer = sizeMax;
                 var sizeFile = new FileInfo(fileName).Length;
                 if (sizeFile - posIni < sizeMax)

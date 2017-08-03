@@ -28,7 +28,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/ProcessMsg.dll">
-      <publishTime>07/25/2017 12:10:54</publishTime>
+      <publishTime>08/03/2017 08:30:45</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>11/29/2016 15:07:57</publishTime>
@@ -100,10 +100,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/WinPerUpdateAdmin.dll">
-      <publishTime>07/25/2017 17:09:44</publishTime>
+      <publishTime>08/03/2017 08:30:54</publishTime>
     </File>
     <File Include="bin/WinperUpdateDAO.dll">
-      <publishTime>07/25/2017 12:10:52</publishTime>
+      <publishTime>08/02/2017 09:12:56</publishTime>
     </File>
     <File Include="bin/WinSCP.exe">
       <publishTime>04/28/2017 09:09:03</publishTime>
@@ -496,7 +496,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/14/2017 15:16:08</publishTime>
     </File>
     <File Include="Content/layout2/style.css">
-      <publishTime>07/24/2017 16:44:16</publishTime>
+      <publishTime>07/27/2017 11:58:04</publishTime>
     </File>
     <File Include="Content/select.css">
       <publishTime>11/29/2016 15:07:54</publishTime>
@@ -634,13 +634,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/07/2017 17:35:13</publishTime>
     </File>
     <File Include="js/AdminClt/admin.js">
-      <publishTime>07/24/2017 15:18:58</publishTime>
+      <publishTime>08/02/2017 15:54:23</publishTime>
     </File>
     <File Include="js/AdminClt/app.js">
       <publishTime>07/24/2017 15:18:34</publishTime>
     </File>
     <File Include="js/AdminClt/serviceAdmin.js">
-      <publishTime>03/01/2017 12:32:58</publishTime>
+      <publishTime>08/02/2017 15:55:10</publishTime>
     </File>
     <File Include="js/AmbientesClt/ambientes.js">
       <publishTime>07/24/2017 13:02:46</publishTime>
@@ -760,7 +760,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/24/2017 13:02:46</publishTime>
     </File>
     <File Include="js/Version/app.js">
-      <publishTime>07/24/2017 12:52:12</publishTime>
+      <publishTime>07/26/2017 09:22:43</publishTime>
+    </File>
+    <File Include="js/Version/asignarscripts.js">
+      <publishTime>07/31/2017 18:15:49</publishTime>
     </File>
     <File Include="js/Version/componente.js">
       <publishTime>07/24/2017 13:02:46</publishTime>
@@ -778,7 +781,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/24/2017 13:02:46</publishTime>
     </File>
     <File Include="js/Version/serviceAdmin.js">
-      <publishTime>07/24/2017 10:44:30</publishTime>
+      <publishTime>08/01/2017 17:37:38</publishTime>
     </File>
     <File Include="js/Version/version.js">
       <publishTime>07/24/2017 13:02:46</publishTime>
@@ -1140,6 +1143,9 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="Scripts/upload/theme.js">
       <publishTime>07/04/2017 11:51:57</publishTime>
     </File>
+    <File Include="Views/Admin/AsignarScripts.cshtml">
+      <publishTime>07/31/2017 16:40:40</publishTime>
+    </File>
     <File Include="Views/Admin/ControlCambios.cshtml">
       <publishTime>07/24/2017 11:25:56</publishTime>
     </File>
@@ -1147,7 +1153,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/25/2017 15:23:59</publishTime>
     </File>
     <File Include="Views/Admin/CrearVersion.cshtml">
-      <publishTime>07/25/2017 16:23:43</publishTime>
+      <publishTime>07/25/2017 18:15:18</publishTime>
     </File>
     <File Include="Views/Admin/EditComponente.cshtml">
       <publishTime>07/17/2017 14:55:16</publishTime>
@@ -1165,7 +1171,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/14/2017 09:08:57</publishTime>
     </File>
     <File Include="Views/AdminClt/Componentes.cshtml">
-      <publishTime>07/24/2017 15:35:57</publishTime>
+      <publishTime>08/02/2017 16:05:11</publishTime>
     </File>
     <File Include="Views/AdminClt/Index.cshtml">
       <publishTime>07/18/2017 11:59:21</publishTime>

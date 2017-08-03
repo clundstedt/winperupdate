@@ -46,6 +46,10 @@
             templateUrl: '/Admin/ControlCambios',
             controller: 'controlcambios'
         }).
+        when('/AsignarScripts/:idVersion', {
+            templateUrl: '/Admin/AsignarScripts',
+            controller: 'asignarscripts'
+        }).
         otherwise({
             redirectTo: '/'
         });
@@ -62,6 +66,18 @@
             return salida;
         }
     })
+    .filter('filtroModulosOk', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (item) {
+                if (item.Estado == 'V') {
+                    salida.push(item)
+                }
+            });
+            return salida;
+        }
+    })
+
     .filter('filtroClientesNoSel', function () {
         return function (input) {
             var salida = [];
