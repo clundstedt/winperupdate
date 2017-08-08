@@ -104,28 +104,7 @@ namespace WinPerUpdateUI
                 }
             }
             catch (Exception) { }
-
-            /*if (!File.Exists("AppSetting.xml"))
-            {
-                try
-                {
-                    File.Create("AppSetting.xml").Close();
-                    System.Xml.XmlTextWriter xDoc = new System.Xml.XmlTextWriter("AppSetting.xml", Encoding.GetEncoding("ISO-8859-1"));
-                    xDoc.WriteStartElement("Setting");
-                    xDoc.WriteElementString("server", ConfigurationManager.AppSettings["server"]);
-                    xDoc.WriteElementString("port", ConfigurationManager.AppSettings["port"]);
-                    xDoc.WriteElementString("sql", ConfigurationManager.AppSettings["sql"]);
-                    xDoc.WriteElementString("cftp", ConfigurationManager.AppSettings["cftp"]);
-                    xDoc.WriteEndElement();
-                    xDoc.Close();
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    MessageBox.Show("Debe ejecutar WinAct como Administrador para crear el archivo de configuración.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                }
-            }*/
-
+            
             if (string.IsNullOrEmpty(Utils.GetSetting("server")) || string.IsNullOrEmpty(Utils.GetSetting("port")))
             {
                 Utils.SetSetting("server", ConfigurationManager.AppSettings["server"]);
@@ -326,7 +305,7 @@ namespace WinPerUpdateUI
                         ContextMenu1.MenuItems.Add("-");
                         ContextMenu1.MenuItems.Add("&Salir", new EventHandler(this.Salir_Click));
                     }
-                    MessageBox.Show("Winper Update no pudo iniciarce correctamente, puede revisar el log 'Load.log'");
+                    MessageBox.Show("WinAct no pudo iniciarce correctamente, puede revisar el log 'Load.log'");
                     Utils.RegistrarLog("Load.log", ex.ToString());
                 }
             }            
@@ -379,7 +358,7 @@ namespace WinPerUpdateUI
                     {
                         ContextMenu1.MenuItems[0].Enabled = false;
                         ContextMenu1.MenuItems[1].Enabled = false;
-                        MessageBox.Show("Winper Update no tiene conexión con el servidor central");
+                        MessageBox.Show("WinAct no tiene conexión con el servidor central");
                     }
                 }
 
@@ -471,65 +450,17 @@ namespace WinPerUpdateUI
                             }
                         }
                     }
-
+                    
                     #region 2.- Verificamos script que se deben ejecutar
                     // 2.- Verificamos script que se deben ejecutar
-                    Microsoft.Win32.RegistryKey key2 = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
-                    string perfil = key2.GetValue("Perfil").ToString();
-                    string ambiente = key2.GetValue("Ambientes").ToString();
-                    key2.Close();
-
-                    if ((perfil.Equals("Administrador") && bool.Parse(Utils.GetSetting("sql"))) || perfil.Equals("DBA"))
-                    {
-                        int idPerfil = perfil.Equals("Administrador") ? 11 : 12;
-                        var tareas = new List<TareaBo>();
-                        string mensaje = "tareas#" + cliente.Id.ToString() + "#" + idPerfil.ToString() + "#";
-                        string jsont = Utils.StrSendMsg(server, int.Parse(port), mensaje);
-                        tareas = JsonConvert.DeserializeObject<List<TareaBo>>(jsont);
-
-                        foreach (var tarea in tareas.Where(x => x.Estado == 0 && x.LengthFile > 0))
+                    BwQuery.RunWorkerAsync(
+                        new object[]
                         {
-                            if (ambiente.Contains(tarea.Ambientes.Nombre))
-                            {
-                                ServerInAccept = false;
-
-                                jsont = Utils.StrSendMsg(server, int.Parse(port), "getversionbyid#" + tarea.idVersion.ToString() + "#");
-                                var release = JsonConvert.DeserializeObject<VersionBo>(jsont);
-
-                                if (File.Exists(dirTmp + tarea.NameFile))
-                                {
-                                    File.Delete(dirTmp + tarea.NameFile);
-                                }
-                                FileStream stream = new FileStream(dirTmp + tarea.NameFile, FileMode.CreateNew, FileAccess.Write);
-                                BinaryWriter writer = new BinaryWriter(stream);
-
-                                int nPosIni = 0;
-                                while (nPosIni < tarea.LengthFile)
-                                {
-                                    long largoMax = tarea.LengthFile - nPosIni;
-                                    if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
-                                    string newmsg = string.Format("getfile#{0}\\{1}#{2}#{3}#", release.Release, tarea.NameFile, nPosIni, largoMax);
-                                    var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
-                                    writer.Write(buffer, 0, buffer.Length);
-
-                                    nPosIni += buffer.Length;
-                                }
-
-                                writer.Close();
-                                stream.Close();
-
-                                // ejecutamos archivo en base e datos
-                                EjecutarQuery(tarea.idTareas,
-                                              dirTmp + tarea.NameFile,
-                                              tarea.Ambientes.Instancia + "\\" + tarea.Ambientes.ServerBd,
-                                              tarea.Ambientes.NomBd,
-                                              tarea.Ambientes.UserDbo,
-                                              tarea.Ambientes.PwdDbo);
-
-                                ServerInAccept = true;
-                            }
-                        }
-                    }
+                            server,
+                            port,
+                            dirTmp
+                        });
+                    
                     #endregion
 
                 }
@@ -541,7 +472,7 @@ namespace WinPerUpdateUI
             }
         }
 
-        private Boolean EjecutarQuery (int idTarea, string nameFile, string Server, string DataBase, string User, string Password)
+        private bool EjecutarQuery (int idTarea, string nameFile, string Server, string DataBase, string User, string Password)
         {
             string ConnectionStr = string.Format("Database={0};Server={1};User={2};Password={3};Connect Timeout=200;Integrated Security=;", DataBase, Server, User, Password);
             string server = Utils.GetSetting("server");
@@ -573,19 +504,17 @@ namespace WinPerUpdateUI
                 conn.Close();
                 
                 Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#1#OK#");
-
                 return true;
+                
             }
             catch (Exception ex)
             {
                 conn.Close();
-
-                var msg = "Error al abrir la conexion" + ex.Message + ".";
                 Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#2#" + ex.Message + "#");
                 Utils.RegistrarLog("EjecutarQuery.log", ex.ToString());
+                throw new Exception(ex.Message);
             }
-
-            return false;
+            
         }
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -635,7 +564,7 @@ namespace WinPerUpdateUI
                 stream.Close();
                 */
                 #endregion
-                notifyIcon2.Text = "Winper Update (Descargando)";
+                notifyIcon2.Text = "WinAct (Descargando)";
                 ProcessMsg.Utils.FtpGet(release.Release+"/Output/",new FileInfo(nameIntalador).DirectoryName+"\\");
                 ServerInAccept = true;
 
@@ -654,7 +583,7 @@ namespace WinPerUpdateUI
                     ambienteUpdate = item.Nombre;
                     notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
                     notifyIcon2.BalloonTipText = "Existe una nueva versión de winper para el ambiente " + item.Nombre;
-                    notifyIcon2.BalloonTipTitle = "Winper Update";
+                    notifyIcon2.BalloonTipTitle = "WinAct";
 
                     notifyIcon2.ShowBalloonTip(5000);
                     // Actualizamos la versión en la registry
@@ -672,7 +601,7 @@ namespace WinPerUpdateUI
             {
                 //MessageBox.Show(string.Format("Ocurrio un error durante la recepción del archivo.\n\n{0}", e.Error.Message), "ERROR WinperUpdate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Utils.RegistrarLog("WorkerDoWork.log", e.Error.ToString());
-                notifyIcon2.Text = "Winper Update (Error en Descarga)";
+                notifyIcon2.Text = "WinAct (Error en Descarga)";
             }
             else if (e.Cancelled)
             {
@@ -681,14 +610,14 @@ namespace WinPerUpdateUI
             }
             else
             {
-                notifyIcon2.Text = "Winper Update";
+                notifyIcon2.Text = "WinAct";
                 ServerInAccept = true;
             }
         }
 
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            notifyIcon2.Text = string.Format("Winper Update {0}%",e.ProgressPercentage);
+            notifyIcon2.Text = string.Format("WinAct {0}%", e.ProgressPercentage);
             
         }
 
@@ -897,6 +826,100 @@ namespace WinPerUpdateUI
             {
                 ServerInAccept = true;
                 Utils.RegistrarLog("UPUI.log", ex.ToString());
+            }
+        }
+
+        private void BwQuery_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var args = (object[])e.Argument;
+            string server = args[0].ToString();
+            string port = args[1].ToString();
+            string dirTmp = args[2].ToString();
+            Microsoft.Win32.RegistryKey key2 = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\WinperUpdate");
+            string perfil = key2.GetValue("Perfil").ToString();
+            string ambiente = key2.GetValue("Ambientes").ToString();
+            key2.Close();
+
+            if ((perfil.Equals("Administrador") && bool.Parse(Utils.GetSetting("sql"))) || perfil.Equals("DBA"))
+            {
+                int idPerfil = perfil.Equals("Administrador") ? 11 : 12;
+                var tareas = new List<TareaBo>();
+                string mensaje = "tareas#" + cliente.Id.ToString() + "#" + idPerfil.ToString() + "#";
+                string jsont = Utils.StrSendMsg(server, int.Parse(port), mensaje);
+                tareas = JsonConvert.DeserializeObject<List<TareaBo>>(jsont);
+                var listaTareas = tareas.Where(x => x.Estado == 0 && x.LengthFile > 0).ToList();
+                var tareasOk = new List<string>();
+                if (listaTareas.Count > 0)
+                {
+                    ServerInAccept = false;
+                    foreach (var tarea in listaTareas)
+                    {
+                        if (ambiente.Contains(tarea.Ambientes.Nombre))
+                        {
+                            notifyIcon2.Text = string.Format("Actualizando BD de {0}", tarea.Ambientes.Nombre);
+
+                            jsont = Utils.StrSendMsg(server, int.Parse(port), "getversionbyid#" + tarea.idVersion.ToString() + "#");
+                            var release = JsonConvert.DeserializeObject<VersionBo>(jsont);
+
+                            if (File.Exists(dirTmp + tarea.NameFile))
+                            {
+                                File.Delete(dirTmp + tarea.NameFile);
+                            }
+                            FileStream stream = new FileStream(dirTmp + tarea.NameFile, FileMode.CreateNew, FileAccess.Write);
+                            BinaryWriter writer = new BinaryWriter(stream);
+
+                            int nPosIni = 0;
+                            while (nPosIni < tarea.LengthFile)
+                            {
+                                long largoMax = tarea.LengthFile - nPosIni;
+                                if (largoMax > SIZEBUFFER) largoMax = SIZEBUFFER;
+                                string newmsg = string.Format("getfile#{0}\\{1}#{2}#{3}#", release.Release, tarea.NameFile, nPosIni, largoMax);
+                                var buffer = Utils.SendMsg(server, int.Parse(port), newmsg, SIZEBUFFER);
+                                writer.Write(buffer, 0, buffer.Length);
+
+                                nPosIni += buffer.Length;
+                            }
+
+                            writer.Close();
+                            stream.Close();
+
+                            // ejecutamos archivo en base e datos
+                            var ok = EjecutarQuery(tarea.idTareas,
+                                          dirTmp + tarea.NameFile,
+                                          tarea.Ambientes.ServerBd + "\\" + tarea.Ambientes.Instancia,
+                                          tarea.Ambientes.NomBd,
+                                          tarea.Ambientes.UserDbo,
+                                          tarea.Ambientes.PwdDbo);
+                            if (ok && !tareasOk.Exists(x => x.Equals(tarea.Ambientes.Nombre))) tareasOk.Add(tarea.Ambientes.Nombre);
+
+                            
+                        }
+                    }
+                    if (tareasOk.Count > 0) e.Result = string.Format("Los ambientes {0} fueron actualizados correctamente", string.Join(", ", tareasOk));
+                    else e.Result = string.Format("No se actualizó ninguno de estos ambientes: {0}", string.Join(", ", listaTareas.Select(x => x.Ambientes.Nombre)));
+                }
+            }
+        }
+
+        private void BwQuery_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            ServerInAccept = true;
+            if (e.Error != null)
+            {
+                Utils.RegistrarLog("BwQuery.log", e.Error.ToString());
+                MessageBox.Show(string.Format("Ocurrió un error inesperado.\n\n{0}\n\nPara mas detalle revise BwQuery.log", e.Error.Message),"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (e.Cancelled)
+            {
+                MessageBox.Show("La operación BwQuery se ha cancelado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if(e.Result != null)
+            {
+                notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
+                notifyIcon2.BalloonTipText = e.Result.ToString();
+                notifyIcon2.BalloonTipTitle = "Actualización Ambientes";
+                notifyIcon2.ShowBalloonTip(5000);
+                Utils.RegistrarLog("Ambientes.log", e.Result.ToString());
             }
         }
     }

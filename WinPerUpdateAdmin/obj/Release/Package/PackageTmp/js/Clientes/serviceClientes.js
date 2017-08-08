@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceClientes', serviceClientes);
 
-    serviceClientes.$inject = ['$http', '$q'];
+    serviceClientes.$inject = ['$http', '$q', '$window'];
 
-    function serviceClientes($http, $q) {
+    function serviceClientes($http, $q, $window) {
         var service = {
             getRegiones: getRegiones,
             getComunas: getComunas,
@@ -633,7 +633,6 @@
 
         }
 
-
         function getRegiones() {
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -715,6 +714,9 @@
                 url: '/api/Clientes',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -780,6 +782,7 @@
 
             return promise;
         }
+
         function getClientesVersion(idVersion) {
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -1140,7 +1143,6 @@
             return promise;
         }
 
-
         function delCliente(id, est, motivo) {
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -1176,7 +1178,6 @@
 
             return promise;
         }
-
 
         function getKey(folio, mescon, correlativo,estmtc,mesini,nrotrbc,nrotrbh,nrousr) {
             var deferred = $q.defer();

@@ -43,6 +43,7 @@
                         $scope.labellogin = "Ingresar";
                     }
                     else {
+                        $window.sessionStorage.token = window.btoa(data.GetToken);
                         $window.location.href = "/Home/AutorizarIngreso?idUser=" + formData.username;
                     }
                 }).error(function (err) {

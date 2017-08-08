@@ -38,7 +38,7 @@ namespace ProcessMsg.Model
                 string str = "";
                 switch (EstadoEjecucionSql)
                 {
-                    case 0: str = Estado == 0 ? "warning" : "default";break;
+                    case 0: str = Estado != 'V' ? "warning" : "default";break;
                     case 1: str = "info";break;
                     case 3: str = "danger";break;
                     default:

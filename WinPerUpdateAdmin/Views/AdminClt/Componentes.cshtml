@@ -25,9 +25,18 @@
     </div>
     <br />
 
-    <p>
-        {{version.Comentario}}
-    </p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <b>Version {{version.Release}}</b><br />
+                        <img src="~/Img/Chat_Version_Cliente.png" alt="" />{{version.Comentario}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <!--div class="alert alert-info" ng-controller="controllerHome">
             <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> AVISO:</strong> Puede hacer seguimiento de las tareas agendadas haciendo click en  <button ng-click="ShowDetalleTarea(userSession.Cliente.Id, version.IdVersion)" type="button" class="btn btn-info btn-xs">Estado de Tareas</button>.
@@ -118,7 +127,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-hide="version.IsVersionInicial">
         <div class="col-md-12">
             <h1>Control de Cambios</h1>
             <br />
@@ -139,11 +148,11 @@
                                                 <label style="width:10px;"></label>Módulo: {{cc.ModuloFmt.NomModulo}} <img src="~/Img/Modulo_CC_Winact.png" alt="" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <br />
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            {{cc.Descripcion}}
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {{cc.Descripcion}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -320,8 +329,11 @@
                     <h4 class="modal-title">Detalle de Componentes SQL</h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table">
+                    <table class="table" st-table="dspDetalleTareas" st-safe-src="detalleTareas">
                         <thead>
+                            <tr>
+                                <th colspan="6"><input st-search="" class="form-control" placeholder="Busqueda ..." type="text" /></th>
+                            </tr>
                             <tr>
                                 <th>Ambiente</th>
                                 <th>Estado</th>
@@ -332,7 +344,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="tarea in detalleTareas" class="{{tarea.ClassId}}">
+                            <tr ng-repeat="tarea in dspDetalleTareas" class="{{tarea.ClassId}}">
                                 <td>{{tarea.Ambientes.Nombre}}</td>
                                 <td>{{tarea.EstadoFmt}}</td>
                                 <td>{{tarea.NameFile}}</td>
@@ -354,7 +366,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" ng-hide="tarea.Estado == 1 || tarea.Estado == 3">
+                                    <!--div class="row" ng-hide="tarea.Estado == 1 || tarea.Estado == 3">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="input-group-sm">
@@ -364,8 +376,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                    </div-->
+                                    <!--div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="input-group-sm">
@@ -375,7 +387,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div-->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -390,6 +402,13 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10" st-template="../../Scripts/smart-table/pagination.custom.html"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -422,8 +441,10 @@
                     <p>Esta versión tiene script SQL que no han sido ejecutados en el ambiente seleccionado. WinAct procederá
                     a ejecutarlos de forma automática. Posteriormente instalará los componentes en las estaciones de trabajo donde se encuentra
                     WinAct configurado para este ambiente.</p><br />
-                    <b>NOTA: Para la ejecución de los script SQL, debe estar WinAct instalado y configurado como perfil DBA o Administrador
-                    con permisos para ejecución de scripts.</b>
+                    <b>NOTAS 
+                    <br />-Para la ejecución de los script SQL, debe estar WinAct instalado y configurado como perfil DBA o Administrador
+                    con permisos para ejecución de scripts.
+                    <br />-Asegúrese que los datos de base de datos del ambientes estén correctamente ingresados.</b>
                 </div>
                 <div class="modal-footer" ng-controller="controllerHome">
                     <button type="button" class="btn btn-success" ng-click="EjecutarSqls(version.IdVersion, cliente.Id, idAmbiente,userSession.CodPrf)">Ejecutar Scripts</button>

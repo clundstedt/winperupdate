@@ -81,7 +81,7 @@ namespace WinPerUpdateUI
                         }
                         form.Close();
                         
-                        var comps = new DirectoryInfo(dirComponentes).GetFiles().ToList();
+                        /*var comps = new DirectoryInfo(dirComponentes).GetFiles().ToList();
                         int cont = 0;
                         foreach (var x in comps)
                         {
@@ -91,14 +91,14 @@ namespace WinPerUpdateUI
                             }
                         }
                         if (version.TotalComponentes == cont)
-                        {
+                        {*/
                             Progreso.Show();
                             Progreso.Text = "Instalando";
                             bwCopia.RunWorkerAsync(version);
-                        }
+                        /*}
                         else
                         {
-                            MessageBox.Show("Se produjo un error durante la instalación.\nWinPer Update procederá a preparar nuevamente la actualización. Se le avisará cuando este lista para instalar.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Se produjo un error durante la instalación.\nWinAct procederá a preparar nuevamente la actualización. Se le avisará cuando este lista para instalar.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             Microsoft.Win32.RegistryKey keya = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate\" + ambiente);
                             var intentos = int.Parse(keya.GetValue("Instalacion").ToString());
                             intentos++;
@@ -113,7 +113,7 @@ namespace WinPerUpdateUI
                             {
                                 System.IO.File.Delete(fileInstalador);
                             }
-                        }
+                        }*/
                     }
 
                 }
@@ -394,9 +394,10 @@ namespace WinPerUpdateUI
             {
                 Progreso.Close();
                 var hasDeploy = e.Result != null ? bool.Parse(((object[])e.Result)[1].ToString()) : false;
-                Process myProcess = new Process();
+                
                 if (hasDeploy)
                 {
+                    Process myProcess = new Process();
                     MessageBox.Show("A continuación WinAct procederá a instalar Deploy31.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     var deploy = e.Result != null ? Path.Combine(((object[])e.Result)[0].ToString(), "Deploy31.exe") : null;
                     if (File.Exists(deploy))
@@ -409,11 +410,12 @@ namespace WinPerUpdateUI
                     {
                         MessageBox.Show("No existe Deploy31 en el directorio de WinPer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    if (myProcess.ExitCode != 0)
+                    {
+                        MessageBox.Show("No se finalizó correctamente la instalación de Deploy31.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                if (myProcess.ExitCode != 0)
-                {
-                    MessageBox.Show("No se finalizó correctamente la instalación de Deploy31.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                
                 MessageBox.Show("WinPer se ha instalado correctamente.", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 keya.SetValue("Status", "updated");
                 Utils.RegistrarLog("InstallFile.log", "El proceso de instalación finalizó con exito!.");

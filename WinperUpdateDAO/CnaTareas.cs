@@ -24,7 +24,8 @@ namespace WinperUpdateDAO
                                              ON t.idAmbientes = a.idAmbientes
                                              WHERE t.idClientes = @idClientes
                                              AND t.CodPrf = @CodPrf
-                                             AND t.Estado = 0";
+                                             AND t.Estado = 0
+                                        ORDER BY t.idTareas";
             try
             {
                 ParmsDictionary.Add("@idClientes", idClientes);

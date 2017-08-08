@@ -48,13 +48,13 @@
                                 <div class="form-group">
                                     <label>Nombre del Ambiente</label>
                                     <div class="input-group-sm">
-                                        <input class="form-control" type="text" name="nombre" placeholder="Nombre" required="required" ng-model="ambiente.Nombre" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }" />
+                                        <input class="form-control" type="text" name="nombre" placeholder="Nombre" required="required" ng-model="ambiente.Nombre" ng-maxlength="45" ng-minlength="2" />
                                     </div>
                                     <span class="error_ingreso" ng-show="frmAmbiente.nombre.$error.minlength && frmAmbiente.nombre.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
                                     </span>
                                     <span class="error_ingreso" ng-show="frmAmbiente.nombre.$error.maxlength && frmAmbiente.nombre.$touched">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo debe tener 100 caractares
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo debe tener 45 caractares
                                     </span>
                                     <span class="error_ingreso" ng-show="frmAmbiente.nombre.$error.required && frmAmbiente.nombre.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
@@ -79,7 +79,7 @@
                                 <div class="form-group">
                                     <div class="input-group-sm">
                                         <label>Servidor de Base de Datos</label>
-                                        <input class="form-control" type="text" name="serverbd" placeholder="Servidor" required="required" ng-model="ambiente.ServerBd" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                        <input class="form-control" type="text" name="serverbd" placeholder="Servidor" required="required" ng-model="ambiente.ServerBd" ng-maxlength="100" ng-minlength="2">
                                     </div>
                                     <span class="error_ingreso" ng-show="frmAmbiente.serverbd.$error.minlength && frmAmbiente.serverbd.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
@@ -96,16 +96,10 @@
                                 <div class="form-group">
                                     <div class="input-group-sm">
                                         <label>Instancia</label>
-                                        <input class="form-control" type="text" name="instancia" placeholder="Instancia" required="required" ng-model="ambiente.Instancia" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                        <input class="form-control" type="text" name="instancia" placeholder="Instancia" ng-model="ambiente.Instancia" ng-maxlength="100">
                                     </div>
-                                    <span class="error_ingreso" ng-show="frmAmbiente.instancia.$error.minlength && frmAmbiente.instancia.$touched">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
-                                    </span>
                                     <span class="error_ingreso" ng-show="frmAmbiente.instancia.$error.maxlength && frmAmbiente.instancia.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo maximo debe tener 100 caractares
-                                    </span>
-                                    <span class="error_ingreso" ng-show="frmAmbiente.instancia.$error.required && frmAmbiente.instancia.$touched">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Campo obligatorio
                                     </span>
                                 </div>
                             </div>
@@ -115,7 +109,7 @@
                                 <div class="form-group">
                                     <div class="input-group-sm">
                                         <label>Nombre de la Base de Datos</label>
-                                        <input class="form-control" type="text" name="nombd" placeholder="Nombre de la BD" required="required" ng-model="ambiente.NomBd" ng-maxlength="100" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                        <input class="form-control" type="text" name="nombd" placeholder="Nombre de la BD" required="required" ng-model="ambiente.NomBd" ng-maxlength="100" ng-minlength="2">
                                     </div>
                                     <span class="error_ingreso" ng-show="frmAmbiente.nombd.$error.minlength && frmAmbiente.nombd.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
@@ -132,7 +126,7 @@
                                 <div class="form-group">
                                     <div class="input-group-sm">
                                         <label>Usuario de la Base de Datos</label>
-                                        <input class="form-control" type="text" name="userdbo" placeholder="Usuario de BD" required="required" ng-model="ambiente.UserDbo" ng-maxlength="50" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                        <input class="form-control" type="text" name="userdbo" placeholder="Usuario de BD" required="required" ng-model="ambiente.UserDbo" ng-maxlength="50" ng-minlength="2" >
                                     </div>
                                     <span class="error_ingreso" ng-show="frmAmbiente.userdbo.$error.minlength && frmAmbiente.userdbo.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares
@@ -149,7 +143,7 @@
                                 <div class="form-group">
                                     <div class="input-group-sm">
                                         <label>Password de Usuario BD</label>
-                                        <input class="form-control" type="password" name="pwddbo" placeholder="Password" required="required" ng-model="ambiente.PwdDbo" ng-maxlength="50" ng-minlength="2" ng-model-options="{ updateOn: 'blur' }">
+                                        <input class="form-control" type="password" name="pwddbo" placeholder="Password" required="required" ng-model="ambiente.PwdDbo" ng-maxlength="50" ng-minlength="2" >
                                     </div>
                                     <span class="error_ingreso" ng-show="frmAmbiente.pwddbo.$error.minlength && frmAmbiente.pwddbo.$touched">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo mínimo debe tener 2 caractares

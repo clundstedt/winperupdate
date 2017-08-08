@@ -60,6 +60,12 @@ body.loading .modalLoad {
     display: block;
 }
 
+.nowrap {
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+
 .image-foto {
     width: 140px;
     height: 140px;
@@ -356,6 +362,7 @@ display: block;
 margin-top: 1px;
 margin-left: 0;
 }
+
 @media (max-width:767px){
 	.hidden-xs{display:none!important}
 	.visible-xs {
@@ -371,6 +378,7 @@ margin-left: 0;
 @media (min-width:1200px){
 	.hidden-lg{display:none!important}
 }
+
 /*------------------------------------------
             LEFT SIDE COLLAPSE
 -------------------------------------------*/
@@ -528,7 +536,6 @@ ul.nav li a span {
 
 .header-section::after {
     clear: both;
-    display: block;
     content: '';
 }
 
@@ -581,7 +588,6 @@ ul.nav li a span {
 	line-height: 25px;
 }
 .sticky-header .header-section {
-    position: fixed;
     top: 0;
     left: 200px;
     width: 100%;
@@ -589,7 +595,7 @@ ul.nav li a span {
 }
 
 .sticky-header .main-content {
-    padding-top: 50px;
+    padding-top: 0px;
 }
 .sticky-header .menu-right {
     margin-right: 0;
@@ -601,7 +607,7 @@ ul.nav li a span {
     margin-right: 0;
 }
 .menu-right {
-    margin:6px 15px 0px 0;
+    margin:1px 15px 0px 0;
 }
 
 /* -----------------------
@@ -1169,7 +1175,7 @@ ul.dropdown-menu {
 /********* profile details **********/
 .profile_details{
 	float: right;
-    margin: 0 4.8em 0 1em;
+    /*margin: 0 4.8em 0 1em;*/
 }
 .profile_details_drop .lnr.lnr-chevron-up{
 	display:none;
@@ -1224,8 +1230,8 @@ ul.dropdown-menu.drp-mnu li a i {
 	 float:left;
 	 margin-top:8px;
 	 margin-left:5px;
-	 height:35px;
-	 width:45%;
+	 height:36px;
+	 width:65%;
 }
 .profile_details ul li{
 	list-style-type:none;
@@ -1233,14 +1239,14 @@ ul.dropdown-menu.drp-mnu li a i {
 }
 .user-name p{
 	font-size:14px;
-	color:#F44336;
+	color:#000;
 	line-height:1em;
 	font-weight:700;
 }
 .user-name p span{
 	font-size:10px;
 	font-style:italic;
-	color:#424f63;
+	color:#000;
 	font-weight:normal;
 }
 /**** icon dropdown ******/

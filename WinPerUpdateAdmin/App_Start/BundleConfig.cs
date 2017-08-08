@@ -81,7 +81,10 @@ namespace WinPerUpdateAdmin
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminclt").Include(
-                        "~/js/AdminClt/app.js"
+                        "~/Scripts/script.js"
+                      , "~/Scripts/pageSelect.directive.js"
+                      , "~/Scripts/smart-table.debug.js"
+                      , "~/js/AdminClt/app.js"
                       , "~/js/Home/controllerHome.js"
                       , "~/js/Home/factoryHome.js"
                       , "~/js/AdminClt/admin.js"

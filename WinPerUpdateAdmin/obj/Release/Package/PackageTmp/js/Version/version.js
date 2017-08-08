@@ -36,8 +36,10 @@
             $scope.radioPublicar = 0;
             $scope.listaClientes = [];
             $scope.lblMsgPublica = "";
+            $scope.version = null;
             $scope.componenteAEliminar = "";
             $scope.listaControlCambios = [];
+            $scope.listaModCCFaltantes = [];
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 serviceAdmin.getComponentesOficiales().success(function (data) {
@@ -67,6 +69,7 @@
                     $scope.formData.release = data.Release;
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
+                    $scope.version = data;
                     serviceAdmin.getComponentesVersion(data.IdVersion).success(function (dataCV) {
                         $scope.componentes = dataCV;
                     }).error(function (errCV) {
@@ -137,6 +140,19 @@
                     }
                 }
                 return true;
+            }
+
+            $scope.showMdlPublicaModal = function(){
+                serviceAdmin.ccOK($scope.idversion).success(function (data) {
+                    if (data.length == 0) {
+                        $("#publica-modal").modal('show');
+                    } else {
+                        $scope.listaModCCFaltantes = data;
+                        $("#mdlModCCFaltantes").modal('show');
+                    }
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                });
             }
 
             $scope.OmitirComponentes = function () {

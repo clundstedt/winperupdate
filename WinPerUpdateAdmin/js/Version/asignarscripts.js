@@ -61,10 +61,6 @@
                         for (var i = 0; i < $scope.uploaderFn.queue.length; i++) {
                             if ($scope.uploaderFn.queue[i].file.name == name) $scope.cantidad++;
                         }
-                    } else {
-                        for (var i = 0; i < $scope.uploaderTr.queue.length; i++) {
-                            if ($scope.uploaderTr.queue[i].file.name == name) $scope.cantidad++;
-                        }
                     }
                     $scope.con++;
                 } while ($scope.con < 3);
@@ -75,21 +71,18 @@
                 $scope.uploaderAlt.uploadAll();
                 $scope.uploaderSp.uploadAll();
                 $scope.uploaderFn.uploadAll();
-                $scope.uploaderTr.uploadAll();
             }
 
             $scope.cancelAll = function () {
                 $scope.uploaderAlt.cancelAll();
                 $scope.uploaderSp.cancelAll();
                 $scope.uploaderFn.cancelAll();
-                $scope.uploaderTr.cancelAll();
             }
 
             $scope.removeAll = function () {
                 $scope.uploaderAlt.clearQueue();
                 $scope.uploaderSp.clearQueue();
                 $scope.uploaderFn.clearQueue();
-                $scope.uploaderTr.clearQueue();
             }
 
             //ALters
@@ -142,7 +135,7 @@
                 var fiSplit = fileItem.file.name.split('.');
                 if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
                     fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un documento Word.";
+                    $scope.msgError = "El archivo debe ser un archivo .SQL";
                     window.scrollTo(0, 0);
                 }
                 if (fileItem.file.name.length > 50) {
@@ -212,7 +205,7 @@
                 var fiSplit = fileItem.file.name.split('.');
                 if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
                     fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un documento Word.";
+                    $scope.msgError = "El archivo debe ser un archivo .SQL.";
                     window.scrollTo(0, 0);
                 }
                 if (fileItem.file.name.length > 50) {
@@ -282,7 +275,7 @@
                 var fiSplit = fileItem.file.name.split('.');
                 if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
                     fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un documento Word.";
+                    $scope.msgError = "El archivo debe ser un archivo .SQL.";
                     window.scrollTo(0, 0);
                 }
                 if (fileItem.file.name.length > 50) {
@@ -295,82 +288,14 @@
                     $scope.msgError = "El archivo ya fue agregado anteriormente.";
                     window.scrollTo(0, 0);
                 }
-                fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=F';
+                fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=Z';
             };
 
             uploaderFn.onCompleteAll = function () {
 
             }
 
-            //Tr
-            var uploaderTr = $scope.uploaderTr = new FileUploader();
-
-
-            // FILTERS
-
-            // a sync filter
-            uploaderTr.filters.push({
-                name: 'maxlenQueue',
-                fn: function (item, options) {
-                    return this.queue.length < 30;
-                }
-            });
-
-            // an async filter
-            uploaderTr.filters.push({
-                name: 'sizeFilter',
-                fn: function (item) {
-                    return item.size < 52428800; // 50 Mbytes
-                }
-            });
-
-            // CALLBACKS
-            uploaderTr.onSuccessItem = function (fileItem, response, status, headers) {
-                if (response.CodErr == 0) {
-                    serviceAdmin
-                        .addComponenteSql($scope.version.IdVersion, $scope.formData.modulo, fileItem.file.name, fileItem.file.lastModifiedDate.toISOString(), response.Tipo, $scope.formData.motor)
-                        .success(function (data) {
-                            $scope.msgError = "";
-                        })
-                        .error(function (err) {
-                            console.error(err); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
-                        });
-                }
-            };
-            uploaderTr.onErrorItem = function (fileItem, response, status, headers) {
-                //console.info('onErrorItem', fileItem, response, status, headers);
-            };
-            uploaderTr.onCancelItem = function (fileItem, response, status, headers) {
-                //console.info('onCancelItem', fileItem, response, status, headers);
-            };
-            uploaderTr.onCompleteItem = function (fileItem, response, status, headers) {
-                //console.info('onCompleteItem', fileItem, response, status, headers);
-            };
-
-            uploaderTr.onAfterAddingFile = function (fileItem) {
-                $scope.msgError = "";
-                var fiSplit = fileItem.file.name.split('.');
-                if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
-                    fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un documento Word.";
-                    window.scrollTo(0, 0);
-                }
-                if (fileItem.file.name.length > 50) {
-                    fileItem.remove();
-                    $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
-                    window.scrollTo(0, 0);
-                }
-                if ($scope.existeFile(fileItem.file.name) > 1) {
-                    fileItem.remove();
-                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
-                    window.scrollTo(0, 0);
-                }
-                fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=T';
-            };
-
-            uploaderTr.onCompleteAll = function () {
-
-            }
+            
         }
 
     }

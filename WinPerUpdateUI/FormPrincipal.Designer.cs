@@ -38,12 +38,13 @@
             this.timerPing = new System.Windows.Forms.Timer(this.components);
             this.workerPing = new System.ComponentModel.BackgroundWorker();
             this.BwUpdate = new System.ComponentModel.BackgroundWorker();
+            this.BwQuery = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // notifyIcon2
             // 
             this.notifyIcon2.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon2.Icon")));
-            this.notifyIcon2.Text = "Winper Update";
+            this.notifyIcon2.Text = "WinAct";
             this.notifyIcon2.Visible = true;
             this.notifyIcon2.BalloonTipClicked += new System.EventHandler(this.notifyIcon2_BalloonTipClicked);
             // 
@@ -83,6 +84,12 @@
             // 
             this.BwUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BwUpdate_DoWork);
             // 
+            // BwQuery
+            // 
+            this.BwQuery.WorkerReportsProgress = true;
+            this.BwQuery.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BwQuery_DoWork);
+            this.BwQuery.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BwQuery_RunWorkerCompleted);
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -113,6 +120,7 @@
         private System.Windows.Forms.Timer timerPing;
         private System.ComponentModel.BackgroundWorker workerPing;
         private System.ComponentModel.BackgroundWorker BwUpdate;
+        private System.ComponentModel.BackgroundWorker BwQuery;
     }
 }
 

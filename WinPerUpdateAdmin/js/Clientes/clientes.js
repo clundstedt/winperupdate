@@ -103,6 +103,7 @@
                 $scope.msgSeleccionSuite = "";
                 for (var i = 0; i < $scope.modulosWinper.length; i++) {
                     if (!$scope.isSelected($scope.modulosWinper[i].idModulo)) {
+                        if($scope.modulosWinper[i].isCore == 1 && $scope.modulosWinper[i].Estado == 'V')
                         $scope.formData.modulos.push($scope.modulosWinper[i]);
                     }
                 }

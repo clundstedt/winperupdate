@@ -32,7 +32,36 @@ namespace WinPerUpdateAdmin.Controllers.api
         #endregion
 
         #region get
-        
+
+        [Route("api/modCCFaltantes/{idVersion:int}")]
+        [HttpGet]
+        public Object GetModCCFaltantes(int idVersion)
+        {
+            try
+            {
+                var version = ProcessMsg.Version.GetVersion(idVersion);
+                var faltantes = new List<string>();
+                if (!version.IsVersionInicial)
+                {
+                    var modVersion = ProcessMsg.Version.GetModulosVersiones(idVersion, null);
+                    var cc = ProcessMsg.Version.GetControlCambios(idVersion).Select(x => x.ModuloFmt.NomModulo).ToList();
+                    foreach (var m in modVersion)
+                    {
+                        if (!cc.Exists(x => x.Equals(m)))
+                        {
+                            faltantes.Add(m);
+                        }
+                    }
+                }
+                return Content(HttpStatusCode.OK, faltantes);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [Route("api/Version/{idVersion:int}/{idCliente:int}/{idAmbiente:int}/ScriptsOk")]
         [HttpGet]
         public Object GetScriptsOk(int idVersion, int idCliente, int idAmbiente)  
@@ -397,7 +426,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                var obj = ProcessMsg.Tareas.GetTareas(idCliente, idVersion);
+                var obj = ProcessMsg.Tareas.GetTareas(idCliente, idVersion).Where(x => x.Estado > 1).OrderBy(x => x.idTareas);
                 return Content(HttpStatusCode.OK, obj);
             }
             catch (Exception ex)
@@ -739,33 +768,36 @@ namespace WinPerUpdateAdmin.Controllers.api
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
             try
             {
-                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                string msg = string.Format("Reporte de Tareas Atrasadas en el cliente {0}"
-                    , idClientes);
-
-                tareas.ForEach(x => 
+                var clt = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == idClientes);
+                if (clt != null)
                 {
-                    if (x.Estado == 0 || x.Estado == 2 || x.Estado == 4)
+                    if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                    string msg = string.Format("Reporte de error al ejecutar script en cliente {0}"
+                        , clt.Nombre);
+
+                    tareas.ForEach(x =>
                     {
-                        msg += string.Format("<br><br>Ambiente: {0}<br>Estado: {1}<br>ID Versión: {2}<br>Fecha y Hora de Registro: {3}<br>Archivo: {4}<br>ERROR: {5}"
-                       , x.Ambientes.Nombre, x.EstadoFmt, x.idVersion, x.FechaRegistroFmt, x.NameFile, x.Error);
+                        if (x.Estado == 0 || x.Estado == 2 || x.Estado == 4)
+                        {
+                            msg += string.Format("<br><br>Ambiente: {0}<br>Estado: {1}<br>ID Versión: {2}<br>Fecha y Hora de Registro: {3}<br>Archivo: {4}<br>ERROR: {5}"
+                           , x.Ambientes.Nombre, x.EstadoFmt, x.idVersion, x.FechaRegistroFmt, x.NameFile, x.Error);
+                        }
+
                     }
-                    
-                }
-                );
+                    );
 
 
-                var res = ProcessMsg.Utils.SendMail(msg, "Reporte Tarea Atrasada", ProcessMsg.Utils.CorreoSoporte);
-                if (res)
-                {
-                    if (ProcessMsg.Tareas.ReportarTodasTareas(idClientes, idVersion) > 0)
+                    var res = ProcessMsg.Utils.SendMail(msg, string.Format("WinAct: Cliente {0} reportó error de script", clt.Nombre), ProcessMsg.Utils.CorreoSoporte);
+                    if (res)
                     {
-                        response.StatusCode = HttpStatusCode.OK;
+                        if (ProcessMsg.Tareas.ReportarTodasTareas(idClientes, idVersion) > 0)
+                        {
+                            response.StatusCode = HttpStatusCode.OK;
+                        }
                     }
+                    return Content(response.StatusCode, res);
                 }
-
-
-                return Content(response.StatusCode, res);
+                return Content(HttpStatusCode.BadRequest, (object)null);
             }
             catch (Exception ex)
             {
@@ -780,21 +812,24 @@ namespace WinPerUpdateAdmin.Controllers.api
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
             try
             {
-                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                string msg = string.Format("Reporte de Tareas Atrasadas en el cliente {0}<br><br>Ambiente: {1}<br>Estado: {2}<br>ID Versión: {3}<br>Fecha y Hora de Registro: {4}<br>Archivo: {5}<br>ERROR: {6}"
-                    , tarea.idClientes, tarea.Ambientes.Nombre, tarea.EstadoFmt, tarea.idVersion, tarea.FechaRegistroFmt, tarea.NameFile, tarea.Error);
-
-                var res = ProcessMsg.Utils.SendMail(msg, "Reporte Tarea Atrasada", ProcessMsg.Utils.CorreoSoporte);
-                if (res)
+                var clt = ProcessMsg.Cliente.GetClientes().SingleOrDefault(x => x.Id == tarea.idClientes);
+                if (clt != null)
                 {
-                    if (ProcessMsg.Tareas.ReportarTarea(tarea.idTareas) > 0)
+                    if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                    string msg = string.Format("Reporte de error al ejecutar script en cliente {0}<br><br>Ambiente: {1}<br>Estado: {2}<br>ID Versión: {3}<br>Fecha y Hora de Registro: {4}<br>Archivo: {5}<br>ERROR: {6}"
+                        , tarea.idClientes, tarea.Ambientes.Nombre, tarea.EstadoFmt, tarea.idVersion, tarea.FechaRegistroFmt, tarea.NameFile, tarea.Error);
+
+                    var res = ProcessMsg.Utils.SendMail(msg, string.Format("WinAct: Cliente {0} reportó error de script", clt.Nombre), ProcessMsg.Utils.CorreoSoporte);
+                    if (res)
                     {
-                        response.StatusCode = HttpStatusCode.OK;
+                        if (ProcessMsg.Tareas.ReportarTarea(tarea.idTareas) > 0)
+                        {
+                            response.StatusCode = HttpStatusCode.OK;
+                        }
                     }
+                    return Content(response.StatusCode, res);
                 }
-
-
-                return Content(response.StatusCode, res);
+                return Content(HttpStatusCode.BadRequest, (object)null);
             }
             catch (Exception ex)
             {

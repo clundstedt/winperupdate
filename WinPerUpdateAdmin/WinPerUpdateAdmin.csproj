@@ -179,6 +179,7 @@
     <Content Include="Content\jasny-bootstrap.css.map" />
     <Content Include="Img\ajax-loader.gif" />
     <Content Include="Img\Chat_CC_WinAct.png" />
+    <Content Include="Img\Chat_Version_Cliente.png" />
     <Content Include="Img\Circle_CC_Winact.png" />
     <Content Include="Img\Hash_CC_Winact.png" />
     <Content Include="Img\Modulo_CC_Winact.png" />

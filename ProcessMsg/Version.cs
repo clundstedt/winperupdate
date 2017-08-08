@@ -638,6 +638,9 @@ namespace ProcessMsg
                     file.WriteLine(@"[Files]");
                     foreach (var componente in version.Componentes)
                     {
+                        if(componente.Extension.Equals(".sql", StringComparison.OrdinalIgnoreCase))
+                            file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + "\\Scripts\\" + componente.Name));
+                        else
                         file.WriteLine(string.Format("Source: \"{0}\"; DestDir: \"{{app}}\"", dirSource + componente.Name));
                     }
                     if (!version.IsVersionInicial)

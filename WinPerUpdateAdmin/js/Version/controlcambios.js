@@ -21,7 +21,8 @@
             $scope.formData = {};
             $scope.version = null;
             $scope.modulos = [];
-
+            $scope.chkimpacta = false;
+            
             $scope.DocCambiosEliminar = "";
             $scope.controlCambios = null;
 
@@ -37,6 +38,7 @@
                         $scope.formData.release = data.Release;
                         $scope.formData.tips = data.Tips;
                         $scope.formData.desccc = data.Descripcion;
+                        if (data.Impacto == "No impacta otras funcionalidades") $scope.chkimpacta = true;
                         $scope.formData.impacto = data.Impacto;
                     }).error(function (err) {
                         console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); 
@@ -190,6 +192,7 @@
                         $scope.formData.release = "";
                         $scope.formData.desccc = "";
                         $scope.formData.impacto = "";
+                        $scope.chkimpacta = false;
                         $scope.uploader.clearQueue();
                     }).error(function (err) {
                         console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0); window.scrollTo(0, 0);

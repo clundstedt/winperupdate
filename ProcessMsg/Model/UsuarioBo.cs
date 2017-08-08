@@ -48,6 +48,13 @@ namespace ProcessMsg.Model
             }
         }
 
+        public string GetToken
+        {
+           get
+            {
+                return Utils.G_Encripta(string.Format("{0}:{1}:{2}:{3}:{4:dd-MM-yyyy}",Id, Persona.Id, Persona.Mail,Clave,DateTime.Now));
+            }
+        }
         /// <summary>
         /// Retorna información para el registro de la bitacora.
         /// </summary>

@@ -26,11 +26,8 @@ namespace ProcessMsg.Model
                 switch (Tipo)
                 {
                     case 'A': str = "Alter";break;
-                    case 'S': str = "Procedimiento Almacenado";break;
-                    case 'F': str = "Funcion";break;
-                    case 'T': str = "Trigger";break;
-                    case 'V': str = "Vista";break;
-                    case 'Q': str = "Query";break;
+                    case 'S': str = "Procedimiento Almacenado/Funcion/Trigger";break;
+                    case 'Z': str = "Vistas/Querys";break;
                     case '*': str = "Archivo";break;
                     default:
                         str = "Tipo desconocido";

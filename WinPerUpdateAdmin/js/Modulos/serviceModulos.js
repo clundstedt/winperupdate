@@ -281,12 +281,13 @@
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject('No tiene error de sincronizacion');
+                        console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                        deferred.reject(xhr.responseText);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
-                    deferred.reject('No tiene error de sincronizacion');
+                    deferred.reject(xhr.responseText);
                 }
             });
 

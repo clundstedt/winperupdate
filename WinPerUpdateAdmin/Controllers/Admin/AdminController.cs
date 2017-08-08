@@ -224,24 +224,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                     string Command = ConfigurationManager.AppSettings["pathGenSetup"];
                     string argument = "\"" + sRuta + sFile + ".iss\"";
 
-                    System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo(Command, argument);
-
-                    // Indicamos que la salida del proceso se redireccione en un Stream
-                    procStartInfo.RedirectStandardOutput = true;
-                    procStartInfo.UseShellExecute = false;
-
-                    //Indica que el proceso no despliegue una pantalla negra (El proceso se ejecuta en background)
-                    procStartInfo.CreateNoWindow = false;
                     
-                    //Inicializa el proceso
-                    System.Diagnostics.Process proc = new System.Diagnostics.Process();
-                    proc.StartInfo = procStartInfo;
-                    proc.Start();
-                    
-                    
-
-                    //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
-                    string result = proc.StandardOutput.ReadToEnd();
                     if (!version.IsVersionInicial)
                     {
                         if (ProcessMsg.Version.GenerarControlCambios(idVersion, dirN1))
@@ -270,6 +253,19 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                         }
                     }
 
+                    System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo(Command, argument);
+                    // Indicamos que la salida del proceso se redireccione en un Stream
+                    procStartInfo.RedirectStandardOutput = true;
+                    procStartInfo.UseShellExecute = false;
+                    //Indica que el proceso no despliegue una pantalla negra (El proceso se ejecuta en background)
+                    procStartInfo.CreateNoWindow = false;
+                    //Inicializa el proceso
+                    System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                    proc.StartInfo = procStartInfo;
+                    proc.Start();
+                    //Consigue la salida de la Consola(Stream) y devuelve una cadena de texto
+                    string result = proc.StandardOutput.ReadToEnd();
+                    if(!System.IO.File.Exists(Path.Combine(sRuta,"Output",sFile+".exe"))) return Json(new { Version = idVersion, CodErr = 4, MsgErr = "No pudo generar instalador", Output = "" });
                     return Json(new { Version = idVersion, CodErr = 0, MsgErr = result, Output = sFile + ".exe" });
                 }
                 return Json(new { Version = idVersion, CodErr = 1, MsgErr = "No pudo generar archivo script de setup", Output = "" });
