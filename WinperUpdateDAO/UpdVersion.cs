@@ -8,7 +8,7 @@ namespace WinperUpdateDAO
 {
     public class UpdVersion : SpDao
     {
-        public int Execute(int idVersion, string numVersion, DateTime fecVersion, char estado, string comentario, string usuario, string instalador)
+        public int Execute(int idVersion, string numVersion, DateTime fecVersion, char estado, string comentario, string usuario, string instalador, bool hasdeploy)
         {
             SpName = @" update Versiones 
                            set NumVersion = @numVersion,
@@ -16,7 +16,8 @@ namespace WinperUpdateDAO
                                Estado     = @estado,
                                Comentario = @comentario,
                                Usuario    = @usuario,
-                               Instalador = @instalador
+                               Instalador = @instalador,
+                               HasDeploy31 = @hasdeploy
                          where idVersion  = @idVersion";
             try
             {
@@ -27,6 +28,7 @@ namespace WinperUpdateDAO
                 ParmsDictionary.Add("@usuario", usuario);
                 ParmsDictionary.Add("@instalador", instalador);
                 ParmsDictionary.Add("@idVersion", idVersion);
+                ParmsDictionary.Add("@hasdeploy", hasdeploy);
 
                 return Connector.ExecuteQueryNoResult(SpName, ParmsDictionary);
             }

@@ -311,7 +311,7 @@ namespace ProcessMsg
             try
             {
 
-                if (query.Execute(idVersion, version.Release, version.Fecha, version.Estado, version.Comentario, version.Usuario, version.Instalador) > 0)
+                if (query.Execute(idVersion, version.Release, version.Fecha, version.Estado, version.Comentario, version.Usuario, version.Instalador, version.HasDeploy31) > 0)
                 {
                     return GetVersiones(null).SingleOrDefault(x => x.IdVersion == idVersion);
                 }

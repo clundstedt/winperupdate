@@ -37,6 +37,40 @@ namespace ProcessMsg.Model
             }
         }
 
+        public string TipoByNameFmt
+        {
+            get
+            {
+                if (!Name.Contains("_")) return null;
+                var tipo = Name.Split('_');
+                if (tipo[0].Equals("Alt",StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Alt";
+                }
+                else if (tipo[0].Equals("Fn", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Fn";
+                }
+                else if (tipo[0].Equals("Sp", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Sp";
+                }
+                else if (tipo[0].Equals("Tr", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Tr";
+                }
+                else if (tipo[0].Equals("Vw", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Vw";
+                }
+                else if (tipo[0].Equals("Qr", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Qr";
+                }
+                return null;
+            }
+        }
+
         public string Extension
         {
             get

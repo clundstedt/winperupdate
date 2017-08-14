@@ -58,10 +58,10 @@ namespace WinperUpdateDAO
                                                ,{6}
                                                ,{7}
                                                ,{8})";
-            string sqlDel = @"DELETE FROM modulosxlsx WHERE idUsuario = @idUsuarioDel";
+            string sqlDel = @"DELETE FROM modulosxlsx WHERE Usuario = @idUsuarioDel";
             try
             {
-                int idUsuario = int.Parse(dt.Rows[0][7].ToString());
+                int idUsuario = int.Parse(dt.Rows[0][6].ToString());
                 object[,] obj = new object[dt.Rows.Count+1, 2];
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -83,8 +83,8 @@ namespace WinperUpdateDAO
                     parm.Add(data[2], dt.Rows[i][2]);
                     parm.Add(data[3], dt.Rows[i][3]);
                     parm.Add(data[4], DateTime.Now);
-                    parm.Add(data[5], dt.Rows[i][5]);
-                    parm.Add(data[6], dt.Rows[i][6]);
+                    parm.Add(data[5], dt.Rows[i][4]);
+                    parm.Add(data[6], dt.Rows[i][5]);
                     parm.Add(data[7], idUsuario);
                     parm.Add(data[8], dt.Rows[i][7]);
                     obj[i+1, 0] = string.Format(SpName, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]);
@@ -107,13 +107,17 @@ namespace WinperUpdateDAO
             SpName = @"INSERT INTO modulos (NomModulo
                                             ,Descripcion
                                             ,isCore
-                                            ,Directorio) 
+                                            ,Directorio
+                                            ,Estado
+                                            ,Suite) 
                                     SELECT NomModulo
                                             ,Descripcion
                                             ,isCore
                                             ,Directorio
+                                            ,'V'
+                                            ,Suite
                                       FROM ModulosXLSX
-                                     WHERE idUsuario = @idUsuario";
+                                     WHERE Usuario = @idUsuario";
             try
             {
                 ParmsDictionary.Add("@idUsuario",idUsuario);

@@ -22,13 +22,6 @@ namespace ProcessMsg.Model
 
         public string NroLicencia { get; set; }
 
-        public string RutFmt
-        {
-            get
-            {
-                return string.Format("{0}-{1}", Rut, Dv);
-            }
-        }
 
         public int NumFolio { get; set; }
         
@@ -37,7 +30,6 @@ namespace ProcessMsg.Model
         public string NroTrbc { get; set; }
         public string NroTrbh { get; set; }
         public string NroUsr { get; set; }
-
         public string MesCon { get; set; }
         public int Correlativo { get; set; }
         public string EstMtcFmt
@@ -105,6 +97,27 @@ namespace ProcessMsg.Model
             }
         }
 
+        public string RutFmt
+        {
+            get
+            {
+                return string.Format("{0}-{1}", Rut, Dv);
+            }
+        }
+        public string MesiniFmt
+        {
+            get
+            {
+                return Mesini != null ? Mesini.Length == 1 ? "0" + Mesini : Mesini : "";
+            }
+        }
+        public string MesConFmt
+        {
+            get
+            {
+                return MesCon != null ? MesCon.Length == 1 ? "0" + MesCon : MesCon : "";
+            }
+        }
         /// <summary>
         /// Retorna información para el registro de la bitacora.
         /// </summary>

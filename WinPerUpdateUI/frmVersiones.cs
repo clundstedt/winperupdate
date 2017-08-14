@@ -60,6 +60,7 @@ namespace WinPerUpdateUI
                         string dirComponentes = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\WinperSetupUI\\" + version.Release;
                         var form = new Instalar();
                         string fileInstalador = dirTmp + version.Release + "\\" + version.Instalador;
+                        int exitCode = -1;
                         if (File.Exists(fileInstalador))
                         {
                             this.Close();
@@ -77,10 +78,10 @@ namespace WinPerUpdateUI
 
                             myProcess.Start();
                             myProcess.WaitForExit();
-
+                            exitCode = myProcess.ExitCode;
                         }
                         form.Close();
-                        
+
                         /*var comps = new DirectoryInfo(dirComponentes).GetFiles().ToList();
                         int cont = 0;
                         foreach (var x in comps)
@@ -92,9 +93,16 @@ namespace WinPerUpdateUI
                         }
                         if (version.TotalComponentes == cont)
                         {*/
+                        if (exitCode == 0)
+                        {
                             Progreso.Show();
                             Progreso.Text = "Instalando";
                             bwCopia.RunWorkerAsync(version);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Instalación de WinPer cancelada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                         /*}
                         else
                         {

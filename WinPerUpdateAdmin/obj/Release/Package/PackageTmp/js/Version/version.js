@@ -69,6 +69,7 @@
                     $scope.formData.release = data.Release;
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
+                    $scope.formData.hasDeploy = data.HasDeploy31;
                     $scope.version = data;
                     serviceAdmin.getComponentesVersion(data.IdVersion).success(function (dataCV) {
                         $scope.componentes = dataCV;
@@ -290,7 +291,7 @@
                     });
                 }
                 else {
-                    serviceAdmin.updVersion($scope.idversion, formData.release, formData.fecha, 'N', formData.comentario, '', '').success(function (data) {
+                    serviceAdmin.updVersion($scope.idversion, formData.release, formData.fecha, 'N', formData.comentario, '', '', formData.hasDeploy).success(function (data) {
                         $scope.idversion = data.IdVersion;
                         $scope.msgError = "";
                         $scope.msgSuccess = "Versión modificada exitosamente!.";

@@ -213,7 +213,7 @@ namespace ProcessMsg
         {
             try
             {
-                System.Data.DataTable dt = VerificarDatosModulo(idUsuario,rutaExcel, "Modulos");
+                System.Data.DataTable dt = VerificarDatosModulo(idUsuario,rutaExcel, 1);
                 var obj = new AddModulo();
                 if (obj.ExecuteTrans(dt))
                 {
@@ -273,7 +273,7 @@ namespace ProcessMsg
         #endregion
 
         #region Otros
-        private static System.Data.DataTable VerificarDatosModulo(int idUsuario, string Archivo, string Hoja)
+        private static System.Data.DataTable VerificarDatosModulo(int idUsuario, string Archivo, int Hoja)
         {
             System.Data.DataTable dt = new CnaModulo().SelectExcel(Archivo, Hoja);
             System.Data.DataTable dtModulos = new System.Data.DataTable();

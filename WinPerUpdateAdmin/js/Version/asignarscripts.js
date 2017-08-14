@@ -21,7 +21,10 @@
             $scope.modulos = [];
             $scope.version = null;
             $scope.msgError = "";
+            $scope.msgError2 = "";
             $scope.formData = {};
+
+            $scope.tiempoMsgError2 = 10000;
 
             if (!jQuery.isEmptyObject($routeParams)) {
                 serviceAdmin.getVersion($routeParams.idVersion).success(function (data) {
@@ -131,23 +134,31 @@
             };
 
             uploaderAlt.onAfterAddingFile = function (fileItem) {
-                $scope.msgError = "";
+                $scope.msgError2 = "";
                 var fiSplit = fileItem.file.name.split('.');
                 if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
                     fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un archivo .SQL";
+                    $scope.msgError2 = "El archivo debe ser un archivo .SQL";
+                    window.scrollTo(0, 0);
+                }
+                if (!fileItem.file.name.startsWith("Alt_") && !fileItem.file.name.startsWith("alt_")) {
+                    fileItem.remove();
+                    $scope.msgError2 = "El script no corresponde a un alter, siga el formato de nombres correspondiente 'Alt_(Nombre del Script)'";
                     window.scrollTo(0, 0);
                 }
                 if (fileItem.file.name.length > 50) {
                     fileItem.remove();
-                    $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
+                    $scope.msgError2 = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
                 if ($scope.existeFile(fileItem.file.name) > 1) {
                     fileItem.remove();
-                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    $scope.msgError2 = "El archivo ya fue agregado anteriormente.";
                     window.scrollTo(0, 0);
                 }
+                $timeout(function () {
+                    $scope.msgError2 = "";
+                }, $scope.tiempoMsgError2);
                 fileItem.url = '/Admin/UploadSql?idVersion='+$scope.version.IdVersion+'&tipo=A';
             };
 
@@ -201,23 +212,33 @@
             };
 
             uploaderSp.onAfterAddingFile = function (fileItem) {
-                $scope.msgError = "";
+                $scope.msgError2 = "";
                 var fiSplit = fileItem.file.name.split('.');
                 if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
                     fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un archivo .SQL.";
+                    $scope.msgError2 = "El archivo debe ser un archivo .SQL.";
+                    window.scrollTo(0, 0);
+                }
+                if (!fileItem.file.name.startsWith("Sp_") && !fileItem.file.name.startsWith("sp_")
+                    &&!fileItem.file.name.startsWith("Fn_") && !fileItem.file.name.startsWith("fn_")
+                    &&!fileItem.file.name.startsWith("Tr_") && !fileItem.file.name.startsWith("tr_")) {
+                    fileItem.remove();
+                    $scope.msgError2 = "El script no corresponde a un Sp, Tr o Fn, siga el formato de nombres correspondiente 'Sp_(Nombre del Script)', 'Tr_(Nombre del Script)' o 'Fn_(Nombre del Script)'";
                     window.scrollTo(0, 0);
                 }
                 if (fileItem.file.name.length > 50) {
                     fileItem.remove();
-                    $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
+                    $scope.msgError2 = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
                 if ($scope.existeFile(fileItem.file.name) > 1) {
                     fileItem.remove();
-                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    $scope.msgError2 = "El archivo ya fue agregado anteriormente.";
                     window.scrollTo(0, 0);
                 }
+                $timeout(function () {
+                    $scope.msgError2 = "";
+                }, $scope.tiempoMsgError2);
                 fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=S';
             };
 
@@ -271,23 +292,32 @@
             };
 
             uploaderFn.onAfterAddingFile = function (fileItem) {
-                $scope.msgError = "";
+                $scope.msgError2 = "";
                 var fiSplit = fileItem.file.name.split('.');
                 if (fiSplit[fiSplit.length - 1] != "sql" && fiSplit[fiSplit.length - 1] != "SQL") {
                     fileItem.remove();
-                    $scope.msgError = "El archivo debe ser un archivo .SQL.";
+                    $scope.msgError2 = "El archivo debe ser un archivo .SQL.";
+                    window.scrollTo(0, 0);
+                }
+                if (!fileItem.file.name.startsWith("Vw_") && !fileItem.file.name.startsWith("vw_")
+                    && !fileItem.file.name.startsWith("Qr_") && !fileItem.file.name.startsWith("qr_")) {
+                    fileItem.remove();
+                    $scope.msgError2 = "El script no corresponde a una Vista (Vw) o Query (Qr), siga el formato de nombres correspondiente 'Vw_(Nombre del Script)' o 'Qr_(Nombre del Script)'";
                     window.scrollTo(0, 0);
                 }
                 if (fileItem.file.name.length > 50) {
                     fileItem.remove();
-                    $scope.msgError = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
+                    $scope.msgError2 = "El nombre del archivo no puede contener más de 50 carácteres, incluyendo la extensión.";
                     window.scrollTo(0, 0);
                 }
                 if ($scope.existeFile(fileItem.file.name) > 1) {
                     fileItem.remove();
-                    $scope.msgError = "El archivo ya fue agregado anteriormente.";
+                    $scope.msgError2 = "El archivo ya fue agregado anteriormente.";
                     window.scrollTo(0, 0);
                 }
+                $timeout(function () {
+                    $scope.msgError2 = "";
+                }, $scope.tiempoMsgError2);
                 fileItem.url = '/Admin/UploadSql?idVersion=' + $scope.version.IdVersion + '&tipo=Z';
             };
 

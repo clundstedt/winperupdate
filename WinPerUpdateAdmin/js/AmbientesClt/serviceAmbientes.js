@@ -146,7 +146,7 @@
                 "UserDbo": UserDbo,
                 "PwdDbo": PwdDbo
             };
-            console.log(JSON.stringify(ambiente));
+
             $.ajax({
                 url: "api/Cliente/"+idCliente+"/Ambiente",
                 type: "POST",

@@ -171,7 +171,7 @@ namespace ProcessMsg
             }
         }
 
-        public static bool AddAmbientesXLSX(int idCliente, string archivo, string hoja)
+        public static bool AddAmbientesXLSX(int idCliente, string archivo, int hoja)
         {
             try
             {
@@ -254,7 +254,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
-        private static System.Data.DataTable VerificarDatosAmbientes(int idClientes, string Archivo, string Hoja)
+        private static System.Data.DataTable VerificarDatosAmbientes(int idClientes, string Archivo, int Hoja)
         {
             System.Data.DataTable dt = new CnaAmbientes().selectExcel(Archivo, Hoja);
             System.Data.DataTable dtAmbientes = new System.Data.DataTable();
@@ -276,9 +276,9 @@ namespace ProcessMsg
                 ProcessMsg.Model.AmbientesXLSXBo ambiente;
                 tipo = 0;
                 ErrorRegistro = "";
-                if (string.IsNullOrEmpty(dt.Rows[i][0].ToString()) || dt.Rows[i][0].ToString().Length > 99)
+                if (string.IsNullOrEmpty(dt.Rows[i][0].ToString()) || dt.Rows[i][0].ToString().Length > 45)
                 {
-                    ErrorRegistro += "Error en la columna 'Nombre', está vacía o sobre pasa el límite de caracteres (100) || ";
+                    ErrorRegistro += "Error en la columna 'Nombre', está vacía o sobre pasa el límite de caracteres (45) || ";
                 }
                 if (!int.TryParse(dt.Rows[i][1].ToString(), out tipo))
                 {

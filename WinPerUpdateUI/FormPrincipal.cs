@@ -205,7 +205,7 @@ namespace WinPerUpdateUI
                         var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
                         key.SetValue("WinperUpdate", exe);
                         key.Close();
-                        MessageBox.Show("WinperUpdate fue configurado al inicio de Windows correctamente", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("WinAct fue configurado al inicio de Windows correctamente", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
@@ -216,7 +216,7 @@ namespace WinPerUpdateUI
 
                 if (intentos >= 3 && inRun.Equals("No"))
                 {
-                    MessageBox.Show("El numero de intentos sobrepaso el límite.\n\nWinperUpdate no se pudo configurar al inicio de Windows. Esto NO afectará el funcionamiento de WinperUpdate", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("El numero de intentos sobrepaso el límite.\n\nWinAct no se pudo configurar al inicio de Windows. Esto NO afectará el funcionamiento de WinAct", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             } 
             keyRun.Close();
@@ -279,8 +279,8 @@ namespace WinPerUpdateUI
 
                         TipoVentana = -1;
                         notifyIcon2.BalloonTipIcon = ToolTipIcon.None;
-                        notifyIcon2.BalloonTipTitle = "WinperUpdateUI";
-                        notifyIcon2.BalloonTipText = "Acá se encuentra WinperUpdate!";
+                        notifyIcon2.BalloonTipTitle = "WinActUI";
+                        notifyIcon2.BalloonTipText = "Acá se encuentra WinAct!";
                         notifyIcon2.ShowBalloonTip(5000);
                     }
                 }
@@ -370,7 +370,7 @@ namespace WinPerUpdateUI
         {
             if (e.CloseReason != CloseReason.WindowsShutDown && e.CloseReason != CloseReason.ApplicationExitCall)
             {
-                var res = MessageBox.Show("¿Está seguro que desea cerrar WinperUpdate?", "CONFIRME", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var res = MessageBox.Show("¿Está seguro que desea cerrar WinAct?", "CONFIRME", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (res != DialogResult.Yes)
                 {
                     e.Cancel = true;
@@ -512,7 +512,7 @@ namespace WinPerUpdateUI
                 conn.Close();
                 Utils.StrSendMsg(server, int.Parse(port), "settarea#" + idTarea.ToString() + "#2#" + ex.Message + "#");
                 Utils.RegistrarLog("EjecutarQuery.log", ex.ToString());
-                throw new Exception(ex.Message);
+                return false;
             }
             
         }
@@ -564,7 +564,7 @@ namespace WinPerUpdateUI
                 stream.Close();
                 */
                 #endregion
-                notifyIcon2.Text = "WinAct (Descargando)";
+                notifyIcon2.Text = string.Format("WinAct - Descargando Versión {0}", release);
                 ProcessMsg.Utils.FtpGet(release.Release+"/Output/",new FileInfo(nameIntalador).DirectoryName+"\\");
                 ServerInAccept = true;
 
@@ -775,8 +775,8 @@ namespace WinPerUpdateUI
                                         {
                                             TipoVentana = 2;
                                             notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
-                                            notifyIcon2.BalloonTipText = "Se encuentra disponible una actualización para WinperUpdateUI";
-                                            notifyIcon2.BalloonTipTitle = "Actualización WinperUpdateUI";
+                                            notifyIcon2.BalloonTipText = "Se encuentra disponible una actualización para WinActUI";
+                                            notifyIcon2.BalloonTipTitle = "Actualización WinActUI";
                                             notifyIcon2.ShowBalloonTip(5000);
                                         }
                                     }
@@ -851,6 +851,7 @@ namespace WinPerUpdateUI
                 var tareasOk = new List<string>();
                 if (listaTareas.Count > 0)
                 {
+                    var ambientesInTareas = listaTareas.Select(x => x.Ambientes.Nombre).Distinct().ToList();
                     ServerInAccept = false;
                     foreach (var tarea in listaTareas)
                     {
@@ -895,8 +896,10 @@ namespace WinPerUpdateUI
                             
                         }
                     }
-                    if (tareasOk.Count > 0) e.Result = string.Format("Los ambientes {0} fueron actualizados correctamente", string.Join(", ", tareasOk));
-                    else e.Result = string.Format("No se actualizó ninguno de estos ambientes: {0}", string.Join(", ", listaTareas.Select(x => x.Ambientes.Nombre)));
+                    if (tareasOk.Count == ambientesInTareas.Count)
+                        e.Result = new object[] { string.Format("Los ambientes {0} fueron actualizados correctamente", string.Join(", ", tareasOk)), 0 };
+                    else
+                        e.Result = new object[] { "Ocurrió un problema al intentar actualizar un ambiente.", 1 };
                 }
             }
         }
@@ -904,6 +907,7 @@ namespace WinPerUpdateUI
         private void BwQuery_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ServerInAccept = true;
+            notifyIcon2.Text = "WinAct";
             if (e.Error != null)
             {
                 Utils.RegistrarLog("BwQuery.log", e.Error.ToString());
@@ -915,11 +919,12 @@ namespace WinPerUpdateUI
             }
             else if(e.Result != null)
             {
-                notifyIcon2.BalloonTipIcon = ToolTipIcon.Info;
-                notifyIcon2.BalloonTipText = e.Result.ToString();
+                var r = (object[])e.Result;
+                notifyIcon2.BalloonTipIcon = int.Parse(r[1].ToString()) == 0 ? ToolTipIcon.Info : ToolTipIcon.Error;
+                notifyIcon2.BalloonTipText = r[0].ToString();
                 notifyIcon2.BalloonTipTitle = "Actualización Ambientes";
-                notifyIcon2.ShowBalloonTip(5000);
-                Utils.RegistrarLog("Ambientes.log", e.Result.ToString());
+                notifyIcon2.ShowBalloonTip(8000);
+                Utils.RegistrarLog("Ambientes.log", r[0].ToString());
             }
         }
     }

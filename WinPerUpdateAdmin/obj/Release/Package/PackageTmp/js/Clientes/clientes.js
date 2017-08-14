@@ -173,9 +173,9 @@
                     $scope.formData.region = data.Comuna.Region.idRgn;
                     $scope.formData.licencia = data.NroLicencia;
                     $scope.formData.folio = data.NumFolio;
-                    $scope.formData.mescon = data.MesCon;
+                    $scope.formData.mescon = data.MesConFmt;
                     $scope.formData.estmtc = data.EstMtc;
-                    $scope.formData.mesini = data.Mesini;
+                    $scope.formData.mesini = data.MesiniFmt;
                     $scope.formData.nrotrbc = data.NroTrbc;
                     $scope.formData.nrotrbh = data.NroTrbh;
                     $scope.formData.nrousr = data.NroUsr;
@@ -249,7 +249,6 @@
             }
 
             $scope.SaveCliente = function (formData) {
-                console.log(JSON.stringify(formData));
                 var arrRut = formData.rut.split('-');
                 $scope.increate = false;
                 $scope.labelcreate = "Enviando";

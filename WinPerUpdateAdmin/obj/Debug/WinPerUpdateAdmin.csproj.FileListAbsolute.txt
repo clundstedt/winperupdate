@@ -104,6 +104,7 @@ C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServe
 C:\Users\Desarrollo_Prac\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\itextsharp.dll
 C:\Users\mariol\Documents\Visual Studio 2015\Projects\WinperUpdateServer\WinPerUpdateAdmin\bin\itextsharp.xml
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCP.exe
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\roslyn\csc.exe
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -137,6 +138,7 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Razor.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WebGrease.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinperUpdateDAO.dll
+C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCPnet.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Connector.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\ProcessMsg.pdb
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.pdb
@@ -158,5 +160,3 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.dll
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\obj\Debug\WinPerUpdateAdmin.pdb
-C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCP.exe
-C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCPnet.dll

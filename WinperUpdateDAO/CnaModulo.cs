@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace WinperUpdateDAO
 {
@@ -57,6 +59,48 @@ namespace WinperUpdateDAO
             AdaptadorOle.Fill(dt);
 
             return dt;
+        }
+        public DataTable SelectExcel(string Arch, int Hoja)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+
+                Excel.Application xlApp = new Excel.Application();
+                Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(Arch);
+                Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[Hoja];
+                Excel.Range xlRange = xlWorksheet.UsedRange;
+
+                int rowCount = xlRange.Rows.Count;
+                int colCount = xlRange.Columns.Count;
+                object[] row = null;
+                for (int i = 0; i < colCount; i++) dt.Columns.Add(i.ToString());
+                for (int i = 2; i <= rowCount; i++)
+                {
+                    row = new object[colCount];
+                    for (int j = 1; j <= colCount; j++)
+                    {
+                        if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
+                            row[j - 1] = xlRange.Cells[i, j].Value2;
+                    }
+                    dt.Rows.Add(row);
+                }
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                Marshal.ReleaseComObject(xlRange);
+                Marshal.ReleaseComObject(xlWorksheet);
+                xlWorkbook.Close();
+                Marshal.ReleaseComObject(xlWorkbook);
+                xlApp.Quit();
+                Marshal.ReleaseComObject(xlApp);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Error al ejecutar {0}: {1}", "Excute", ex.Message);
+                throw new Exception(msg, ex);
+            }
         }
         public SqlDataReader Execute(int idModulo)
         {

@@ -903,7 +903,7 @@
             return promise;
         }
 
-        function updVersion(id, release, fecha, estado, comentario, usuario, instalador) {
+        function updVersion(id, release, fecha, estado, comentario, usuario, instalador, hasdeploy) {
             var deferred = $q.defer();
             var promise = deferred.promise;
 
@@ -918,7 +918,8 @@
                 "Estado": estado,
                 "Comentario": comentario,
                 "Usuario": usuario,
-                "Instalador": instalador
+                "Instalador": instalador,
+                "HasDeploy31": hasdeploy
             };
             //console.debug(JSON.stringify(version));
 

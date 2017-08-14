@@ -235,15 +235,40 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                             var componentes = ProcessMsg.Componente.GetComponenteConDirectorio(idVersion);
 
                             var files = new DirectoryInfo(sRuta).GetFiles().ToList();
+                            files.AddRange(new DirectoryInfo(Path.Combine(sRuta,"Scripts")).GetFiles().ToList());
                             foreach (var x in files)
                             {
                                 var comps = componentes.Where(y => y.Name.Equals(x.Name)).ToList();
                                 foreach (var comp in comps)
                                 {
-                                    var oPath = Path.Combine(dirN1, comp.Directorio, comp.Name);
-                                    var dPath = Path.Combine(dirN, comp.Directorio, comp.Name);
-                                    System.IO.File.Copy(oPath, dPath, true);
-                                    x.CopyTo(oPath, true);
+                                    if (comp.Tipo == '*')
+                                    {
+                                        var oPath = Path.Combine(dirN1, comp.Directorio, comp.Name);
+                                        var dPath = Path.Combine(dirN, comp.Directorio, comp.Name);
+                                        System.IO.File.Copy(oPath, dPath, true);
+                                        x.CopyTo(oPath, true);
+                                    }
+                                    else//Copiando scripts
+                                    {
+                                        var oPath = Path.Combine(dirN1,"Scripts", comp.TipoByNameFmt, comp.MotorSql);
+                                        if (!Directory.Exists(oPath)) Directory.CreateDirectory(oPath);
+                                        oPath = Path.Combine(oPath, comp.Directorio);
+                                        if (!Directory.Exists(oPath)) Directory.CreateDirectory(oPath);
+                                        //
+                                        var dPath = Path.Combine(dirN, "Scripts", comp.TipoByNameFmt, comp.MotorSql);
+                                        if (!Directory.Exists(dPath)) Directory.CreateDirectory(dPath);
+                                        dPath = Path.Combine(dPath, comp.Directorio);
+                                        if (!Directory.Exists(dPath)) Directory.CreateDirectory(dPath);
+                                        //
+                                        oPath = Path.Combine(oPath, x.Name);
+                                        if (System.IO.File.Exists(oPath))
+                                        {
+                                            dPath = Path.Combine(dPath, x.Name);
+                                            System.IO.File.Copy(oPath, dPath, true);
+                                        }
+                                            
+                                        x.CopyTo(oPath, true);
+                                    }
                                 }
                             }
                         }

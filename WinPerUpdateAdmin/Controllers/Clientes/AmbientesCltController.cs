@@ -87,7 +87,7 @@ namespace WinPerUpdateAdmin.Controllers.Clientes
                     }
 
                     file.SaveAs(sNameFiles);
-                    if (ProcessMsg.Ambiente.AddAmbientesXLSX(cliente.Id,sNameFiles, "Ambientes") )
+                    if (ProcessMsg.Ambiente.AddAmbientesXLSX(cliente.Id,sNameFiles, 1) )
                     {
                         if (ProcessMsg.Ambiente.GetAmbXlSXOk(cliente.Id) == 0)
                         {

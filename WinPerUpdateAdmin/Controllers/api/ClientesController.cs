@@ -19,8 +19,10 @@ namespace WinPerUpdateAdmin.Controllers.api
     {
         public override Task<HttpResponseMessage> ExecuteAsync(HttpControllerContext controllerContext, CancellationToken cancellationToken)
         {
+           
             return base.ExecuteAsync(controllerContext, cancellationToken);
         }
+
         #region structs
         struct anio
         {
@@ -613,15 +615,15 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
+        
         [Route("api/Clientes")]
         [HttpPost]
         public Object Post([FromBody]ProcessMsg.Model.ClienteBo cliente)
         {
             try
             {
-                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
+                //if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created); 
 
                 if (cliente.Rut == 0)
                     response.StatusCode = HttpStatusCode.BadRequest;
