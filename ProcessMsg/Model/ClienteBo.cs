@@ -9,22 +9,13 @@ namespace ProcessMsg.Model
     public class ClienteBo
     {
         public int Id { get; set; }
-
         public int Rut { get; set; }
-
         public char Dv { get; set; }
-
         public string Nombre { get; set; }
-
         public string Direccion { get; set; }
-
         public ComunaBo Comuna { get; set; }
-
         public string NroLicencia { get; set; }
-
-
         public int NumFolio { get; set; }
-        
         public int EstMtc { get; set; }
         public string Mesini { get; set; }
         public string NroTrbc { get; set; }
@@ -39,7 +30,6 @@ namespace ProcessMsg.Model
                 return EstMtc == 7 ? "Activo" : "No Activo";
             }
         }
-
         public string MesIniFmt
         {
             get
@@ -86,9 +76,7 @@ namespace ProcessMsg.Model
                 return nom;
             }
         }
-
         public char Estado { get; set; }
-
         public string EstadoFmt
         {
             get
@@ -96,7 +84,6 @@ namespace ProcessMsg.Model
                 return Estado == 'C' ? "No Vigente" : "Vigente";
             }
         }
-
         public string RutFmt
         {
             get
@@ -104,20 +91,20 @@ namespace ProcessMsg.Model
                 return string.Format("{0}-{1}", Rut, Dv);
             }
         }
-        public string MesiniFmt
+        /*public string MesiniFmt
         {
             get
             {
                 return Mesini != null ? Mesini.Length == 1 ? "0" + Mesini : Mesini : "";
             }
-        }
-        public string MesConFmt
+        }*/
+        /*public string MesConFmt
         {
             get
             {
                 return MesCon != null ? MesCon.Length == 1 ? "0" + MesCon : MesCon : "";
             }
-        }
+        }*/
         /// <summary>
         /// Retorna información para el registro de la bitacora.
         /// </summary>

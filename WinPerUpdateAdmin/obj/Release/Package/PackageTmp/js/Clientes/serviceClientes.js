@@ -1149,7 +1149,7 @@
 
             $.ajax({
                 url: '/api/Clientes/Vigente?id=' + id + '&est=' + est+'&motivo='+motivo,
-                type: "GET",
+                type: "DELETE",
                 dataType: 'Json',
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {

@@ -9,7 +9,8 @@
 
     function admin($scope, serviceAdmin) {
         $scope.msgError = "";
-
+        $scope.formData = {};
+        $scope.formData.hasdeploy = true;
         $scope.title = 'admin';
         $scope.lblLoad = "";
         $scope.btnLoadHabilitado = false;

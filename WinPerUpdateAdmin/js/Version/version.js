@@ -70,6 +70,7 @@
                     $scope.formData.fecha = data.FechaFmt;
                     $scope.formData.estado = data.Estado;
                     $scope.formData.hasDeploy = data.HasDeploy31;
+                    console.log($scope.formData.hasDeploy);
                     $scope.version = data;
                     serviceAdmin.getComponentesVersion(data.IdVersion).success(function (dataCV) {
                         $scope.componentes = dataCV;

@@ -15,6 +15,16 @@ namespace ProcessMsg
         {
             public string idTrab { get; set; }
             public string Descripcion { get; set; }
+
+            public int HastaFmt
+            {
+                get
+                {
+                    int a = -1;
+                    var sp = Descripcion.Split(' ');
+                    return int.TryParse(sp[sp.Length - 1], out a) ? a : -1;
+                }
+            }
         }
         #endregion
 

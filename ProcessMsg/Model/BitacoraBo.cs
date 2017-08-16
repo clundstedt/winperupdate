@@ -52,7 +52,9 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return Accion == 'N' || Accion == 'V' || Accion == 'U' ? Vant.Split('=')[1] : Vant;
+                if (Vant.Split('=').Length > 1)
+                    return Accion == 'N' || Accion == 'V' || Accion == 'U' ? Vant.Split('=')[1] : Vant;
+                return "";
             }
         }
         public string VnueFmt

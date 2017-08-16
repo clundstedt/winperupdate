@@ -28,7 +28,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/ProcessMsg.dll">
-      <publishTime>08/14/2017 15:09:54</publishTime>
+      <publishTime>08/16/2017 10:56:34</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>11/29/2016 15:07:57</publishTime>
@@ -37,13 +37,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
-      <publishTime>11/29/2016 15:07:57</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
-      <publishTime>11/29/2016 15:07:57</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
-      <publishTime>11/29/2016 15:07:57</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
       <publishTime>11/29/2016 15:07:57</publishTime>
@@ -100,7 +100,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:57</publishTime>
     </File>
     <File Include="bin/WinPerUpdateAdmin.dll">
-      <publishTime>08/14/2017 15:56:31</publishTime>
+      <publishTime>08/16/2017 10:56:40</publishTime>
     </File>
     <File Include="bin/WinperUpdateDAO.dll">
       <publishTime>08/10/2017 12:11:34</publishTime>
@@ -175,13 +175,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/15/2017 12:02:48</publishTime>
     </File>
     <File Include="Content/bootstrap.css.map">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css.map">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/alerts.less">
       <publishTime>11/29/2016 15:07:54</publishTime>
@@ -250,166 +250,166 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/border-radius.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/buttons.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/center-block.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/clearfix.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/forms.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/gradients.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/grid-framework.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/grid.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/hide-text.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/image.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/labels.less">
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/list-group.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/nav-divider.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/nav-vertical-align.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/opacity.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/pagination.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/panels.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/progress-bar.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/reset-filter.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/reset-text.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/resize.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/responsive-visibility.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/size.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/tab-focus.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/table-row.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/text-emphasis.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/text-overflow.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/mixins/vendor-prefixes.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/modals.less">
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/bootstrap/navbar.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/navs.less">
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/bootstrap/normalize.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/pager.less">
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/bootstrap/pagination.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/panels.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/popovers.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/print.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/progress-bars.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/responsive-embed.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/responsive-utilities.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/scaffolding.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/tables.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/theme.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/thumbnails.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/tooltip.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/type.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/utilities.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/variables.less">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/bootstrap/wells.less">
       <publishTime>11/29/2016 15:07:54</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.eot">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.svg">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.ttf">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.woff">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.woff2">
-      <publishTime>11/29/2016 15:07:54</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/html/recuperar.htm">
       <publishTime>11/29/2016 15:07:54</publishTime>
@@ -562,46 +562,46 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>03/03/2017 15:29:30</publishTime>
     </File>
     <File Include="css/font-awesome.css">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="css/font-awesome.min.css">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.eot">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.svg">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.ttf">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.woff">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.woff2">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/FontAwesome.otf">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.svg">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.ttf">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff2">
-      <publishTime>11/29/2016 15:07:55</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Fuentes/Controladores/AccessDatabaseEngine.exe">
-      <publishTime>12/29/2016 12:13:47</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Fuentes/PlanillaAmbientes.xlsx">
       <publishTime>12/29/2016 12:34:33</publishTime>
@@ -670,13 +670,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>08/03/2017 16:44:37</publishTime>
     </File>
     <File Include="js/Clientes/clientes.js">
-      <publishTime>08/11/2017 17:29:26</publishTime>
+      <publishTime>08/16/2017 10:55:53</publishTime>
     </File>
     <File Include="js/Clientes/inicio.js">
       <publishTime>07/24/2017 13:02:46</publishTime>
     </File>
     <File Include="js/Clientes/serviceClientes.js">
-      <publishTime>08/14/2017 12:13:27</publishTime>
+      <publishTime>08/16/2017 09:21:15</publishTime>
     </File>
     <File Include="js/Clientes/usuarios.js">
       <publishTime>07/24/2017 17:05:06</publishTime>
@@ -1213,7 +1213,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/25/2017 16:23:43</publishTime>
     </File>
     <File Include="Views/Clientes/Crear.cshtml">
-      <publishTime>07/21/2017 13:01:15</publishTime>
+      <publishTime>08/16/2017 10:55:02</publishTime>
     </File>
     <File Include="Views/Clientes/Index.cshtml">
       <publishTime>08/04/2017 09:06:41</publishTime>

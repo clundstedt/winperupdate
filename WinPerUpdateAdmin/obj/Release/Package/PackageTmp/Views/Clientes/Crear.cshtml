@@ -16,6 +16,13 @@
             </div>
         </div>
     </div>
+    <div class="row" ng-show="msgAdvertencia != ''">
+        <div class="col-md-12">
+            <div class="alert alert-warning">
+                {{msgAdvertencia}}
+            </div>
+        </div>
+    </div>
     <div class="row"  ng-show="msgSuccess != ''">
         <div class="col-md-12">
             <div class="alert alert-success" id="msgsuccess" tabindex="1">
@@ -321,7 +328,7 @@
                         <hr />
 
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && rutok && SaveCliente(formData)" ng-disabled="!increate">
+                            <button type="button" class="btn btn-primary btn-block" ng-click="SaveCliente(formData, frmMain.$valid, rutok)" ng-disabled="!increate">
                                 <span class="fa fa-pencil-square-o" ng-show="increate"></span>
                                 <span class="fa fa-circle-o-notch fa-spin" ng-hide="increate"></span> {{labelcreate}}
                             </button>

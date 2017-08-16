@@ -347,7 +347,8 @@ namespace WinPerUpdateAdmin.Controllers.api
             try
             {
                 if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
-                return ProcessMsg.Cliente.GetTrabPlantas();
+                var lista = ProcessMsg.Cliente.GetTrabPlantas();
+                return lista.OrderBy(x => x.HastaFmt);
             }
             catch(Exception ex)
             {
@@ -622,7 +623,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         {
             try
             {
-                //if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                if (HttpContext.Current.Session["token"] == null) return Redirect(Request.RequestUri.GetLeftPart(UriPartial.Authority));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created); 
 
                 if (cliente.Rut == 0)
@@ -777,9 +778,9 @@ namespace WinPerUpdateAdmin.Controllers.api
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
             }
         }
-
-        [HttpPut]
+        
         [Route("api/Clientes/{id:int}/Usuarios/{idUsuario:int}")]
+        [HttpPut]
         public Object Put(int id, int idUsuario, [FromBody]ProcessMsg.Model.UsuarioBo usuario)
         {
             try
@@ -830,7 +831,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region delete
         [Route("api/Clientes/Vigente")]
-        [HttpGet]
+        [HttpDelete]
         public Object Delete(int id, char est, string motivo)
         {
             try
