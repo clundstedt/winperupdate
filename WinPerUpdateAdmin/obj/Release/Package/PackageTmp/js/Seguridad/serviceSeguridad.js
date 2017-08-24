@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceSeguridad', serviceSeguridad);
 
-    serviceSeguridad.$inject = ['$http', '$q'];
+    serviceSeguridad.$inject = ['$http', '$q', '$window'];
 
-    function serviceSeguridad($http, $q) {
+    function serviceSeguridad($http, $q, $window) {
         var service = {
             getUsuario: getUsuario,
             addUsuario: addUsuario,

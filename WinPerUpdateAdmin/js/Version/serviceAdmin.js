@@ -6,9 +6,9 @@
         .module('app')
         .factory('serviceAdmin', serviceAdmin);
 
-    serviceAdmin.$inject = ['$http', '$q'];
+    serviceAdmin.$inject = ['$http', '$q', '$window'];
 
-    function serviceAdmin($http, $q) {
+    function serviceAdmin($http, $q, $window) {
         var service = {
             getVersiones: getVersiones,
 
@@ -48,11 +48,48 @@
             delControlCambios: delControlCambios,
             isModuloVigente: isModuloVigente,
             addComponenteSql: addComponenteSql,
-            ccOK: ccOK
+            ccOK: ccOK,
+            getExisteRelease: getExisteRelease
         };
 
         return service;
 
+
+        function getExisteRelease(release) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/ExisteRelease?release='+release,
+                type: "GET",
+                dataType: 'Json',
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject('msgerror');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + " msg = " + xhr.responseText);
+                    deferred.reject('msgerror');
+                }
+
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
 
         function ccOK(version) {
             var deferred = $q.defer();
@@ -89,7 +126,6 @@
 
             return promise;
         }
-
 
         function isModuloVigente(fileName) {
             var deferred = $q.defer();

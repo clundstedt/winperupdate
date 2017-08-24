@@ -1,96 +1,461 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html style="min-height: 100%;background: #f3f3f3" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+    <meta http-equiv="Content-Type" content="text/html; ">
+    <meta name="viewport" content="width=device-width">
+    <style type="text/css" id="ink-media-queries">
+        @media only screen {
+            html {
+                min-height: 100%;
+            }
+        }
+
+        @media only screen and (max-width:616px) {
+            .small-float-center {
+                margin: 0 auto !important;
+                float: none !important;
+                text-align: center !important;
+            }
+
+            .small-text-center {
+                text-align: center !important;
+            }
+
+            .small-text-left {
+                text-align: left !important;
+            }
+
+
+            .small-text-right {
+                text-align: right !important;
+            }
+        }
+
+        @media only screen and (max-width:616px) {
+            .hide-for-large {
+                display: block !important;
+                width: auto !important;
+                overflow: visible !important;
+                max-height: none !important;
+                font-size: inherit !important;
+                line-height: inherit !important;
+            }
+        }
+
+        @media only screen and (max-width:616px) {
+            table.body table.container .hide-for-large, table.body table.container .row.hide-for-large {
+                display: table !important;
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width:616px) {
+            table.body table.container .callout-inner.hide-for-large {
+                display: table-cell !important;
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width:616px) {
+            table.body table.container .show-for-large {
+                display: none !important;
+                width: 0;
+                mso-hide: all;
+                overflow: hidden;
+            }
+        }
+
+        @media only screen and (max-width:616px) {
+            table.body img {
+                width: auto !important;
+                height: auto !important;
+            }
+
+            table.body center {
+                min-width: 0 !important;
+            }
+
+            table.body .container {
+                width: 95% !important;
+            }
+
+            table.body .column, table.body .columns {
+                height: auto !important;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                padding-left: 16px !important;
+                padding-right: 16px !important;
+            }
+
+                table.body .column .column, table.body .column .columns, table.body .columns .column, table.body .columns .columns {
+                    padding-left: 0 !important;
+                    padding-right: 0 !important;
+                }
+
+            table.body .collapse .column, table.body .collapse .columns {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            td.small-1, th.small-1 {
+                display: inline-block !important;
+                width: 8.33333% !important;
+            }
+
+            td.small-2, th.small-2 {
+                display: inline-block !important;
+                width: 16.66667% !important;
+            }
+
+            td.small-3, th.small-3 {
+                display: inline-block !important;
+                width: 25% !important;
+            }
+
+            td.small-4, th.small-4 {
+                display: inline-block !important;
+                width: 33.33333% !important;
+            }
+
+            td.small-5, th.small-5 {
+                display: inline-block !important;
+                width: 41.66667% !important;
+            }
+
+            td.small-6, th.small-6 {
+                display: inline-block !important;
+                width: 50% !important;
+            }
+
+            td.small-7, th.small-7 {
+                display: inline-block !important;
+                width: 58.33333% !important;
+            }
+
+            td.small-8, th.small-8 {
+                display: inline-block !important;
+                width: 66.66667% !important;
+            }
+
+            td.small-9, th.small-9 {
+                display: inline-block !important;
+                width: 75% !important;
+            }
+
+            td.small-10, th.small-10 {
+                display: inline-block !important;
+                width: 83.33333% !important;
+            }
+
+            td.small-11, th.small-11 {
+                display: inline-block !important;
+                width: 91.66667% !important;
+            }
+
+            td.small-12, th.small-12 {
+                display: inline-block !important;
+                width: 100% !important;
+            }
+
+            .column td.small-12, .column th.small-12, .columns td.small-12, .columns th.small-12 {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            table.body td.small-offset-1, table.body th.small-offset-1 {
+                margin-left: 8.33333% !important;
+                Margin-left: 8.33333% !important;
+            }
+
+            table.body td.small-offset-2,
+            table.body th.small-offset-2 {
+                margin-left: 16.66667% !important;
+                Margin-left: 16.66667% !important;
+            }
+
+            table.body td.small-offset-3, table.body th.small-offset-3 {
+                margin-left: 25% !important;
+                Margin-left: 25% !important;
+            }
+
+            table.body td.small-offset-4, table.body th.small-offset-4 {
+                margin-left: 33.33333% !important;
+                Margin-left: 33.33333% !important;
+            }
+
+            table.body td.small-offset-5, table.body th.small-offset-5 {
+                margin-left: 41.66667% !important;
+                Margin-left: 41.66667% !important;
+            }
+
+            table.body td.small-offset-6, table.body th.small-offset-6 {
+                margin-left: 50% !important;
+                Margin-left: 50% !important;
+            }
+
+            table.body td.small-offset-7, table.body th.small-offset-7 {
+                margin-left: 58.33333% !important;
+                Margin-left: 58.33333% !important;
+            }
+
+
+            table.body td.small-offset-8, table.body th.small-offset-8 {
+                margin-left: 66.66667% !important;
+                Margin-left: 66.66667% !important;
+            }
+
+            table.body td.small-offset-9, table.body th.small-offset-9 {
+                margin-left: 75% !important;
+                Margin-left: 75% !important;
+            }
+
+            table.body td.small-offset-10, table.body th.small-offset-10 {
+                margin-left: 83.33333% !important;
+                Margin-left: 83.33333% !important;
+            }
+
+            table.body td.small-offset-11, table.body th.small-offset-11 {
+                margin-left: 91.66667% !important;
+                Margin-left: 91.66667% !important;
+            }
+
+            table.body table.columns td.expander, table.body table.columns th.expander {
+                display: none !important;
+            }
+
+            table.body .right-text-pad, table.body .text-pad-right {
+                padding-left: 10px !important;
+            }
+
+            table.body .left-text-pad, table.body .text-pad-left {
+                padding-right: 10px !important;
+            }
+
+            table.menu {
+                width: 100% !important;
+            }
+
+                table.menu td, table.menu th {
+                    width: auto !important;
+                    display: inline-block !important;
+                }
+
+                table.menu.small-vertical td, table.menu.small-vertical th, table.menu.vertical td, table.menu.vertical th {
+                    display: block !important;
+                }
+
+                table.menu[align=center] {
+                    width: auto !important;
+                }
+
+            table.button.small-expand, table.button.small-expanded {
+                width: 100% !important;
+            }
+
+                table.button.small-expand table, table.button.small-expanded table {
+                    width: 100%;
+                }
+
+                    table.button.small-expand table a, table.button.small-expanded table a {
+                        text-align: center !important;
+                        width: 100% !important;
+                        padding-left: 0 !important;
+                        padding-right: 0 !important;
+                    }
+
+                table.button.small-expand center, table.button.small-expanded center {
+                    min-width: 0;
+                }
+        }
+    </style>
 </head>
-<body>
+<body style="width: 100% !important;min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;Margin: 0;padding: 0;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;text-align: center;line-height: 1.3">
+    <table class="body" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;background: #f3f3f3;height: 100%;width: 100%;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;Margin: 0;line-height: 1.3;background-color: rgb(201, 201, 201)" id="message-builder-outer-container">
+        <tbody>
+            <tr style="padding: 0;vertical-align: top;text-align: center">
+                <td class="center" style="word-wrap: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;text-align: center;color: #0a0a0a;font-family:
+ Helvetica, Arial, sans-serif;font-weight: normal;Margin: 0;line-height: 1.3" align="center" valign="top">
+                    <center style="width: 100%;min-width: 600px">
+                        <table class="container" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: inherit;background: #fefefe;width: 600px;Margin: 0 auto;margin-top: 20px;margin-bottom: 20px;border: 1px solid rgb(255, 255, 255);background-color: rgb(255, 255, 255)" id="message-builder-container" cellpadding="10px" cellspacing="0px" width="600px">
+                            <tbody>
+                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                    <td style="word-wrap: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;text-align: center;color: rgb(0, 0,
+ 0);font-family: arial;font-weight: normal;Margin: 0;line-height: 1.3;font-size: 12px">
+                                        <table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px">
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px">
+                                                            <span style="color:#666666;">
+                                                                <span style="font-family:century
+ gothic;"><strong><span style="font-size:48px;">&#161;Bienvenido!</span></strong></span>
+                                                            </span>
+                                                        </p>
 
-<div style="width:100%;" align="center">
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px"><span style="color:#999999;"><span style="font-family:century gothic;"><strong><span style="font-size:22px;">Control de versiones</span></strong></span></span></p>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px"><img style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 150px;max-width: 100%;clear: both;height: 64px" alt="" height="64px" id="current-image-edit" src="@uriImg/WIN_edit_2.png" width="150px"></th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table"
+                                                       style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px"><img style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 500px;max-width: 100%;clear: both;height: 334px" alt="REYWYHWYRYW" height="334px" src="@uriImg/fotolia_99236981.jpg" width="500px"></th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight:
+ normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px">
+                                                        <h2 style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0;text-align: center;line-height: 1.3">@Fecha</h2>
+                                                    </th>
+                                                    <th class="expander" style="color:
+ #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px">
+                                                        <h1 style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0;text-align:
+ center;line-height: 1.3">
+                                                            <strong><span style="font-size:22px;"><span style="font-family:century gothic;">&nbsp;Estimado/a @Nombre, esperemos que su experiencia con nosotros sea gratificante</span></span></strong>
+                                                        </h1>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding:
+ 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px">
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px"><span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:14px;">Junto con saludarle, le informamos a trav&#233;s de este correo, que su cuenta para el sistema de control de versiones WINACT, ya se encuentra creada y lista para su configuraci&#243;n. Debe seguir el manual de uso para obtener informaci&#243;n de como liberar esta versi&#243;n en sus equipos de trabajo, el cual podr&#225; descargar desde la opci&#243;n &quot;Descargas&quot; una vez que ingrese a su cuenta.</span></span></p>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial,
+ sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px">
+                                                        <h1 style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0;text-align: center;line-height: 1.3">
+                                                            <strong>
+                                                                <span style="font-size:20px;"><span style="font-family:century gothic;">Datos de Ingreso</span></span>
+                                                            </strong>
+                                                        </h1>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width:
+ 584px;padding-right: 16px">
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px"><span style="font-size:14px;"><span style="font-family:verdana,geneva,sans-serif;">URL: @Link</span></span></p>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="center" valign="top" style="background-color:#53636e;" bgcolor="#53636e;">
-    
-    <br>
-    <br>
-    <table width="583" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td align="left" valign="top" bgcolor="#FFFFFF" style="background-color:#FFFFFF;"><img src="@uriImg/customLogo.png" width="583" height="118"></td>
-      </tr>
-      <tr>
-        <td align="left" valign="top" bgcolor="#FFFFFF" style="background-color:#FFFFFF;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="35" align="left" valign="top">&nbsp;</td>
-            <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td align="center" valign="top">
-                	<div style="color:#245da5; font-family:Times New Roman, Times, serif; font-size:48px;">Bienvenido a <img src="@uriImg/winper.jpg"></div>
-                  <div style="font-family: Verdana, Geneva, sans-serif; color:#898989; font-size:12px;">@Fecha</div></td>
-              </tr>
-              <tr>
-                <td align="left" valign="top"><img src="@uriImg/banner.png" width="512" height="296" vspace="10"></td>
-              </tr>
-              <tr>
-                <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#525252;">
-                
-                <div style="color:#3482ad; font-size:19px;">
-				Bienvenido @Nombre, esperamos que su experiencia con nosotros sea gratificante.
-				</div>
-                <br>
-                <p>
-				Estimado/a @Nombre, junto con saludarle, le informamos a traves de este correo, que su cuenta para el sistema de control de versiones WinPerUpdate, 
-				yá se encuentra creada y lista para su configuración. Tambien se encuentra creada su versión de Winper, la cual puede instalarla cuando guste. Sólo siga el manual para obtener información de como liberar esta versión en sus equipos de trabajo.<br>
-				El manual lo puede descargar desde la opción "Descargas" una vez que ingrese a su cuenta. 
-				<br>
-				<br>
-				Datos de Ingreso:
-				<br>
-				URL: <a href="@Link">WinPerUpdate</a>
-				<br>
-				Usuario: @Correo
-				<br>
-				Password: @Password
-				<br>
-				<br>
-				N° de Licencia de Winper: @Licencia
-				<br><br>
-				*Se recomienda cambiar la password si es primera vez que ingresa.
-				<p>
-<br>
-<br>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="13%"><b><img src="@uriImg/tweet.gif" alt="" width="24" height="23"> <img src="@uriImg/facebook.gif" alt="" width="24" height="23"></b></td>
-    <td width="87%" style="font-size:11px; color:#525252; font-family:Arial, Helvetica, sans-serif;"><b>Horario: Lunes a Viernes 9:00-18:30. <br>
-      E-Mail Soporte: soporte@winper.cl</b></td>
-  </tr>
-</table></td>
-              </tr>
-              <tr>
-                <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#525252;">&nbsp;</td>
-              </tr>
-            </table></td>
-            <td width="35" align="left" valign="top">&nbsp;</td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td align="left" valign="top" bgcolor="#3d90bd" style="background-color:#3d90bd;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="35">&nbsp;</td>
-            <td height="50" valign="middle" style="color:#FFFFFF; font-size:11px; font-family:Arial, Helvetica, sans-serif;"><b>Dirección:</b><br>
-Padre Alonso de Ovalle #612, oficina 4, (2)2840 3200 </td>
-            <td width="35">&nbsp;</td>
-          </tr>
-        </table></td>
-      </tr>
-  </table>
-    <br>
-    <br></td>
-  </tr>
-</table>
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px"><span style="font-size:14px;"><span style="font-family:verdana,geneva,sans-serif;">Usuario: @Correo</span></span></p>
 
-</div>
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px"><span style="font-size:14px;"><span style="font-family:verdana,geneva,sans-serif;">Password: @Password</span></span></p>
 
+                                                        <p style="Margin:
+ 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px">&nbsp;</p>
+
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px"><span style="font-size:14px;"><span style="font-family:verdana,geneva,sans-serif;">N&#176; de Licencia de Winper: @Licencia</span></span></p>
+
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px">&nbsp;</p>
+
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height: 1.3;Margin-bottom: 10px">
+                                                            <span style="font-size:14px;">
+                                                                <span style="font-family:verdana,geneva,sans-serif;">
+                                                                    *Se
+                                                                    recomienda cambiar la password si es primera vez que ingresa.
+                                                                </span>
+                                                            </span>
+                                                        </p>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center first small-12 large-6 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 284px;padding-right: 8px">
+                                                        <img style="outline:
+ none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 150px;max-width: 100%;clear: both;height: 21px" alt="" height="21px" width="150px" src="@uriImg/InnovaSoftLogo_edit.JPG">
+                                                    </th>
+                                                    <th class="text-center last small-12 large-6 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 8px;padding-bottom: 16px;width: 284px;padding-right: 16px"><img style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 97px;max-width: 100%;clear: both;height: 30px" alt="" height="30px" width="97px" src="@uriImg/winper_edit.jpg"></th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0
+ !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px">
+                                                        <table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%" width="100%">
+                                                            <tbody>
+                                                                <tr style="padding: 0;vertical-align: top;text-align:
+ center">
+                                                                    <td style="word-wrap: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;text-align: center;color: rgb(0, 0, 0);font-family: arial;font-weight: normal;Margin: 0;line-height: 1.3;font-size: 12px">
+                                                                        <a style="color: rgb(0, 51, 204);font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0;text-align: center;line-height: 1.3;text-decoration: none" title="Twitter" href="a"><img style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;border: none" src="@uriImg/Twitter32.png" height="32" width="auto"></a>
+
+                                                                        <a style="color: rgb(0, 51, 204);font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin:
+ 0;text-align: center;line-height: 1.3;text-decoration: none" title="LinkedIn" href="a"><img style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;border: none" src="@uriImg/LinkedIn32.png" height="32" width="auto"></a>
+
+                                                                        <a style="color: rgb(0, 51, 204);font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0;text-align: center;line-height: 1.3;text-decoration: none" title="Facebook" href="a"><img style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;border: none" src="@uriImg/Facebook32.png" height="32" width="auto"></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica,
+ Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table><table class="row block-box-table" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: center;width: 100%;position: relative;display: table" cellpadding="10px" cellspacing="0px">
+                                            <tbody>
+                                                <tr style="padding: 0;vertical-align: top;text-align: center">
+                                                    <th class="text-center last first small-12 large-12 columns" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;Margin: 0 auto;text-align: center;line-height: 1.3;padding-left: 16px;padding-bottom: 16px;width: 584px;padding-right: 16px" bgcolor="#2e2828">
+                                                        <p style="Margin: 0;color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: center;line-height:
+ 1.3;Margin-bottom: 10px">
+                                                            <span style="font-family:verdana,geneva,sans-serif;">
+                                                                <span style="color:#FAEBD7;">
+                                                                    Horario:&nbsp;Lunes&nbsp;a&nbsp;Viernes&nbsp;9:00-18:00.<br>
+                                                                    E-Mail&nbsp;Soporte:&nbsp;soporte@winper.cl<br>
+                                                                    Fono&nbsp;Soporte:&nbsp;(56)&nbsp;(2)&nbsp;840&nbsp;32&nbsp;01
+                                                                </span>
+                                                            </span>
+                                                        </p>
+                                                    </th>
+                                                    <th class="expander" style="color: #0a0a0a;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;Margin: 0;text-align: center;line-height: 1.3;visibility: hidden;width: 0"></th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </center>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
+
+
+

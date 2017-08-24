@@ -6,7 +6,6 @@
         'ngRoute'
         , 'smart-table'
         , 'smart-pagination'
-        
     ])
 
     .config(function ($routeProvider) {

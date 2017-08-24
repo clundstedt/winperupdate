@@ -23,6 +23,7 @@
             $scope.msgerror = "";
             $scope.lblButton = "Instalar";
             $scope.lblLoad = "";
+            $window.sessionStorage.token = null;
 
             $scope.KeyUpEvent = function (KeyCode, formData) {
                 if (KeyCode == 13) {

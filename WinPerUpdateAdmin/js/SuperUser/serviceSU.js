@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceSU', serviceSU);
 
-    serviceSU.$inject = ['$http', '$q'];
+    serviceSU.$inject = ['$http', '$q', '$window'];
 
-    function serviceSU($http, $q) {
+    function serviceSU($http, $q, $window) {
         var service = {
             LoadWebConf: LoadWebConf,
             Guardar: Guardar

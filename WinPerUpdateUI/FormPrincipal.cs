@@ -65,6 +65,12 @@ namespace WinPerUpdateUI
             //' Este evento manejará tanto los menús Restaurar como el NotifyIcon.DoubleClick
             //ShowInTaskbar = true;
             //WindowState = FormWindowState.Normal;
+            if (Utils.blockMenu)
+            {
+                MessageBox.Show("Está corriendo un proceso de instalación en estos momentos, debe esperar a que finalice y vuelva a intentarlo", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
 
             var menu = (MenuItem)sender;
 
@@ -95,6 +101,7 @@ namespace WinPerUpdateUI
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
+
             Utils.isCentralizado = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "ProcessWPUI.exe"));
             try
             {
@@ -318,6 +325,11 @@ namespace WinPerUpdateUI
 
         private void Ambiente_Click(object sender, EventArgs e)
         {
+            if (Utils.blockMenu)
+            {
+                MessageBox.Show("Está corriendo un proceso de instalación en estos momentos, debe esperar a que finalice y vuelva a intentarlo", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             //throw new NotImplementedException();
             var form = new Ambiente();
             form.ShowDialog();
@@ -564,7 +576,7 @@ namespace WinPerUpdateUI
                 stream.Close();
                 */
                 #endregion
-                notifyIcon2.Text = string.Format("WinAct - Descargando Versión {0}", release);
+                notifyIcon2.Text = string.Format("WinAct - Descargando Versión {0}", release.Release);
                 ProcessMsg.Utils.FtpGet(release.Release+"/Output/",new FileInfo(nameIntalador).DirectoryName+"\\");
                 ServerInAccept = true;
 
@@ -849,9 +861,10 @@ namespace WinPerUpdateUI
                 tareas = JsonConvert.DeserializeObject<List<TareaBo>>(jsont);
                 var listaTareas = tareas.Where(x => x.Estado == 0 && x.LengthFile > 0).ToList();
                 var tareasOk = new List<string>();
+
                 if (listaTareas.Count > 0)
                 {
-                    var ambientesInTareas = listaTareas.Select(x => x.Ambientes.Nombre).Distinct().ToList();
+                    bool error = false;
                     ServerInAccept = false;
                     foreach (var tarea in listaTareas)
                     {
@@ -891,13 +904,13 @@ namespace WinPerUpdateUI
                                           tarea.Ambientes.NomBd,
                                           tarea.Ambientes.UserDbo,
                                           tarea.Ambientes.PwdDbo);
-                            if (ok && !tareasOk.Exists(x => x.Equals(tarea.Ambientes.Nombre))) tareasOk.Add(tarea.Ambientes.Nombre);
+                            if (ok) { if (!tareasOk.Exists(x => x.Equals(tarea.Ambientes.Nombre))) tareasOk.Add(tarea.Ambientes.Nombre); }
+                            else error = true;
 
-                            
                         }
                     }
-                    if (tareasOk.Count == ambientesInTareas.Count)
-                        e.Result = new object[] { string.Format("Los ambientes {0} fueron actualizados correctamente", string.Join(", ", tareasOk)), 0 };
+                    if (!error)
+                        e.Result = new object[] { string.Format("Se actualizaron {0} ambientes.", tareasOk.Count), 0 };
                     else
                         e.Result = new object[] { "Ocurrió un problema al intentar actualizar un ambiente.", 1 };
                 }

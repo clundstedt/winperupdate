@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceModulos', serviceModulos);
 
-    serviceModulos.$inject = ['$http', '$q'];
+    serviceModulos.$inject = ['$http', '$q', '$window'];
 
-    function serviceModulos($http, $q) {
+    function serviceModulos($http, $q, $window) {
         var service = {
             listarModulos: listarModulos,
             getModulosXlsx: getModulosXlsx,

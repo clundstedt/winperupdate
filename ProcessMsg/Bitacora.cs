@@ -94,17 +94,17 @@ namespace ProcessMsg
                 foreach (var b in lista)
                 {
                     if (b.Accion == 'U')
-                    { 
+                    {
                         var splitVant = b.Vant.Split('|');
                         var splitVnue = b.Vnue.Split('|');
-                        for (int i = 0; i < splitVant.Length; i++)
+                        for (int i = 0, j = 0; i < splitVant.Length || j < splitVnue.Length; i++, j++)
                         {
                             listaFmt.Add(new Model.BitacoraBo
                             {
                                 Id = b.Id,
                                 Menu = b.Menu,
-                                Vant = splitVant[i],
-                                Vnue = splitVnue[i],
+                                Vant = i < splitVant.Length ? splitVant[i] : "",
+                                Vnue = j < splitVnue.Length ? splitVnue[j] : "",
                                 Accion = b.Accion,
                                 Fecha = b.Fecha,
                                 Usuario = b.Usuario,

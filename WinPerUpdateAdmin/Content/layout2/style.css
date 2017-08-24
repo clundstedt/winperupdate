@@ -29,6 +29,31 @@ body a{
 .container{
 	width: 100%;
 }
+
+.bch-footer {
+    font-size: 11px;
+    /*border-top: 1px solid #d2d2d4*/;
+    padding: 15px 0 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
+
+.bch-footer .logo-footer {
+    font-size: 34px;
+    /*margin: 25px 0 20px;*/
+}
+
+.bch-footer .liniealateral {
+    border-left: 1px solid #d2d2d4;
+    /*border-right: 1px solid #d2d2d4;*/
+}
+
+.header-login {
+    height: 92px;
+    background-color: #fff;
+}
 /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak
@@ -116,12 +141,12 @@ body.loading .modalLoad {
     height: 100%;
     overflow-y: auto;
     z-index: 100;
-	background: #004888;
+	background: #2C3E50;
 }
 
 .sticky-left-side .custom-nav {
     margin-top: 59px;
-	background: #004888;
+	background: #2C3E50;
 }
 
 .left-side-collapsed .sticky-left-side {
@@ -239,7 +264,7 @@ div#page-wrapper {
 
 .custom-nav > li > a:hover,
 .custom-nav > li > a:active {
-    background-color: #353f4f;
+    background-color: #212F3D;
     color:#FFF;
     border-radius: 0;
     -webkit-border-radius: 0;
@@ -250,11 +275,11 @@ div#page-wrapper {
 }
 
 .custom-nav > li.menu-list > a:hover {
-    background-color: #353f4f;
+    background-color: #212F3D;
 }
 
 .custom-nav > li.nav-active > a {
-    background-color:#353f4f;
+    background-color:#212F3D;
     color:#FFF;
 }
 
@@ -269,7 +294,7 @@ div#page-wrapper {
 .custom-nav > li.active > a,
 .custom-nav > li.active > a:hover,
 .custom-nav > li.active > a:focus {
-    background-color: #353f4f;
+    background-color: #212F3D;
     color:#FFF;
 }
 
@@ -302,7 +327,7 @@ ul.dropdown-menu.drp-mnu li {
     display: none;
     margin: 0;
     padding: 0;
-    background: #353f4f;
+    background: #2C3E50;
 }
 
 .custom-nav .sub-menu-list > li > a {
@@ -320,7 +345,7 @@ ul.dropdown-menu.drp-mnu li {
 .custom-nav .sub-menu-list > li > a:focus {
     text-decoration: none;
     color:#fff;
-    background:#6B9D31;
+    background:#212F3D;
 }
 .profile_img i {
 	float: right;
@@ -423,7 +448,7 @@ h5.left-nav-title {
 
 .left-side-collapsed .custom-nav li a span {
     position: absolute;
-    background:#22386d;
+    background:#212F3D;
     padding: 11.7px;
     left: 52px;
     top: 1px;
@@ -466,7 +491,7 @@ h5.left-nav-title {
 
 .left-side-collapsed .custom-nav > li.nav-hover > a,
 .left-side-collapsed .custom-nav > li.nav-hover.active > a {
-    background:#353f4f;
+    background:#212F3D;
     color:#FFF;
 }
 
@@ -476,7 +501,7 @@ h5.left-nav-title {
 }
 
 .left-side-collapsed .custom-nav li.nav-hover.active a span {
-    background:#22386d;
+    background:#212F3D;
     color: #fff;
 }
 
@@ -487,7 +512,7 @@ h5.left-nav-title {
     left: 52px;
     margin: 0;
     min-width: 160px;
-    background:#03447d;
+    background:#2C3E50;
     z-index: 100;
     -moz-border-radius: 0 0 2px 0;
     -webkit-border-radius: 0 0 2px 0;
@@ -501,7 +526,7 @@ h5.left-nav-title {
 }
 
 .left-side-collapsed .custom-nav ul a:hover {
-    background:#264d76;
+    background:#212F3D;
 }
 
 .left-side-collapsed .custom-nav li a i {
@@ -527,7 +552,7 @@ ul.nav li a span {
 -----------------------------*/
 
 .header-section {
-    background:#FFF;
+    background:#f9f9f9;
     box-shadow: 1px 0 3px rgba(0,0,0,.15);
     -webkit-box-shadow: 1px 0 3px rgba(0,0,0,.15);
     -moz-box-shadow: 1px 0 3px rgba(0,0,0,.15);
@@ -549,7 +574,7 @@ ul.nav li a span {
     cursor: pointer;
     float: left;
     color: #fff;
-    background: #00BCD4;
+    background: #2C3E50;
     border: none;
     border-radius: 100%;
     -moz-transition: all 0.2s ease-out 0s;
@@ -578,7 +603,7 @@ ul.nav li a span {
     left: 0;
     width: 200px;
     z-index: 100;
-    background: #4aacc3;
+    background: #ced2d7;
     border-bottom: 1px solid #303B4D;
     text-align: center;
     padding:0.55em 0 1em;
@@ -709,7 +734,7 @@ ul.dropdown-menu li {
     color:#FFF;
 }
 .custom-nav > li.act > a, .custom-nav > li.act > a:hover, .custom-nav > li.act > a:focus {
-    background-color: #353f4f;
+    background-color: #212F3D;
     color:#FFF;
 }
 .user-panel-top li a{
@@ -1242,6 +1267,9 @@ ul.dropdown-menu.drp-mnu li a i {
 	color:#000;
 	line-height:1em;
 	font-weight:700;
+	white-space:nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 .user-name p span{
 	font-size:10px;

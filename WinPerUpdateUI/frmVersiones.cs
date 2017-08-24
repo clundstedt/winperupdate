@@ -63,6 +63,7 @@ namespace WinPerUpdateUI
                         int exitCode = -1;
                         if (File.Exists(fileInstalador))
                         {
+                            Utils.blockMenu = true;
                             this.Close();
                             form.ambiente = ambiente;
                             form.Show();
@@ -81,18 +82,7 @@ namespace WinPerUpdateUI
                             exitCode = myProcess.ExitCode;
                         }
                         form.Close();
-
-                        /*var comps = new DirectoryInfo(dirComponentes).GetFiles().ToList();
-                        int cont = 0;
-                        foreach (var x in comps)
-                        {
-                            if (version.Componentes.Exists(y => y.Name.Equals(x.Name)))
-                            {
-                                cont++;
-                            }
-                        }
-                        if (version.TotalComponentes == cont)
-                        {*/
+                        
                         if (exitCode == 0)
                         {
                             Progreso.Show();
@@ -101,27 +91,9 @@ namespace WinPerUpdateUI
                         }
                         else
                         {
+                            Utils.blockMenu = false;
                             MessageBox.Show("Instalación de WinPer cancelada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
-                        /*}
-                        else
-                        {
-                            MessageBox.Show("Se produjo un error durante la instalación.\nWinAct procederá a preparar nuevamente la actualización. Se le avisará cuando este lista para instalar.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Microsoft.Win32.RegistryKey keya = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\WinperUpdate\" + ambiente);
-                            var intentos = int.Parse(keya.GetValue("Instalacion").ToString());
-                            intentos++;
-                            keya.SetValue("Instalacion", intentos);
-                            keya.SetValue("Version", "");
-                            keya.Close();
-                            if (intentos > MAX_INTENTOS)
-                            {
-                                MessageBox.Show("El N° de intentos de actualización ha llegado a su límite, comuníquese con soporte.", "ERROR", MessageBoxButtons.OK,MessageBoxIcon.Error);
-                            }
-                            else
-                            {
-                                System.IO.File.Delete(fileInstalador);
-                            }
-                        }*/
                     }
 
                 }
@@ -392,11 +364,13 @@ namespace WinPerUpdateUI
             {
                 MessageBox.Show(string.Format("Ocurrió un error durante el proceso de instalación, revise log (InstallFile_ERROR) para más detalles.\n\n{0}", e.Error.Message), "ERROR WinperUpdate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Utils.RegistrarLog("InstallFile_ERROR.log", e.Error.ToString());
+                Utils.blockMenu = false;
             }
             else if (e.Cancelled)
             {
                 MessageBox.Show("El proceso de instalación fue cancelado!.");
                 Utils.RegistrarLog("InstallFile.log", "El proceso de instalación fue cancelado!");
+                Utils.blockMenu = false;
             }
             else
             {
@@ -413,13 +387,16 @@ namespace WinPerUpdateUI
                         myProcess.StartInfo.FileName = deploy;
                         myProcess.Start();
                         myProcess.WaitForExit();
+                        Utils.blockMenu = false;
                     }
                     else
                     {
+                        Utils.blockMenu = false;
                         MessageBox.Show("No existe Deploy31 en el directorio de WinPer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     if (myProcess.ExitCode != 0)
                     {
+                        Utils.blockMenu = false;
                         MessageBox.Show("No se finalizó correctamente la instalación de Deploy31.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }

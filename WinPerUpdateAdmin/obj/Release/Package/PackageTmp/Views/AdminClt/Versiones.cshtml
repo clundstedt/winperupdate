@@ -1,119 +1,121 @@
-﻿<div class="row">
-    <div class="col-md-12">
-        <h1>Versiones</h1>
-        <ol class="breadcrumb autoscroll">
-            <li class="active">Versiones Existentes</li>
-        </ol>
-    </div>
-</div>
-<div class="row" ng-show="msgError != ''">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            <strong>Error: </strong> {{msgError}}
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Versiones</h1>
+            <ol class="breadcrumb autoscroll">
+                <li class="active">Versiones Existentes</li>
+            </ol>
         </div>
     </div>
-</div>
-<br />
-<div class="tab-content">
-    <ul class="nav nav-tabs" role="tablist" ng-init="panel=1">
-        <li role="presentation" class="active">
-            <a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Liberadas</a>
-        </li>
-        <li role="presentation">
-            <a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Publicadas</a>
-        </li>
-        <li role="presentation">
-            <a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">No Vigentes</a>
-        </li>
-    </ul>
+    <div class="row" ng-show="msgError != ''">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error: </strong> {{msgError}}
+            </div>
+        </div>
+    </div>
+    <br />
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="misversiones" ng-class="{active:panel==1}">
-            <br />
-            <div class="alert alert-info" ng-show="totales[0]==0">
-                <span class="fa fa-tablet"></span> No existen versiones liberadas
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones | orderBy:'-IdVersion' | filtroVersionesLiberadas">
-                    <div class="item panel panel-success">
-                        <div class="panel-heading">
-                            <h3 class="panel-title single-line">{{version.Release}}</h3>
-                        </div>
-                        <div class="panel-body">
-                            <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
-                            <div class="pull-right" style="width: 50%">
-                                <ul class="list-unstyled">
-                                    <li class="text-success"><span class="fa fa-fw"></span> {{version.EstadoDisplay}}</li>
-                                    <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
-                                    <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
-                                </ul>
+        <ul class="nav nav-tabs" role="tablist" ng-init="panel=1">
+            <li role="presentation" class="active">
+                <a ng-click="panel = 1" style="cursor: pointer" role="tab" data-toggle="tab">Liberadas</a>
+            </li>
+            <li role="presentation">
+                <a ng-click="panel = 2" style="cursor: pointer" role="tab" data-toggle="tab">Publicadas</a>
+            </li>
+            <li role="presentation">
+                <a ng-click="panel = 3" style="cursor: pointer" role="tab" data-toggle="tab">No Vigentes</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="misversiones" ng-class="{active:panel==1}">
+                <br />
+                <div class="alert alert-info" ng-show="totales[0]==0">
+                    <span class="fa fa-tablet"></span> No existen versiones liberadas
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones | orderBy:'-IdVersion' | filtroVersionesLiberadas">
+                        <div class="item panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{version.Release}}</h3>
                             </div>
-                        </div>
-                        <div class="panel-footer text-right">
-                            <a href="/AdminClt#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
-                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalles
-                            </a>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li class="text-success"><span class="fa fa-fw"></span> {{version.EstadoDisplay}}</li>
+                                        <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
+                                        <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <a href="/AdminClt#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
+                                    <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalles
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div role="tabpanel" class="tab-pane" id="misversiones" ng-class="{active:panel==2}">
-            <br />
-            <div class="alert alert-info" ng-show="totales[1]==0">
-                <span class="fa fa-tablet"></span> No existen versiones publicadas
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones | orderBy:'-IdVersion' | filtroVersionesPub">
-                    <div class="item panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title single-line">{{version.Release}}</h3>
-                        </div>
-                        <div class="panel-body">
-                            <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
-                            <div class="pull-right" style="width: 50%">
-                                <ul class="list-unstyled">
-                                    <li class="text-success"><span class="fa fa-fw"></span> {{version.EstadoDisplay}}</li>
-                                    <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
-                                    <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
-                                </ul>
+            <div role="tabpanel" class="tab-pane" id="misversiones" ng-class="{active:panel==2}">
+                <br />
+                <div class="alert alert-info" ng-show="totales[1]==0">
+                    <span class="fa fa-tablet"></span> No existen versiones publicadas
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones | orderBy:'-IdVersion' | filtroVersionesPub">
+                        <div class="item panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{version.Release}}</h3>
                             </div>
-                        </div>
-                        <div class="panel-footer text-right">
-                            <a href="/AdminClt#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
-                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalles
-                            </a>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li class="text-success"><span class="fa fa-fw"></span> {{version.EstadoDisplay}}</li>
+                                        <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
+                                        <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <a href="/AdminClt#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
+                                    <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalles
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div role="tabpanel" class="tab-pane" id="misversiones" ng-class="{active:panel==3}">
-            <br />
-            <div class="alert alert-info" ng-show="totales[2]==0">
-                <span class="fa fa-tablet"></span> No existen versiones No Vigentes
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones | orderBy:'-IdVersion' | filtroVersionesNV">
-                    <div class="item panel panel-danger">
-                        <div class="panel-heading">
-                            <h3 class="panel-title single-line">{{version.Release}}</h3>
-                        </div>
-                        <div class="panel-body">
-                            <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
-                            <div class="pull-right" style="width: 50%">
-                                <ul class="list-unstyled">
-                                    <li class="text-success"><span class="fa fa-fw"></span> {{version.EstadoDisplay}}</li>
-                                    <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
-                                    <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
-                                </ul>
+            <div role="tabpanel" class="tab-pane" id="misversiones" ng-class="{active:panel==3}">
+                <br />
+                <div class="alert alert-info" ng-show="totales[2]==0">
+                    <span class="fa fa-tablet"></span> No existen versiones No Vigentes
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="version in versiones | orderBy:'-IdVersion' | filtroVersionesNV">
+                        <div class="item panel panel-danger">
+                            <div class="panel-heading">
+                                <h3 class="panel-title single-line">{{version.Release}}</h3>
                             </div>
-                        </div>
-                        <div class="panel-footer text-right">
-                            <a href="/AdminClt#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
-                                <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalles
-                            </a>
+                            <div class="panel-body">
+                                <img src="~/Content/Images/Program.png" alt="" class="avatar img-thumbnail image-foto" />
+                                <div class="pull-right" style="width: 50%">
+                                    <ul class="list-unstyled">
+                                        <li class="text-success"><span class="fa fa-fw"></span> {{version.EstadoDisplay}}</li>
+                                        <li><span class="fa fa-fw fa-folder-open"></span> {{version.TotalComponentes}} Componentes</li>
+                                        <li><span class="fa fa-fw fa-calendar"></span> {{version.FechaFmt}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <a href="/AdminClt#/EditVersion/{{version.IdVersion}}" class="btn btn-labeled btn-primary">
+                                    <span class="btn-label"><span class="fa fa-pencil"></span></span> Detalles
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,5 +123,4 @@
         </div>
     </div>
 </div>
-
 

@@ -17,6 +17,19 @@ namespace WinPerUpdateAdmin.Controllers.Home
             {
                 return RedirectToAction("Install", "Home");
             }
+            
+            if (Session["token"] != null)
+            {
+                var usuario = ProcessMsg.Seguridad.GetUsuario(int.Parse(Session["token"].ToString()));
+                if (usuario.CodPrf >= 1 && usuario.CodPrf <= 10)
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (usuario.CodPrf >= 11)
+                {
+                    return RedirectToAction("Index", "AdminClt");
+                }
+            }
             ViewBag.Login = "Login";
             return View();
         }
@@ -58,7 +71,8 @@ namespace WinPerUpdateAdmin.Controllers.Home
 
         public ActionResult Logout()
         {
-            Session.RemoveAll();
+            
+            Session.Abandon();
 
             return RedirectToAction("Index", "Home");
         }

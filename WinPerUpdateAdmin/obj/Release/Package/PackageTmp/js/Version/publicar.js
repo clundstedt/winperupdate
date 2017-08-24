@@ -5,9 +5,9 @@
         .module('app')
         .controller('publicar', publicar);
 
-    publicar.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'serviceClientes'];
+    publicar.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'serviceClientes', '$window'];
 
-    function publicar($scope, $routeParams, serviceAdmin, serviceClientes) {
+    function publicar($scope, $routeParams, serviceAdmin, serviceClientes, $window) {
         $scope.title = 'publicar';
 
         activate();

@@ -5,9 +5,9 @@
         .module('app')
         .controller('componente', componente);
 
-    componente.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'FileUploader'];
+    componente.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'FileUploader', '$window'];
 
-    function componente($scope, $routeParams, serviceAdmin, FileUploader) {
+    function componente($scope, $routeParams, serviceAdmin, FileUploader, $window) {
         $scope.title = 'componente';
         $scope.OkSegunExistencia = false;
         activate();

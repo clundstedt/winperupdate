@@ -278,7 +278,7 @@ namespace ProcessMsg
                 ErrorRegistro = "";
                 if (string.IsNullOrEmpty(dt.Rows[i][0].ToString()) || dt.Rows[i][0].ToString().Length > 45)
                 {
-                    ErrorRegistro += "Error en la columna 'Nombre', está vacía o sobre pasa el límite de caracteres (45) || ";
+                    ErrorRegistro += "Error en la columna 'Nombre', está vacía o sobrepasa el límite de caracteres (45) || ";
                 }
                 if (!int.TryParse(dt.Rows[i][1].ToString(), out tipo))
                 {
@@ -289,23 +289,26 @@ namespace ProcessMsg
                 }
                 if (string.IsNullOrEmpty(dt.Rows[i][2].ToString()) || dt.Rows[i][2].ToString().Length > 99)
                 {
-                    ErrorRegistro += "Error en la columna 'ServerBd', está vacía o sobre pasa el límite de caracteres (100) || ";
+                    ErrorRegistro += "Error en la columna 'ServerBd', está vacía o sobrepasa el límite de caracteres (100) || ";
                 }
-                if (string.IsNullOrEmpty(dt.Rows[i][3].ToString()) || dt.Rows[i][3].ToString().Length > 99)
+                if (dt.Rows[i][3] != null)
                 {
-                    ErrorRegistro += "Error en la columna 'Instancia', está vacía o sobre pasa el límite de caracteres (100) || ";
+                    if (dt.Rows[i][3].ToString().Length > 99)
+                    {
+                        ErrorRegistro += "Error en la columna 'Instancia', sobrepasa el límite de caracteres (100) || ";
+                    }
                 }
                 if (string.IsNullOrEmpty(dt.Rows[i][4].ToString()) || dt.Rows[i][4].ToString().Length > 99)
                 {
-                    ErrorRegistro += "Error en la columna 'NomBd', está vacía o sobre pasa el límite de caracteres (100) || ";
+                    ErrorRegistro += "Error en la columna 'NomBd', está vacía o sobrepasa el límite de caracteres (100) || ";
                 }
                 if (string.IsNullOrEmpty(dt.Rows[i][5].ToString()) || dt.Rows[i][5].ToString().Length > 49)
                 {
-                    ErrorRegistro += "Error en la columna 'UserDbo', está vacía o sobre pasa el límite de caracteres (50) || ";
+                    ErrorRegistro += "Error en la columna 'UserDbo', está vacía o sobrepasa el límite de caracteres (50) || ";
                 }
                 if (string.IsNullOrEmpty(dt.Rows[i][6].ToString()) || dt.Rows[i][6].ToString().Length > 49)
                 {
-                    ErrorRegistro += "Error en la columna 'PwdDbo', está vacía o sobre pasa el límite de caracteres (50) || ";
+                    ErrorRegistro += "Error en la columna 'PwdDbo', está vacía o sobrepasa el límite de caracteres (50) || ";
                 }
                 
                 ambiente = new Model.AmbientesXLSXBo
@@ -314,7 +317,7 @@ namespace ProcessMsg
                     Nombre = dt.Rows[i][0].ToString(),
                     Tipo = (int.TryParse(dt.Rows[i][1].ToString(), out tipo) ? tipo : (int?)null),
                     ServerBd = dt.Rows[i][2].ToString(),
-                    Instancia = dt.Rows[i][3].ToString(),
+                    Instancia = dt.Rows[i][3] != null ? dt.Rows[i][3].ToString() : "",
                     NomBd = dt.Rows[i][4].ToString(),
                     UserDbo = dt.Rows[i][5].ToString(),
                     PwdDbo = Utils.Encriptar(dt.Rows[i][6].ToString()),

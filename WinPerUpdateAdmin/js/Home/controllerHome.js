@@ -22,6 +22,7 @@
         activate();
 
         function activate() {
+
             /*
             $timeout(function () {
                 factoryHome.verificaSession().success(function (data) {

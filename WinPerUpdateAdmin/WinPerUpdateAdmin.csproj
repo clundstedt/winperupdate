@@ -185,10 +185,16 @@
     <Content Include="Img\Chat_CC_WinAct.png" />
     <Content Include="Img\Chat_Version_Cliente.png" />
     <Content Include="Img\Circle_CC_Winact.png" />
+    <Content Include="Img\Fotolia_141905807_M.jpg" />
     <Content Include="Img\Hash_CC_Winact.png" />
+    <Content Include="Img\innovasoft.jpg" />
+    <Content Include="Img\InnovaSoftLogo2.png" />
+    <Content Include="Img\innovasoftLogo250x33.png" />
     <Content Include="Img\Modulo_CC_Winact.png" />
     <Content Include="Img\Reloj_CC_Winact.png" />
     <Content Include="Img\User_CC_Winact.png" />
+    <Content Include="Img\winact.png" />
+    <Content Include="Img\winact_85x24.png" />
     <Content Include="js\AdminClt\admin.js" />
     <Content Include="js\AdminClt\app.js" />
     <Content Include="js\AdminClt\serviceAdmin.js" />

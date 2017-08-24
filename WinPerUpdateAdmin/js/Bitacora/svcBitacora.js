@@ -6,9 +6,9 @@
         .module('app')
         .factory('svcBitacora', svcBitacora);
 
-    svcBitacora.$inject = ['$http', '$q'];
+    svcBitacora.$inject = ['$http', '$q', '$window'];
 
-    function svcBitacora($http, $q) {
+    function svcBitacora($http, $q, $window) {
         var service = {
             getBitacoraByMenu: getBitacoraByMenu,
             getUsuarioBitacora: getUsuarioBitacora

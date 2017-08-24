@@ -33,8 +33,24 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region get
 
+        [Route("api/ExisteRelease")]
+        [HttpGet][Authorize]
+        public Object GetExisteRelease(string release)
+        {
+            try
+            {
+                var obj = ProcessMsg.Version.GetVersion(release, null);
+                return Content(HttpStatusCode.OK, obj != null);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message));
+            }
+        }
+
+
         [Route("api/modCCFaltantes/{idVersion:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetModCCFaltantes(int idVersion)
         {
             try
@@ -63,7 +79,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
 
         [Route("api/Version/{idVersion:int}/{idCliente:int}/{idAmbiente:int}/ScriptsOk")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetScriptsOk(int idVersion, int idCliente, int idAmbiente)  
         {
             try
@@ -77,7 +93,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Version/{idVersion:int}/HasScript")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetHasScript(int idVersion)
         {
             try
@@ -92,7 +108,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/getControlCambios/{idVersion:int}/{tips:int}/{modulo:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetControlCambios(int idVersion, int tips, int modulo)
         {
             try
@@ -107,7 +123,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/getControlCambios/{idVersion:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetControlCambios(int idVersion)
         {
             try
@@ -123,7 +139,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
 
         [Route("api/ComponenteOkSegunVersion/{idVersion:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object ComponenteOkSegunVersion(int idVersion)
         {
             try
@@ -179,7 +195,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/VersionInicial/{idVersion:int}/Cliente")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object PostVersionInicialCliente(int idVersion)
         {
             try
@@ -283,7 +299,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/CheckInstall/Version/{idVersion:int}/Cliente/{idCliente:int}/Ambiente/{idAmbiente:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetCheckInstall(int idVersion, int idCliente, int idAmbiente)
         {
             try
@@ -308,7 +324,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/ExisteVersionInicial/Cliente/{idCliente:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetExisteVersionInicial(int idCliente)
         {
             try
@@ -323,7 +339,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Componentes/{NomComponente}/Comentario")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetComponentesByName(string NomComponente)
         {
             try
@@ -337,7 +353,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
         [Route("api/Version/Componentes/{NombreComponente}/Existe")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object ExisteComponentesModulos(string NombreComponente)
         {
             try
@@ -354,7 +370,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/TipoComponentes/{idVersion:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetTipoComponentesByVersion(int idVersion)
         {
             try
@@ -376,7 +392,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/ComponentesOficiales")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetComponentesOficiales()
         {
             try
@@ -397,7 +413,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/UltimaRelease")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetUltimaRelease()
         {
             try
@@ -420,7 +436,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/DetalleTarea")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetDetalleTarea(int idCliente, int idVersion)
         {
             try
@@ -436,7 +452,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/TareaAtrasada")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetTareaNoEx(int idCliente, int idVersion)
         {
             try
@@ -463,7 +479,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         // GET: api/Version
         [Route("api/Version")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object Get()
         {
             try
@@ -484,7 +500,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object Get(int idVersion)
         {
             try
@@ -505,7 +521,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Cliente/{idCliente:int}/Componentes")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object Get(int idVersion, int idCliente)
         {
             try
@@ -547,7 +563,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Version/{idVersion:int}/Componentes")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetComponentes(int idVersion)
         {
             try
@@ -568,7 +584,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Componentes/{nameFile}/script")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetComponentes(int idVersion, string nameFile)
         {
             try
@@ -609,7 +625,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Componentes/{nameFile}/leerscript")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetContenidoSQL(int idVersion, string nameFile)
         {
             try
@@ -639,7 +655,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Tarea/{idCliente:int}/{idAmbiente:int}/{idVersion:int}/{nameFile}/Existe")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object ExisteTarea(int idCliente, int idAmbiente, int idVersion, string nameFile)
         {
             try
@@ -654,7 +670,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Clientes")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetClientesVersion(int idVersion)
         {
             try
@@ -675,7 +691,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Componentes/{NameFile}/nameFile")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetComponente(int idVersion, string NameFile)
         {
             try
@@ -700,7 +716,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         #region post
 
         [Route("api/Tareas/{idVersion:int}/{idCliente:int}/{idAmbiente:int}/{codPrf:int}")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostTareas(int idVersion, int idCliente, int idAmbiente, int codPrf)
         {
             try
@@ -734,7 +750,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/ControlCambios")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostControlCambios([FromBody]ProcessMsg.Model.ControlCambiosBo control)
         {
             try
@@ -762,7 +778,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Cliente/{idClientes:int}/Version/{idVersion:int}/ReportarTodasTareas")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostReportTodasTareas(int idClientes, int idVersion, [FromBody]List<ProcessMsg.Model.TareaBo> tareas)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
@@ -806,7 +822,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/ReportarTareaAtrasada")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostReportTareaAtrasada([FromBody]ProcessMsg.Model.TareaBo tarea)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
@@ -838,7 +854,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Version")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object Post([FromBody]ProcessMsg.Model.VersionBo version)
         {
             try
@@ -877,7 +893,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/VersionInicial/{idVersion:int}")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostVersionInicial(int idVersion)
         {
             try
@@ -944,7 +960,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Version/{idVersion:int}/Componentes")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostComponentes(int idVersion, [FromBody]ProcessMsg.Model.AtributosArchivoBo archivo)
         {
             try
@@ -979,7 +995,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/LComponentes")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostListaComponentes(int idVersion, [FromBody]IEnumerable<ProcessMsg.Model.AtributosArchivoBo> archivo)
         {
             try
@@ -996,7 +1012,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Clientes/TipoPub/{TipoPub:int}")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostClientesToVersion(int idVersion, [FromBody] List<ClienteToVersion> listaClientes, int TipoPub)
         {
             try
@@ -1017,7 +1033,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Cliente/{idCliente:int}")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostVersionCliente(int idVersion, int idCliente)
         {
             try
@@ -1051,7 +1067,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Cliente/{idCliente:int}/Ambiente")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostVersionAmbienteCliente(int idVersion, int idCliente, [FromBody]ProcessMsg.Model.AmbienteBo ambiente)
         {
             try
@@ -1085,7 +1101,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Tarea")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostTarea(int idVersion, [FromBody]ProcessMsg.Model.TareaBo tarea)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Created);
@@ -1110,7 +1126,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region put
         [Route("api/ControlCambios")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object PutControlCambios([FromBody]ProcessMsg.Model.ControlCambiosBo control)
         {
             try
@@ -1141,7 +1157,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Estado/{Estado}/Upd")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object UpdEstadoVersion(int idVersion, char Estado)
         {
             try
@@ -1163,7 +1179,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/ReportarTareaManual")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object ReportarTareaManual([FromBody]ProcessMsg.Model.TareaBo tarea)
         {
             try
@@ -1190,7 +1206,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object Put(int idVersion, [FromBody]ProcessMsg.Model.VersionBo version)
         {
             try
@@ -1226,7 +1242,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Componentes")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object PutComponentes(int idVersion, [FromBody]ProcessMsg.Model.AtributosArchivoBo archivo)
         {
             try
@@ -1262,7 +1278,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region delete
         [Route("api/Version/{idVersion:int}")]
-        [HttpDelete]
+        [HttpDelete][Authorize]
         public Object DeleteVersion(int idVersion)
         {
             try
@@ -1291,7 +1307,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Version/{idVersion:int}/Componentes")]
-        [HttpDelete]
+        [HttpDelete][Authorize]
         public Object DeleteComponentes(int idVersion, [FromBody]ProcessMsg.Model.AtributosArchivoBo archivo)
         {
             try
@@ -1321,7 +1337,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/delDocCambios/{idVersion:int}/{tips:int}/{modulo:int}")]
-        [HttpDelete]
+        [HttpDelete][Authorize]
         public Object DelDocCambios(int idVersion, int tips, int modulo, string doc)
         {
             try
@@ -1342,7 +1358,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
 
         [Route("api/delControlCambios/{Version:int}/{Tips:int}/{Modulo:int}")]
-        [HttpDelete]
+        [HttpDelete][Authorize]
         public Object DelControlCambios(int Version, int Tips, int Modulo)
         {
             try

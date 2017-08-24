@@ -15,6 +15,7 @@ namespace WinPerUpdateUI
     {
         public static List<ProcessMsg.Model.ModuloBo> ModulosContratados = new List<ProcessMsg.Model.ModuloBo>();
         public static bool isCentralizado = false;
+        public static bool blockMenu = false;
 
         const int SIZEBUFFER = 524288;
 

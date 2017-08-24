@@ -55,6 +55,41 @@
         });
 
     })
+    .filter('filtroVersionesLiberadas', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (version) {
+                if (version.Estado == 'N') {
+                    salida.push(version)
+                }
+            });
+            return salida;
+        }
+    })
+
+    .filter('filtroVersionesNV', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (version) {
+                if (version.Estado == 'C') {
+                    salida.push(version)
+                }
+            });
+            return salida;
+        }
+    })
+
+    .filter('filtroVersionesPub', function () {
+        return function (input) {
+            var salida = [];
+            angular.forEach(input, function (version) {
+                if (version.Estado == 'P') {
+                    salida.push(version)
+                }
+            });
+            return salida;
+        }
+    })
     .filter('filtroComponente', function () {
         return function (input, ex) {
             var salida = [];

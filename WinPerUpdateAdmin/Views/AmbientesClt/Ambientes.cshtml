@@ -27,6 +27,13 @@
             </div>
         </div>
     </div>
+    <div class="row" ng-show="msgSuccess != ''">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                {{msgSuccess}}
+            </div>
+        </div>
+    </div>
     <br />
 
     <div class="row">
@@ -137,7 +144,7 @@
                                         Drop zone
                                     </div>
                                 </div>
-                                <input type="file" nv-file-select="" uploader="uploader" options="uploadOptions" /><br />
+                                <input type="file" nv-file-select="" uploader="uploader" options="uploadOptions" multiple /><br />
                                 <span class="error_ingreso" ng-hide="uploader.queue.length > 0">
                                     No hay ninguna planilla seleccionada.
                                 </span>

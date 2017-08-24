@@ -14,7 +14,7 @@
 
         function activate() {
             window.scrollTo(0, 0);
-            $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+            $scope.emailFormat = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
             $scope.msgError = "";
             $scope.msgSuccess = "";
 

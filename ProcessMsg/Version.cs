@@ -211,7 +211,7 @@ namespace ProcessMsg
         }
         public static Model.VersionBo GetVersion(string release, EventLog log)
         {
-            var obj = new Model.VersionBo();
+            Model.VersionBo obj = null;
             var consulta = new CnaVersiones();
             try
             {

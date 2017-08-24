@@ -74,7 +74,7 @@
             this.groupBox1.Size = new System.Drawing.Size(277, 100);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Winper Update Server";
+            this.groupBox1.Text = "WinAct Server";
             // 
             // TxtPuertoWUS
             // 
@@ -162,6 +162,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmConfigGeneral";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuración";

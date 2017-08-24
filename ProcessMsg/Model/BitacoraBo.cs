@@ -45,7 +45,9 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return Accion == 'N'|| Accion == 'V'|| Accion == 'U' ? Vant.Split('=')[0] : "";
+                var sVant = Vant.Split('=');
+                var sVnue = Vnue.Split('=');
+                return Accion == 'N'|| Accion == 'V'|| Accion == 'U' ? sVant.Length > 1 ? sVant[0] : sVnue.Length > 1 ? sVnue[0] : "" : "";
             }
         }
         public string VantFmt
@@ -54,14 +56,16 @@ namespace ProcessMsg.Model
             {
                 if (Vant.Split('=').Length > 1)
                     return Accion == 'N' || Accion == 'V' || Accion == 'U' ? Vant.Split('=')[1] : Vant;
-                return "";
+                return Vant;
             }
         }
         public string VnueFmt
         {
             get
             {
-                return Accion == 'N' || Accion == 'V' || Accion == 'U' ? Vnue.Split('=')[1] : Vnue;
+                if (Vnue.Split('=').Length > 1)
+                    return Accion == 'N' || Accion == 'V' || Accion == 'U' ? Vnue.Split('=')[1]  : Vnue;
+                return Vnue;
             }
         }
 

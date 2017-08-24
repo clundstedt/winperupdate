@@ -12,7 +12,7 @@ namespace MiPrimerAPP.Controllers.api
     {
         #region get
         [Route("api/AmbientesXLSX/Planilla")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetPlanillaAmbientesXLSX()
         {
             try
@@ -42,7 +42,7 @@ namespace MiPrimerAPP.Controllers.api
             }
         }
         [Route("api/Cliente/{idCliente:int}/AmbientesXLSX")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetAmbientesXLSX(int idCliente)
         {
             try
@@ -57,7 +57,7 @@ namespace MiPrimerAPP.Controllers.api
         }
         
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/{NameFile}/Ambientes")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetAmbientesNoEx(int idCliente, int idVersion, string NameFile)
         {
             try
@@ -72,7 +72,7 @@ namespace MiPrimerAPP.Controllers.api
         }
 
         [Route("api/Ambiente/{idAmbiente:int}/Version/{idVersion:int}/OK")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object AmbienteOK(int idAmbiente, int idVersion)
         {
             try
@@ -87,7 +87,7 @@ namespace MiPrimerAPP.Controllers.api
         }
 
         [Route("api/Cliente/{idCliente:int}/Ambiente")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetAmbientesByCliente(int idCliente)
         {
             try
@@ -107,7 +107,7 @@ namespace MiPrimerAPP.Controllers.api
         }
 
         [Route("api/Cliente/{idCliente:int}/Version/{idVersion:int}/Ambiente")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetAmbientesByVersion(int idCliente, int idVersion)
         {
             try
@@ -127,7 +127,7 @@ namespace MiPrimerAPP.Controllers.api
         }
 
         [Route("api/Cliente/{idCliente:int}/Ambiente/{idAmbiente:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object Get(int idCliente,int idAmbiente)
         {
             try
@@ -149,7 +149,7 @@ namespace MiPrimerAPP.Controllers.api
 
         #region post
         [Route("api/Cliente/{idCliente:int}/Ambiente")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object Post(int idCliente, [FromBody]ProcessMsg.Model.AmbienteBo ambiente)
         {
             try
@@ -176,7 +176,7 @@ namespace MiPrimerAPP.Controllers.api
 
         #region put
         [Route("api/Cliente/{idCliente:int}/Ambiente/{idAmbiente:int}")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object Put(int idCliente, int idAmbiente, [FromBody]ProcessMsg.Model.AmbienteBo ambiente)
         {
             try
@@ -204,7 +204,7 @@ namespace MiPrimerAPP.Controllers.api
 
         #region delete
         [Route("api/Cliente/{idCliente:int}/Ambiente/{idAmbiente:int}")]
-        [HttpDelete]
+        [HttpDelete][Authorize]
         public Object Delete(int idCliente, int idAmbiente)
         {
             try

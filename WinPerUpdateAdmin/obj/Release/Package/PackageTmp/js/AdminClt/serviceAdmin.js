@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceAdmin', serviceAdmin);
 
-    serviceAdmin.$inject = ['$http', '$q'];
+    serviceAdmin.$inject = ['$http', '$q', '$window'];
 
-    function serviceAdmin($http, $q) {
+    function serviceAdmin($http, $q, $window) {
         var service = {
             getCliente: getCliente,
             getVersion: getVersion,

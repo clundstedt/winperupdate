@@ -5,9 +5,9 @@
         .module('app')
         .service('serviceAmbientes', serviceAmbientes);
 
-    serviceAmbientes.$inject = ['$http','$q'];
+    serviceAmbientes.$inject = ['$http','$q', '$window'];
 
-    function serviceAmbientes($http, $q) {
+    function serviceAmbientes($http, $q, $window) {
         var service = {
             getAmbientes: getAmbientes,
             getAmbientesXlsx: getAmbientesXlsx,
@@ -28,7 +28,7 @@
                 url: '/api/Cliente/' + idCliente + '/AmbientesXLSX',
                 type: "GET",
                 dataType: 'Json',
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
@@ -65,7 +65,7 @@
                 url: '/api/Cliente/' + idCliente + '/Ambiente/'+idAmbiente,
                 type: "GET",
                 dataType: 'Json',
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
@@ -103,7 +103,7 @@
                 url: '/api/Cliente/'+idCliente+'/Ambiente',
                 type: "GET",
                 dataType: 'Json',
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
@@ -152,7 +152,7 @@
                 type: "POST",
                 dataType: 'Json',
                 data: ambiente,
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
@@ -199,7 +199,7 @@
                 type: "PUT",
                 dataType: 'Json',
                 data: ambiente,
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);
@@ -235,7 +235,7 @@
                 url: "api/Cliente/" + idCliente + "/Ambiente/" + idAmbiente,
                 type: "DELETE",
                 dataType: 'Json',
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);

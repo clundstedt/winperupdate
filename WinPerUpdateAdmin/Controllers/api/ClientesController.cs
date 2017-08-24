@@ -17,11 +17,6 @@ namespace WinPerUpdateAdmin.Controllers.api
 {
     public class ClientesController : ApiController
     {
-        public override Task<HttpResponseMessage> ExecuteAsync(HttpControllerContext controllerContext, CancellationToken cancellationToken)
-        {
-           
-            return base.ExecuteAsync(controllerContext, cancellationToken);
-        }
 
         #region structs
         struct anio
@@ -40,7 +35,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         #region get
 
         [Route("api/getClienteNoVigente/{id:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetClienteNoVigente(int id)
         {
             try
@@ -56,7 +51,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Bienvenida/Usuario/{idUsuario:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object EnviarBienvenidaUsuario(int idUsuario)
         {
             try
@@ -111,7 +106,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/GenCorrelativo/{MesCon}/{Folio:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GenCorrelativo(int Folio, string MesCon)
         {
             try
@@ -126,7 +121,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/GetAnios")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetAnios()
         {
             try
@@ -149,7 +144,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
         [Route("api/Clientes/{idCliente:int}/PDF")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetInformeClientes(int idCliente)
         {
             try
@@ -259,7 +254,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
         [Route("api/Clientes/PDF")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetInformeClientes()
         {
             try
@@ -341,7 +336,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/TrabPlantas")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetTrabPlantas()
         {
             try
@@ -357,7 +352,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/TrabHonorarios")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetTrabHonorarios()
         {
             try
@@ -372,7 +367,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Cliente/{idCliente:int}/VersionesInstaladas")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetVersionesClientes(int idCliente)
         {
             try
@@ -386,7 +381,7 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
         [Route("api/Cliente/{idCliente:int}/ModulosWinper")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetModulosCliente(int idCliente)
         {
             try
@@ -407,7 +402,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Clientes")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object Get()
         {
             try
@@ -429,7 +424,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Clientes/{idCliente:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetCliente(int idCliente)
         {
             try
@@ -450,7 +445,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Clientes/{idCliente:int}/Versiones")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetVersionesCliente(int idCliente)
         {
             try
@@ -471,7 +466,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Clientes/{idCliente:int}/Usuarios")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetUsuariosCliente(int idCliente)
         {
             try
@@ -492,7 +487,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Clientes/{idCliente:int}/Usuarios/{idUsuario:int}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetUsuariosCliente(int idCliente, int idUsuario)
         {
             try
@@ -513,7 +508,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Region")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetRegiones()
         {
             try
@@ -534,7 +529,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Region/{idRgn:int}/Comunas")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetComunas(int idRgn)
         {
             try
@@ -555,7 +550,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Key/{Folio:int}/{MesCon}/{Correlativo:int}/{EstMtc:int}/{MesIni}/{NroTrbc}/{NroTrbh}/{NroUsr}")]
-        [HttpGet]
+        [HttpGet][Authorize]
         public Object GetKeyCliente(int Folio, string MesCon, int Correlativo, int EstMtc, string MesIni, string NroTrbc, string NroTrbh, string NroUsr)
         {
             try
@@ -574,7 +569,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region post
         [Route("api/Cliente/{idCliente:int}/Modulos")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostModulosClientes(int idCliente,[FromBody]List<ProcessMsg.Model.ModuloBo> modulos)
         {
             try
@@ -618,7 +613,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Clientes")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object Post([FromBody]ProcessMsg.Model.ClienteBo cliente)
         {
             try
@@ -666,7 +661,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Clientes/{idCliente:int}/Usuarios")]
-        [HttpPost]
+        [HttpPost][Authorize]
         public Object PostUsuario(int idCliente, [FromBody]ProcessMsg.Model.UsuarioBo usuario)
         {
             try
@@ -726,7 +721,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region put
         [Route("api/Clientes/{id:int}")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object Put(int id, [FromBody]ProcessMsg.Model.ClienteBo cliente)
         {
             try
@@ -780,7 +775,7 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
         
         [Route("api/Clientes/{id:int}/Usuarios/{idUsuario:int}")]
-        [HttpPut]
+        [HttpPut][Authorize]
         public Object Put(int id, int idUsuario, [FromBody]ProcessMsg.Model.UsuarioBo usuario)
         {
             try
@@ -831,7 +826,7 @@ namespace WinPerUpdateAdmin.Controllers.api
 
         #region delete
         [Route("api/Clientes/Vigente")]
-        [HttpDelete]
+        [HttpDelete][Authorize]
         public Object Delete(int id, char est, string motivo)
         {
             try

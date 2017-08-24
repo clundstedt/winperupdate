@@ -5,9 +5,9 @@
         .module('app')
         .controller('inicio', inicio);
 
-    inicio.$inject = ['$scope', 'serviceClientes'];
+    inicio.$inject = ['$scope', 'serviceClientes', '$window'];
 
-    function inicio($scope, serviceClientes) {
+    function inicio($scope, serviceClientes, $window) {
         $scope.title = 'inicio';
 
         activate();

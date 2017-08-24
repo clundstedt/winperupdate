@@ -5,16 +5,16 @@
         .module('app')
         .controller('ambientes', ambientes);
 
-    ambientes.$inject = ['$scope', 'serviceAmbientes', 'serviceSeguridad', 'FileUploader'];
+    ambientes.$inject = ['$scope', 'serviceAmbientes', 'serviceSeguridad', 'FileUploader', '$window'];
 
-    function ambientes($scope, serviceAmbientes, serviceSeguridad, FileUploader) {
+    function ambientes($scope, serviceAmbientes, serviceSeguridad, FileUploader, $window) {
         $scope.title = 'Ambientes';
 
         activate();
 
         function activate() {
             $scope.msgError = "";
-
+            $scope.msgSuccess = "";
             $scope.ambientes = [];
             $scope.ambientesxlsx = [];
             console.log("id User = " + $("#idToken").val());
@@ -85,16 +85,16 @@
 
             // CALLBACKS
             uploader.onSuccessItem = function (fileItem, response, status, headers) {
-                //console.info('onSuccessItem', fileItem);
+                $scope.msgSuccess = "";
                 if (response.CodErr == 0) {
                     $scope.uploader.clearQueue();
                     $('#export-modal').modal('toggle');
                     if (response.sCliente == "OK") {
                         serviceAmbientes.getAmbientes($scope.idCliente).success(function (ambientes) {
-                            console.log(JSON.stringify(ambientes));
                             $scope.ambientes = ambientes;
                             $scope.ambxlsxwarn = false;
                             $scope.msgError = "";
+                            $scope.msgSuccess = "Ambientes importados y agregados correctamente.";
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
@@ -102,7 +102,7 @@
                         $scope.ambxlsxwarn = true;
                     }
                 } else {
-                    console.error(response.MsgErr);
+                    console.error(response.MsgErr); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
                 }
 
             };

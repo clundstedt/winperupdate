@@ -235,7 +235,7 @@ namespace WinPerUpdateAdmin.Controllers.Admin
                             var componentes = ProcessMsg.Componente.GetComponenteConDirectorio(idVersion);
 
                             var files = new DirectoryInfo(sRuta).GetFiles().ToList();
-                            files.AddRange(new DirectoryInfo(Path.Combine(sRuta,"Scripts")).GetFiles().ToList());
+                            if(Directory.Exists(Path.Combine(sRuta, "Scripts")))files.AddRange(new DirectoryInfo(Path.Combine(sRuta,"Scripts")).GetFiles().ToList());
                             foreach (var x in files)
                             {
                                 var comps = componentes.Where(y => y.Name.Equals(x.Name)).ToList();

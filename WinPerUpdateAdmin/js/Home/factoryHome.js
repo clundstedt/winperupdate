@@ -5,9 +5,9 @@
         .module('app')
         .factory('factoryHome', factoryHome);
 
-    factoryHome.$inject = ['$http', '$q'];
+    factoryHome.$inject = ['$http', '$q', '$window'];
 
-    function factoryHome($http, $q) {
+    function factoryHome($http, $q, $window) {
         var service = {
             getUsuarioSession: getUsuarioSession,
             compruebaPwd: compruebaPwd,

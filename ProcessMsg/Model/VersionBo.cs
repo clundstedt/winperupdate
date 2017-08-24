@@ -20,7 +20,7 @@ namespace ProcessMsg.Model
         {
             get
             {
-                return IsVersionInicial ? "Es versión inicial." : "No es versión inicial.";
+                return IsVersionInicial ? "Versión full" : "Versión parcial";
             }
         }
         public List<AtributosArchivoBo> Componentes { get; set; }

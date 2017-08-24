@@ -124,6 +124,7 @@ namespace WinPerUpdateAdmin
                 {
                     var identity = new GenericIdentity(user.Persona.Nombres);
                     SetPrincipal(new GenericPrincipal(identity, null));
+                    HttpContext.Current.Response.StatusCode = 200;
                 }
                 else
                 {
@@ -160,14 +161,14 @@ namespace WinPerUpdateAdmin
         // to the response.
         private static void OnApplicationEndRequest(object sender, EventArgs e)
         {
-            /*
+            
             var response = HttpContext.Current.Response;
             if (response.StatusCode == 401)
             {
                 response.Headers.Add("WWW-Authenticate",
                     string.Format("Basic realm=\"{0}\"", Realm));
             }
-            */
+            
         }
 
         public void Dispose()

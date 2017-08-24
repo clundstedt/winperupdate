@@ -5,15 +5,14 @@
         .module('app')
         .controller('admin', admin);
 
-    admin.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'serviceAmbientes', '$timeout'];
+    admin.$inject = ['$scope', '$routeParams', 'serviceAdmin', 'serviceAmbientes', '$timeout', '$window'];
 
-    function admin($scope, $routeParams, serviceAdmin, serviceAmbientes, $timeout) {
+    function admin($scope, $routeParams, serviceAdmin, serviceAmbientes, $timeout, $window) {
         $scope.title = 'admin';
 
         activate();
 
         function activate() {
-
             
             $scope.msgError = "";
             $scope.msgSuccess = "";
@@ -315,7 +314,7 @@
                     console.log($scope.ambienteSel);
                     $("#mdlAddTareas").modal('toggle');
                     $scope.msgError = "";
-                    $scope.msgSuccess = "Scripts programado para su ejecución. Puede ver el estado en Estado de Scripts.";
+                    $scope.msgSuccess = "Scripts programado para su ejecución, espere aviso de WinActUI para descargar los componentes de WinPer";
                     window.scrollTo(0, 0);
                     $scope.ambienteSel.EstadoEjecucionSql = 1;
                     $scope.ambienteSel.ColorEstadoEjecucionSql = "info";

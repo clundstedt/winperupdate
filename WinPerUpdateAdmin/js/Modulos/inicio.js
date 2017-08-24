@@ -5,15 +5,16 @@
         .module('app')
         .controller('inicio', inicio);
 
-    inicio.$inject = ['$scope', 'serviceModulos', 'FileUploader'];
+    inicio.$inject = ['$scope', 'serviceModulos', 'FileUploader', '$window'];
 
-    function inicio($scope, serviceModulos,FileUploader) {
+    function inicio($scope, serviceModulos, FileUploader, $window) {
         $scope.title = 'Módulos';
         $scope.idUsuario = $("#idToken").val();
         $scope.modulos = [];
         $scope.modulosxlsx = [];
         $scope.modxlsxwarn = false;
         $scope.sync = 0;
+        $scope.msgSuccess = "";
         $scope.logSync = "";
         activate();
 
@@ -81,6 +82,7 @@
 
             // CALLBACKS
             uploader.onSuccessItem = function (fileItem, response, status, headers) {
+                $scope.msgSuccess = "";
                 if (response.CodErr == 0) {
                     $scope.uploader.clearQueue();
                     $('#export-modal').modal('toggle');
@@ -88,8 +90,8 @@
                         serviceModulos.listarModulos().success(function (data) {
                             $scope.modulos = data;
                             $scope.modxlsxwarn = false;
-                            console.log($scope.modulos);
                             $scope.msgError = "";
+                            $scope.msgSuccess = "Módulos importados y agregados correctamente.";
                         }).error(function (err) {
                             console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                         });
@@ -97,7 +99,7 @@
                         $scope.modxlsxwarn = true;
                     }
                 } else {
-                    console.error(response.MsgErr);
+                    console.error(response.MsgErr); $scope.msgError = response.MsgErr; window.scrollTo(0, 0);
                 }
 
             };

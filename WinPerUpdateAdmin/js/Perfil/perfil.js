@@ -5,9 +5,9 @@
         .module('app')
         .controller('perfil', perfil);
 
-    perfil.$inject = ['$scope','serviceSeguridad']; 
+    perfil.$inject = ['$scope','serviceSeguridad', '$window']; 
 
-    function perfil($scope, serviceSeguridad) {
+    function perfil($scope, serviceSeguridad, $window) {
 
         $scope.title = 'perfil';
         $scope.lblperfil = 'Modificar';

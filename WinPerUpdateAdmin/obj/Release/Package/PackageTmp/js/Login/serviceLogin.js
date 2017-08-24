@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceLogin', serviceLogin);
 
-    serviceLogin.$inject = ['$http', '$q'];
+    serviceLogin.$inject = ['$http', '$q', '$window'];
 
-    function serviceLogin($http, $q) {
+    function serviceLogin($http, $q, $window) {
         var service = {
             getLogin: getLogin,
             sendMail: sendMail,

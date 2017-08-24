@@ -5,9 +5,9 @@
         .module('app')
         .controller('modulos', modulos);
 
-    modulos.$inject = ['$scope', '$routeParams','serviceModulos','$timeout'];
+    modulos.$inject = ['$scope', '$routeParams','serviceModulos','$timeout', '$window'];
 
-    function modulos($scope, $routeParams, serviceModulos, $timeout) {
+    function modulos($scope, $routeParams, serviceModulos, $timeout, $window) {
         
         activate();
 
@@ -349,7 +349,7 @@
                     $scope.msgError = "";
                     $scope.Modulo = data;
                     $scope.loading = false;
-                    $('#msgsuccess').focus();
+                    window.scrollTo(0, 0);
                 }).error(function (err) {
                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
                     $scope.loading = false;

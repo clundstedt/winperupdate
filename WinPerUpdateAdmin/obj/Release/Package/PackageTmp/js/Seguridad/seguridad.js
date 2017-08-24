@@ -5,9 +5,9 @@
         .module('app')
         .controller('seguridad', seguridad);
 
-    seguridad.$inject = ['$scope', '$routeParams', 'serviceSeguridad'];
+    seguridad.$inject = ['$scope', '$routeParams', 'serviceSeguridad', '$window'];
 
-    function seguridad($scope, $routeParams, serviceSeguridad) {
+    function seguridad($scope, $routeParams, serviceSeguridad, $window) {
         $scope.title = 'seguridad';
 
         activate();

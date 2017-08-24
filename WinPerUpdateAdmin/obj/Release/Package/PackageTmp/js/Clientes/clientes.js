@@ -250,52 +250,57 @@
             }
 
             $scope.SaveCliente = function (formData, formValid, rutOk) {
+                $scope.msgAdvertencia = "";
                 if (formValid) {
                     if (rutOk) {
-                        var arrRut = formData.rut.split('-');
-                        $scope.increate = false;
-                        $scope.labelcreate = "Enviando";
-                        $scope.msgSuccess = "";
-                        console.log($scope.idCliente);
-                        if ($scope.idCliente == 0) {
-                            serviceClientes.addCliente(arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
-                                $scope.increate = true;
-                                $scope.labelcreate = "Modificar";
-                                $scope.idCliente = data.Id;
-                                serviceClientes.addModuloCliente(data.Id, $scope.formData.modulos).success(function (data) {
-                                    $scope.CargarModulosCliente(data.Id);
-                                    $scope.msgError = "";
-                                    $scope.msgSuccess = "Cliente creado exitosamente!.";
-                                    window.scrollTo(0, 0);
+                        if ($scope.formData.modulos.length > 0) {
+                            var arrRut = formData.rut.split('-');
+                            $scope.increate = false;
+                            $scope.labelcreate = "Enviando";
+                            $scope.msgSuccess = "";
+                            console.log($scope.idCliente);
+                            if ($scope.idCliente == 0) {
+                                serviceClientes.addCliente(arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
+                                    $scope.increate = true;
+                                    $scope.labelcreate = "Modificar";
+                                    $scope.idCliente = data.Id;
+                                    serviceClientes.addModuloCliente(data.Id, $scope.formData.modulos).success(function (dataMod) {
+                                        $scope.CargarModulosCliente(data.Id);
+                                        $scope.msgError = "";
+                                        $scope.msgSuccess = "Cliente creado exitosamente!.";
+                                        window.scrollTo(0, 0);
+                                    }).error(function (err) {
+                                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                                    });
                                 }).error(function (err) {
                                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                                 });
-                            }).error(function (err) {
-                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
-                            });
-                        }
-                        else {
-                            console.log(formData);
-                            serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
-                                $scope.increate = true;
-                                $scope.labelcreate = "Modificar";
-                                serviceClientes.addModuloCliente($scope.idCliente, $scope.formData.modulos).success(function (data) {
-                                    $scope.CargarModulosCliente($scope.idCliente);
-                                    $scope.msgError = "";
-                                    $scope.msgSuccess = "Cliente modificado exitosamente!.";
-                                    window.scrollTo(0, 0);
+                            }
+                            else {
+                                console.log(formData);
+                                serviceClientes.updCliente($scope.idCliente, arrRut[0], arrRut[1], formData.nombre, formData.direccion, formData.comuna, formData.licencia, formData.folio, formData.estmtc, formData.mesini, formData.nrotrbc, formData.nrotrbh, formData.nrousr, formData.mescon, formData.correlativo).success(function (data) {
+                                    $scope.increate = true;
+                                    $scope.labelcreate = "Modificar";
+                                    serviceClientes.addModuloCliente($scope.idCliente, $scope.formData.modulos).success(function (data) {
+                                        $scope.CargarModulosCliente($scope.idCliente);
+                                        $scope.msgError = "";
+                                        $scope.msgSuccess = "Cliente modificado exitosamente!.";
+                                        window.scrollTo(0, 0);
+                                    }).error(function (err) {
+                                        console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                                    });
                                 }).error(function (err) {
                                     console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
                                 });
-                            }).error(function (err) {
-                                console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
-                            });
+                            }
+                        } else {
+                            $scope.msgAdvertencia = "Advertencia: No ha seleccionado ningún módulo, debe seleccionar al menos uno."; window.scrollTo(0, 0);
                         }
                     } else {
-                        $scope.msgAdvertencia = "Advertencia: Verifique que el rut esté correctamente escrito y validado.";
+                        $scope.msgAdvertencia = "Advertencia: Verifique que el rut esté correctamente escrito y validado."; window.scrollTo(0, 0);
                     }
                 } else {
-                    $scope.msgAdvertencia = "Advertencia: Hay problemas con algunos campos, verifique los datos e intente nuevamente."
+                    $scope.msgAdvertencia = "Advertencia: Hay problemas con algunos campos, verifique los datos e intente nuevamente.";window.scrollTo(0, 0);
                 }
             }
 

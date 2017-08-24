@@ -5,9 +5,9 @@
         .module('app')
         .factory('serviceDescargas', serviceDescargas);
 
-    serviceDescargas.$inject = ['$http', '$q'];
+    serviceDescargas.$inject = ['$http', '$q', '$window'];
 
-    function serviceDescargas($http, $q) {
+    function serviceDescargas($http, $q, $window) {
         var service = {
             LoadDescargas: LoadDescargas
         };
