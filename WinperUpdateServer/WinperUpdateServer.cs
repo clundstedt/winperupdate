@@ -241,6 +241,28 @@ namespace WinperUpdateServer
                                 Send(handler, json);
                                 break;
 
+                            case "getfunes": // getfunes#idCliente
+                                idCliente = int.Parse(token[1]);
+                                var listafunes = ProcessMsg.Funes.GetFunes(idCliente, eventLog1);
+
+                                json = JsonConvert.SerializeObject(listafunes);
+                                Send(handler, json);
+                                break;
+
+                            case "updfunes": // updfunes#idCliente
+                                idCliente = int.Parse(token[1]);
+                                try
+                                {
+                                    ProcessMsg.Funes.Actualizar(idCliente, eventLog1);
+                                    json = JsonConvert.SerializeObject(new { coderr = 0, msgerr = "" });
+                                }
+                                catch (Exception ex)
+                                {
+                                    json = JsonConvert.SerializeObject(new { coderr = 1, msgerr = ex.Message });
+                                }
+                                Send(handler, json);
+                                break;
+
                             case "getversion": // getversion#NumVersion
                                 string release = token[1];
                                 var version = ProcessMsg.Version.GetVersion(release, eventLog1);
@@ -298,12 +320,14 @@ namespace WinperUpdateServer
                                     }
                                 }                         
                                 break;
+
                             case "modulos":
                                 var modulosCliente = ProcessMsg.Modulo.GetModulosWithComponenteByCliente(int.Parse(token[1]));
 
                                 json = JsonConvert.SerializeObject(modulosCliente);
                                 Send(handler, json);
                                 break;
+
                             case "checkupui":
                                 var clt = ProcessMsg.Cliente.GetClienteByLicencia(token[1], null);
                                 if (clt != null)
@@ -333,6 +357,7 @@ namespace WinperUpdateServer
                                 }
                                 else { Send(handler, "0"); }
                                 break;
+
                             case "downsetup":
                                 bool downsetupbok = false;
                                 int downsetupintentos = 0;
@@ -351,6 +376,7 @@ namespace WinperUpdateServer
                                     }
                                 }
                                 break;
+
                             case "checkadmin":
                                 var mail = token[1];
                                 var pass = token[2];
@@ -380,6 +406,7 @@ namespace WinperUpdateServer
                                     Send(handler, "0");
                                 }
                                 break;
+
                             default:
                                 // Echo the data back to the client.
                                 Send(handler, content);

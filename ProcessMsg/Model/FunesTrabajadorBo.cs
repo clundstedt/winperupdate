@@ -33,5 +33,22 @@ namespace ProcessMsg.Model
         public string mesPrimerDescuento { get; set; }
 
         public bool enviadoFun { get; set; }
+
+        public int mesDescuento { 
+            get {
+                string[] token = mesPrimerDescuento.Split(new Char[] { '-' });
+                return int.Parse(token[0]);
+            }
+        }
+
+        public int añoDescuento
+        {
+            get
+            {
+                string[] token = mesPrimerDescuento.Split(new Char[] { '-' });
+                return int.Parse(token[1]);
+            }
+        }
+
     }
 }

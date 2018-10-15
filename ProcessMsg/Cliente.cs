@@ -95,6 +95,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static int GetCorrelativo(int folio, string mescon)
         {
             try
@@ -114,6 +115,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static System.Data.DataTable GetVersionToClientePDF(int idCliente)
         {
             try
@@ -136,6 +138,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static System.Data.DataTable GetModulosClientePDF(int idCliente)
         {
             try
@@ -158,6 +161,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static System.Data.DataTable GetClientesPDF()
         {
             try
@@ -187,6 +191,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static List<Trabs> GetTrabPlantas()
         {
             try
@@ -234,6 +239,7 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
         }
+
         public static List<Model.VersionBo> GetVersiones(int idCliente, EventLog log)
         {
             var lista = new List<Model.VersionBo>();

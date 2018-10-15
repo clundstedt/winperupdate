@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,65 @@ namespace ProcessMsg
                 throw new Exception(msg, ex);
             }
 
+        }
+
+        public static List<Model.FunesTrabajadorBo> GetFunes(int idCliente, EventLog log)
+        {
+            try
+            {
+                var lista = new List<Model.FunesTrabajadorBo>();
+                var r = new CnaFunes().Execute(idCliente);
+
+                while (r.Read())
+                {
+                    var listaTipos = new List<int>();
+                    foreach (var valor in r["tipo_modificacion"].ToString().Split(new Char[] { ',' }))
+                    {
+                        listaTipos.Add(int.Parse(valor));
+                    }
+
+                    lista.Add(new Model.FunesTrabajadorBo
+                    {
+                        rut = r["rutEmpresa"].ToString(),
+                        folioFUN = r["folio_fun"].ToString(),
+                        codigoIsapre = r["codigoIsapre"].ToString(),
+                        ppPeso = decimal.Parse(r["ppPeso"].ToString()),
+                        ppUF = decimal.Parse(r["ppUF"].ToString()),
+                        ppPorcentaje = decimal.Parse(r["ppPorcentaje"].ToString()),
+                        estadoFUN = int.Parse(r["estadoFUN"].ToString()),
+                        motivoRechazo = int.Parse(r["motivoRechazo"].ToString()),
+                        fechaMotivo = r["fechaMotivo"] == DBNull.Value ? (DateTime?)null : DateTime.Parse(r["fechaMotivo"].ToString()),
+                        observacionRechazo = r["observacionRechazo"].ToString(),
+                        mesPrimerDescuento = string.Format("{0}-{1}", r["mesPrimerDescuento"].ToString(), r["mesPrimerDescuento"].ToString()),
+                        enviadoFun = int.Parse(r["enviadoFun"].ToString()) == 1,
+                        tipoNotificacion = listaTipos
+                    });
+                }
+
+                r.Close();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
+        }
+
+        public static int Actualizar(int idCliente, EventLog log)
+        {
+            var query = new UpdFunes();
+            try
+            {
+                return query.Execute(idCliente);
+            }
+            catch (Exception ex)
+            {
+                var msg = "Excepcion Controlada: " + ex.Message;
+                if (log != null) log.WriteEntry(msg, EventLogEntryType.Error);
+                throw new Exception(msg, ex);
+            }
         }
     }
 }

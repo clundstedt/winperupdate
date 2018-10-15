@@ -74,6 +74,7 @@
     <Compile Include="CnaComponentes.cs" />
     <Compile Include="CnaComuna.cs" />
     <Compile Include="CnaControlCambios.cs" />
+    <Compile Include="CnaFunes.cs" />
     <Compile Include="CnaModulo.cs" />
     <Compile Include="CnaModuloVersiones.cs" />
     <Compile Include="CnaPerfiles.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="UpdComponente.cs" />
     <Compile Include="UpdComponenteModulo.cs" />
     <Compile Include="UpdControlCambios.cs" />
+    <Compile Include="UpdFunes.cs" />
     <Compile Include="UpdModulo.cs" />
     <Compile Include="UpdPersona.cs" />
     <Compile Include="UpdTareas.cs" />
