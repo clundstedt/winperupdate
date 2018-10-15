@@ -106,3 +106,115 @@ C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPer
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCP.exe
 C:\Users\Administrador\Documents\Visual Studio 2015\Projects\winperupdate\WinPerUpdateAdmin\bin\WinSCPnet.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinSCP.exe
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\csc.exe
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\System.Collections.Immutable.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\System.Reflection.Metadata.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\vbc.exe
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\VBCSCompiler.exe
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\roslyn\VBCSCompiler.exe.config
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll.config
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.pdb
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\itextsharp.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Microsoft.Web.Infrastructure.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Newtonsoft.Json.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\ProcessMsg.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Net.Http.Formatting.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Helpers.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.WebHost.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Mvc.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Optimization.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Razor.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Deployment.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Razor.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WebGrease.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinperUpdateDAO.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinSCPnet.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Connector.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\ProcessMsg.pdb
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.pdb
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Newtonsoft.Json.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Optimization.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Razor.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Deployment.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Razor.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Helpers.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Mvc.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Net.Http.Formatting.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.WebHost.xml
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\WinperUpdateDAO.pdb
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\bin\Connector.pdb
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.dll
+C:\Proyectos\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinSCP.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\csc.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\vbc.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\VBCSCompiler.exe
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll.config
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinPerUpdateAdmin.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\itextsharp.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Newtonsoft.Json.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\ProcessMsg.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Net.Http.Formatting.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Helpers.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.WebHost.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Mvc.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Optimization.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Razor.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Deployment.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Razor.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WebGrease.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinperUpdateDAO.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinSCPnet.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Connector.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\ProcessMsg.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Antlr3.Runtime.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\itextsharp.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Newtonsoft.Json.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Optimization.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Razor.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Deployment.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Webpages.Razor.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Helpers.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Mvc.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Net.Http.Formatting.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\System.Web.Http.WebHost.xml
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\WinperUpdateDAO.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\bin\Connector.pdb
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.csprojResolveAssemblyReference.cache
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.dll
+C:\Users\mariol\Documents\Visual Studio 2015\Projects\Winper\winperupdate\WinPerUpdateAdmin\obj\Release\WinPerUpdateAdmin.pdb

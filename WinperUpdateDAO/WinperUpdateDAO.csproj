@@ -54,6 +54,7 @@
     <Compile Include="AddComponente.cs" />
     <Compile Include="AddComponenteModulo.cs" />
     <Compile Include="AddControlCambios.cs" />
+    <Compile Include="AddFunes.cs" />
     <Compile Include="AddModulo.cs" />
     <Compile Include="AddModuloVersion.cs" />
     <Compile Include="AddPersona.cs" />

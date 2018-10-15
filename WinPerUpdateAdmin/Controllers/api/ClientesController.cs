@@ -35,7 +35,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         #region get
 
         [Route("api/getClienteNoVigente/{id:int}")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object GetClienteNoVigente(int id)
         {
             try
@@ -51,7 +52,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/Bienvenida/Usuario/{idUsuario:int}")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object EnviarBienvenidaUsuario(int idUsuario)
         {
             try
@@ -106,7 +108,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/GenCorrelativo/{MesCon}/{Folio:int}")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object GenCorrelativo(int Folio, string MesCon)
         {
             try
@@ -121,7 +124,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/GetAnios")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object GetAnios()
         {
             try
@@ -144,7 +148,8 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
         [Route("api/Clientes/{idCliente:int}/PDF")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object GetInformeClientes(int idCliente)
         {
             try
@@ -254,7 +259,8 @@ namespace WinPerUpdateAdmin.Controllers.api
             }
         }
         [Route("api/Clientes/PDF")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object GetInformeClientes()
         {
             try
@@ -318,15 +324,24 @@ namespace WinPerUpdateAdmin.Controllers.api
                 {
                     return Content(HttpStatusCode.BadRequest, (ByteArrayContent)null);
                 }
+                
                 HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.Created);
 
                 message.Content = new ByteArrayContent(objByte);
                 message.Content.Headers.ContentLength = objByte.Length;
                 message.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
-                message.Content.Headers.Add("Content-Disposition", string.Format("attachment; filename={0}", new FileInfo(pdf).Name));
+                //message.Content.Headers.Add("Content-Disposition", string.Format("attachment; filename={0}", new FileInfo(pdf).Name));
                 message.StatusCode = HttpStatusCode.OK;
-
                 return message;
+                
+                /*
+                ResponseBuilder response = Response.ok(new TemporaryFileInputStream(reportFile));
+                response.header("Content-Disposition", "attachment; filename=" + pdf);
+                response.header("Content-Type", "application/pdf");
+                response.header("Access-Control-Expose-Headers", "x-filename");
+                response.header("x-filename", pdf);
+                return response.build();
+                */
                 #endregion
             }
             catch (Exception ex)
@@ -336,7 +351,8 @@ namespace WinPerUpdateAdmin.Controllers.api
         }
 
         [Route("api/TrabPlantas")]
-        [HttpGet][Authorize]
+        [HttpGet]
+        [Authorize]
         public Object GetTrabPlantas()
         {
             try

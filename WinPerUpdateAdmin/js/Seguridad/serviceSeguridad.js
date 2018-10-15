@@ -28,6 +28,9 @@
                 url: '/api/Perfiles/Internos',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -65,6 +68,9 @@
                 url: '/api/Usuarios/' + id,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -102,6 +108,9 @@
                 url: '/api/Usuarios',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -151,6 +160,9 @@
                 type: "POST",
                 dataType: 'Json',
                 data: usuario,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));
@@ -200,6 +212,9 @@
                 type: "PUT",
                 dataType: 'Json',
                 data: usuario,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 201) {
                         //console.log(JSON.stringify(data));

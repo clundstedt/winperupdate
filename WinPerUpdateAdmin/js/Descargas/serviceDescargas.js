@@ -24,6 +24,9 @@
                 url: '/api/Descargas',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));

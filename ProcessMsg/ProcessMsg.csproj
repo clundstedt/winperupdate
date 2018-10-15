@@ -55,6 +55,7 @@
     <Compile Include="Cliente.cs" />
     <Compile Include="Componente.cs" />
     <Compile Include="ComponenteModulo.cs" />
+    <Compile Include="Funes.cs" />
     <Compile Include="Model\AmbienteBo.cs" />
     <Compile Include="Model\AmbientesXLSXBo.cs" />
     <Compile Include="Model\AtributosArchivoBo.cs" />
@@ -63,6 +64,10 @@
     <Compile Include="Model\ClienteNoVigenteBo.cs" />
     <Compile Include="Model\ComponenteModuloBo.cs" />
     <Compile Include="Model\ControlCambiosBo.cs" />
+    <Compile Include="Model\FunesEmpresaBo.cs" />
+    <Compile Include="Model\FunesNotificacionBo.cs" />
+    <Compile Include="Model\FunesTrabajadorBo.cs" />
+    <Compile Include="Model\FunesUnidadGestionBo.cs" />
     <Compile Include="Model\MenusBo.cs" />
     <Compile Include="Model\ModuloXLSXBo.cs" />
     <Compile Include="Model\PerfilesBo.cs" />

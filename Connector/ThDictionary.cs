@@ -21,6 +21,13 @@ namespace ConnectorDB
                 _dictionary.Add(key, value);
             }
         }
+        public new void Clear()
+        {
+            lock (_dictionary)
+            {
+                _dictionary.Clear();
+            }
+        }
         public new bool TryGetValue(string thekey, out object result)
         {
             lock (_dictionary) { return _dictionary.TryGetValue(thekey, out result); }

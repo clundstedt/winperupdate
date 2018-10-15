@@ -26,6 +26,9 @@
                 url: '/api/Bitacora/Menu?menu='+menu,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -62,6 +65,9 @@
                 url: '/api/Usuarios/'+usuario,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);

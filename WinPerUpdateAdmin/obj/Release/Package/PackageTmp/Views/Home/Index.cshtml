@@ -6,75 +6,76 @@
 <header>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 text-center">
-                <br />
-            </div>
-            <div class="col-md-6 text-center">
-                
-                <img src="~/Img/winact.png"/>
+            <div class="col-md-4 col-md-offset-2 text-left">
+                <img src="~/Img/logo-winact.png" style="height: 90px" />
             </div>
         </div>
     </div>
 </header>
 <div class="container" >
     <div class="row" style="background: url(../../Img/Fotolia_141905807_M.jpg) no-repeat;background-size:cover;position: absolute; top:90px; bottom:70px; width:100%;">
-        <div class="col-md-7"></div>
-        <div class="col-md-3">
-            <div class="row hidden-xs hidden-sm">
-                <div class="col-md-12 text-center">
-                    <h1 style="margin:40px 0px; color:#3399CC; font-weight:100; font-size:5px; opacity: 0;">WinAct</h1>
-                </div>
-            </div>
-            <div class="panel panel-default"  style="background-color: rgba(255,255,255,.5); border:none; height: 39%;">
-                <div class="panel-heading text-center">
-                    <center>
-                        <h3><b>Bienvenido</b></h3>
-                        <h4>Control de Versiones WinPer</h4>
-                    </center>
-                </div>
-                <div class="panel-body" ng-controller="login">
-                    <form name="frmMain" method="post" action="@Url.Action("Login","Home")" novalidate>
-                        <div class="form-group "  style="opacity: 1;">
-                            <div class="input-group margin-bottom-sm">
-                                <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                <input class="form-control" type="text" name="username" placeholder="Email" ng-model="formData.username" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
-                            </div>
-                            <span class="error_ingreso" ng-show="frmMain.username.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
-                            </span>
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="row hidden-xs hidden-sm">
+                        <div class="col-md-12 text-center">
+                            <h1 style="margin:40px 0px; color:#3399CC; font-weight:100; font-size:5px; opacity: 0;">WinAct</h1>
                         </div>
-
-                        <div class="form-group ">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                                <input class="form-control" type="password" name="password" placeholder="Clave" onke ng-model="formData.password" required="required" ng-minlength="6" ng-maxlength="100" ng-keyup="frmMain.$valid  && KeyUpEvent($event.keyCode, formData)" ng-model-options="{ updateOn: 'change' }">
-                            </div>
-                            <span class="error_ingreso" ng-show="frmMain.password.$error.minlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo de la clave debe tener 6 caracteres como mínimo
-                            </span>
-                            <span class="error_ingreso" ng-show="frmMain.password.$error.maxlength">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
-                            </span>
-                        </div>
-
-                        <hr />
-
-                        <button type="button" class="btn btn-primary btn-block"  ng-click="frmMain.$valid && CheckAccess(formData)" ng-disabled="!inlogin">
-                            <span class="glyphicon glyphicon-log-in" ng-show="inlogin"></span>
-                            <span class="fa fa-circle-o-notch fa-spin" ng-hide="inlogin"></span> {{labellogin}}
-                        </button>
-                        <span class="error_ingreso" ng-show="errorlogin">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgerror}}
-                        </span>
-                    </form>
-
-                    <div class="text-center">
-                        <a href="#myModal" class="btn btn-link btn-sm" data-toggle="modal">
-                            <span class="fa fa-question"></span> Olvid&eacute; mi Clave
-                            
-                        </a>
                     </div>
+                    <div class="panel panel-default" style="background-color: rgba(255,255,255,.5); border:none; height: 39%;">
+                        <div class="panel-heading text-center">
+                            <center>
+                                <h3><b>Bienvenido</b></h3>
+                                <h4>Control de Versiones WinPer</h4>
+                            </center>
+                        </div>
+                        <div class="panel-body" ng-controller="login">
+                            <form name="frmMain" method="post" action="@Url.Action("Login","Home")" novalidate>
+                                <div class="form-group " style="opacity: 1;">
+                                    <div class="input-group margin-bottom-sm">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                        <input class="form-control" type="text" name="username" placeholder="Email" ng-model="formData.username" required="required" ng-maxlength="100" ng-model-options="{ updateOn: 'blur' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.username.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                    </span>
+                                </div>
 
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                        <input class="form-control" type="password" name="password" placeholder="Clave" onke ng-model="formData.password" required="required" ng-minlength="6" ng-maxlength="100" ng-keyup="frmMain.$valid  && KeyUpEvent($event.keyCode, formData)" ng-model-options="{ updateOn: 'change' }">
+                                    </div>
+                                    <span class="error_ingreso" ng-show="frmMain.password.$error.minlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo de la clave debe tener 6 caracteres como mínimo
+                                    </span>
+                                    <span class="error_ingreso" ng-show="frmMain.password.$error.maxlength">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Largo máximo no debe superar los 100 carácteres
+                                    </span>
+                                </div>
+
+                                <hr />
+
+                                <button type="button" class="btn btn-primary btn-block" ng-click="frmMain.$valid && CheckAccess(formData)" ng-disabled="!inlogin">
+                                    <span class="glyphicon glyphicon-log-in" ng-show="inlogin"></span>
+                                    <span class="fa fa-circle-o-notch fa-spin" ng-hide="inlogin"></span> {{labellogin}}
+                                </button>
+                                <span class="error_ingreso" ng-show="errorlogin">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{msgerror}}
+                                </span>
+                            </form>
+
+                            <div class="text-center">
+                                <a href="#myModal" class="btn btn-link btn-sm" data-toggle="modal">
+                                    <span class="fa fa-question"></span> Olvid&eacute; mi Clave
+
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,8 +124,8 @@
 <footer class="bch-footer">
     <div class="container">
         <div class="row">
-            <div class="logo-footer col-md-6 text-center">
-                <a href="http:\\www.innovasoft.cl"><img src="~/Img/innovasoftLogo250x33.png" style="vertical-align:top;" /></a>
+            <div class="logo-footer col-md-4 col-lg-offset-2 text-left">
+                <a href="http:\\www.innovasoft.cl" target="_blank"><img src="~/Img/innovasoftLogo250x33.png" style="vertical-align:top;" /></a>
             </div>
             <div class="liniealateral col-md-6 text-center">
                 <ul class="list-unstyled">

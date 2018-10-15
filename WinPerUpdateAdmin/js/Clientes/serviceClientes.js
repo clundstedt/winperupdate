@@ -42,7 +42,8 @@
 
             addModuloCliente: addModuloCliente,
             getClienteNoVigente: getClienteNoVigente,
-            getModulosDesdeSuite: getModulosDesdeSuite
+            getModulosDesdeSuite: getModulosDesdeSuite,
+            getClientesPDF: getClientesPDF
         };
 
         return service;
@@ -1232,6 +1233,44 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
                     deferred.reject('No existen comunas asociadas a la región');
+                }
+            });
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+
+            return promise;
+        }
+
+        function getClientesPDF() {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $.ajax({
+                url: '/api/Clientes/PDF',
+                type: "GET",
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        //console.log(JSON.stringify(data));
+                        console.log('OK services getClientesPDF');
+                        var file = new Blob([data], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(file);
+                        deferred.resolve(fileURL);
+                    }
+                    else {
+                        deferred.reject('No existen clientes');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error('error = ' + xhr.status + "msg = " + xhr.responseText);
+                    deferred.reject('No existen clientes');
                 }
             });
 

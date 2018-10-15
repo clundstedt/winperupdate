@@ -69,7 +69,7 @@
             serviceClientes.getRegiones().success(function (regiones) {
                 $scope.regiones = regiones;
                 $scope.msgError = "";
-            }).error(function (error) {
+            }).error(function (err) {
                 console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio.";window.scrollTo(0,0);
             });
 

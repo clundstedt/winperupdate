@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Configuration;
 using Newtonsoft.Json;
+using WebSocketSharp;
 
 namespace WinperUpdateServer
 {

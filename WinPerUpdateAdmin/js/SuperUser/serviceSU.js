@@ -23,6 +23,9 @@
                 url: '/api/Config',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -75,7 +78,7 @@
                 type: "PUT",
                 dataType: 'Json',
                 data: webConfig,
-                success: function (data, textStatus, jqXHR) {
+                beforeSend: function (xhr) { xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token); }, success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
                         deferred.resolve(data);

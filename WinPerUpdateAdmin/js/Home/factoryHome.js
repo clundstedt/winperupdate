@@ -24,6 +24,9 @@
                 url: '/api/VerificaSession',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -60,6 +63,9 @@
                 url: '/api/Usuarios/' + id,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -98,6 +104,9 @@
                 url: '/api/Seguridad?mail=' + mail + '&password=' + clave + '&nPassword=' + nClave,
                 type: "PUT",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));

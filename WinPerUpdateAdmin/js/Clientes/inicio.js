@@ -28,7 +28,15 @@
             });
 
             $scope.GenerarPDF = function () {
-                window.location = '/api/Clientes/PDF';
+                //window.location = '/api/Clientes/PDF';
+                console.log('llamamos a getClientesPDF()');
+                serviceClientes.getClientesPDF().success(function (fileURL) {
+                    console.log('OK PDF: ' + fileURL);
+                    //$window.open(fileURL);
+                    window.location = fileURL;
+                }).error(function (err) {
+                    console.error(err); $scope.msgError = "Ocurrió un error durante la petición, contacte al administrador del sitio."; window.scrollTo(0, 0);
+                })
             }
 
             $scope.ShowMdlMotivo = function (id) {

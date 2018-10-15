@@ -49,6 +49,9 @@
                 url: '/api/ExisteComponenteEnDir?nombreComp=' + comp + ' &dir= ' + dir,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -88,6 +91,9 @@
                 type: "POST",
                 dataType: 'Json',
                 data: DirModulos,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -126,6 +132,9 @@
                 dataType: 'text',
                 contentType: "application/json",
                 data: JSON.stringify(lista),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -162,6 +171,9 @@
                 url: '/api/Modulo/'+idModulo+'/ComponentesDir',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -203,6 +215,9 @@
                 type: "POST",
                 dataType: 'Json',
                 data: DirModulos,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -239,6 +254,9 @@
                 url: '/api/Suites',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -275,6 +293,9 @@
                 url: '/api/Componentes/Sync',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         //console.log(JSON.stringify(data));
@@ -320,6 +341,9 @@
                 type: "PUT",
                 dataType: 'Json',
                 data: tipoComp,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -355,6 +379,9 @@
                 url: '/api/Modulo/'+idModulo+'/Vigente',
                 type: "PUT",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -390,6 +417,9 @@
                 url: '/api/TipoComponentes',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -425,6 +455,9 @@
                 url: '/api/Modulo/' + idModulo+'/Componentes',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -469,6 +502,9 @@
                 type: "POST",
                 dataType: 'Json',
                 data: ComponentesModulos,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -504,6 +540,9 @@
                 url: '/api/ComponentesModulos/' + idComponentesModulos,
                 type: "DELETE",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -547,6 +586,9 @@
                 type: "PUT",
                 dataType: 'Json',
                 data: ComponentesModulos,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -589,6 +631,9 @@
                 type: "POST",
                 dataType: 'Json',
                 data: TipoComponentes,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -624,6 +669,9 @@
                 url: '/api/TipoComponentes/' + idTipoComponentes,
                 type: "DELETE",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -659,6 +707,9 @@
                 url: '/api/Modulo/' + idModulo,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -694,6 +745,9 @@
                 url: '/api/ModulosXlsx/'+idUsuario,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -730,6 +784,9 @@
                 url: '/api/Modulo/' + idmodulo + '/' + tipocomponente + '/Componente?Comp=' + comp,
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -767,6 +824,9 @@
                 url: '/api/Modulos',
                 type: "GET",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -810,6 +870,9 @@
                 type: "POST",
                 dataType: 'Json',
                 data: modulo,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -853,6 +916,9 @@
                 type: "PUT",
                 dataType: 'Json',
                 data: modulo,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);
@@ -888,6 +954,9 @@
                 url: '/api/Modulo/'+idModulo,
                 type: "DELETE",
                 dataType: 'Json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + $window.sessionStorage.token);
+                },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status == 200) {
                         deferred.resolve(data);

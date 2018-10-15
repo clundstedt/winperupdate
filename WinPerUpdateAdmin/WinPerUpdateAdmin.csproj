@@ -190,11 +190,13 @@
     <Content Include="Img\innovasoft.jpg" />
     <Content Include="Img\InnovaSoftLogo2.png" />
     <Content Include="Img\innovasoftLogo250x33.png" />
+    <Content Include="Img\logo-winact.png" />
     <Content Include="Img\Modulo_CC_Winact.png" />
     <Content Include="Img\Reloj_CC_Winact.png" />
     <Content Include="Img\User_CC_Winact.png" />
     <Content Include="Img\winact.png" />
     <Content Include="Img\winact_85x24.png" />
+    <Content Include="Img\winper-winact.png" />
     <Content Include="js\AdminClt\admin.js" />
     <Content Include="js\AdminClt\app.js" />
     <Content Include="js\AdminClt\serviceAdmin.js" />
@@ -487,6 +489,7 @@
     <Compile Include="Controllers\api\AmbientesController.cs" />
     <Compile Include="Controllers\api\BitacoraController.cs" />
     <Compile Include="Controllers\api\DescargasController.cs" />
+    <Compile Include="Controllers\api\FunesController.cs" />
     <Compile Include="Controllers\api\SuitesController.cs" />
     <Compile Include="Controllers\Bitacora\BitacoraController.cs" />
     <Compile Include="Controllers\Clientes\AdminCltController.cs" />
