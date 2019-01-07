@@ -62,8 +62,14 @@ namespace WinperUpdateServer
                 // Establish the local endpoint for the socket.
                 // The DNS name of the computer
                 // running the listener is "host.contoso.com".
+
+                string mensaje = string.Format("port: {0}, HostName={1}, HostEntry={2}", port, Dns.GetHostName(), Dns.GetHostEntry(Dns.GetHostName()));
+
+                eventLog1.WriteEntry(mensaje, EventLogEntryType.Information, eventId);
+
                 IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-                IPAddress ipAddress = ipHostInfo.AddressList.ToList().SingleOrDefault(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+                //IPAddress ipAddress = ipHostInfo.AddressList.ToList().SingleOrDefault(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+                IPAddress ipAddress = ipHostInfo.AddressList.ToList().Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).First();
                 IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 
                 // Create a TCP/IP socket.
